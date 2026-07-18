@@ -1,0 +1,13331 @@
+{
+ "colors": {
+  "Normal": "#A8A77A",
+  "Fighting": "#C22E28",
+  "Flying": "#8571BE",
+  "Poison": "#A33EA1",
+  "Ground": "#B1954F",
+  "Rock": "#B6A136",
+  "Bug": "#808F13",
+  "Ghost": "#735797",
+  "Steel": "#8C8C9E",
+  "Fire": "#EE8130",
+  "Water": "#6390F0",
+  "Grass": "#62A13D",
+  "Electric": "#CF9A09",
+  "Psychic": "#F95587",
+  "Ice": "#65A19E",
+  "Dragon": "#6F35FC",
+  "Dark": "#705746",
+  "Fairy": "#D685AD"
+ },
+ "matchup": {
+  "Normal": {
+   "Rock": 0.5,
+   "Ghost": 0,
+   "Steel": 0.5
+  },
+  "Fighting": {
+   "Normal": 2,
+   "Flying": 0.5,
+   "Poison": 0.5,
+   "Rock": 2,
+   "Bug": 0.5,
+   "Ghost": 0,
+   "Steel": 2,
+   "Psychic": 0.5,
+   "Ice": 2,
+   "Dark": 2,
+   "Fairy": 0.5
+  },
+  "Flying": {
+   "Fighting": 2,
+   "Rock": 0.5,
+   "Bug": 2,
+   "Steel": 0.5,
+   "Grass": 2,
+   "Electric": 0.5
+  },
+  "Poison": {
+   "Poison": 0.5,
+   "Ground": 0.5,
+   "Rock": 0.5,
+   "Ghost": 0.5,
+   "Steel": 0,
+   "Grass": 2,
+   "Fairy": 2
+  },
+  "Ground": {
+   "Flying": 0,
+   "Poison": 2,
+   "Rock": 2,
+   "Bug": 0.5,
+   "Steel": 2,
+   "Fire": 2,
+   "Grass": 0.5,
+   "Electric": 2
+  },
+  "Rock": {
+   "Fighting": 0.5,
+   "Flying": 2,
+   "Ground": 0.5,
+   "Bug": 2,
+   "Steel": 0.5,
+   "Fire": 2,
+   "Ice": 2
+  },
+  "Bug": {
+   "Fighting": 0.5,
+   "Flying": 0.5,
+   "Poison": 0.5,
+   "Ghost": 0.5,
+   "Steel": 0.5,
+   "Fire": 0.5,
+   "Grass": 2,
+   "Psychic": 2,
+   "Dark": 2,
+   "Fairy": 0.5
+  },
+  "Ghost": {
+   "Normal": 0,
+   "Ghost": 2,
+   "Psychic": 2,
+   "Dark": 0.5
+  },
+  "Steel": {
+   "Rock": 2,
+   "Steel": 0.5,
+   "Fire": 0.5,
+   "Water": 0.5,
+   "Electric": 0.5,
+   "Ice": 2,
+   "Fairy": 2
+  },
+  "Fire": {
+   "Rock": 0.5,
+   "Bug": 2,
+   "Steel": 2,
+   "Fire": 0.5,
+   "Water": 0.5,
+   "Grass": 2,
+   "Ice": 2,
+   "Dragon": 0.5
+  },
+  "Water": {
+   "Ground": 2,
+   "Rock": 2,
+   "Fire": 2,
+   "Water": 0.5,
+   "Grass": 0.5,
+   "Dragon": 0.5
+  },
+  "Grass": {
+   "Flying": 0.5,
+   "Poison": 0.5,
+   "Ground": 2,
+   "Rock": 2,
+   "Bug": 0.5,
+   "Steel": 0.5,
+   "Fire": 0.5,
+   "Water": 2,
+   "Grass": 0.5,
+   "Dragon": 0.5
+  },
+  "Electric": {
+   "Flying": 2,
+   "Ground": 0,
+   "Water": 2,
+   "Grass": 0.5,
+   "Electric": 0.5,
+   "Dragon": 0.5
+  },
+  "Psychic": {
+   "Fighting": 2,
+   "Poison": 2,
+   "Steel": 0.5,
+   "Psychic": 0.5,
+   "Dark": 0
+  },
+  "Ice": {
+   "Flying": 2,
+   "Ground": 2,
+   "Steel": 0.5,
+   "Fire": 0.5,
+   "Water": 0.5,
+   "Grass": 2,
+   "Ice": 0.5,
+   "Dragon": 2
+  },
+  "Dragon": {
+   "Steel": 0.5,
+   "Dragon": 2,
+   "Fairy": 0
+  },
+  "Dark": {
+   "Fighting": 0.5,
+   "Ghost": 2,
+   "Psychic": 2,
+   "Dark": 0.5,
+   "Fairy": 0.5
+  },
+  "Fairy": {
+   "Fighting": 2,
+   "Poison": 0.5,
+   "Steel": 0.5,
+   "Fire": 0.5,
+   "Dragon": 2,
+   "Dark": 2
+  }
+ },
+ "species": {
+  "\u0010Sandile": [
+   "Ground",
+   "Dark"
+  ],
+  "Abomasnow": [
+   "Grass",
+   "Ice"
+  ],
+  "Abomasnow-Mega": [
+   "Grass",
+   "Ice"
+  ],
+  "Abra": [
+   "Psychic"
+  ],
+  "Absol": [
+   "Dark"
+  ],
+  "Absol-Mega": [
+   "Dark",
+   "Fairy"
+  ],
+  "Accelgor": [
+   "Bug"
+  ],
+  "Aegislash": [
+   "Steel",
+   "Ghost"
+  ],
+  "Aerodactyl": [
+   "Rock",
+   "Flying"
+  ],
+  "Aerodactyl-Mega": [
+   "Rock",
+   "Flying"
+  ],
+  "Aggron": [
+   "Steel",
+   "Rock"
+  ],
+  "Aggron-Mega": [
+   "Steel"
+  ],
+  "Aipom": [
+   "Normal"
+  ],
+  "Alakazam": [
+   "Psychic"
+  ],
+  "Alakazam-Mega": [
+   "Psychic"
+  ],
+  "Alcremie-Mega": [
+   "Fairy"
+  ],
+  "Alcremie-Strbrry": [
+   "Fairy"
+  ],
+  "Alomomola": [
+   "Water"
+  ],
+  "Altaria": [
+   "Dragon",
+   "Flying"
+  ],
+  "Altaria-Mega": [
+   "Dragon",
+   "Fairy"
+  ],
+  "Amaura": [
+   "Rock",
+   "Ice"
+  ],
+  "Ambipom": [
+   "Normal"
+  ],
+  "Amoonguss": [
+   "Grass",
+   "Poison"
+  ],
+  "Ampharos": [
+   "Electric"
+  ],
+  "Ampharos-Mega": [
+   "Electric",
+   "Dragon"
+  ],
+  "Annihilape": [
+   "Fighting",
+   "Ghost"
+  ],
+  "Anorith": [
+   "Rock",
+   "Bug"
+  ],
+  "Any Cap Pikachu": [
+   "Electric"
+  ],
+  "Appletun-Mega": [
+   "Grass",
+   "Dragon"
+  ],
+  "Applin": [
+   "Grass",
+   "Dragon"
+  ],
+  "Araquanid": [
+   "Water",
+   "Bug"
+  ],
+  "Arbok": [
+   "Poison",
+   "Dark"
+  ],
+  "Arcanine": [
+   "Fire"
+  ],
+  "Arcanine-H": [
+   "Fire",
+   "Rock"
+  ],
+  "Arcanine-Hisui": [
+   "Fire",
+   "Rock"
+  ],
+  "Arceus": [
+   "Normal"
+  ],
+  "Arceus-Bug": [
+   "Bug"
+  ],
+  "Arceus-Fairy": [
+   "Fairy"
+  ],
+  "Arceus-Ground": [
+   "Ground"
+  ],
+  "Arceus-Steel": [
+   "Steel"
+  ],
+  "Archaludon": [
+   "Steel",
+   "Dragon"
+  ],
+  "Archen": [
+   "Rock",
+   "Flying"
+  ],
+  "Archeops": [
+   "Rock",
+   "Flying"
+  ],
+  "Arctovish": [
+   "Water",
+   "Ice"
+  ],
+  "Arctozolt": [
+   "Electric",
+   "Ice"
+  ],
+  "Ariados": [
+   "Bug",
+   "Poison"
+  ],
+  "Armarouge": [
+   "Fire",
+   "Psychic"
+  ],
+  "Aron": [
+   "Steel",
+   "Rock"
+  ],
+  "Arrokuda": [
+   "Water"
+  ],
+  "Articuno": [
+   "Ice",
+   "Flying"
+  ],
+  "Articuno-G": [
+   "Psychic",
+   "Flying"
+  ],
+  "Articuno-Galar": [
+   "Psychic",
+   "Flying"
+  ],
+  "Audino": [
+   "Normal"
+  ],
+  "Audino-Mega": [
+   "Normal",
+   "Fairy"
+  ],
+  "Avalugg": [
+   "Ice"
+  ],
+  "Avalugg-H": [
+   "Ice",
+   "Rock"
+  ],
+  "Avalugg-Hisui": [
+   "Ice",
+   "Rock"
+  ],
+  "Axew": [
+   "Dragon"
+  ],
+  "Azelf": [
+   "Psychic"
+  ],
+  "Azumarill": [
+   "Water",
+   "Fairy"
+  ],
+  "Baltoy": [
+   "Ground",
+   "Psychic"
+  ],
+  "Banette": [
+   "Ghost"
+  ],
+  "Banette-Mega": [
+   "Ghost",
+   "Normal"
+  ],
+  "Barbaracle": [
+   "Rock",
+   "Water"
+  ],
+  "Barboach": [
+   "Water",
+   "Ground"
+  ],
+  "Barraskewda": [
+   "Water"
+  ],
+  "Basculegion": [
+   "Water",
+   "Ghost"
+  ],
+  "Basculegion-F": [
+   "Water",
+   "Ghost"
+  ],
+  "Basculin": [
+   "Water"
+  ],
+  "Basculin-Blue": [
+   "Water"
+  ],
+  "Baxcalibur": [
+   "Dragon",
+   "Ice"
+  ],
+  "Beartic": [
+   "Ice",
+   "Fighting"
+  ],
+  "Beedrill-Mega": [
+   "Bug",
+   "Poison"
+  ],
+  "Bellibolt": [
+   "Electric"
+  ],
+  "Bellossom": [
+   "Grass",
+   "Fairy"
+  ],
+  "Bellsprout": [
+   "Grass",
+   "Poison"
+  ],
+  "Bergmite": [
+   "Ice"
+  ],
+  "Bewear": [
+   "Normal",
+   "Fighting"
+  ],
+  "Bibarel": [
+   "Normal",
+   "Water"
+  ],
+  "Bidoof": [
+   "Normal"
+  ],
+  "Binacle": [
+   "Rock",
+   "Water"
+  ],
+  "Bisharp": [
+   "Dark",
+   "Steel"
+  ],
+  "Blacephalon": [
+   "Fire",
+   "Ghost"
+  ],
+  "Blastoise-Mega": [
+   "Water"
+  ],
+  "Blaziken": [
+   "Fire",
+   "Fighting"
+  ],
+  "Blaziken-Mega": [
+   "Fire",
+   "Fighting"
+  ],
+  "Blipbug": [
+   "Bug"
+  ],
+  "Blissey": [
+   "Normal"
+  ],
+  "Blitzle": [
+   "Electric"
+  ],
+  "Blitzle-Sevii": [
+   "Ice",
+   "Electric"
+  ],
+  "Boldore": [
+   "Rock"
+  ],
+  "Boltund": [
+   "Electric"
+  ],
+  "Bombirdier": [
+   "Flying",
+   "Dark"
+  ],
+  "Bonsly": [
+   "Rock"
+  ],
+  "Bouffalant": [
+   "Normal"
+  ],
+  "Bounsweet": [
+   "Grass"
+  ],
+  "Bramblin": [
+   "Grass",
+   "Ghost"
+  ],
+  "Braviary": [
+   "Normal",
+   "Flying"
+  ],
+  "Braviary-H": [
+   "Psychic",
+   "Flying"
+  ],
+  "Braviary-Hisui": [
+   "Psychic",
+   "Flying"
+  ],
+  "Breloom": [
+   "Grass",
+   "Fighting"
+  ],
+  "Brionne": [
+   "Water"
+  ],
+  "Bronzong": [
+   "Steel",
+   "Psychic"
+  ],
+  "Bronzor": [
+   "Steel",
+   "Psychic"
+  ],
+  "Brute Bonnet": [
+   "Grass",
+   "Dark"
+  ],
+  "Bruxish": [
+   "Water",
+   "Psychic"
+  ],
+  "Budew": [
+   "Grass",
+   "Poison"
+  ],
+  "Buizel": [
+   "Water"
+  ],
+  "Bulbasaur": [
+   "Grass",
+   "Poison"
+  ],
+  "Buneary": [
+   "Normal"
+  ],
+  "Bunnelby": [
+   "Normal"
+  ],
+  "Burmy": [
+   "Bug"
+  ],
+  "Burmy-Sandy": [
+   "Bug"
+  ],
+  "Burmy-Trash": [
+   "Bug"
+  ],
+  "Butterfree": [
+   "Bug",
+   "Flying"
+  ],
+  "Butterfree-Mega": [
+   "Bug",
+   "Flying"
+  ],
+  "Buzzwole": [
+   "Bug",
+   "Fighting"
+  ],
+  "Cacnea": [
+   "Grass"
+  ],
+  "Cacturne": [
+   "Grass",
+   "Dark"
+  ],
+  "Calyrex": [
+   "Psychic",
+   "Grass"
+  ],
+  "Calyrex-I": [
+   "Psychic",
+   "Ice"
+  ],
+  "Calyrex-Ice": [
+   "Psychic",
+   "Ice"
+  ],
+  "Calyrex-S": [
+   "Psychic",
+   "Ghost"
+  ],
+  "Calyrex-Shadow": [
+   "Psychic",
+   "Ghost"
+  ],
+  "Camerupt-Mega": [
+   "Fire",
+   "Ground"
+  ],
+  "Capsakid": [
+   "Grass"
+  ],
+  "Carbink": [
+   "Rock",
+   "Fairy"
+  ],
+  "Carkol": [
+   "Rock",
+   "Fire"
+  ],
+  "Carnivine": [
+   "Grass"
+  ],
+  "Carnivine-Sevii": [
+   "Poison",
+   "Steel"
+  ],
+  "Carracosta": [
+   "Water",
+   "Rock"
+  ],
+  "Carvanha": [
+   "Water",
+   "Dark"
+  ],
+  "Castform": [
+   "Normal"
+  ],
+  "Caterpie": [
+   "Bug"
+  ],
+  "Celebi": [
+   "Psychic",
+   "Grass"
+  ],
+  "Celesteela": [
+   "Steel",
+   "Flying"
+  ],
+  "Centiskorch": [
+   "Fire",
+   "Bug"
+  ],
+  "Centiskorch-Mega": [
+   "Fire",
+   "Bug"
+  ],
+  "Centiskorch-MegaS": [
+   "Ground",
+   "Bug"
+  ],
+  "Centiskorch-Sevii": [
+   "Ground",
+   "Bug"
+  ],
+  "Ceruledge": [
+   "Fire",
+   "Ghost"
+  ],
+  "Cetitan": [
+   "Ice"
+  ],
+  "Cetoddle": [
+   "Ice"
+  ],
+  "Chandelure": [
+   "Ghost",
+   "Fire"
+  ],
+  "Chansey": [
+   "Normal"
+  ],
+  "Charcadet": [
+   "Fire"
+  ],
+  "Charizard": [
+   "Fire",
+   "Flying"
+  ],
+  "Charizard-MegaX": [
+   "Fire",
+   "Dragon"
+  ],
+  "Charizard-MegaY": [
+   "Fire",
+   "Flying"
+  ],
+  "Charjabug": [
+   "Bug",
+   "Electric"
+  ],
+  "Charmander": [
+   "Fire"
+  ],
+  "Charmeleon": [
+   "Fire"
+  ],
+  "Chatot": [
+   "Normal",
+   "Flying"
+  ],
+  "Cherrim": [
+   "Grass"
+  ],
+  "Cherubi": [
+   "Grass"
+  ],
+  "Chespin": [
+   "Grass"
+  ],
+  "Chewtle": [
+   "Water"
+  ],
+  "Chi-Yu": [
+   "Dark",
+   "Fire"
+  ],
+  "Chien-Pao": [
+   "Dark",
+   "Ice"
+  ],
+  "Chikorita": [
+   "Grass"
+  ],
+  "Chimchar": [
+   "Fire"
+  ],
+  "Chimecho": [
+   "Psychic"
+  ],
+  "Chinchou": [
+   "Water",
+   "Electric"
+  ],
+  "Chingling": [
+   "Psychic"
+  ],
+  "Cinccino": [
+   "Normal"
+  ],
+  "Cinderace": [
+   "Fire"
+  ],
+  "Clamperl": [
+   "Water"
+  ],
+  "Clauncher": [
+   "Water"
+  ],
+  "Clauncher-Sevii": [
+   "Bug",
+   "Dark"
+  ],
+  "Clawitzer": [
+   "Water"
+  ],
+  "Clawitzer-S": [
+   "Bug",
+   "Dark"
+  ],
+  "Clefable": [
+   "Fairy"
+  ],
+  "Clefairy": [
+   "Fairy"
+  ],
+  "Clobbopus": [
+   "Fighting",
+   "Water"
+  ],
+  "Clodsire": [
+   "Poison",
+   "Ground"
+  ],
+  "Cloyster": [
+   "Water",
+   "Ice"
+  ],
+  "Coalossal": [
+   "Rock",
+   "Fire"
+  ],
+  "Cobalion": [
+   "Steel",
+   "Fighting"
+  ],
+  "Cofagrigus": [
+   "Ghost"
+  ],
+  "Combee": [
+   "Bug",
+   "Flying"
+  ],
+  "Comfey": [
+   "Fairy"
+  ],
+  "Conkeldurr": [
+   "Fighting"
+  ],
+  "Copperajah": [
+   "Steel"
+  ],
+  "Copperajah-Mega": [
+   "Steel",
+   "Fighting"
+  ],
+  "Corphish": [
+   "Water"
+  ],
+  "Corsola": [
+   "Water",
+   "Rock"
+  ],
+  "Corsola-Galar": [
+   "Ghost"
+  ],
+  "Corviknight": [
+   "Flying",
+   "Steel"
+  ],
+  "Cosmoem": [
+   "Psychic"
+  ],
+  "Cosmog": [
+   "Psychic"
+  ],
+  "Cottonee": [
+   "Grass",
+   "Fairy"
+  ],
+  "Crabominable": [
+   "Fighting",
+   "Ice"
+  ],
+  "Crabrawler": [
+   "Fighting"
+  ],
+  "Cradily": [
+   "Rock",
+   "Grass"
+  ],
+  "Cramorant": [
+   "Flying",
+   "Water"
+  ],
+  "Cramorant-Gorg": [
+   "Flying",
+   "Water"
+  ],
+  "Cranidos": [
+   "Rock"
+  ],
+  "Crawdaunt": [
+   "Water",
+   "Dark"
+  ],
+  "Cresselia": [
+   "Psychic"
+  ],
+  "Croagunk": [
+   "Poison",
+   "Fighting"
+  ],
+  "Crobat": [
+   "Poison",
+   "Flying"
+  ],
+  "Crustle": [
+   "Bug",
+   "Rock"
+  ],
+  "Cryogonal": [
+   "Ice"
+  ],
+  "Cubchoo": [
+   "Ice"
+  ],
+  "Cubone": [
+   "Ground"
+  ],
+  "Cufant": [
+   "Steel"
+  ],
+  "Cursola": [
+   "Ghost"
+  ],
+  "Cutiefly": [
+   "Bug",
+   "Fairy"
+  ],
+  "Cyclizar": [
+   "Dragon",
+   "Normal"
+  ],
+  "Cyndaquil": [
+   "Fire"
+  ],
+  "Darkrai": [
+   "Dark"
+  ],
+  "Darmanitan": [
+   "Fire"
+  ],
+  "Darmanitan-G": [
+   "Ice"
+  ],
+  "Darmanitan-GZ": [
+   "Ice",
+   "Fire"
+  ],
+  "Darmanitan-Galar": [
+   "Ice"
+  ],
+  "Darmanitan-Z": [
+   "Fire",
+   "Psychic"
+  ],
+  "Dartrix": [
+   "Grass",
+   "Flying"
+  ],
+  "Darumaka": [
+   "Fire"
+  ],
+  "Decidueye": [
+   "Grass",
+   "Ghost"
+  ],
+  "Decidueye-H": [
+   "Grass",
+   "Fighting"
+  ],
+  "Decidueye-Hisui": [
+   "Grass",
+   "Fighting"
+  ],
+  "Dedenne": [
+   "Electric",
+   "Fairy"
+  ],
+  "Deerling": [
+   "Normal",
+   "Grass"
+  ],
+  "Deerling-Autumn": [
+   "Normal",
+   "Grass"
+  ],
+  "Deerling-Summer": [
+   "Normal",
+   "Grass"
+  ],
+  "Deerling-Winter": [
+   "Normal",
+   "Grass"
+  ],
+  "Delibird": [
+   "Ice",
+   "Flying"
+  ],
+  "Delphox": [
+   "Fire",
+   "Psychic"
+  ],
+  "Deoxys": [
+   "Psychic"
+  ],
+  "Deoxys-A": [
+   "Psychic"
+  ],
+  "Deoxys-D": [
+   "Psychic"
+  ],
+  "Deoxys-S": [
+   "Psychic"
+  ],
+  "Dewgong": [
+   "Water",
+   "Ice"
+  ],
+  "Dewott": [
+   "Water"
+  ],
+  "Dewpider": [
+   "Water",
+   "Bug"
+  ],
+  "Dhelmise": [
+   "Ghost",
+   "Grass"
+  ],
+  "Dhelmise-Sevii": [
+   "Water",
+   "Grass"
+  ],
+  "Dialga": [
+   "Steel",
+   "Dragon"
+  ],
+  "Dialga-Origin": [
+   "Steel",
+   "Dragon"
+  ],
+  "Dialga-Primal": [
+   "Steel",
+   "Dragon"
+  ],
+  "Diancie": [
+   "Rock",
+   "Fairy"
+  ],
+  "Diancie-Mega": [
+   "Rock",
+   "Fairy"
+  ],
+  "Diglett": [
+   "Ground"
+  ],
+  "Diglett-Alola": [
+   "Ground",
+   "Steel"
+  ],
+  "Dipplin": [
+   "Grass",
+   "Dragon"
+  ],
+  "Ditto": [
+   "Normal"
+  ],
+  "Dodrio": [
+   "Normal",
+   "Flying"
+  ],
+  "Dodrio-S": [
+   "Fire",
+   "Ground"
+  ],
+  "Dodrio-Sevii": [
+   "Fire",
+   "Ground"
+  ],
+  "Doduo": [
+   "Normal",
+   "Flying"
+  ],
+  "Doduo-Sevii": [
+   "Fire",
+   "Ground"
+  ],
+  "Dondozo": [
+   "Water"
+  ],
+  "Donphan": [
+   "Ground"
+  ],
+  "Dracovish": [
+   "Water",
+   "Dragon"
+  ],
+  "Dracozolt": [
+   "Electric",
+   "Dragon"
+  ],
+  "Dragalge": [
+   "Poison",
+   "Dragon"
+  ],
+  "Dragapult": [
+   "Dragon",
+   "Ghost"
+  ],
+  "Dragonite": [
+   "Dragon",
+   "Flying"
+  ],
+  "Drampa": [
+   "Normal",
+   "Dragon"
+  ],
+  "Drapion": [
+   "Poison",
+   "Dark"
+  ],
+  "Drednaw": [
+   "Water",
+   "Rock"
+  ],
+  "Drednaw-Mega": [
+   "Water",
+   "Fighting"
+  ],
+  "Drifblim": [
+   "Ghost",
+   "Flying"
+  ],
+  "Drifloon": [
+   "Ghost",
+   "Flying"
+  ],
+  "Drilbur": [
+   "Ground"
+  ],
+  "Drowzee": [
+   "Psychic"
+  ],
+  "Druddigon": [
+   "Dragon"
+  ],
+  "Ducklett": [
+   "Water",
+   "Flying"
+  ],
+  "Dudunsparce": [
+   "Normal"
+  ],
+  "Dugtrio": [
+   "Ground"
+  ],
+  "Dugtrio-A": [
+   "Ground",
+   "Steel"
+  ],
+  "Dugtrio-Alola": [
+   "Ground",
+   "Steel"
+  ],
+  "Dunsparce": [
+   "Normal"
+  ],
+  "Duraludon": [
+   "Steel",
+   "Dragon"
+  ],
+  "Durant": [
+   "Bug",
+   "Steel"
+  ],
+  "Dusclops": [
+   "Ghost"
+  ],
+  "Dusknoir": [
+   "Ghost"
+  ],
+  "Dustox": [
+   "Bug",
+   "Poison"
+  ],
+  "Dwebble": [
+   "Bug",
+   "Rock"
+  ],
+  "Eelektross": [
+   "Electric"
+  ],
+  "Eevee": [
+   "Normal"
+  ],
+  "Eiscue": [
+   "Ice"
+  ],
+  "Ekans": [
+   "Poison"
+  ],
+  "Electabuzz": [
+   "Electric"
+  ],
+  "Electivire": [
+   "Electric"
+  ],
+  "Electrike": [
+   "Electric"
+  ],
+  "Electrode": [
+   "Electric"
+  ],
+  "Electrode-H": [
+   "Electric",
+   "Grass"
+  ],
+  "Electrode-Hisui": [
+   "Electric",
+   "Grass"
+  ],
+  "Elekid": [
+   "Electric"
+  ],
+  "Elgyem": [
+   "Psychic"
+  ],
+  "Emboar": [
+   "Fire",
+   "Fighting"
+  ],
+  "Emolga": [
+   "Electric",
+   "Flying"
+  ],
+  "Empoleon": [
+   "Water",
+   "Steel"
+  ],
+  "Enamorus-I": [
+   "Fairy",
+   "Flying"
+  ],
+  "Enamorus-T": [
+   "Fairy",
+   "Flying"
+  ],
+  "Entei": [
+   "Fire"
+  ],
+  "Escavalier": [
+   "Bug",
+   "Steel"
+  ],
+  "Espathra": [
+   "Psychic"
+  ],
+  "Espeon": [
+   "Psychic"
+  ],
+  "Espurr": [
+   "Psychic"
+  ],
+  "Eternatus": [
+   "Poison",
+   "Dragon"
+  ],
+  "Eternatus-Max": [
+   "Poison",
+   "Dragon"
+  ],
+  "Excadrill": [
+   "Ground",
+   "Steel"
+  ],
+  "Exeggcute": [
+   "Grass",
+   "Psychic"
+  ],
+  "Exeggutor": [
+   "Grass",
+   "Psychic"
+  ],
+  "Exeggutor-A": [
+   "Grass",
+   "Dragon"
+  ],
+  "Exeggutor-Alola": [
+   "Grass",
+   "Dragon"
+  ],
+  "Exploud": [
+   "Normal"
+  ],
+  "Falinks": [
+   "Fighting",
+   "Bug"
+  ],
+  "Farfetch'd": [
+   "Flying",
+   "Fighting"
+  ],
+  "Farfetch'd-G": [
+   "Fighting"
+  ],
+  "Farfetch'd-Galar": [
+   "Fighting"
+  ],
+  "Farigiraf": [
+   "Normal",
+   "Psychic"
+  ],
+  "Fearow": [
+   "Normal",
+   "Flying"
+  ],
+  "Feebas": [
+   "Water"
+  ],
+  "Feebas-Sevii": [
+   "Water",
+   "Ground"
+  ],
+  "Fennekin": [
+   "Fire"
+  ],
+  "Feraligatr": [
+   "Water"
+  ],
+  "Ferroseed": [
+   "Grass",
+   "Steel"
+  ],
+  "Ferrothorn": [
+   "Grass",
+   "Steel"
+  ],
+  "Fezandipiti": [
+   "Poison",
+   "Fairy"
+  ],
+  "Fidough": [
+   "Fairy"
+  ],
+  "Finizen": [
+   "Water"
+  ],
+  "Finneon": [
+   "Water"
+  ],
+  "Flabébé": [
+   "Fairy"
+  ],
+  "Flamigo": [
+   "Flying",
+   "Fighting"
+  ],
+  "Flapple-Mega": [
+   "Grass",
+   "Dragon"
+  ],
+  "Flareon": [
+   "Fire"
+  ],
+  "Fletchling": [
+   "Normal",
+   "Flying"
+  ],
+  "Flittle": [
+   "Psychic"
+  ],
+  "Floatzel": [
+   "Water"
+  ],
+  "Floette-Eternal": [
+   "Fairy"
+  ],
+  "Florges": [
+   "Fairy"
+  ],
+  "Flutter Mane": [
+   "Ghost",
+   "Fairy"
+  ],
+  "Flygon": [
+   "Ground",
+   "Dragon"
+  ],
+  "Fomantis": [
+   "Grass"
+  ],
+  "Foongus": [
+   "Grass",
+   "Poison"
+  ],
+  "Forretress": [
+   "Bug",
+   "Steel"
+  ],
+  "Frillish": [
+   "Water",
+   "Ghost"
+  ],
+  "Froakie": [
+   "Water"
+  ],
+  "Frogadier": [
+   "Water"
+  ],
+  "Froslass": [
+   "Ice",
+   "Ghost"
+  ],
+  "Frosmoth": [
+   "Ice",
+   "Bug"
+  ],
+  "Fuecoco": [
+   "Fire"
+  ],
+  "Furfrou": [
+   "Normal"
+  ],
+  "Furret": [
+   "Normal"
+  ],
+  "Gabite": [
+   "Dragon",
+   "Ground"
+  ],
+  "Gallade-Mega": [
+   "Psychic",
+   "Fighting"
+  ],
+  "Galvantula": [
+   "Bug",
+   "Electric"
+  ],
+  "Garbodor": [
+   "Poison"
+  ],
+  "Garbodor-Mega": [
+   "Poison"
+  ],
+  "Garchomp": [
+   "Dragon",
+   "Ground"
+  ],
+  "Garchomp-Mega": [
+   "Dragon",
+   "Ground"
+  ],
+  "Gardevoir": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Gardevoir-Mega": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Garganacl": [
+   "Rock"
+  ],
+  "Gastly": [
+   "Ghost",
+   "Poison"
+  ],
+  "Gastrodon": [
+   "Water",
+   "Ground"
+  ],
+  "Genesect": [
+   "Bug",
+   "Steel"
+  ],
+  "Genesect-Douse": [
+   "Bug",
+   "Steel"
+  ],
+  "Gengar": [
+   "Ghost",
+   "Poison"
+  ],
+  "Gengar-Mega": [
+   "Ghost",
+   "Poison"
+  ],
+  "Geodude": [
+   "Rock",
+   "Ground"
+  ],
+  "Geodude-A": [
+   "Rock",
+   "Electric"
+  ],
+  "Geodude-Alola": [
+   "Rock",
+   "Electric"
+  ],
+  "Gholdengo": [
+   "Ghost",
+   "Steel"
+  ],
+  "Gigalith": [
+   "Rock"
+  ],
+  "Gimmighoul": [
+   "Ghost"
+  ],
+  "Girafarig": [
+   "Normal",
+   "Psychic"
+  ],
+  "Giratina": [
+   "Ghost",
+   "Dragon"
+  ],
+  "Giratina-O": [
+   "Ghost",
+   "Dragon"
+  ],
+  "Glaceon": [
+   "Ice"
+  ],
+  "Glalie": [
+   "Ice"
+  ],
+  "Glalie-Mega": [
+   "Ice"
+  ],
+  "Glameow": [
+   "Normal"
+  ],
+  "Glastrier": [
+   "Ice"
+  ],
+  "Gligar": [
+   "Ground",
+   "Flying"
+  ],
+  "Glimmet": [
+   "Poison",
+   "Rock"
+  ],
+  "Glimmora": [
+   "Poison",
+   "Rock"
+  ],
+  "Gliscor": [
+   "Ground",
+   "Flying"
+  ],
+  "Golbat": [
+   "Poison",
+   "Flying"
+  ],
+  "Goldeen": [
+   "Water"
+  ],
+  "Golduck": [
+   "Water",
+   "Psychic"
+  ],
+  "Golem": [
+   "Rock",
+   "Ground"
+  ],
+  "Golett": [
+   "Ground",
+   "Ghost"
+  ],
+  "Golisopod": [
+   "Bug",
+   "Water"
+  ],
+  "Golurk": [
+   "Ground",
+   "Ghost"
+  ],
+  "Goodra": [
+   "Dragon"
+  ],
+  "Goodra-H": [
+   "Dragon",
+   "Steel"
+  ],
+  "Goodra-Hisui": [
+   "Dragon",
+   "Steel"
+  ],
+  "Gorebyss": [
+   "Water",
+   "Fairy"
+  ],
+  "Gossifleur": [
+   "Grass"
+  ],
+  "Gothita": [
+   "Psychic"
+  ],
+  "Gothitelle": [
+   "Psychic"
+  ],
+  "Gouging Fire": [
+   "Fire",
+   "Dragon"
+  ],
+  "Gourgeist-Su": [
+   "Ghost",
+   "Grass"
+  ],
+  "Granbull": [
+   "Fairy",
+   "Fighting"
+  ],
+  "Grapploct": [
+   "Fighting",
+   "Water"
+  ],
+  "Graveler": [
+   "Rock",
+   "Ground"
+  ],
+  "Graveler-Alola": [
+   "Rock",
+   "Electric"
+  ],
+  "Great Tusk": [
+   "Ground",
+   "Fighting"
+  ],
+  "Greavard": [
+   "Ghost"
+  ],
+  "Greedent": [
+   "Normal"
+  ],
+  "Greninja": [
+   "Water",
+   "Dark"
+  ],
+  "Greninja-Ash": [
+   "Water",
+   "Dark"
+  ],
+  "Grimer": [
+   "Poison"
+  ],
+  "Grimer-Alola": [
+   "Poison",
+   "Dark"
+  ],
+  "Grimmsnarl": [
+   "Dark",
+   "Fairy"
+  ],
+  "Grookey": [
+   "Grass"
+  ],
+  "Groudon": [
+   "Ground"
+  ],
+  "Groudon-P": [
+   "Ground",
+   "Fire"
+  ],
+  "Grovyle": [
+   "Grass"
+  ],
+  "Growlithe": [
+   "Fire"
+  ],
+  "Growlithe-Hisui": [
+   "Fire",
+   "Rock"
+  ],
+  "Grubbin": [
+   "Bug"
+  ],
+  "Grumpig": [
+   "Psychic"
+  ],
+  "Gulpin": [
+   "Poison"
+  ],
+  "Gumshoos": [
+   "Normal"
+  ],
+  "Guzzlord": [
+   "Dark",
+   "Dragon"
+  ],
+  "Gyarados": [
+   "Water",
+   "Flying"
+  ],
+  "Gyarados-Mega": [
+   "Water",
+   "Dark"
+  ],
+  "Hariyama": [
+   "Fighting"
+  ],
+  "Hatenna": [
+   "Psychic"
+  ],
+  "Hatterene": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Haunter": [
+   "Ghost",
+   "Poison"
+  ],
+  "Hawlucha": [
+   "Fighting",
+   "Flying"
+  ],
+  "Haxorus": [
+   "Dragon"
+  ],
+  "Heatmor": [
+   "Fire"
+  ],
+  "Heatran": [
+   "Fire",
+   "Steel"
+  ],
+  "Heliolisk": [
+   "Electric",
+   "Normal"
+  ],
+  "Helioptile": [
+   "Electric",
+   "Normal"
+  ],
+  "Heracross": [
+   "Bug",
+   "Fighting"
+  ],
+  "Heracross-Mega": [
+   "Bug",
+   "Fighting"
+  ],
+  "Hippopotas": [
+   "Ground"
+  ],
+  "Hippowdon": [
+   "Ground"
+  ],
+  "Hitmonchan": [
+   "Fighting"
+  ],
+  "Hitmonlee": [
+   "Fighting"
+  ],
+  "Hitmontop": [
+   "Fighting"
+  ],
+  "Ho-Oh": [
+   "Fire",
+   "Flying"
+  ],
+  "Honchkrow": [
+   "Dark",
+   "Flying"
+  ],
+  "Hoopa": [
+   "Psychic",
+   "Ghost"
+  ],
+  "Hoopa-U": [
+   "Psychic",
+   "Dark"
+  ],
+  "Hoothoot": [
+   "Normal",
+   "Flying"
+  ],
+  "Hoppip": [
+   "Grass",
+   "Flying"
+  ],
+  "Horsea": [
+   "Water"
+  ],
+  "Houndoom": [
+   "Dark",
+   "Fire"
+  ],
+  "Houndoom-Mega": [
+   "Dark",
+   "Fire"
+  ],
+  "Houndour": [
+   "Dark",
+   "Fire"
+  ],
+  "Houndstone": [
+   "Ghost"
+  ],
+  "Huntail": [
+   "Water",
+   "Dark"
+  ],
+  "Hydrapple": [
+   "Grass",
+   "Dragon"
+  ],
+  "Hydreigon": [
+   "Dark",
+   "Dragon"
+  ],
+  "Hypno": [
+   "Psychic"
+  ],
+  "Illumise": [
+   "Bug",
+   "Fairy"
+  ],
+  "Impidimp": [
+   "Dark",
+   "Fairy"
+  ],
+  "Incineroar": [
+   "Fire",
+   "Dark"
+  ],
+  "Indeedee": [
+   "Psychic",
+   "Normal"
+  ],
+  "Indeedee-F": [
+   "Psychic",
+   "Normal"
+  ],
+  "Indeedee-M": [
+   "Psychic",
+   "Normal"
+  ],
+  "Infernape": [
+   "Fire",
+   "Fighting"
+  ],
+  "Inkay": [
+   "Dark",
+   "Psychic"
+  ],
+  "Inteleon": [
+   "Water"
+  ],
+  "Iron Boulder": [
+   "Rock",
+   "Psychic"
+  ],
+  "Iron Bundle": [
+   "Water",
+   "Ice"
+  ],
+  "Iron Crown": [
+   "Steel",
+   "Psychic"
+  ],
+  "Iron Hands": [
+   "Fighting",
+   "Electric"
+  ],
+  "Iron Jugulis": [
+   "Dark",
+   "Flying"
+  ],
+  "Iron Leaves": [
+   "Grass",
+   "Psychic"
+  ],
+  "Iron Moth": [
+   "Fire",
+   "Poison"
+  ],
+  "Iron Thorns": [
+   "Rock",
+   "Electric"
+  ],
+  "Iron Treads": [
+   "Ground",
+   "Steel"
+  ],
+  "Iron Valiant": [
+   "Fairy",
+   "Fighting"
+  ],
+  "Ivysaur": [
+   "Grass",
+   "Poison"
+  ],
+  "Jellicent": [
+   "Water",
+   "Ghost"
+  ],
+  "Jigglypuff": [
+   "Normal",
+   "Fairy"
+  ],
+  "Jirachi": [
+   "Steel",
+   "Psychic"
+  ],
+  "Jolteon": [
+   "Electric"
+  ],
+  "Joltik": [
+   "Bug",
+   "Electric"
+  ],
+  "Jumpluff": [
+   "Grass",
+   "Flying"
+  ],
+  "Jynx": [
+   "Ice",
+   "Psychic"
+  ],
+  "Kabuto": [
+   "Rock",
+   "Water"
+  ],
+  "Kabutops": [
+   "Rock",
+   "Water"
+  ],
+  "Kangaskhan": [
+   "Normal"
+  ],
+  "Kangaskhan-Mega": [
+   "Normal"
+  ],
+  "Karrablast": [
+   "Bug"
+  ],
+  "Kartana": [
+   "Grass",
+   "Steel"
+  ],
+  "Kecleon": [
+   "Normal"
+  ],
+  "Keldeo": [
+   "Water",
+   "Fighting"
+  ],
+  "Kilowattrel": [
+   "Flying",
+   "Electric"
+  ],
+  "Kingambit": [
+   "Dark",
+   "Steel"
+  ],
+  "Kingdra": [
+   "Water",
+   "Dragon"
+  ],
+  "Kingler": [
+   "Water"
+  ],
+  "Kingler-Mega": [
+   "Water",
+   "Steel"
+  ],
+  "Kirlia": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Klawf": [
+   "Rock"
+  ],
+  "Kleavor": [
+   "Bug",
+   "Rock"
+  ],
+  "Klefki": [
+   "Steel",
+   "Fairy"
+  ],
+  "Klink": [
+   "Steel"
+  ],
+  "Klinklang": [
+   "Steel"
+  ],
+  "Koffing": [
+   "Poison"
+  ],
+  "Komala": [
+   "Normal"
+  ],
+  "Kommo-o": [
+   "Dragon",
+   "Fighting"
+  ],
+  "Koraidon": [
+   "Fighting",
+   "Dragon"
+  ],
+  "Krabby": [
+   "Water"
+  ],
+  "Kricketot": [
+   "Bug"
+  ],
+  "Kricketune": [
+   "Bug"
+  ],
+  "Krookodile": [
+   "Ground",
+   "Dark"
+  ],
+  "Kubfu": [
+   "Fighting"
+  ],
+  "Kyogre": [
+   "Water"
+  ],
+  "Kyogre-P": [
+   "Water"
+  ],
+  "Kyurem": [
+   "Dragon",
+   "Ice"
+  ],
+  "Kyurem-B": [
+   "Dragon",
+   "Ice"
+  ],
+  "Kyurem-W": [
+   "Dragon",
+   "Ice"
+  ],
+  "Lampent": [
+   "Ghost",
+   "Fire"
+  ],
+  "Landorus-I": [
+   "Ground",
+   "Flying"
+  ],
+  "Landorus-T": [
+   "Ground",
+   "Flying"
+  ],
+  "Lanturn": [
+   "Water",
+   "Electric"
+  ],
+  "Lapras": [
+   "Water",
+   "Dragon"
+  ],
+  "Lapras-Mega": [
+   "Water",
+   "Dragon"
+  ],
+  "Latias": [
+   "Dragon",
+   "Psychic"
+  ],
+  "Latias-Mega": [
+   "Dragon",
+   "Psychic"
+  ],
+  "Latios": [
+   "Dragon",
+   "Psychic"
+  ],
+  "Leafeon": [
+   "Grass"
+  ],
+  "Leavanny": [
+   "Bug",
+   "Grass"
+  ],
+  "Lechonk": [
+   "Normal"
+  ],
+  "Ledian": [
+   "Bug",
+   "Fighting"
+  ],
+  "Ledyba": [
+   "Bug",
+   "Flying"
+  ],
+  "Lickitung": [
+   "Normal"
+  ],
+  "Liepard": [
+   "Dark"
+  ],
+  "Lileep": [
+   "Rock",
+   "Grass"
+  ],
+  "Lilligant": [
+   "Grass"
+  ],
+  "Lilligant-H": [
+   "Grass",
+   "Fighting"
+  ],
+  "Lilligant-Hisui": [
+   "Grass",
+   "Fighting"
+  ],
+  "Lillipup": [
+   "Normal"
+  ],
+  "Litleo": [
+   "Fire",
+   "Normal"
+  ],
+  "Litten": [
+   "Fire"
+  ],
+  "Lokix": [
+   "Bug",
+   "Dark"
+  ],
+  "Lopunny": [
+   "Normal",
+   "Fighting"
+  ],
+  "Lopunny-Mega": [
+   "Normal",
+   "Fighting"
+  ],
+  "Lotad": [
+   "Water",
+   "Grass"
+  ],
+  "Loudred": [
+   "Normal"
+  ],
+  "Lucario": [
+   "Fighting",
+   "Steel"
+  ],
+  "Lucario-Mega": [
+   "Fighting",
+   "Steel"
+  ],
+  "Ludicolo": [
+   "Water",
+   "Grass"
+  ],
+  "Lugia": [
+   "Psychic",
+   "Flying"
+  ],
+  "Lumineon": [
+   "Water"
+  ],
+  "Lunala": [
+   "Psychic",
+   "Ghost"
+  ],
+  "Lunatone": [
+   "Rock",
+   "Psychic"
+  ],
+  "Lurantis": [
+   "Grass",
+   "Fighting"
+  ],
+  "Luvdisc": [
+   "Water",
+   "Fairy"
+  ],
+  "Lycanroc": [
+   "Rock"
+  ],
+  "Lycanroc-D": [
+   "Rock"
+  ],
+  "Mabosstiff": [
+   "Dark"
+  ],
+  "Machamp": [
+   "Fighting"
+  ],
+  "Machamp-Mega": [
+   "Fighting"
+  ],
+  "Machop": [
+   "Fighting"
+  ],
+  "Magby": [
+   "Fire"
+  ],
+  "Magcargo": [
+   "Fire",
+   "Rock"
+  ],
+  "Magearna": [
+   "Steel",
+   "Fairy"
+  ],
+  "Magearna-O": [
+   "Steel",
+   "Fairy"
+  ],
+  "Magearna-Original": [
+   "Steel",
+   "Fairy"
+  ],
+  "Magikarp": [
+   "Water"
+  ],
+  "Magmar": [
+   "Fire"
+  ],
+  "Magmortar": [
+   "Fire"
+  ],
+  "Magnemite": [
+   "Electric",
+   "Steel"
+  ],
+  "Magneton": [
+   "Electric",
+   "Steel"
+  ],
+  "Magnezone": [
+   "Electric",
+   "Steel"
+  ],
+  "Makuhita": [
+   "Fighting"
+  ],
+  "Mamoswine": [
+   "Ice",
+   "Ground"
+  ],
+  "Manaphy": [
+   "Water"
+  ],
+  "Mandibuzz": [
+   "Dark",
+   "Flying"
+  ],
+  "Manectric": [
+   "Electric"
+  ],
+  "Manectric-Mega": [
+   "Electric"
+  ],
+  "Mankey": [
+   "Fighting"
+  ],
+  "Mantine": [
+   "Water",
+   "Flying"
+  ],
+  "Mantine-S": [
+   "Electric",
+   "Poison"
+  ],
+  "Mantine-Sevii": [
+   "Electric",
+   "Poison"
+  ],
+  "Mantyke": [
+   "Water",
+   "Flying"
+  ],
+  "Mantyke-Sevii": [
+   "Electric",
+   "Poison"
+  ],
+  "Maractus": [
+   "Grass"
+  ],
+  "Mareanie": [
+   "Poison",
+   "Water"
+  ],
+  "Mareep": [
+   "Electric"
+  ],
+  "Marill": [
+   "Water",
+   "Fairy"
+  ],
+  "Marowak": [
+   "Ground"
+  ],
+  "Marowak-A": [
+   "Fire",
+   "Ghost"
+  ],
+  "Marowak-Alola": [
+   "Fire",
+   "Ghost"
+  ],
+  "Marshadow": [
+   "Fighting",
+   "Ghost"
+  ],
+  "Maschiff": [
+   "Dark"
+  ],
+  "Masquerain": [
+   "Bug",
+   "Water"
+  ],
+  "Maushold": [
+   "Normal"
+  ],
+  "Mawile": [
+   "Steel",
+   "Fairy"
+  ],
+  "Mawile-Mega": [
+   "Steel",
+   "Fairy"
+  ],
+  "Medicham": [
+   "Fighting",
+   "Psychic"
+  ],
+  "Medicham-Mega": [
+   "Fighting",
+   "Psychic"
+  ],
+  "Meditite": [
+   "Fighting",
+   "Psychic"
+  ],
+  "Meganium": [
+   "Grass",
+   "Fairy"
+  ],
+  "Melmetal": [
+   "Steel"
+  ],
+  "Meloetta": [
+   "Normal",
+   "Psychic"
+  ],
+  "Meloetta-Pirouette": [
+   "Normal",
+   "Fighting"
+  ],
+  "Meltan": [
+   "Steel"
+  ],
+  "Meowscarada": [
+   "Grass",
+   "Dark"
+  ],
+  "Meowth": [
+   "Normal"
+  ],
+  "Meowth-Alola": [
+   "Dark"
+  ],
+  "Meowth-Galar": [
+   "Steel"
+  ],
+  "Mesprit": [
+   "Psychic"
+  ],
+  "Metagross": [
+   "Steel",
+   "Psychic"
+  ],
+  "Metagross-Mega": [
+   "Steel",
+   "Psychic"
+  ],
+  "Mew": [
+   "Psychic"
+  ],
+  "Mewtwo": [
+   "Psychic"
+  ],
+  "Mewtwo-MegaX": [
+   "Psychic",
+   "Fighting"
+  ],
+  "Mewtwo-MegaY": [
+   "Psychic"
+  ],
+  "Mienfoo": [
+   "Fighting"
+  ],
+  "Mienshao": [
+   "Fighting"
+  ],
+  "Mightyena": [
+   "Dark"
+  ],
+  "Milcery": [
+   "Fairy"
+  ],
+  "Milotic": [
+   "Water"
+  ],
+  "Milotic-S": [
+   "Fairy",
+   "Ground"
+  ],
+  "Milotic-Sevii": [
+   "Fairy",
+   "Ground"
+  ],
+  "Miltank": [
+   "Normal"
+  ],
+  "Mime Jr.": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Mimikyu": [
+   "Ghost",
+   "Fairy"
+  ],
+  "Minccino": [
+   "Normal"
+  ],
+  "Minior": [
+   "Rock",
+   "Flying"
+  ],
+  "Minun": [
+   "Electric"
+  ],
+  "Miraidon": [
+   "Electric",
+   "Dragon"
+  ],
+  "Misdreavus": [
+   "Ghost"
+  ],
+  "Mismagius": [
+   "Ghost",
+   "Fairy"
+  ],
+  "Moltres": [
+   "Fire",
+   "Flying"
+  ],
+  "Moltres-G": [
+   "Dark",
+   "Flying"
+  ],
+  "Moltres-Galar": [
+   "Dark",
+   "Flying"
+  ],
+  "Morelull": [
+   "Grass",
+   "Fairy"
+  ],
+  "Morgrem": [
+   "Dark",
+   "Fairy"
+  ],
+  "Morpeko": [
+   "Electric",
+   "Dark"
+  ],
+  "Mr. Mime": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Mr. Mime-G": [
+   "Ice",
+   "Psychic"
+  ],
+  "Mr. Mime-Galar": [
+   "Ice",
+   "Psychic"
+  ],
+  "Mr. Rime": [
+   "Ice",
+   "Psychic"
+  ],
+  "Mudbray": [
+   "Ground"
+  ],
+  "Mudkip": [
+   "Water"
+  ],
+  "Muk": [
+   "Poison"
+  ],
+  "Muk-A": [
+   "Poison",
+   "Dark"
+  ],
+  "Muk-Alola": [
+   "Poison",
+   "Dark"
+  ],
+  "Munchlax": [
+   "Normal"
+  ],
+  "Munkidori": [
+   "Poison",
+   "Psychic"
+  ],
+  "Munna": [
+   "Psychic"
+  ],
+  "Murkrow": [
+   "Dark",
+   "Flying"
+  ],
+  "Nacli": [
+   "Rock"
+  ],
+  "Naganadel": [
+   "Poison",
+   "Dragon"
+  ],
+  "Natu": [
+   "Psychic",
+   "Flying"
+  ],
+  "Necrozma": [
+   "Psychic"
+  ],
+  "Necrozma-DM": [
+   "Psychic",
+   "Steel"
+  ],
+  "Necrozma-DW": [
+   "Psychic",
+   "Ghost"
+  ],
+  "Necrozma-Ultra": [
+   "Psychic",
+   "Dragon"
+  ],
+  "Nickit": [
+   "Dark"
+  ],
+  "Nidoking": [
+   "Poison",
+   "Ground"
+  ],
+  "Nidoqueen": [
+   "Poison",
+   "Ground"
+  ],
+  "Nidoran-F": [
+   "Poison"
+  ],
+  "Nidoran-M": [
+   "Poison"
+  ],
+  "Nihilego": [
+   "Rock",
+   "Poison"
+  ],
+  "Nincada": [
+   "Bug",
+   "Ground"
+  ],
+  "Ninetales": [
+   "Fire"
+  ],
+  "Ninetales-A": [
+   "Ice",
+   "Fairy"
+  ],
+  "Ninetales-Alola": [
+   "Ice",
+   "Fairy"
+  ],
+  "Noctowl": [
+   "Normal",
+   "Flying"
+  ],
+  "Noibat": [
+   "Flying",
+   "Dragon"
+  ],
+  "Noibat-Sevii": [
+   "Rock",
+   "Ghost"
+  ],
+  "Noivern": [
+   "Flying",
+   "Dragon"
+  ],
+  "Nosepass": [
+   "Rock"
+  ],
+  "Numel": [
+   "Fire",
+   "Ground"
+  ],
+  "Nymble": [
+   "Bug"
+  ],
+  "Nymble-Sevii": [
+   "Bug",
+   "Dragon"
+  ],
+  "Obstagoon": [
+   "Dark",
+   "Normal"
+  ],
+  "Octillery": [
+   "Water"
+  ],
+  "Oddish": [
+   "Grass",
+   "Poison"
+  ],
+  "Ogerpon": [
+   "Grass"
+  ],
+  "Ogerpon-C": [
+   "Grass",
+   "Rock"
+  ],
+  "Ogerpon-Cornerstone": [
+   "Grass",
+   "Rock"
+  ],
+  "Ogerpon-H": [
+   "Grass",
+   "Fire"
+  ],
+  "Ogerpon-Hearthflame": [
+   "Grass",
+   "Fire"
+  ],
+  "Ogerpon-W": [
+   "Grass",
+   "Water"
+  ],
+  "Ogerpon-Wellspring": [
+   "Grass",
+   "Water"
+  ],
+  "Oinkologne-F": [
+   "Normal"
+  ],
+  "Okidogi": [
+   "Poison",
+   "Fighting"
+  ],
+  "Omanyte": [
+   "Rock",
+   "Water"
+  ],
+  "Omastar": [
+   "Rock",
+   "Water"
+  ],
+  "Onix": [
+   "Rock",
+   "Ground"
+  ],
+  "Oranguru": [
+   "Normal",
+   "Psychic"
+  ],
+  "Oricorio": [
+   "Fire",
+   "Flying"
+  ],
+  "Oricorio-Sensu": [
+   "Ghost",
+   "Flying"
+  ],
+  "Orthworm": [
+   "Steel"
+  ],
+  "Oshawott": [
+   "Water"
+  ],
+  "Overqwil": [
+   "Dark",
+   "Poison"
+  ],
+  "Pachirisu": [
+   "Electric"
+  ],
+  "Palafin": [
+   "Water"
+  ],
+  "Palafin-Hero": [
+   "Water"
+  ],
+  "Palkia": [
+   "Water",
+   "Dragon"
+  ],
+  "Palkia-O": [
+   "Water",
+   "Dragon"
+  ],
+  "Palkia-Origin": [
+   "Water",
+   "Dragon"
+  ],
+  "Palossand": [
+   "Ghost",
+   "Ground"
+  ],
+  "Pancham": [
+   "Fighting"
+  ],
+  "Pangoro": [
+   "Fighting",
+   "Dark"
+  ],
+  "Panpour": [
+   "Water"
+  ],
+  "Pansage": [
+   "Grass"
+  ],
+  "Pansear": [
+   "Fire"
+  ],
+  "Paras": [
+   "Bug",
+   "Grass"
+  ],
+  "Parasect": [
+   "Bug",
+   "Grass"
+  ],
+  "Passimian": [
+   "Fighting"
+  ],
+  "Patrat": [
+   "Normal"
+  ],
+  "Pawmi": [
+   "Electric"
+  ],
+  "Pawmot": [
+   "Electric",
+   "Fighting"
+  ],
+  "Pawniard": [
+   "Dark",
+   "Steel"
+  ],
+  "Pecharunt": [
+   "Poison",
+   "Ghost"
+  ],
+  "Pelipper": [
+   "Water",
+   "Flying"
+  ],
+  "Perrserker": [
+   "Steel"
+  ],
+  "Persian": [
+   "Normal"
+  ],
+  "Persian-A": [
+   "Dark"
+  ],
+  "Persian-Alola": [
+   "Dark"
+  ],
+  "Petilil": [
+   "Grass"
+  ],
+  "Phanpy": [
+   "Ground"
+  ],
+  "Phantump": [
+   "Ghost",
+   "Grass"
+  ],
+  "Pheromosa": [
+   "Bug",
+   "Fighting"
+  ],
+  "Phione": [
+   "Water"
+  ],
+  "Pidgeot-Mega": [
+   "Normal",
+   "Flying"
+  ],
+  "Pidgey": [
+   "Normal",
+   "Flying"
+  ],
+  "Pidove": [
+   "Normal",
+   "Flying"
+  ],
+  "Pikachu": [
+   "Electric"
+  ],
+  "Pikachu-Belle": [
+   "Electric",
+   "Ice"
+  ],
+  "Pikachu-Flying": [
+   "Electric",
+   "Flying"
+  ],
+  "Pikachu-Libre": [
+   "Electric",
+   "Fighting"
+  ],
+  "Pikachu-PhD": [
+   "Electric",
+   "Psychic"
+  ],
+  "Pikachu-Popstar": [
+   "Electric",
+   "Fairy"
+  ],
+  "Pikachu-Rockstar": [
+   "Electric",
+   "Steel"
+  ],
+  "Pikachu-Surfing": [
+   "Electric",
+   "Water"
+  ],
+  "Pikipek": [
+   "Normal",
+   "Flying"
+  ],
+  "Piloswine": [
+   "Ice",
+   "Ground"
+  ],
+  "Pincurchin": [
+   "Electric",
+   "Water"
+  ],
+  "Pineco": [
+   "Bug"
+  ],
+  "Pinsir": [
+   "Bug"
+  ],
+  "Pinsir-Mega": [
+   "Bug",
+   "Flying"
+  ],
+  "Piplup": [
+   "Water"
+  ],
+  "Plusle": [
+   "Electric"
+  ],
+  "Poipole": [
+   "Poison"
+  ],
+  "Politoed": [
+   "Water"
+  ],
+  "Poliwag": [
+   "Water"
+  ],
+  "Poliwhirl": [
+   "Water"
+  ],
+  "Poliwrath": [
+   "Water",
+   "Fighting"
+  ],
+  "Poltchageist": [
+   "Ghost",
+   "Grass"
+  ],
+  "Polteageist": [
+   "Ghost"
+  ],
+  "Ponyta": [
+   "Fire"
+  ],
+  "Ponyta-Galar": [
+   "Fire",
+   "Fairy"
+  ],
+  "Poochyena": [
+   "Dark"
+  ],
+  "Popplio": [
+   "Water"
+  ],
+  "Porygon": [
+   "Normal"
+  ],
+  "Porygon2": [
+   "Normal"
+  ],
+  "Primarina": [
+   "Water",
+   "Fairy"
+  ],
+  "Primeape": [
+   "Fighting"
+  ],
+  "Probopass": [
+   "Rock",
+   "Steel"
+  ],
+  "Psyduck": [
+   "Water"
+  ],
+  "Pumpkaboo": [
+   "Ghost",
+   "Grass"
+  ],
+  "Pumpkaboo-La": [
+   "Ghost",
+   "Grass"
+  ],
+  "Pumpkaboo-Sm": [
+   "Ghost",
+   "Grass"
+  ],
+  "Pumpkaboo-Su": [
+   "Ghost",
+   "Grass"
+  ],
+  "Purrloin": [
+   "Dark"
+  ],
+  "Pyroar": [
+   "Fire",
+   "Normal"
+  ],
+  "Pyukumuku": [
+   "Water"
+  ],
+  "Quaquaval": [
+   "Water",
+   "Fighting"
+  ],
+  "Quaxly": [
+   "Water"
+  ],
+  "Qwilfish": [
+   "Water",
+   "Poison"
+  ],
+  "Qwilfish-H": [
+   "Dark",
+   "Poison"
+  ],
+  "Qwilfish-Hisui": [
+   "Dark",
+   "Poison"
+  ],
+  "Raging Bolt": [
+   "Electric",
+   "Dragon"
+  ],
+  "Raichu-A": [
+   "Electric",
+   "Psychic"
+  ],
+  "Raikou": [
+   "Electric"
+  ],
+  "Ralts": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Rampardos": [
+   "Rock"
+  ],
+  "Rapidash": [
+   "Fire"
+  ],
+  "Rapidash-Galar": [
+   "Fire",
+   "Fairy"
+  ],
+  "Raticate": [
+   "Normal"
+  ],
+  "Raticate-Alola": [
+   "Dark",
+   "Normal"
+  ],
+  "Rattata": [
+   "Normal"
+  ],
+  "Rattata-Alola": [
+   "Dark",
+   "Normal"
+  ],
+  "Rayquaza": [
+   "Dragon",
+   "Flying"
+  ],
+  "Rayquaza-Mega": [
+   "Dragon",
+   "Flying"
+  ],
+  "Regice": [
+   "Ice"
+  ],
+  "Regidrago": [
+   "Dragon"
+  ],
+  "Regieleki": [
+   "Electric"
+  ],
+  "Regigigas": [
+   "Normal"
+  ],
+  "Regirock": [
+   "Rock"
+  ],
+  "Registeel": [
+   "Steel"
+  ],
+  "Relicanth": [
+   "Water",
+   "Rock"
+  ],
+  "Rellor": [
+   "Bug"
+  ],
+  "Remoraid": [
+   "Water"
+  ],
+  "Reshiram": [
+   "Dragon",
+   "Fire"
+  ],
+  "Reuniclus": [
+   "Psychic"
+  ],
+  "Revavroom": [
+   "Poison",
+   "Steel"
+  ],
+  "Rhyhorn": [
+   "Ground",
+   "Rock"
+  ],
+  "Rhyperior": [
+   "Ground",
+   "Rock"
+  ],
+  "Ribombee": [
+   "Bug",
+   "Fairy"
+  ],
+  "Rillaboom": [
+   "Grass"
+  ],
+  "Riolu": [
+   "Fighting"
+  ],
+  "Roaring Moon": [
+   "Dragon",
+   "Dark"
+  ],
+  "Rockruff": [
+   "Rock"
+  ],
+  "Roggenrola": [
+   "Rock"
+  ],
+  "Rolycoly": [
+   "Rock"
+  ],
+  "Rookidee": [
+   "Flying"
+  ],
+  "Roselia": [
+   "Grass",
+   "Poison"
+  ],
+  "Roserade": [
+   "Grass",
+   "Poison"
+  ],
+  "Rotom": [
+   "Electric",
+   "Ghost"
+  ],
+  "Rotom-F": [
+   "Electric",
+   "Ice"
+  ],
+  "Rotom-Fan": [
+   "Electric",
+   "Flying"
+  ],
+  "Rotom-Frost": [
+   "Electric",
+   "Ice"
+  ],
+  "Rotom-H": [
+   "Electric",
+   "Fire"
+  ],
+  "Rotom-Heat": [
+   "Electric",
+   "Fire"
+  ],
+  "Rotom-Mow": [
+   "Electric",
+   "Grass"
+  ],
+  "Rotom-W": [
+   "Electric",
+   "Water"
+  ],
+  "Rotom-Wash": [
+   "Electric",
+   "Water"
+  ],
+  "Rowlet": [
+   "Grass",
+   "Flying"
+  ],
+  "Rufflet": [
+   "Normal",
+   "Flying"
+  ],
+  "Runerigus": [
+   "Ground",
+   "Ghost"
+  ],
+  "Sableye": [
+   "Dark",
+   "Ghost"
+  ],
+  "Sableye-Mega": [
+   "Dark",
+   "Ghost"
+  ],
+  "Salamence": [
+   "Dragon",
+   "Flying"
+  ],
+  "Salamence-Mega": [
+   "Dragon",
+   "Flying"
+  ],
+  "Salandit": [
+   "Poison",
+   "Fire"
+  ],
+  "Salazzle": [
+   "Poison",
+   "Fire"
+  ],
+  "Samurott": [
+   "Water",
+   "Steel"
+  ],
+  "Samurott-H": [
+   "Water",
+   "Dark"
+  ],
+  "Samurott-Hisui": [
+   "Water",
+   "Dark"
+  ],
+  "Sandaconda": [
+   "Ground"
+  ],
+  "Sandaconda-Mega": [
+   "Ground",
+   "Flying"
+  ],
+  "Sandile": [
+   "Ground",
+   "Dark"
+  ],
+  "Sandshrew": [
+   "Ground"
+  ],
+  "Sandshrew-Alola": [
+   "Ice",
+   "Steel"
+  ],
+  "Sandslash": [
+   "Ground"
+  ],
+  "Sandslash-A": [
+   "Ice",
+   "Steel"
+  ],
+  "Sandslash-Alola": [
+   "Ice",
+   "Steel"
+  ],
+  "Sandy Shocks": [
+   "Electric",
+   "Ground"
+  ],
+  "Sandygast": [
+   "Ghost",
+   "Ground"
+  ],
+  "Sawk": [
+   "Fighting"
+  ],
+  "Scatterbug": [
+   "Bug"
+  ],
+  "Sceptile": [
+   "Grass",
+   "Dragon"
+  ],
+  "Sceptile-Mega": [
+   "Grass",
+   "Dragon"
+  ],
+  "Scizor": [
+   "Bug",
+   "Steel"
+  ],
+  "Scizor-Mega": [
+   "Bug",
+   "Steel"
+  ],
+  "Scorbunny": [
+   "Fire"
+  ],
+  "Scrafty": [
+   "Dark",
+   "Fighting"
+  ],
+  "Scraggy": [
+   "Dark",
+   "Fighting"
+  ],
+  "Scream Tail": [
+   "Fairy",
+   "Psychic"
+  ],
+  "Scyther": [
+   "Bug",
+   "Flying"
+  ],
+  "Seadra": [
+   "Water"
+  ],
+  "Seaking": [
+   "Water"
+  ],
+  "Sealeo": [
+   "Ice",
+   "Water"
+  ],
+  "Seedot": [
+   "Grass"
+  ],
+  "Seel": [
+   "Water"
+  ],
+  "Seismitoad": [
+   "Water",
+   "Ground"
+  ],
+  "Sentret": [
+   "Normal"
+  ],
+  "Serperior": [
+   "Grass"
+  ],
+  "Seviper": [
+   "Poison"
+  ],
+  "Sewaddle": [
+   "Bug",
+   "Grass"
+  ],
+  "Sharpedo": [
+   "Water",
+   "Dark"
+  ],
+  "Sharpedo-Mega": [
+   "Water",
+   "Dark"
+  ],
+  "Shaymin": [
+   "Grass"
+  ],
+  "Shaymin-S": [
+   "Grass",
+   "Flying"
+  ],
+  "Shaymin-Sky": [
+   "Grass",
+   "Flying"
+  ],
+  "Shedinja": [
+   "Bug",
+   "Ghost"
+  ],
+  "Shellder": [
+   "Water"
+  ],
+  "Shellos": [
+   "Water"
+  ],
+  "Shellos-East": [
+   "Water"
+  ],
+  "Shelmet": [
+   "Bug"
+  ],
+  "Shieldon": [
+   "Rock",
+   "Steel"
+  ],
+  "Shiftry": [
+   "Grass",
+   "Dark"
+  ],
+  "Shinx": [
+   "Electric"
+  ],
+  "Shroodle": [
+   "Poison",
+   "Normal"
+  ],
+  "Shroomish": [
+   "Grass"
+  ],
+  "Shuckle": [
+   "Bug",
+   "Rock"
+  ],
+  "Shuppet": [
+   "Ghost"
+  ],
+  "Sigilyph": [
+   "Psychic",
+   "Flying"
+  ],
+  "Silicobra": [
+   "Ground"
+  ],
+  "Silvally": [
+   "Normal"
+  ],
+  "Silvally-Fairy": [
+   "Fairy"
+  ],
+  "Simipour": [
+   "Water"
+  ],
+  "Simisage": [
+   "Grass"
+  ],
+  "Simisear": [
+   "Fire"
+  ],
+  "Sinistcha": [
+   "Ghost",
+   "Grass"
+  ],
+  "Sinistea": [
+   "Ghost"
+  ],
+  "Sirfetch'd": [
+   "Fighting"
+  ],
+  "Sizzlipede": [
+   "Fire",
+   "Bug"
+  ],
+  "Skarmory": [
+   "Steel",
+   "Flying"
+  ],
+  "Skeledirge": [
+   "Fire",
+   "Ghost"
+  ],
+  "Skiddo": [
+   "Grass"
+  ],
+  "Skitty": [
+   "Normal"
+  ],
+  "Skorupi": [
+   "Poison",
+   "Bug"
+  ],
+  "Skrelp": [
+   "Poison",
+   "Water"
+  ],
+  "Skuntank": [
+   "Poison",
+   "Dark"
+  ],
+  "Skwovet": [
+   "Normal"
+  ],
+  "Slaking": [
+   "Normal"
+  ],
+  "Slakoth": [
+   "Normal"
+  ],
+  "Sliggoo-Hisui": [
+   "Dragon",
+   "Steel"
+  ],
+  "Slither Wing": [
+   "Bug",
+   "Fighting"
+  ],
+  "Slowbro": [
+   "Water",
+   "Psychic"
+  ],
+  "Slowbro-G": [
+   "Poison",
+   "Psychic"
+  ],
+  "Slowbro-Galar": [
+   "Poison",
+   "Psychic"
+  ],
+  "Slowbro-Mega": [
+   "Water",
+   "Psychic"
+  ],
+  "Slowking": [
+   "Water",
+   "Psychic"
+  ],
+  "Slowpoke": [
+   "Water",
+   "Psychic"
+  ],
+  "Slowpoke-Galar": [
+   "Psychic"
+  ],
+  "Slugma": [
+   "Fire"
+  ],
+  "Slurpuff": [
+   "Fairy"
+  ],
+  "Smeargle": [
+   "Normal"
+  ],
+  "Smoliv": [
+   "Grass",
+   "Normal"
+  ],
+  "Smoochum": [
+   "Ice",
+   "Psychic"
+  ],
+  "Sneasel": [
+   "Dark",
+   "Ice"
+  ],
+  "Sneasel-H": [
+   "Poison",
+   "Fighting"
+  ],
+  "Sneasel-Hisui": [
+   "Poison",
+   "Fighting"
+  ],
+  "Sneasler": [
+   "Poison",
+   "Fighting"
+  ],
+  "Snivy": [
+   "Grass"
+  ],
+  "Snom": [
+   "Ice",
+   "Bug"
+  ],
+  "Snorlax": [
+   "Normal"
+  ],
+  "Snorlax-Mega": [
+   "Normal",
+   "Grass"
+  ],
+  "Snorunt": [
+   "Ice"
+  ],
+  "Snover": [
+   "Grass",
+   "Ice"
+  ],
+  "Snubbull": [
+   "Fairy"
+  ],
+  "Sobble": [
+   "Water"
+  ],
+  "Solgaleo": [
+   "Psychic",
+   "Steel"
+  ],
+  "Solosis": [
+   "Psychic"
+  ],
+  "Solrock": [
+   "Rock",
+   "Psychic"
+  ],
+  "Spearow": [
+   "Normal",
+   "Flying"
+  ],
+  "Spectrier": [
+   "Ghost"
+  ],
+  "Spheal": [
+   "Ice",
+   "Water"
+  ],
+  "Spinarak": [
+   "Bug",
+   "Poison"
+  ],
+  "Spinda": [
+   "Normal"
+  ],
+  "Spiritomb": [
+   "Ghost",
+   "Dark"
+  ],
+  "Spoink": [
+   "Psychic"
+  ],
+  "Sprigatito": [
+   "Grass"
+  ],
+  "Spritzee": [
+   "Fairy"
+  ],
+  "Squawkabilly-G": [
+   "Normal",
+   "Flying"
+  ],
+  "Squawkabilly-W": [
+   "Normal",
+   "Flying"
+  ],
+  "Squirtle": [
+   "Water"
+  ],
+  "Stakataka": [
+   "Rock",
+   "Steel"
+  ],
+  "Stantler": [
+   "Normal"
+  ],
+  "Staraptor": [
+   "Normal",
+   "Flying"
+  ],
+  "Staravia": [
+   "Normal",
+   "Flying"
+  ],
+  "Starly": [
+   "Normal",
+   "Flying"
+  ],
+  "Starmie": [
+   "Water",
+   "Psychic"
+  ],
+  "Staryu": [
+   "Water"
+  ],
+  "Steelix": [
+   "Steel",
+   "Ground"
+  ],
+  "Stonjourner": [
+   "Rock"
+  ],
+  "Stufful": [
+   "Normal",
+   "Fighting"
+  ],
+  "Stunfisk": [
+   "Ground",
+   "Electric"
+  ],
+  "Stunfisk-Galar": [
+   "Ground",
+   "Steel"
+  ],
+  "Stunky": [
+   "Poison",
+   "Dark"
+  ],
+  "Suicune": [
+   "Water"
+  ],
+  "Sunflora": [
+   "Grass"
+  ],
+  "Sunkern": [
+   "Grass"
+  ],
+  "Surskit": [
+   "Bug",
+   "Water"
+  ],
+  "Swablu": [
+   "Normal",
+   "Flying"
+  ],
+  "Swadloon": [
+   "Bug",
+   "Grass"
+  ],
+  "Swalot": [
+   "Poison"
+  ],
+  "Swampert": [
+   "Water",
+   "Ground"
+  ],
+  "Swampert-Mega": [
+   "Water",
+   "Ground"
+  ],
+  "Swanna": [
+   "Water",
+   "Flying"
+  ],
+  "Swellow": [
+   "Normal",
+   "Flying"
+  ],
+  "Swinub": [
+   "Ice",
+   "Ground"
+  ],
+  "Swirlix": [
+   "Fairy"
+  ],
+  "Swoobat": [
+   "Psychic",
+   "Flying"
+  ],
+  "Sylveon": [
+   "Fairy"
+  ],
+  "Tadbulb": [
+   "Electric"
+  ],
+  "Taillow": [
+   "Normal",
+   "Flying"
+  ],
+  "Talonflame": [
+   "Fire",
+   "Flying"
+  ],
+  "Tandemaus": [
+   "Normal"
+  ],
+  "Tangela": [
+   "Grass"
+  ],
+  "Tangrowth": [
+   "Grass"
+  ],
+  "Tapu Bulu": [
+   "Grass",
+   "Fairy"
+  ],
+  "Tapu Fini": [
+   "Water",
+   "Fairy"
+  ],
+  "Tapu Koko": [
+   "Electric",
+   "Fairy"
+  ],
+  "Tapu Lele": [
+   "Psychic",
+   "Fairy"
+  ],
+  "Tarountula": [
+   "Bug"
+  ],
+  "Tatsugiri": [
+   "Dragon",
+   "Water"
+  ],
+  "Tauros": [
+   "Normal"
+  ],
+  "Tauros-Aqua": [
+   "Water",
+   "Fighting"
+  ],
+  "Tauros-Blaze": [
+   "Fire",
+   "Fighting"
+  ],
+  "Tauros-Combat": [
+   "Fighting"
+  ],
+  "Teddiursa": [
+   "Normal"
+  ],
+  "Teddiursa-Sevii": [
+   "Ghost"
+  ],
+  "Tentacool": [
+   "Water",
+   "Poison"
+  ],
+  "Tentacruel": [
+   "Water",
+   "Poison"
+  ],
+  "Tepig": [
+   "Fire"
+  ],
+  "Terapagos": [
+   "Normal"
+  ],
+  "Terrakion": [
+   "Rock",
+   "Fighting"
+  ],
+  "Throh": [
+   "Fighting"
+  ],
+  "Thundurus-I": [
+   "Electric",
+   "Flying"
+  ],
+  "Thundurus-T": [
+   "Electric",
+   "Flying"
+  ],
+  "Thwackey": [
+   "Grass"
+  ],
+  "Timburr": [
+   "Fighting"
+  ],
+  "Ting-Lu": [
+   "Dark",
+   "Ground"
+  ],
+  "Tinkatink": [
+   "Fairy",
+   "Steel"
+  ],
+  "Tinkaton": [
+   "Fairy",
+   "Steel"
+  ],
+  "Tinkatuff": [
+   "Fairy",
+   "Steel"
+  ],
+  "Tirtouga": [
+   "Water",
+   "Rock"
+  ],
+  "Toedscool": [
+   "Ground",
+   "Grass"
+  ],
+  "Togedemaru": [
+   "Electric",
+   "Steel"
+  ],
+  "Togekiss": [
+   "Fairy",
+   "Flying"
+  ],
+  "Togepi": [
+   "Fairy"
+  ],
+  "Togetic": [
+   "Fairy",
+   "Flying"
+  ],
+  "Torchic": [
+   "Fire"
+  ],
+  "Torkoal": [
+   "Fire"
+  ],
+  "Tornadus-I": [
+   "Flying"
+  ],
+  "Tornadus-T": [
+   "Flying"
+  ],
+  "Torterra": [
+   "Grass",
+   "Ground"
+  ],
+  "Totodile": [
+   "Water"
+  ],
+  "Toxapex": [
+   "Poison",
+   "Water"
+  ],
+  "Toxel": [
+   "Electric",
+   "Poison"
+  ],
+  "Toxicroak": [
+   "Poison",
+   "Fighting"
+  ],
+  "Toxtricity": [
+   "Electric",
+   "Poison"
+  ],
+  "Toxtricity-Mega": [
+   "Electric",
+   "Poison"
+  ],
+  "Trapinch": [
+   "Ground"
+  ],
+  "Treecko": [
+   "Grass"
+  ],
+  "Tropius": [
+   "Grass",
+   "Dragon"
+  ],
+  "Trubbish": [
+   "Poison"
+  ],
+  "Trumbeak": [
+   "Normal",
+   "Flying"
+  ],
+  "Tsareena": [
+   "Grass"
+  ],
+  "Turtonator": [
+   "Fire",
+   "Dragon"
+  ],
+  "Turtwig": [
+   "Grass"
+  ],
+  "Tympole": [
+   "Water"
+  ],
+  "Tynamo": [
+   "Electric"
+  ],
+  "Type: Null": [
+   "Normal"
+  ],
+  "Typhlosion": [
+   "Fire"
+  ],
+  "Typhlosion-Hisui": [
+   "Fire",
+   "Ghost"
+  ],
+  "Tyranitar": [
+   "Rock",
+   "Dark"
+  ],
+  "Tyrantrum": [
+   "Rock",
+   "Dragon"
+  ],
+  "Tyrogue": [
+   "Fighting"
+  ],
+  "Tyrunt": [
+   "Rock",
+   "Dragon"
+  ],
+  "Unown": [
+   "Psychic"
+  ],
+  "Ursaluna": [
+   "Normal",
+   "Ground"
+  ],
+  "Ursaluna-BM": [
+   "Normal",
+   "Ground"
+  ],
+  "Ursaring": [
+   "Normal"
+  ],
+  "Ursaring-S": [
+   "Ghost",
+   "Fighting"
+  ],
+  "Urshifu-R": [
+   "Fighting",
+   "Water"
+  ],
+  "Urshifu-Rapid": [
+   "Fighting",
+   "Water"
+  ],
+  "Urshifu-S": [
+   "Fighting",
+   "Dark"
+  ],
+  "Urshifu-Single": [
+   "Fighting",
+   "Dark"
+  ],
+  "Uxie": [
+   "Psychic"
+  ],
+  "Vanillite": [
+   "Ice"
+  ],
+  "Vanilluxe": [
+   "Ice"
+  ],
+  "Vaporeon": [
+   "Water"
+  ],
+  "Varoom": [
+   "Poison",
+   "Steel"
+  ],
+  "Veluza": [
+   "Water",
+   "Psychic"
+  ],
+  "Venipede": [
+   "Bug",
+   "Poison"
+  ],
+  "Venonat": [
+   "Bug",
+   "Poison"
+  ],
+  "Venusaur": [
+   "Grass",
+   "Poison"
+  ],
+  "Venusaur-Mega": [
+   "Grass",
+   "Poison"
+  ],
+  "Victini": [
+   "Psychic",
+   "Fire"
+  ],
+  "Victreebel": [
+   "Grass",
+   "Poison"
+  ],
+  "Vikavolt": [
+   "Bug",
+   "Electric"
+  ],
+  "Vileplume": [
+   "Grass",
+   "Poison"
+  ],
+  "Virizion": [
+   "Grass",
+   "Fighting"
+  ],
+  "Vivillon": [
+   "Bug",
+   "Flying"
+  ],
+  "Volbeat": [
+   "Bug",
+   "Electric"
+  ],
+  "Volcanion": [
+   "Fire",
+   "Water"
+  ],
+  "Volcarona": [
+   "Bug",
+   "Fire"
+  ],
+  "Voltorb": [
+   "Electric"
+  ],
+  "Voltorb-H": [
+   "Electric",
+   "Grass"
+  ],
+  "Voltorb-Hisui": [
+   "Electric",
+   "Grass"
+  ],
+  "Vullaby": [
+   "Dark",
+   "Flying"
+  ],
+  "Vulpix": [
+   "Fire"
+  ],
+  "Vulpix-Alola": [
+   "Ice"
+  ],
+  "Wailmer": [
+   "Water"
+  ],
+  "Wailord": [
+   "Water"
+  ],
+  "Walking Wake": [
+   "Water",
+   "Dragon"
+  ],
+  "Walrein": [
+   "Ice",
+   "Water"
+  ],
+  "Wartortle": [
+   "Water"
+  ],
+  "Wattrel": [
+   "Flying",
+   "Electric"
+  ],
+  "Weavile": [
+   "Dark",
+   "Ice"
+  ],
+  "Weedle": [
+   "Bug",
+   "Poison"
+  ],
+  "Weezing": [
+   "Poison"
+  ],
+  "Weezing-G": [
+   "Poison",
+   "Fairy"
+  ],
+  "Weezing-Galar": [
+   "Poison",
+   "Fairy"
+  ],
+  "Whimsicott": [
+   "Grass",
+   "Fairy"
+  ],
+  "Whirlipede": [
+   "Bug",
+   "Poison"
+  ],
+  "Whiscash": [
+   "Water",
+   "Ground"
+  ],
+  "Whismur": [
+   "Normal"
+  ],
+  "Wigglytuff": [
+   "Normal",
+   "Fairy"
+  ],
+  "Wiglett": [
+   "Water"
+  ],
+  "Wimpod": [
+   "Bug",
+   "Water"
+  ],
+  "Wingull": [
+   "Water",
+   "Flying"
+  ],
+  "Wishiwashi": [
+   "Water"
+  ],
+  "Wishiwashi-S-Sch": [
+   "Ghost",
+   "Dragon"
+  ],
+  "Wishiwashi-Sch": [
+   "Water"
+  ],
+  "Wishiwashi-Sevii": [
+   "Ghost"
+  ],
+  "Wo-Chien": [
+   "Dark",
+   "Grass"
+  ],
+  "Wobbuffet": [
+   "Psychic"
+  ],
+  "Woobat": [
+   "Psychic",
+   "Flying"
+  ],
+  "Wooloo": [
+   "Normal"
+  ],
+  "Wooper": [
+   "Water",
+   "Ground"
+  ],
+  "Wooper-Paldea": [
+   "Poison",
+   "Ground"
+  ],
+  "Wormadam-Sa": [
+   "Bug",
+   "Ground"
+  ],
+  "Wugtrio": [
+   "Water"
+  ],
+  "Wurmple": [
+   "Bug"
+  ],
+  "Xatu": [
+   "Psychic",
+   "Flying"
+  ],
+  "Xerneas": [
+   "Fairy"
+  ],
+  "Xurkitree": [
+   "Electric"
+  ],
+  "Yamask": [
+   "Ghost"
+  ],
+  "Yamask-Galar": [
+   "Ground",
+   "Ghost"
+  ],
+  "Yamper": [
+   "Electric"
+  ],
+  "Yanma": [
+   "Bug",
+   "Flying"
+  ],
+  "Yanmega": [
+   "Bug",
+   "Flying"
+  ],
+  "Yungoos": [
+   "Normal"
+  ],
+  "Yveltal": [
+   "Dark",
+   "Flying"
+  ],
+  "Zacian": [
+   "Fairy"
+  ],
+  "Zacian-C": [
+   "Fairy",
+   "Steel"
+  ],
+  "Zamazenta": [
+   "Fighting"
+  ],
+  "Zamazenta-C": [
+   "Fighting",
+   "Steel"
+  ],
+  "Zangoose": [
+   "Normal"
+  ],
+  "Zapdos": [
+   "Electric",
+   "Flying"
+  ],
+  "Zapdos-G": [
+   "Fighting",
+   "Flying"
+  ],
+  "Zapdos-Galar": [
+   "Fighting",
+   "Flying"
+  ],
+  "Zarude": [
+   "Dark",
+   "Grass"
+  ],
+  "Zebstrika": [
+   "Electric"
+  ],
+  "Zebstrika-S": [
+   "Ice",
+   "Electric"
+  ],
+  "Zekrom": [
+   "Dragon",
+   "Electric"
+  ],
+  "Zeraora": [
+   "Electric"
+  ],
+  "Zigzagoon": [
+   "Normal"
+  ],
+  "Zigzagoon-Galar": [
+   "Dark",
+   "Normal"
+  ],
+  "Zoroark": [
+   "Dark"
+  ],
+  "Zoroark-H": [
+   "Ghost",
+   "Normal"
+  ],
+  "Zoroark-Hisui": [
+   "Ghost",
+   "Normal"
+  ],
+  "Zorua": [
+   "Dark"
+  ],
+  "Zorua-Hisui": [
+   "Ghost",
+   "Normal"
+  ],
+  "Zubat": [
+   "Poison",
+   "Flying"
+  ],
+  "Zygarde": [
+   "Dragon",
+   "Ground"
+  ],
+  "Zygarde-10": [
+   "Dragon",
+   "Ground"
+  ],
+  "Zygarde-C": [
+   "Dragon",
+   "Ground"
+  ]
+ },
+ "stats": {
+  "\u0010Sandile": {
+   "HP": 50,
+   "ATK": 72,
+   "DEF": 35,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 65
+  },
+  "Abomasnow": {
+   "HP": 90,
+   "ATK": 92,
+   "DEF": 75,
+   "SPA": 92,
+   "SPD": 85,
+   "SPE": 60
+  },
+  "Abomasnow-Mega": {
+   "HP": 90,
+   "ATK": 132,
+   "DEF": 105,
+   "SPA": 132,
+   "SPD": 105,
+   "SPE": 60
+  },
+  "Abra": {
+   "HP": 25,
+   "ATK": 20,
+   "DEF": 15,
+   "SPA": 105,
+   "SPD": 55,
+   "SPE": 90
+  },
+  "Absol": {
+   "HP": 65,
+   "ATK": 130,
+   "DEF": 60,
+   "SPA": 75,
+   "SPD": 60,
+   "SPE": 75
+  },
+  "Absol-Mega": {
+   "HP": 65,
+   "ATK": 150,
+   "DEF": 60,
+   "SPA": 115,
+   "SPD": 60,
+   "SPE": 115
+  },
+  "Accelgor": {
+   "HP": 80,
+   "ATK": 70,
+   "DEF": 40,
+   "SPA": 100,
+   "SPD": 60,
+   "SPE": 145
+  },
+  "Aegislash": {
+   "HP": 60,
+   "ATK": 50,
+   "DEF": 140,
+   "SPA": 50,
+   "SPD": 140,
+   "SPE": 60
+  },
+  "Aerodactyl": {
+   "HP": 80,
+   "ATK": 105,
+   "DEF": 65,
+   "SPA": 60,
+   "SPD": 75,
+   "SPE": 130
+  },
+  "Aerodactyl-Mega": {
+   "HP": 80,
+   "ATK": 135,
+   "DEF": 85,
+   "SPA": 70,
+   "SPD": 95,
+   "SPE": 150
+  },
+  "Aggron": {
+   "HP": 70,
+   "ATK": 110,
+   "DEF": 180,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 50
+  },
+  "Aggron-Mega": {
+   "HP": 70,
+   "ATK": 140,
+   "DEF": 230,
+   "SPA": 60,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Aipom": {
+   "HP": 55,
+   "ATK": 70,
+   "DEF": 55,
+   "SPA": 40,
+   "SPD": 55,
+   "SPE": 85
+  },
+  "Alakazam": {
+   "HP": 55,
+   "ATK": 50,
+   "DEF": 45,
+   "SPA": 135,
+   "SPD": 95,
+   "SPE": 120
+  },
+  "Alakazam-Mega": {
+   "HP": 55,
+   "ATK": 50,
+   "DEF": 65,
+   "SPA": 175,
+   "SPD": 105,
+   "SPE": 150
+  },
+  "Alcremie-Mega": {
+   "HP": 65,
+   "ATK": 70,
+   "DEF": 95,
+   "SPA": 140,
+   "SPD": 131,
+   "SPE": 84
+  },
+  "Alcremie-Strbrry": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 75,
+   "SPA": 110,
+   "SPD": 121,
+   "SPE": 64
+  },
+  "Alomomola": {
+   "HP": 165,
+   "ATK": 75,
+   "DEF": 80,
+   "SPA": 40,
+   "SPD": 45,
+   "SPE": 65
+  },
+  "Altaria": {
+   "HP": 85,
+   "ATK": 70,
+   "DEF": 90,
+   "SPA": 70,
+   "SPD": 105,
+   "SPE": 80
+  },
+  "Altaria-Mega": {
+   "HP": 85,
+   "ATK": 110,
+   "DEF": 110,
+   "SPA": 110,
+   "SPD": 105,
+   "SPE": 80
+  },
+  "Amaura": {
+   "HP": 77,
+   "ATK": 59,
+   "DEF": 50,
+   "SPA": 67,
+   "SPD": 63,
+   "SPE": 46
+  },
+  "Ambipom": {
+   "HP": 75,
+   "ATK": 100,
+   "DEF": 66,
+   "SPA": 60,
+   "SPD": 66,
+   "SPE": 115
+  },
+  "Amoonguss": {
+   "HP": 114,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 85,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Ampharos": {
+   "HP": 90,
+   "ATK": 75,
+   "DEF": 85,
+   "SPA": 115,
+   "SPD": 90,
+   "SPE": 55
+  },
+  "Ampharos-Mega": {
+   "HP": 90,
+   "ATK": 95,
+   "DEF": 105,
+   "SPA": 165,
+   "SPD": 110,
+   "SPE": 45
+  },
+  "Annihilape": {
+   "HP": 110,
+   "ATK": 115,
+   "DEF": 80,
+   "SPA": 50,
+   "SPD": 90,
+   "SPE": 90
+  },
+  "Anorith": {
+   "HP": 45,
+   "ATK": 95,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Any Cap Pikachu": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Appletun-Mega": {
+   "HP": 110,
+   "ATK": 105,
+   "DEF": 100,
+   "SPA": 135,
+   "SPD": 100,
+   "SPE": 40
+  },
+  "Applin": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 80,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 20
+  },
+  "Araquanid": {
+   "HP": 68,
+   "ATK": 70,
+   "DEF": 92,
+   "SPA": 50,
+   "SPD": 132,
+   "SPE": 42
+  },
+  "Arbok": {
+   "HP": 75,
+   "ATK": 95,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 79,
+   "SPE": 80
+  },
+  "Arcanine": {
+   "HP": 90,
+   "ATK": 110,
+   "DEF": 80,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 95
+  },
+  "Arcanine-H": {
+   "HP": 95,
+   "ATK": 125,
+   "DEF": 80,
+   "SPA": 85,
+   "SPD": 80,
+   "SPE": 90
+  },
+  "Arcanine-Hisui": {
+   "HP": 95,
+   "ATK": 125,
+   "DEF": 80,
+   "SPA": 85,
+   "SPD": 80,
+   "SPE": 90
+  },
+  "Arceus": {
+   "HP": 120,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Arceus-Bug": {
+   "HP": 120,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Arceus-Fairy": {
+   "HP": 120,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Arceus-Ground": {
+   "HP": 120,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Arceus-Steel": {
+   "HP": 120,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Archaludon": {
+   "HP": 90,
+   "ATK": 105,
+   "DEF": 130,
+   "SPA": 125,
+   "SPD": 65,
+   "SPE": 85
+  },
+  "Archen": {
+   "HP": 55,
+   "ATK": 112,
+   "DEF": 45,
+   "SPA": 74,
+   "SPD": 45,
+   "SPE": 70
+  },
+  "Archeops": {
+   "HP": 75,
+   "ATK": 140,
+   "DEF": 65,
+   "SPA": 112,
+   "SPD": 65,
+   "SPE": 110
+  },
+  "Arctovish": {
+   "HP": 90,
+   "ATK": 90,
+   "DEF": 100,
+   "SPA": 55,
+   "SPD": 90,
+   "SPE": 80
+  },
+  "Arctozolt": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 90,
+   "SPA": 90,
+   "SPD": 80,
+   "SPE": 55
+  },
+  "Ariados": {
+   "HP": 70,
+   "ATK": 95,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 70
+  },
+  "Armarouge": {
+   "HP": 85,
+   "ATK": 60,
+   "DEF": 100,
+   "SPA": 125,
+   "SPD": 80,
+   "SPE": 75
+  },
+  "Aron": {
+   "HP": 50,
+   "ATK": 70,
+   "DEF": 100,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 30
+  },
+  "Arrokuda": {
+   "HP": 41,
+   "ATK": 63,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 30,
+   "SPE": 66
+  },
+  "Articuno": {
+   "HP": 90,
+   "ATK": 70,
+   "DEF": 100,
+   "SPA": 95,
+   "SPD": 125,
+   "SPE": 100
+  },
+  "Articuno-G": {
+   "HP": 90,
+   "ATK": 70,
+   "DEF": 95,
+   "SPA": 125,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Articuno-Galar": {
+   "HP": 90,
+   "ATK": 70,
+   "DEF": 95,
+   "SPA": 125,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Audino": {
+   "HP": 103,
+   "ATK": 60,
+   "DEF": 86,
+   "SPA": 60,
+   "SPD": 86,
+   "SPE": 50
+  },
+  "Audino-Mega": {
+   "HP": 103,
+   "ATK": 60,
+   "DEF": 126,
+   "SPA": 80,
+   "SPD": 126,
+   "SPE": 50
+  },
+  "Avalugg": {
+   "HP": 95,
+   "ATK": 117,
+   "DEF": 184,
+   "SPA": 44,
+   "SPD": 46,
+   "SPE": 28
+  },
+  "Avalugg-H": {
+   "HP": 100,
+   "ATK": 132,
+   "DEF": 184,
+   "SPA": 34,
+   "SPD": 36,
+   "SPE": 28
+  },
+  "Avalugg-Hisui": {
+   "HP": 100,
+   "ATK": 132,
+   "DEF": 184,
+   "SPA": 34,
+   "SPD": 36,
+   "SPE": 28
+  },
+  "Axew": {
+   "HP": 46,
+   "ATK": 87,
+   "DEF": 60,
+   "SPA": 30,
+   "SPD": 40,
+   "SPE": 57
+  },
+  "Azelf": {
+   "HP": 75,
+   "ATK": 125,
+   "DEF": 70,
+   "SPA": 125,
+   "SPD": 70,
+   "SPE": 115
+  },
+  "Azumarill": {
+   "HP": 100,
+   "ATK": 50,
+   "DEF": 80,
+   "SPA": 60,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Baltoy": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 55,
+   "SPA": 40,
+   "SPD": 70,
+   "SPE": 55
+  },
+  "Banette": {
+   "HP": 64,
+   "ATK": 115,
+   "DEF": 65,
+   "SPA": 83,
+   "SPD": 63,
+   "SPE": 65
+  },
+  "Banette-Mega": {
+   "HP": 64,
+   "ATK": 165,
+   "DEF": 75,
+   "SPA": 93,
+   "SPD": 83,
+   "SPE": 75
+  },
+  "Barbaracle": {
+   "HP": 72,
+   "ATK": 105,
+   "DEF": 115,
+   "SPA": 54,
+   "SPD": 86,
+   "SPE": 68
+  },
+  "Barboach": {
+   "HP": 50,
+   "ATK": 48,
+   "DEF": 43,
+   "SPA": 46,
+   "SPD": 41,
+   "SPE": 60
+  },
+  "Barraskewda": {
+   "HP": 61,
+   "ATK": 123,
+   "DEF": 60,
+   "SPA": 60,
+   "SPD": 50,
+   "SPE": 136
+  },
+  "Basculegion": {
+   "HP": 120,
+   "ATK": 112,
+   "DEF": 65,
+   "SPA": 80,
+   "SPD": 75,
+   "SPE": 78
+  },
+  "Basculegion-F": {
+   "HP": 120,
+   "ATK": 92,
+   "DEF": 65,
+   "SPA": 100,
+   "SPD": 75,
+   "SPE": 78
+  },
+  "Basculin": {
+   "HP": 70,
+   "ATK": 92,
+   "DEF": 65,
+   "SPA": 80,
+   "SPD": 55,
+   "SPE": 98
+  },
+  "Basculin-Blue": {
+   "HP": 70,
+   "ATK": 92,
+   "DEF": 65,
+   "SPA": 80,
+   "SPD": 55,
+   "SPE": 98
+  },
+  "Baxcalibur": {
+   "HP": 115,
+   "ATK": 145,
+   "DEF": 92,
+   "SPA": 75,
+   "SPD": 86,
+   "SPE": 87
+  },
+  "Beartic": {
+   "HP": 95,
+   "ATK": 140,
+   "DEF": 80,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Beedrill-Mega": {
+   "HP": 65,
+   "ATK": 150,
+   "DEF": 40,
+   "SPA": 15,
+   "SPD": 80,
+   "SPE": 145
+  },
+  "Bellibolt": {
+   "HP": 109,
+   "ATK": 64,
+   "DEF": 91,
+   "SPA": 103,
+   "SPD": 83,
+   "SPE": 45
+  },
+  "Bellossom": {
+   "HP": 75,
+   "ATK": 80,
+   "DEF": 95,
+   "SPA": 90,
+   "SPD": 100,
+   "SPE": 50
+  },
+  "Bellsprout": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 35,
+   "SPA": 70,
+   "SPD": 30,
+   "SPE": 40
+  },
+  "Bergmite": {
+   "HP": 55,
+   "ATK": 69,
+   "DEF": 85,
+   "SPA": 32,
+   "SPD": 35,
+   "SPE": 28
+  },
+  "Bewear": {
+   "HP": 120,
+   "ATK": 125,
+   "DEF": 80,
+   "SPA": 55,
+   "SPD": 60,
+   "SPE": 60
+  },
+  "Bibarel": {
+   "HP": 79,
+   "ATK": 85,
+   "DEF": 80,
+   "SPA": 55,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Bidoof": {
+   "HP": 59,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 35,
+   "SPD": 40,
+   "SPE": 31
+  },
+  "Binacle": {
+   "HP": 42,
+   "ATK": 52,
+   "DEF": 67,
+   "SPA": 39,
+   "SPD": 56,
+   "SPE": 50
+  },
+  "Bisharp": {
+   "HP": 65,
+   "ATK": 125,
+   "DEF": 100,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 70
+  },
+  "Blacephalon": {
+   "HP": 53,
+   "ATK": 127,
+   "DEF": 53,
+   "SPA": 151,
+   "SPD": 79,
+   "SPE": 107
+  },
+  "Blastoise-Mega": {
+   "HP": 79,
+   "ATK": 103,
+   "DEF": 120,
+   "SPA": 135,
+   "SPD": 115,
+   "SPE": 78
+  },
+  "Blaziken": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 70,
+   "SPA": 110,
+   "SPD": 70,
+   "SPE": 80
+  },
+  "Blaziken-Mega": {
+   "HP": 80,
+   "ATK": 160,
+   "DEF": 80,
+   "SPA": 130,
+   "SPD": 80,
+   "SPE": 100
+  },
+  "Blipbug": {
+   "HP": 25,
+   "ATK": 20,
+   "DEF": 20,
+   "SPA": 25,
+   "SPD": 45,
+   "SPE": 45
+  },
+  "Blissey": {
+   "HP": 255,
+   "ATK": 10,
+   "DEF": 10,
+   "SPA": 75,
+   "SPD": 135,
+   "SPE": 55
+  },
+  "Blitzle": {
+   "HP": 45,
+   "ATK": 60,
+   "DEF": 32,
+   "SPA": 50,
+   "SPD": 32,
+   "SPE": 76
+  },
+  "Blitzle-Sevii": {
+   "HP": 45,
+   "ATK": 45,
+   "DEF": 32,
+   "SPA": 65,
+   "SPD": 32,
+   "SPE": 76
+  },
+  "Boldore": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 105,
+   "SPA": 50,
+   "SPD": 40,
+   "SPE": 20
+  },
+  "Boltund": {
+   "HP": 69,
+   "ATK": 100,
+   "DEF": 60,
+   "SPA": 80,
+   "SPD": 60,
+   "SPE": 121
+  },
+  "Bombirdier": {
+   "HP": 85,
+   "ATK": 103,
+   "DEF": 85,
+   "SPA": 60,
+   "SPD": 85,
+   "SPE": 82
+  },
+  "Bonsly": {
+   "HP": 50,
+   "ATK": 80,
+   "DEF": 95,
+   "SPA": 10,
+   "SPD": 45,
+   "SPE": 10
+  },
+  "Bouffalant": {
+   "HP": 100,
+   "ATK": 110,
+   "DEF": 95,
+   "SPA": 40,
+   "SPD": 95,
+   "SPE": 65
+  },
+  "Bounsweet": {
+   "HP": 42,
+   "ATK": 30,
+   "DEF": 38,
+   "SPA": 30,
+   "SPD": 38,
+   "SPE": 32
+  },
+  "Bramblin": {
+   "HP": 40,
+   "ATK": 65,
+   "DEF": 30,
+   "SPA": 45,
+   "SPD": 35,
+   "SPE": 60
+  },
+  "Braviary": {
+   "HP": 100,
+   "ATK": 123,
+   "DEF": 75,
+   "SPA": 57,
+   "SPD": 75,
+   "SPE": 80
+  },
+  "Braviary-H": {
+   "HP": 115,
+   "ATK": 58,
+   "DEF": 80,
+   "SPA": 112,
+   "SPD": 80,
+   "SPE": 65
+  },
+  "Braviary-Hisui": {
+   "HP": 115,
+   "ATK": 58,
+   "DEF": 80,
+   "SPA": 112,
+   "SPD": 80,
+   "SPE": 65
+  },
+  "Breloom": {
+   "HP": 60,
+   "ATK": 130,
+   "DEF": 80,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 70
+  },
+  "Brionne": {
+   "HP": 60,
+   "ATK": 69,
+   "DEF": 69,
+   "SPA": 91,
+   "SPD": 81,
+   "SPE": 50
+  },
+  "Bronzong": {
+   "HP": 67,
+   "ATK": 89,
+   "DEF": 116,
+   "SPA": 79,
+   "SPD": 116,
+   "SPE": 33
+  },
+  "Bronzor": {
+   "HP": 57,
+   "ATK": 24,
+   "DEF": 86,
+   "SPA": 24,
+   "SPD": 86,
+   "SPE": 23
+  },
+  "Brute Bonnet": {
+   "HP": 111,
+   "ATK": 127,
+   "DEF": 99,
+   "SPA": 79,
+   "SPD": 99,
+   "SPE": 55
+  },
+  "Bruxish": {
+   "HP": 68,
+   "ATK": 105,
+   "DEF": 70,
+   "SPA": 70,
+   "SPD": 70,
+   "SPE": 92
+  },
+  "Budew": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 35,
+   "SPA": 50,
+   "SPD": 70,
+   "SPE": 55
+  },
+  "Buizel": {
+   "HP": 55,
+   "ATK": 65,
+   "DEF": 35,
+   "SPA": 60,
+   "SPD": 30,
+   "SPE": 85
+  },
+  "Bulbasaur": {
+   "HP": 45,
+   "ATK": 49,
+   "DEF": 49,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Buneary": {
+   "HP": 55,
+   "ATK": 66,
+   "DEF": 44,
+   "SPA": 44,
+   "SPD": 56,
+   "SPE": 85
+  },
+  "Bunnelby": {
+   "HP": 38,
+   "ATK": 36,
+   "DEF": 38,
+   "SPA": 32,
+   "SPD": 36,
+   "SPE": 57
+  },
+  "Burmy": {
+   "HP": 40,
+   "ATK": 29,
+   "DEF": 45,
+   "SPA": 29,
+   "SPD": 45,
+   "SPE": 36
+  },
+  "Burmy-Sandy": {
+   "HP": 40,
+   "ATK": 29,
+   "DEF": 45,
+   "SPA": 29,
+   "SPD": 45,
+   "SPE": 36
+  },
+  "Burmy-Trash": {
+   "HP": 40,
+   "ATK": 29,
+   "DEF": 45,
+   "SPA": 29,
+   "SPD": 45,
+   "SPE": 36
+  },
+  "Butterfree": {
+   "HP": 60,
+   "ATK": 45,
+   "DEF": 50,
+   "SPA": 95,
+   "SPD": 80,
+   "SPE": 70
+  },
+  "Butterfree-Mega": {
+   "HP": 60,
+   "ATK": 45,
+   "DEF": 100,
+   "SPA": 140,
+   "SPD": 100,
+   "SPE": 80
+  },
+  "Buzzwole": {
+   "HP": 107,
+   "ATK": 139,
+   "DEF": 139,
+   "SPA": 53,
+   "SPD": 53,
+   "SPE": 79
+  },
+  "Cacnea": {
+   "HP": 50,
+   "ATK": 85,
+   "DEF": 40,
+   "SPA": 85,
+   "SPD": 40,
+   "SPE": 35
+  },
+  "Cacturne": {
+   "HP": 70,
+   "ATK": 120,
+   "DEF": 60,
+   "SPA": 120,
+   "SPD": 60,
+   "SPE": 55
+  },
+  "Calyrex": {
+   "HP": 100,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 80
+  },
+  "Calyrex-I": {
+   "HP": 100,
+   "ATK": 165,
+   "DEF": 150,
+   "SPA": 85,
+   "SPD": 130,
+   "SPE": 50
+  },
+  "Calyrex-Ice": {
+   "HP": 100,
+   "ATK": 165,
+   "DEF": 150,
+   "SPA": 85,
+   "SPD": 130,
+   "SPE": 50
+  },
+  "Calyrex-S": {
+   "HP": 100,
+   "ATK": 85,
+   "DEF": 80,
+   "SPA": 165,
+   "SPD": 100,
+   "SPE": 150
+  },
+  "Calyrex-Shadow": {
+   "HP": 100,
+   "ATK": 85,
+   "DEF": 80,
+   "SPA": 165,
+   "SPD": 100,
+   "SPE": 150
+  },
+  "Camerupt-Mega": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 110,
+   "SPA": 145,
+   "SPD": 115,
+   "SPE": 20
+  },
+  "Capsakid": {
+   "HP": 52,
+   "ATK": 62,
+   "DEF": 40,
+   "SPA": 62,
+   "SPD": 40,
+   "SPE": 50
+  },
+  "Carbink": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 150,
+   "SPA": 50,
+   "SPD": 150,
+   "SPE": 50
+  },
+  "Carkol": {
+   "HP": 80,
+   "ATK": 60,
+   "DEF": 90,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 50
+  },
+  "Carnivine": {
+   "HP": 89,
+   "ATK": 100,
+   "DEF": 82,
+   "SPA": 55,
+   "SPD": 82,
+   "SPE": 46
+  },
+  "Carnivine-Sevii": {
+   "HP": 94,
+   "ATK": 100,
+   "DEF": 92,
+   "SPA": 55,
+   "SPD": 77,
+   "SPE": 36
+  },
+  "Carracosta": {
+   "HP": 74,
+   "ATK": 108,
+   "DEF": 133,
+   "SPA": 83,
+   "SPD": 65,
+   "SPE": 32
+  },
+  "Carvanha": {
+   "HP": 45,
+   "ATK": 90,
+   "DEF": 20,
+   "SPA": 65,
+   "SPD": 20,
+   "SPE": 65
+  },
+  "Castform": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 85,
+   "SPA": 85,
+   "SPD": 85,
+   "SPE": 85
+  },
+  "Caterpie": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 35,
+   "SPA": 20,
+   "SPD": 20,
+   "SPE": 45
+  },
+  "Celebi": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Celesteela": {
+   "HP": 97,
+   "ATK": 101,
+   "DEF": 103,
+   "SPA": 107,
+   "SPD": 101,
+   "SPE": 61
+  },
+  "Centiskorch": {
+   "HP": 100,
+   "ATK": 115,
+   "DEF": 65,
+   "SPA": 90,
+   "SPD": 90,
+   "SPE": 65
+  },
+  "Centiskorch-Mega": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 110,
+   "SPE": 85
+  },
+  "Centiskorch-MegaS": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 80,
+   "SPA": 75,
+   "SPD": 100,
+   "SPE": 120
+  },
+  "Centiskorch-Sevii": {
+   "HP": 100,
+   "ATK": 115,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 90,
+   "SPE": 90
+  },
+  "Ceruledge": {
+   "HP": 75,
+   "ATK": 125,
+   "DEF": 80,
+   "SPA": 60,
+   "SPD": 100,
+   "SPE": 85
+  },
+  "Cetitan": {
+   "HP": 170,
+   "ATK": 113,
+   "DEF": 65,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 73
+  },
+  "Cetoddle": {
+   "HP": 108,
+   "ATK": 68,
+   "DEF": 45,
+   "SPA": 30,
+   "SPD": 40,
+   "SPE": 43
+  },
+  "Chandelure": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 90,
+   "SPA": 145,
+   "SPD": 90,
+   "SPE": 80
+  },
+  "Chansey": {
+   "HP": 250,
+   "ATK": 5,
+   "DEF": 5,
+   "SPA": 35,
+   "SPD": 105,
+   "SPE": 50
+  },
+  "Charcadet": {
+   "HP": 40,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 40,
+   "SPE": 35
+  },
+  "Charizard": {
+   "HP": 78,
+   "ATK": 84,
+   "DEF": 78,
+   "SPA": 109,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Charizard-MegaX": {
+   "HP": 78,
+   "ATK": 130,
+   "DEF": 111,
+   "SPA": 130,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Charizard-MegaY": {
+   "HP": 78,
+   "ATK": 104,
+   "DEF": 78,
+   "SPA": 159,
+   "SPD": 115,
+   "SPE": 100
+  },
+  "Charjabug": {
+   "HP": 57,
+   "ATK": 82,
+   "DEF": 95,
+   "SPA": 55,
+   "SPD": 75,
+   "SPE": 36
+  },
+  "Charmander": {
+   "HP": 39,
+   "ATK": 52,
+   "DEF": 43,
+   "SPA": 60,
+   "SPD": 50,
+   "SPE": 65
+  },
+  "Charmeleon": {
+   "HP": 58,
+   "ATK": 64,
+   "DEF": 58,
+   "SPA": 80,
+   "SPD": 65,
+   "SPE": 80
+  },
+  "Chatot": {
+   "HP": 76,
+   "ATK": 65,
+   "DEF": 45,
+   "SPA": 92,
+   "SPD": 42,
+   "SPE": 101
+  },
+  "Cherrim": {
+   "HP": 70,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 78,
+   "SPE": 85
+  },
+  "Cherubi": {
+   "HP": 45,
+   "ATK": 35,
+   "DEF": 45,
+   "SPA": 62,
+   "SPD": 53,
+   "SPE": 35
+  },
+  "Chespin": {
+   "HP": 56,
+   "ATK": 61,
+   "DEF": 65,
+   "SPA": 48,
+   "SPD": 45,
+   "SPE": 38
+  },
+  "Chewtle": {
+   "HP": 50,
+   "ATK": 64,
+   "DEF": 50,
+   "SPA": 38,
+   "SPD": 38,
+   "SPE": 44
+  },
+  "Chi-Yu": {
+   "HP": 55,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 135,
+   "SPD": 120,
+   "SPE": 100
+  },
+  "Chien-Pao": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 65,
+   "SPE": 135
+  },
+  "Chikorita": {
+   "HP": 45,
+   "ATK": 49,
+   "DEF": 65,
+   "SPA": 49,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Chimchar": {
+   "HP": 44,
+   "ATK": 58,
+   "DEF": 44,
+   "SPA": 58,
+   "SPD": 44,
+   "SPE": 61
+  },
+  "Chimecho": {
+   "HP": 90,
+   "ATK": 50,
+   "DEF": 80,
+   "SPA": 95,
+   "SPD": 90,
+   "SPE": 80
+  },
+  "Chinchou": {
+   "HP": 75,
+   "ATK": 38,
+   "DEF": 38,
+   "SPA": 56,
+   "SPD": 56,
+   "SPE": 67
+  },
+  "Chingling": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 50,
+   "SPA": 65,
+   "SPD": 50,
+   "SPE": 45
+  },
+  "Cinccino": {
+   "HP": 75,
+   "ATK": 95,
+   "DEF": 60,
+   "SPA": 65,
+   "SPD": 60,
+   "SPE": 115
+  },
+  "Cinderace": {
+   "HP": 80,
+   "ATK": 116,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 119
+  },
+  "Clamperl": {
+   "HP": 35,
+   "ATK": 64,
+   "DEF": 85,
+   "SPA": 74,
+   "SPD": 55,
+   "SPE": 32
+  },
+  "Clauncher": {
+   "HP": 50,
+   "ATK": 53,
+   "DEF": 62,
+   "SPA": 58,
+   "SPD": 63,
+   "SPE": 44
+  },
+  "Clauncher-Sevii": {
+   "HP": 50,
+   "ATK": 38,
+   "DEF": 62,
+   "SPA": 58,
+   "SPD": 63,
+   "SPE": 59
+  },
+  "Clawitzer": {
+   "HP": 71,
+   "ATK": 73,
+   "DEF": 88,
+   "SPA": 120,
+   "SPD": 89,
+   "SPE": 72
+  },
+  "Clawitzer-S": {
+   "HP": 81,
+   "ATK": 63,
+   "DEF": 83,
+   "SPA": 110,
+   "SPD": 79,
+   "SPE": 97
+  },
+  "Clefable": {
+   "HP": 95,
+   "ATK": 70,
+   "DEF": 73,
+   "SPA": 95,
+   "SPD": 90,
+   "SPE": 60
+  },
+  "Clefairy": {
+   "HP": 70,
+   "ATK": 45,
+   "DEF": 48,
+   "SPA": 60,
+   "SPD": 65,
+   "SPE": 35
+  },
+  "Clobbopus": {
+   "HP": 50,
+   "ATK": 68,
+   "DEF": 60,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 32
+  },
+  "Clodsire": {
+   "HP": 130,
+   "ATK": 75,
+   "DEF": 60,
+   "SPA": 45,
+   "SPD": 100,
+   "SPE": 20
+  },
+  "Cloyster": {
+   "HP": 50,
+   "ATK": 95,
+   "DEF": 180,
+   "SPA": 85,
+   "SPD": 45,
+   "SPE": 70
+  },
+  "Coalossal": {
+   "HP": 110,
+   "ATK": 80,
+   "DEF": 120,
+   "SPA": 80,
+   "SPD": 90,
+   "SPE": 30
+  },
+  "Cobalion": {
+   "HP": 91,
+   "ATK": 90,
+   "DEF": 129,
+   "SPA": 90,
+   "SPD": 72,
+   "SPE": 108
+  },
+  "Cofagrigus": {
+   "HP": 58,
+   "ATK": 50,
+   "DEF": 145,
+   "SPA": 95,
+   "SPD": 105,
+   "SPE": 30
+  },
+  "Combee": {
+   "HP": 30,
+   "ATK": 30,
+   "DEF": 42,
+   "SPA": 30,
+   "SPD": 42,
+   "SPE": 70
+  },
+  "Comfey": {
+   "HP": 51,
+   "ATK": 52,
+   "DEF": 90,
+   "SPA": 82,
+   "SPD": 110,
+   "SPE": 100
+  },
+  "Conkeldurr": {
+   "HP": 105,
+   "ATK": 140,
+   "DEF": 95,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Copperajah": {
+   "HP": 122,
+   "ATK": 130,
+   "DEF": 79,
+   "SPA": 80,
+   "SPD": 79,
+   "SPE": 30
+  },
+  "Copperajah-Mega": {
+   "HP": 122,
+   "ATK": 155,
+   "DEF": 94,
+   "SPA": 100,
+   "SPD": 94,
+   "SPE": 20
+  },
+  "Corphish": {
+   "HP": 43,
+   "ATK": 80,
+   "DEF": 65,
+   "SPA": 50,
+   "SPD": 35,
+   "SPE": 35
+  },
+  "Corsola": {
+   "HP": 85,
+   "ATK": 55,
+   "DEF": 100,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 35
+  },
+  "Corsola-Galar": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 100,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 30
+  },
+  "Corviknight": {
+   "HP": 98,
+   "ATK": 87,
+   "DEF": 105,
+   "SPA": 53,
+   "SPD": 85,
+   "SPE": 67
+  },
+  "Cosmoem": {
+   "HP": 43,
+   "ATK": 29,
+   "DEF": 131,
+   "SPA": 29,
+   "SPD": 131,
+   "SPE": 37
+  },
+  "Cosmog": {
+   "HP": 43,
+   "ATK": 29,
+   "DEF": 31,
+   "SPA": 29,
+   "SPD": 31,
+   "SPE": 37
+  },
+  "Cottonee": {
+   "HP": 40,
+   "ATK": 27,
+   "DEF": 60,
+   "SPA": 37,
+   "SPD": 50,
+   "SPE": 66
+  },
+  "Crabominable": {
+   "HP": 97,
+   "ATK": 132,
+   "DEF": 77,
+   "SPA": 62,
+   "SPD": 67,
+   "SPE": 43
+  },
+  "Crabrawler": {
+   "HP": 47,
+   "ATK": 82,
+   "DEF": 57,
+   "SPA": 42,
+   "SPD": 47,
+   "SPE": 63
+  },
+  "Cradily": {
+   "HP": 86,
+   "ATK": 81,
+   "DEF": 97,
+   "SPA": 81,
+   "SPD": 107,
+   "SPE": 43
+  },
+  "Cramorant": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 65,
+   "SPA": 100,
+   "SPD": 95,
+   "SPE": 105
+  },
+  "Cramorant-Gorg": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 65,
+   "SPA": 100,
+   "SPD": 95,
+   "SPE": 105
+  },
+  "Cranidos": {
+   "HP": 67,
+   "ATK": 125,
+   "DEF": 40,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 58
+  },
+  "Crawdaunt": {
+   "HP": 63,
+   "ATK": 120,
+   "DEF": 85,
+   "SPA": 90,
+   "SPD": 55,
+   "SPE": 55
+  },
+  "Cresselia": {
+   "HP": 120,
+   "ATK": 70,
+   "DEF": 120,
+   "SPA": 75,
+   "SPD": 130,
+   "SPE": 85
+  },
+  "Croagunk": {
+   "HP": 48,
+   "ATK": 61,
+   "DEF": 40,
+   "SPA": 61,
+   "SPD": 40,
+   "SPE": 50
+  },
+  "Crobat": {
+   "HP": 85,
+   "ATK": 90,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 80,
+   "SPE": 130
+  },
+  "Crustle": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 125,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 55
+  },
+  "Cryogonal": {
+   "HP": 80,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 110,
+   "SPD": 135,
+   "SPE": 105
+  },
+  "Cubchoo": {
+   "HP": 55,
+   "ATK": 70,
+   "DEF": 40,
+   "SPA": 60,
+   "SPD": 40,
+   "SPE": 40
+  },
+  "Cubone": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 95,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 35
+  },
+  "Cufant": {
+   "HP": 72,
+   "ATK": 80,
+   "DEF": 49,
+   "SPA": 40,
+   "SPD": 49,
+   "SPE": 40
+  },
+  "Cursola": {
+   "HP": 80,
+   "ATK": 75,
+   "DEF": 50,
+   "SPA": 145,
+   "SPD": 130,
+   "SPE": 55
+  },
+  "Cutiefly": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 55,
+   "SPD": 40,
+   "SPE": 84
+  },
+  "Cyclizar": {
+   "HP": 70,
+   "ATK": 95,
+   "DEF": 65,
+   "SPA": 85,
+   "SPD": 65,
+   "SPE": 121
+  },
+  "Cyndaquil": {
+   "HP": 39,
+   "ATK": 52,
+   "DEF": 43,
+   "SPA": 60,
+   "SPD": 50,
+   "SPE": 65
+  },
+  "Darkrai": {
+   "HP": 70,
+   "ATK": 90,
+   "DEF": 90,
+   "SPA": 135,
+   "SPD": 90,
+   "SPE": 125
+  },
+  "Darmanitan": {
+   "HP": 105,
+   "ATK": 140,
+   "DEF": 55,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 95
+  },
+  "Darmanitan-G": {
+   "HP": 105,
+   "ATK": 140,
+   "DEF": 55,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 95
+  },
+  "Darmanitan-GZ": {
+   "HP": 105,
+   "ATK": 160,
+   "DEF": 55,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 135
+  },
+  "Darmanitan-Galar": {
+   "HP": 105,
+   "ATK": 140,
+   "DEF": 55,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 95
+  },
+  "Darmanitan-Z": {
+   "HP": 105,
+   "ATK": 30,
+   "DEF": 105,
+   "SPA": 140,
+   "SPD": 105,
+   "SPE": 55
+  },
+  "Dartrix": {
+   "HP": 78,
+   "ATK": 75,
+   "DEF": 75,
+   "SPA": 70,
+   "SPD": 70,
+   "SPE": 52
+  },
+  "Darumaka": {
+   "HP": 70,
+   "ATK": 90,
+   "DEF": 45,
+   "SPA": 15,
+   "SPD": 45,
+   "SPE": 50
+  },
+  "Decidueye": {
+   "HP": 78,
+   "ATK": 107,
+   "DEF": 75,
+   "SPA": 95,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Decidueye-H": {
+   "HP": 98,
+   "ATK": 112,
+   "DEF": 85,
+   "SPA": 75,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Decidueye-Hisui": {
+   "HP": 98,
+   "ATK": 112,
+   "DEF": 85,
+   "SPA": 75,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Dedenne": {
+   "HP": 67,
+   "ATK": 58,
+   "DEF": 57,
+   "SPA": 91,
+   "SPD": 67,
+   "SPE": 101
+  },
+  "Deerling": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Deerling-Autumn": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Deerling-Summer": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Deerling-Winter": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Delibird": {
+   "HP": 45,
+   "ATK": 100,
+   "DEF": 45,
+   "SPA": 65,
+   "SPD": 45,
+   "SPE": 105
+  },
+  "Delphox": {
+   "HP": 75,
+   "ATK": 69,
+   "DEF": 72,
+   "SPA": 114,
+   "SPD": 100,
+   "SPE": 104
+  },
+  "Deoxys": {
+   "HP": 50,
+   "ATK": 150,
+   "DEF": 50,
+   "SPA": 150,
+   "SPD": 50,
+   "SPE": 150
+  },
+  "Deoxys-A": {
+   "HP": 50,
+   "ATK": 180,
+   "DEF": 20,
+   "SPA": 180,
+   "SPD": 20,
+   "SPE": 150
+  },
+  "Deoxys-D": {
+   "HP": 50,
+   "ATK": 70,
+   "DEF": 160,
+   "SPA": 70,
+   "SPD": 160,
+   "SPE": 90
+  },
+  "Deoxys-S": {
+   "HP": 50,
+   "ATK": 95,
+   "DEF": 90,
+   "SPA": 95,
+   "SPD": 90,
+   "SPE": 180
+  },
+  "Dewgong": {
+   "HP": 95,
+   "ATK": 50,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 95,
+   "SPE": 70
+  },
+  "Dewott": {
+   "HP": 75,
+   "ATK": 75,
+   "DEF": 60,
+   "SPA": 83,
+   "SPD": 60,
+   "SPE": 60
+  },
+  "Dewpider": {
+   "HP": 38,
+   "ATK": 40,
+   "DEF": 52,
+   "SPA": 40,
+   "SPD": 72,
+   "SPE": 27
+  },
+  "Dhelmise": {
+   "HP": 70,
+   "ATK": 131,
+   "DEF": 100,
+   "SPA": 86,
+   "SPD": 90,
+   "SPE": 40
+  },
+  "Dhelmise-Sevii": {
+   "HP": 90,
+   "ATK": 81,
+   "DEF": 105,
+   "SPA": 106,
+   "SPD": 95,
+   "SPE": 40
+  },
+  "Dialga": {
+   "HP": 100,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 150,
+   "SPD": 100,
+   "SPE": 90
+  },
+  "Dialga-Origin": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 120,
+   "SPA": 150,
+   "SPD": 120,
+   "SPE": 90
+  },
+  "Dialga-Primal": {
+   "HP": 100,
+   "ATK": 120,
+   "DEF": 150,
+   "SPA": 185,
+   "SPD": 130,
+   "SPE": 90
+  },
+  "Diancie": {
+   "HP": 50,
+   "ATK": 100,
+   "DEF": 150,
+   "SPA": 100,
+   "SPD": 150,
+   "SPE": 50
+  },
+  "Diancie-Mega": {
+   "HP": 50,
+   "ATK": 160,
+   "DEF": 110,
+   "SPA": 160,
+   "SPD": 110,
+   "SPE": 110
+  },
+  "Diglett": {
+   "HP": 10,
+   "ATK": 55,
+   "DEF": 25,
+   "SPA": 35,
+   "SPD": 45,
+   "SPE": 95
+  },
+  "Diglett-Alola": {
+   "HP": 10,
+   "ATK": 55,
+   "DEF": 30,
+   "SPA": 35,
+   "SPD": 45,
+   "SPE": 90
+  },
+  "Dipplin": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 110,
+   "SPA": 95,
+   "SPD": 80,
+   "SPE": 40
+  },
+  "Ditto": {
+   "HP": 48,
+   "ATK": 48,
+   "DEF": 48,
+   "SPA": 48,
+   "SPD": 48,
+   "SPE": 48
+  },
+  "Dodrio": {
+   "HP": 60,
+   "ATK": 110,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 110
+  },
+  "Dodrio-S": {
+   "HP": 65,
+   "ATK": 125,
+   "DEF": 65,
+   "SPA": 40,
+   "SPD": 65,
+   "SPE": 110
+  },
+  "Dodrio-Sevii": {
+   "HP": 65,
+   "ATK": 125,
+   "DEF": 65,
+   "SPA": 40,
+   "SPD": 65,
+   "SPE": 110
+  },
+  "Doduo": {
+   "HP": 35,
+   "ATK": 85,
+   "DEF": 45,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 75
+  },
+  "Doduo-Sevii": {
+   "HP": 40,
+   "ATK": 80,
+   "DEF": 45,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 75
+  },
+  "Dondozo": {
+   "HP": 150,
+   "ATK": 100,
+   "DEF": 115,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 35
+  },
+  "Donphan": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 120,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 50
+  },
+  "Dracovish": {
+   "HP": 90,
+   "ATK": 90,
+   "DEF": 100,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 75
+  },
+  "Dracozolt": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 90,
+   "SPA": 80,
+   "SPD": 70,
+   "SPE": 75
+  },
+  "Dragalge": {
+   "HP": 65,
+   "ATK": 75,
+   "DEF": 90,
+   "SPA": 97,
+   "SPD": 123,
+   "SPE": 44
+  },
+  "Dragapult": {
+   "HP": 88,
+   "ATK": 120,
+   "DEF": 75,
+   "SPA": 100,
+   "SPD": 75,
+   "SPE": 142
+  },
+  "Dragonite": {
+   "HP": 91,
+   "ATK": 134,
+   "DEF": 95,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 80
+  },
+  "Drampa": {
+   "HP": 103,
+   "ATK": 50,
+   "DEF": 85,
+   "SPA": 135,
+   "SPD": 91,
+   "SPE": 36
+  },
+  "Drapion": {
+   "HP": 70,
+   "ATK": 90,
+   "DEF": 110,
+   "SPA": 60,
+   "SPD": 75,
+   "SPE": 95
+  },
+  "Drednaw": {
+   "HP": 90,
+   "ATK": 115,
+   "DEF": 90,
+   "SPA": 48,
+   "SPD": 68,
+   "SPE": 74
+  },
+  "Drednaw-Mega": {
+   "HP": 90,
+   "ATK": 155,
+   "DEF": 125,
+   "SPA": 48,
+   "SPD": 98,
+   "SPE": 85
+  },
+  "Drifblim": {
+   "HP": 150,
+   "ATK": 80,
+   "DEF": 44,
+   "SPA": 90,
+   "SPD": 54,
+   "SPE": 80
+  },
+  "Drifloon": {
+   "HP": 90,
+   "ATK": 50,
+   "DEF": 34,
+   "SPA": 60,
+   "SPD": 44,
+   "SPE": 70
+  },
+  "Drilbur": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 40,
+   "SPA": 30,
+   "SPD": 45,
+   "SPE": 68
+  },
+  "Drowzee": {
+   "HP": 60,
+   "ATK": 48,
+   "DEF": 45,
+   "SPA": 43,
+   "SPD": 90,
+   "SPE": 42
+  },
+  "Druddigon": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 90,
+   "SPA": 60,
+   "SPD": 90,
+   "SPE": 41
+  },
+  "Ducklett": {
+   "HP": 62,
+   "ATK": 44,
+   "DEF": 50,
+   "SPA": 44,
+   "SPD": 50,
+   "SPE": 55
+  },
+  "Dudunsparce": {
+   "HP": 125,
+   "ATK": 100,
+   "DEF": 80,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 55
+  },
+  "Dugtrio": {
+   "HP": 35,
+   "ATK": 100,
+   "DEF": 50,
+   "SPA": 50,
+   "SPD": 70,
+   "SPE": 120
+  },
+  "Dugtrio-A": {
+   "HP": 35,
+   "ATK": 110,
+   "DEF": 60,
+   "SPA": 50,
+   "SPD": 70,
+   "SPE": 110
+  },
+  "Dugtrio-Alola": {
+   "HP": 35,
+   "ATK": 110,
+   "DEF": 60,
+   "SPA": 50,
+   "SPD": 70,
+   "SPE": 110
+  },
+  "Dunsparce": {
+   "HP": 100,
+   "ATK": 70,
+   "DEF": 80,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 45
+  },
+  "Duraludon": {
+   "HP": 85,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 120,
+   "SPD": 50,
+   "SPE": 85
+  },
+  "Durant": {
+   "HP": 58,
+   "ATK": 109,
+   "DEF": 112,
+   "SPA": 48,
+   "SPD": 48,
+   "SPE": 109
+  },
+  "Dusclops": {
+   "HP": 40,
+   "ATK": 70,
+   "DEF": 130,
+   "SPA": 60,
+   "SPD": 130,
+   "SPE": 25
+  },
+  "Dusknoir": {
+   "HP": 45,
+   "ATK": 100,
+   "DEF": 135,
+   "SPA": 65,
+   "SPD": 135,
+   "SPE": 45
+  },
+  "Dustox": {
+   "HP": 80,
+   "ATK": 40,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 90,
+   "SPE": 65
+  },
+  "Dwebble": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 85,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 55
+  },
+  "Eelektross": {
+   "HP": 85,
+   "ATK": 105,
+   "DEF": 80,
+   "SPA": 115,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Eevee": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 50,
+   "SPA": 45,
+   "SPD": 65,
+   "SPE": 55
+  },
+  "Eiscue": {
+   "HP": 75,
+   "ATK": 100,
+   "DEF": 110,
+   "SPA": 45,
+   "SPD": 90,
+   "SPE": 50
+  },
+  "Ekans": {
+   "HP": 35,
+   "ATK": 60,
+   "DEF": 44,
+   "SPA": 40,
+   "SPD": 54,
+   "SPE": 55
+  },
+  "Electabuzz": {
+   "HP": 65,
+   "ATK": 83,
+   "DEF": 57,
+   "SPA": 95,
+   "SPD": 85,
+   "SPE": 105
+  },
+  "Electivire": {
+   "HP": 75,
+   "ATK": 123,
+   "DEF": 67,
+   "SPA": 95,
+   "SPD": 85,
+   "SPE": 95
+  },
+  "Electrike": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 65,
+   "SPD": 40,
+   "SPE": 65
+  },
+  "Electrode": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 70,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 150
+  },
+  "Electrode-H": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 70,
+   "SPA": 95,
+   "SPD": 80,
+   "SPE": 150
+  },
+  "Electrode-Hisui": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 70,
+   "SPA": 95,
+   "SPD": 80,
+   "SPE": 150
+  },
+  "Elekid": {
+   "HP": 45,
+   "ATK": 63,
+   "DEF": 37,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 95
+  },
+  "Elgyem": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 85,
+   "SPD": 55,
+   "SPE": 30
+  },
+  "Emboar": {
+   "HP": 110,
+   "ATK": 123,
+   "DEF": 65,
+   "SPA": 100,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Emolga": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 60,
+   "SPA": 95,
+   "SPD": 60,
+   "SPE": 103
+  },
+  "Empoleon": {
+   "HP": 84,
+   "ATK": 86,
+   "DEF": 88,
+   "SPA": 111,
+   "SPD": 101,
+   "SPE": 60
+  },
+  "Enamorus-I": {
+   "HP": 74,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 135,
+   "SPD": 80,
+   "SPE": 106
+  },
+  "Enamorus-T": {
+   "HP": 74,
+   "ATK": 115,
+   "DEF": 110,
+   "SPA": 135,
+   "SPD": 100,
+   "SPE": 46
+  },
+  "Entei": {
+   "HP": 115,
+   "ATK": 115,
+   "DEF": 85,
+   "SPA": 90,
+   "SPD": 75,
+   "SPE": 100
+  },
+  "Escavalier": {
+   "HP": 70,
+   "ATK": 135,
+   "DEF": 105,
+   "SPA": 60,
+   "SPD": 105,
+   "SPE": 20
+  },
+  "Espathra": {
+   "HP": 95,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 101,
+   "SPD": 60,
+   "SPE": 105
+  },
+  "Espeon": {
+   "HP": 65,
+   "ATK": 65,
+   "DEF": 60,
+   "SPA": 130,
+   "SPD": 95,
+   "SPE": 110
+  },
+  "Espurr": {
+   "HP": 62,
+   "ATK": 48,
+   "DEF": 54,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 68
+  },
+  "Eternatus": {
+   "HP": 140,
+   "ATK": 85,
+   "DEF": 95,
+   "SPA": 145,
+   "SPD": 95,
+   "SPE": 130
+  },
+  "Eternatus-Max": {
+   "HP": 140,
+   "ATK": 105,
+   "DEF": 110,
+   "SPA": 185,
+   "SPD": 110,
+   "SPE": 140
+  },
+  "Excadrill": {
+   "HP": 110,
+   "ATK": 135,
+   "DEF": 60,
+   "SPA": 50,
+   "SPD": 65,
+   "SPE": 88
+  },
+  "Exeggcute": {
+   "HP": 60,
+   "ATK": 40,
+   "DEF": 80,
+   "SPA": 60,
+   "SPD": 45,
+   "SPE": 40
+  },
+  "Exeggutor": {
+   "HP": 95,
+   "ATK": 95,
+   "DEF": 85,
+   "SPA": 125,
+   "SPD": 75,
+   "SPE": 55
+  },
+  "Exeggutor-A": {
+   "HP": 95,
+   "ATK": 105,
+   "DEF": 85,
+   "SPA": 125,
+   "SPD": 75,
+   "SPE": 45
+  },
+  "Exeggutor-Alola": {
+   "HP": 95,
+   "ATK": 105,
+   "DEF": 85,
+   "SPA": 125,
+   "SPD": 75,
+   "SPE": 45
+  },
+  "Exploud": {
+   "HP": 104,
+   "ATK": 81,
+   "DEF": 63,
+   "SPA": 91,
+   "SPD": 73,
+   "SPE": 73
+  },
+  "Falinks": {
+   "HP": 75,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 75
+  },
+  "Farfetch'd": {
+   "HP": 75,
+   "ATK": 90,
+   "DEF": 70,
+   "SPA": 58,
+   "SPD": 77,
+   "SPE": 65
+  },
+  "Farfetch'd-G": {
+   "HP": 52,
+   "ATK": 95,
+   "DEF": 55,
+   "SPA": 58,
+   "SPD": 62,
+   "SPE": 55
+  },
+  "Farfetch'd-Galar": {
+   "HP": 52,
+   "ATK": 95,
+   "DEF": 55,
+   "SPA": 58,
+   "SPD": 62,
+   "SPE": 55
+  },
+  "Farigiraf": {
+   "HP": 120,
+   "ATK": 90,
+   "DEF": 70,
+   "SPA": 110,
+   "SPD": 70,
+   "SPE": 60
+  },
+  "Fearow": {
+   "HP": 65,
+   "ATK": 100,
+   "DEF": 65,
+   "SPA": 61,
+   "SPD": 61,
+   "SPE": 115
+  },
+  "Feebas": {
+   "HP": 20,
+   "ATK": 15,
+   "DEF": 20,
+   "SPA": 10,
+   "SPD": 55,
+   "SPE": 80
+  },
+  "Feebas-Sevii": {
+   "HP": 20,
+   "ATK": 15,
+   "DEF": 20,
+   "SPA": 10,
+   "SPD": 55,
+   "SPE": 80
+  },
+  "Fennekin": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 62,
+   "SPD": 60,
+   "SPE": 60
+  },
+  "Feraligatr": {
+   "HP": 85,
+   "ATK": 105,
+   "DEF": 100,
+   "SPA": 79,
+   "SPD": 83,
+   "SPE": 78
+  },
+  "Ferroseed": {
+   "HP": 44,
+   "ATK": 50,
+   "DEF": 91,
+   "SPA": 24,
+   "SPD": 86,
+   "SPE": 10
+  },
+  "Ferrothorn": {
+   "HP": 74,
+   "ATK": 94,
+   "DEF": 131,
+   "SPA": 54,
+   "SPD": 116,
+   "SPE": 20
+  },
+  "Fezandipiti": {
+   "HP": 88,
+   "ATK": 70,
+   "DEF": 82,
+   "SPA": 91,
+   "SPD": 125,
+   "SPE": 99
+  },
+  "Fidough": {
+   "HP": 37,
+   "ATK": 55,
+   "DEF": 70,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 65
+  },
+  "Finizen": {
+   "HP": 70,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 45,
+   "SPD": 40,
+   "SPE": 75
+  },
+  "Finneon": {
+   "HP": 49,
+   "ATK": 49,
+   "DEF": 56,
+   "SPA": 49,
+   "SPD": 61,
+   "SPE": 66
+  },
+  "Flabébé": {
+   "HP": 44,
+   "ATK": 38,
+   "DEF": 39,
+   "SPA": 61,
+   "SPD": 79,
+   "SPE": 42
+  },
+  "Flamigo": {
+   "HP": 92,
+   "ATK": 115,
+   "DEF": 74,
+   "SPA": 75,
+   "SPD": 74,
+   "SPE": 90
+  },
+  "Flapple-Mega": {
+   "HP": 70,
+   "ATK": 145,
+   "DEF": 90,
+   "SPA": 135,
+   "SPD": 70,
+   "SPE": 105
+  },
+  "Flareon": {
+   "HP": 65,
+   "ATK": 130,
+   "DEF": 70,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 95
+  },
+  "Fletchling": {
+   "HP": 45,
+   "ATK": 50,
+   "DEF": 43,
+   "SPA": 40,
+   "SPD": 38,
+   "SPE": 62
+  },
+  "Flittle": {
+   "HP": 30,
+   "ATK": 35,
+   "DEF": 30,
+   "SPA": 55,
+   "SPD": 30,
+   "SPE": 75
+  },
+  "Floatzel": {
+   "HP": 85,
+   "ATK": 90,
+   "DEF": 55,
+   "SPA": 95,
+   "SPD": 50,
+   "SPE": 115
+  },
+  "Floette-Eternal": {
+   "HP": 74,
+   "ATK": 65,
+   "DEF": 67,
+   "SPA": 125,
+   "SPD": 128,
+   "SPE": 92
+  },
+  "Florges": {
+   "HP": 78,
+   "ATK": 65,
+   "DEF": 68,
+   "SPA": 112,
+   "SPD": 154,
+   "SPE": 75
+  },
+  "Flutter Mane": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 135,
+   "SPD": 135,
+   "SPE": 135
+  },
+  "Flygon": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 80,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 100
+  },
+  "Fomantis": {
+   "HP": 40,
+   "ATK": 55,
+   "DEF": 35,
+   "SPA": 50,
+   "SPD": 35,
+   "SPE": 35
+  },
+  "Foongus": {
+   "HP": 69,
+   "ATK": 55,
+   "DEF": 45,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 15
+  },
+  "Forretress": {
+   "HP": 75,
+   "ATK": 90,
+   "DEF": 140,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 40
+  },
+  "Frillish": {
+   "HP": 55,
+   "ATK": 40,
+   "DEF": 50,
+   "SPA": 65,
+   "SPD": 85,
+   "SPE": 40
+  },
+  "Froakie": {
+   "HP": 41,
+   "ATK": 56,
+   "DEF": 40,
+   "SPA": 62,
+   "SPD": 44,
+   "SPE": 71
+  },
+  "Frogadier": {
+   "HP": 54,
+   "ATK": 63,
+   "DEF": 52,
+   "SPA": 83,
+   "SPD": 56,
+   "SPE": 97
+  },
+  "Froslass": {
+   "HP": 70,
+   "ATK": 95,
+   "DEF": 70,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 110
+  },
+  "Frosmoth": {
+   "HP": 70,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 125,
+   "SPD": 90,
+   "SPE": 65
+  },
+  "Fuecoco": {
+   "HP": 67,
+   "ATK": 45,
+   "DEF": 59,
+   "SPA": 63,
+   "SPD": 40,
+   "SPE": 36
+  },
+  "Furfrou": {
+   "HP": 75,
+   "ATK": 90,
+   "DEF": 60,
+   "SPA": 65,
+   "SPD": 90,
+   "SPE": 102
+  },
+  "Furret": {
+   "HP": 85,
+   "ATK": 86,
+   "DEF": 64,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 90
+  },
+  "Gabite": {
+   "HP": 68,
+   "ATK": 90,
+   "DEF": 65,
+   "SPA": 50,
+   "SPD": 55,
+   "SPE": 82
+  },
+  "Gallade-Mega": {
+   "HP": 68,
+   "ATK": 165,
+   "DEF": 95,
+   "SPA": 65,
+   "SPD": 115,
+   "SPE": 110
+  },
+  "Galvantula": {
+   "HP": 70,
+   "ATK": 77,
+   "DEF": 60,
+   "SPA": 97,
+   "SPD": 60,
+   "SPE": 108
+  },
+  "Garbodor": {
+   "HP": 80,
+   "ATK": 115,
+   "DEF": 82,
+   "SPA": 60,
+   "SPD": 82,
+   "SPE": 60
+  },
+  "Garbodor-Mega": {
+   "HP": 80,
+   "ATK": 135,
+   "DEF": 105,
+   "SPA": 105,
+   "SPD": 105,
+   "SPE": 75
+  },
+  "Garchomp": {
+   "HP": 108,
+   "ATK": 130,
+   "DEF": 95,
+   "SPA": 80,
+   "SPD": 85,
+   "SPE": 102
+  },
+  "Garchomp-Mega": {
+   "HP": 108,
+   "ATK": 170,
+   "DEF": 105,
+   "SPA": 120,
+   "SPD": 95,
+   "SPE": 102
+  },
+  "Gardevoir": {
+   "HP": 68,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 125,
+   "SPD": 115,
+   "SPE": 80
+  },
+  "Gardevoir-Mega": {
+   "HP": 68,
+   "ATK": 85,
+   "DEF": 65,
+   "SPA": 165,
+   "SPD": 135,
+   "SPE": 100
+  },
+  "Garganacl": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 130,
+   "SPA": 45,
+   "SPD": 90,
+   "SPE": 35
+  },
+  "Gastly": {
+   "HP": 30,
+   "ATK": 35,
+   "DEF": 30,
+   "SPA": 100,
+   "SPD": 35,
+   "SPE": 80
+  },
+  "Gastrodon": {
+   "HP": 111,
+   "ATK": 83,
+   "DEF": 68,
+   "SPA": 92,
+   "SPD": 82,
+   "SPE": 39
+  },
+  "Genesect": {
+   "HP": 71,
+   "ATK": 120,
+   "DEF": 95,
+   "SPA": 120,
+   "SPD": 95,
+   "SPE": 99
+  },
+  "Genesect-Douse": {
+   "HP": 71,
+   "ATK": 120,
+   "DEF": 95,
+   "SPA": 120,
+   "SPD": 95,
+   "SPE": 99
+  },
+  "Gengar": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 60,
+   "SPA": 130,
+   "SPD": 75,
+   "SPE": 110
+  },
+  "Gengar-Mega": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 80,
+   "SPA": 170,
+   "SPD": 95,
+   "SPE": 130
+  },
+  "Geodude": {
+   "HP": 40,
+   "ATK": 80,
+   "DEF": 100,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 20
+  },
+  "Geodude-A": {
+   "HP": 40,
+   "ATK": 80,
+   "DEF": 100,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 20
+  },
+  "Geodude-Alola": {
+   "HP": 40,
+   "ATK": 80,
+   "DEF": 100,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 20
+  },
+  "Gholdengo": {
+   "HP": 87,
+   "ATK": 60,
+   "DEF": 95,
+   "SPA": 133,
+   "SPD": 91,
+   "SPE": 84
+  },
+  "Gigalith": {
+   "HP": 85,
+   "ATK": 135,
+   "DEF": 130,
+   "SPA": 60,
+   "SPD": 80,
+   "SPE": 25
+  },
+  "Gimmighoul": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 70,
+   "SPA": 75,
+   "SPD": 70,
+   "SPE": 10
+  },
+  "Girafarig": {
+   "HP": 70,
+   "ATK": 80,
+   "DEF": 65,
+   "SPA": 90,
+   "SPD": 65,
+   "SPE": 85
+  },
+  "Giratina": {
+   "HP": 150,
+   "ATK": 100,
+   "DEF": 120,
+   "SPA": 100,
+   "SPD": 120,
+   "SPE": 90
+  },
+  "Giratina-O": {
+   "HP": 150,
+   "ATK": 120,
+   "DEF": 100,
+   "SPA": 120,
+   "SPD": 100,
+   "SPE": 90
+  },
+  "Glaceon": {
+   "HP": 80,
+   "ATK": 45,
+   "DEF": 100,
+   "SPA": 130,
+   "SPD": 95,
+   "SPE": 75
+  },
+  "Glalie": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 80
+  },
+  "Glalie-Mega": {
+   "HP": 80,
+   "ATK": 135,
+   "DEF": 80,
+   "SPA": 105,
+   "SPD": 80,
+   "SPE": 100
+  },
+  "Glameow": {
+   "HP": 49,
+   "ATK": 55,
+   "DEF": 42,
+   "SPA": 42,
+   "SPD": 37,
+   "SPE": 85
+  },
+  "Glastrier": {
+   "HP": 100,
+   "ATK": 145,
+   "DEF": 130,
+   "SPA": 65,
+   "SPD": 110,
+   "SPE": 30
+  },
+  "Gligar": {
+   "HP": 65,
+   "ATK": 75,
+   "DEF": 105,
+   "SPA": 35,
+   "SPD": 65,
+   "SPE": 85
+  },
+  "Glimmet": {
+   "HP": 48,
+   "ATK": 35,
+   "DEF": 42,
+   "SPA": 105,
+   "SPD": 60,
+   "SPE": 60
+  },
+  "Glimmora": {
+   "HP": 83,
+   "ATK": 55,
+   "DEF": 90,
+   "SPA": 130,
+   "SPD": 81,
+   "SPE": 86
+  },
+  "Gliscor": {
+   "HP": 75,
+   "ATK": 95,
+   "DEF": 125,
+   "SPA": 45,
+   "SPD": 75,
+   "SPE": 95
+  },
+  "Golbat": {
+   "HP": 75,
+   "ATK": 80,
+   "DEF": 70,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 90
+  },
+  "Goldeen": {
+   "HP": 45,
+   "ATK": 67,
+   "DEF": 60,
+   "SPA": 35,
+   "SPD": 50,
+   "SPE": 63
+  },
+  "Golduck": {
+   "HP": 80,
+   "ATK": 82,
+   "DEF": 78,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 100
+  },
+  "Golem": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 130,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Golett": {
+   "HP": 59,
+   "ATK": 74,
+   "DEF": 50,
+   "SPA": 35,
+   "SPD": 50,
+   "SPE": 35
+  },
+  "Golisopod": {
+   "HP": 75,
+   "ATK": 125,
+   "DEF": 140,
+   "SPA": 60,
+   "SPD": 90,
+   "SPE": 40
+  },
+  "Golurk": {
+   "HP": 100,
+   "ATK": 124,
+   "DEF": 90,
+   "SPA": 55,
+   "SPD": 90,
+   "SPE": 55
+  },
+  "Goodra": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 110,
+   "SPD": 150,
+   "SPE": 80
+  },
+  "Goodra-H": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 110,
+   "SPD": 150,
+   "SPE": 60
+  },
+  "Goodra-Hisui": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 110,
+   "SPD": 150,
+   "SPE": 60
+  },
+  "Gorebyss": {
+   "HP": 55,
+   "ATK": 84,
+   "DEF": 105,
+   "SPA": 104,
+   "SPD": 75,
+   "SPE": 52
+  },
+  "Gossifleur": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 60,
+   "SPE": 10
+  },
+  "Gothita": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Gothitelle": {
+   "HP": 70,
+   "ATK": 55,
+   "DEF": 95,
+   "SPA": 95,
+   "SPD": 110,
+   "SPE": 65
+  },
+  "Gouging Fire": {
+   "HP": 105,
+   "ATK": 115,
+   "DEF": 121,
+   "SPA": 65,
+   "SPD": 93,
+   "SPE": 91
+  },
+  "Gourgeist-Su": {
+   "HP": 65,
+   "ATK": 58,
+   "DEF": 122,
+   "SPA": 90,
+   "SPD": 75,
+   "SPE": 84
+  },
+  "Granbull": {
+   "HP": 100,
+   "ATK": 120,
+   "DEF": 75,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 45
+  },
+  "Grapploct": {
+   "HP": 80,
+   "ATK": 118,
+   "DEF": 90,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 42
+  },
+  "Graveler": {
+   "HP": 55,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Graveler-Alola": {
+   "HP": 55,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Great Tusk": {
+   "HP": 115,
+   "ATK": 131,
+   "DEF": 131,
+   "SPA": 53,
+   "SPD": 53,
+   "SPE": 87
+  },
+  "Greavard": {
+   "HP": 50,
+   "ATK": 61,
+   "DEF": 60,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 34
+  },
+  "Greedent": {
+   "HP": 120,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 55,
+   "SPD": 75,
+   "SPE": 20
+  },
+  "Greninja": {
+   "HP": 72,
+   "ATK": 95,
+   "DEF": 67,
+   "SPA": 103,
+   "SPD": 71,
+   "SPE": 122
+  },
+  "Greninja-Ash": {
+   "HP": 72,
+   "ATK": 145,
+   "DEF": 67,
+   "SPA": 153,
+   "SPD": 71,
+   "SPE": 132
+  },
+  "Grimer": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 25
+  },
+  "Grimer-Alola": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 25
+  },
+  "Grimmsnarl": {
+   "HP": 95,
+   "ATK": 120,
+   "DEF": 65,
+   "SPA": 95,
+   "SPD": 75,
+   "SPE": 60
+  },
+  "Grookey": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 65
+  },
+  "Groudon": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 140,
+   "SPA": 100,
+   "SPD": 90,
+   "SPE": 90
+  },
+  "Groudon-P": {
+   "HP": 100,
+   "ATK": 180,
+   "DEF": 160,
+   "SPA": 150,
+   "SPD": 90,
+   "SPE": 90
+  },
+  "Grovyle": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 45,
+   "SPA": 85,
+   "SPD": 65,
+   "SPE": 95
+  },
+  "Growlithe": {
+   "HP": 55,
+   "ATK": 70,
+   "DEF": 45,
+   "SPA": 70,
+   "SPD": 50,
+   "SPE": 60
+  },
+  "Growlithe-Hisui": {
+   "HP": 60,
+   "ATK": 75,
+   "DEF": 45,
+   "SPA": 65,
+   "SPD": 50,
+   "SPE": 55
+  },
+  "Grubbin": {
+   "HP": 47,
+   "ATK": 62,
+   "DEF": 45,
+   "SPA": 55,
+   "SPD": 45,
+   "SPE": 46
+  },
+  "Grumpig": {
+   "HP": 90,
+   "ATK": 45,
+   "DEF": 65,
+   "SPA": 90,
+   "SPD": 110,
+   "SPE": 80
+  },
+  "Gulpin": {
+   "HP": 70,
+   "ATK": 43,
+   "DEF": 53,
+   "SPA": 43,
+   "SPD": 53,
+   "SPE": 40
+  },
+  "Gumshoos": {
+   "HP": 98,
+   "ATK": 110,
+   "DEF": 60,
+   "SPA": 55,
+   "SPD": 60,
+   "SPE": 45
+  },
+  "Guzzlord": {
+   "HP": 203,
+   "ATK": 101,
+   "DEF": 73,
+   "SPA": 97,
+   "SPD": 73,
+   "SPE": 23
+  },
+  "Gyarados": {
+   "HP": 95,
+   "ATK": 125,
+   "DEF": 79,
+   "SPA": 60,
+   "SPD": 100,
+   "SPE": 81
+  },
+  "Gyarados-Mega": {
+   "HP": 95,
+   "ATK": 155,
+   "DEF": 109,
+   "SPA": 70,
+   "SPD": 130,
+   "SPE": 81
+  },
+  "Hariyama": {
+   "HP": 144,
+   "ATK": 120,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 60,
+   "SPE": 50
+  },
+  "Hatenna": {
+   "HP": 42,
+   "ATK": 30,
+   "DEF": 45,
+   "SPA": 56,
+   "SPD": 53,
+   "SPE": 39
+  },
+  "Hatterene": {
+   "HP": 57,
+   "ATK": 90,
+   "DEF": 95,
+   "SPA": 136,
+   "SPD": 103,
+   "SPE": 29
+  },
+  "Haunter": {
+   "HP": 45,
+   "ATK": 50,
+   "DEF": 45,
+   "SPA": 115,
+   "SPD": 55,
+   "SPE": 95
+  },
+  "Hawlucha": {
+   "HP": 78,
+   "ATK": 92,
+   "DEF": 75,
+   "SPA": 74,
+   "SPD": 63,
+   "SPE": 118
+  },
+  "Haxorus": {
+   "HP": 76,
+   "ATK": 147,
+   "DEF": 90,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 97
+  },
+  "Heatmor": {
+   "HP": 85,
+   "ATK": 90,
+   "DEF": 66,
+   "SPA": 105,
+   "SPD": 66,
+   "SPE": 100
+  },
+  "Heatran": {
+   "HP": 91,
+   "ATK": 90,
+   "DEF": 106,
+   "SPA": 130,
+   "SPD": 106,
+   "SPE": 77
+  },
+  "Heliolisk": {
+   "HP": 62,
+   "ATK": 55,
+   "DEF": 52,
+   "SPA": 109,
+   "SPD": 94,
+   "SPE": 109
+  },
+  "Helioptile": {
+   "HP": 44,
+   "ATK": 38,
+   "DEF": 33,
+   "SPA": 61,
+   "SPD": 43,
+   "SPE": 70
+  },
+  "Heracross": {
+   "HP": 80,
+   "ATK": 125,
+   "DEF": 75,
+   "SPA": 40,
+   "SPD": 95,
+   "SPE": 85
+  },
+  "Heracross-Mega": {
+   "HP": 80,
+   "ATK": 185,
+   "DEF": 115,
+   "SPA": 40,
+   "SPD": 105,
+   "SPE": 75
+  },
+  "Hippopotas": {
+   "HP": 68,
+   "ATK": 72,
+   "DEF": 78,
+   "SPA": 38,
+   "SPD": 42,
+   "SPE": 32
+  },
+  "Hippowdon": {
+   "HP": 108,
+   "ATK": 112,
+   "DEF": 118,
+   "SPA": 68,
+   "SPD": 72,
+   "SPE": 47
+  },
+  "Hitmonchan": {
+   "HP": 50,
+   "ATK": 115,
+   "DEF": 79,
+   "SPA": 35,
+   "SPD": 110,
+   "SPE": 76
+  },
+  "Hitmonlee": {
+   "HP": 50,
+   "ATK": 120,
+   "DEF": 53,
+   "SPA": 35,
+   "SPD": 110,
+   "SPE": 87
+  },
+  "Hitmontop": {
+   "HP": 50,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 35,
+   "SPD": 110,
+   "SPE": 70
+  },
+  "Ho-Oh": {
+   "HP": 106,
+   "ATK": 130,
+   "DEF": 90,
+   "SPA": 110,
+   "SPD": 154,
+   "SPE": 90
+  },
+  "Honchkrow": {
+   "HP": 100,
+   "ATK": 125,
+   "DEF": 52,
+   "SPA": 105,
+   "SPD": 52,
+   "SPE": 96
+  },
+  "Hoopa": {
+   "HP": 80,
+   "ATK": 110,
+   "DEF": 60,
+   "SPA": 150,
+   "SPD": 130,
+   "SPE": 70
+  },
+  "Hoopa-U": {
+   "HP": 80,
+   "ATK": 160,
+   "DEF": 60,
+   "SPA": 170,
+   "SPD": 130,
+   "SPE": 80
+  },
+  "Hoothoot": {
+   "HP": 60,
+   "ATK": 30,
+   "DEF": 30,
+   "SPA": 36,
+   "SPD": 56,
+   "SPE": 50
+  },
+  "Hoppip": {
+   "HP": 35,
+   "ATK": 35,
+   "DEF": 40,
+   "SPA": 35,
+   "SPD": 55,
+   "SPE": 50
+  },
+  "Horsea": {
+   "HP": 30,
+   "ATK": 40,
+   "DEF": 70,
+   "SPA": 70,
+   "SPD": 25,
+   "SPE": 60
+  },
+  "Houndoom": {
+   "HP": 75,
+   "ATK": 90,
+   "DEF": 50,
+   "SPA": 110,
+   "SPD": 80,
+   "SPE": 95
+  },
+  "Houndoom-Mega": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 90,
+   "SPA": 140,
+   "SPD": 90,
+   "SPE": 115
+  },
+  "Houndour": {
+   "HP": 45,
+   "ATK": 60,
+   "DEF": 30,
+   "SPA": 80,
+   "SPD": 50,
+   "SPE": 65
+  },
+  "Houndstone": {
+   "HP": 72,
+   "ATK": 101,
+   "DEF": 100,
+   "SPA": 50,
+   "SPD": 97,
+   "SPE": 68
+  },
+  "Huntail": {
+   "HP": 55,
+   "ATK": 104,
+   "DEF": 105,
+   "SPA": 94,
+   "SPD": 75,
+   "SPE": 52
+  },
+  "Hydrapple": {
+   "HP": 106,
+   "ATK": 80,
+   "DEF": 110,
+   "SPA": 120,
+   "SPD": 80,
+   "SPE": 44
+  },
+  "Hydreigon": {
+   "HP": 92,
+   "ATK": 105,
+   "DEF": 90,
+   "SPA": 125,
+   "SPD": 90,
+   "SPE": 98
+  },
+  "Hypno": {
+   "HP": 85,
+   "ATK": 73,
+   "DEF": 70,
+   "SPA": 73,
+   "SPD": 115,
+   "SPE": 67
+  },
+  "Illumise": {
+   "HP": 85,
+   "ATK": 90,
+   "DEF": 75,
+   "SPA": 47,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Impidimp": {
+   "HP": 45,
+   "ATK": 45,
+   "DEF": 30,
+   "SPA": 55,
+   "SPD": 40,
+   "SPE": 50
+  },
+  "Incineroar": {
+   "HP": 95,
+   "ATK": 115,
+   "DEF": 90,
+   "SPA": 80,
+   "SPD": 90,
+   "SPE": 60
+  },
+  "Indeedee": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 55,
+   "SPA": 105,
+   "SPD": 95,
+   "SPE": 95
+  },
+  "Indeedee-F": {
+   "HP": 70,
+   "ATK": 55,
+   "DEF": 65,
+   "SPA": 95,
+   "SPD": 105,
+   "SPE": 85
+  },
+  "Indeedee-M": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 55,
+   "SPA": 105,
+   "SPD": 95,
+   "SPE": 95
+  },
+  "Infernape": {
+   "HP": 76,
+   "ATK": 110,
+   "DEF": 71,
+   "SPA": 110,
+   "SPD": 71,
+   "SPE": 113
+  },
+  "Inkay": {
+   "HP": 53,
+   "ATK": 54,
+   "DEF": 53,
+   "SPA": 37,
+   "SPD": 46,
+   "SPE": 45
+  },
+  "Inteleon": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 65,
+   "SPA": 125,
+   "SPD": 65,
+   "SPE": 120
+  },
+  "Iron Boulder": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 80,
+   "SPA": 68,
+   "SPD": 108,
+   "SPE": 124
+  },
+  "Iron Bundle": {
+   "HP": 56,
+   "ATK": 80,
+   "DEF": 114,
+   "SPA": 124,
+   "SPD": 60,
+   "SPE": 136
+  },
+  "Iron Crown": {
+   "HP": 90,
+   "ATK": 72,
+   "DEF": 100,
+   "SPA": 122,
+   "SPD": 108,
+   "SPE": 98
+  },
+  "Iron Hands": {
+   "HP": 154,
+   "ATK": 140,
+   "DEF": 108,
+   "SPA": 50,
+   "SPD": 68,
+   "SPE": 50
+  },
+  "Iron Jugulis": {
+   "HP": 94,
+   "ATK": 80,
+   "DEF": 86,
+   "SPA": 122,
+   "SPD": 80,
+   "SPE": 108
+  },
+  "Iron Leaves": {
+   "HP": 90,
+   "ATK": 130,
+   "DEF": 88,
+   "SPA": 70,
+   "SPD": 108,
+   "SPE": 104
+  },
+  "Iron Moth": {
+   "HP": 80,
+   "ATK": 70,
+   "DEF": 60,
+   "SPA": 140,
+   "SPD": 110,
+   "SPE": 110
+  },
+  "Iron Thorns": {
+   "HP": 100,
+   "ATK": 134,
+   "DEF": 110,
+   "SPA": 70,
+   "SPD": 84,
+   "SPE": 72
+  },
+  "Iron Treads": {
+   "HP": 90,
+   "ATK": 112,
+   "DEF": 120,
+   "SPA": 72,
+   "SPD": 70,
+   "SPE": 106
+  },
+  "Iron Valiant": {
+   "HP": 74,
+   "ATK": 130,
+   "DEF": 90,
+   "SPA": 120,
+   "SPD": 60,
+   "SPE": 116
+  },
+  "Ivysaur": {
+   "HP": 60,
+   "ATK": 62,
+   "DEF": 63,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 60
+  },
+  "Jellicent": {
+   "HP": 100,
+   "ATK": 60,
+   "DEF": 70,
+   "SPA": 85,
+   "SPD": 105,
+   "SPE": 60
+  },
+  "Jigglypuff": {
+   "HP": 115,
+   "ATK": 45,
+   "DEF": 20,
+   "SPA": 45,
+   "SPD": 25,
+   "SPE": 20
+  },
+  "Jirachi": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Jolteon": {
+   "HP": 65,
+   "ATK": 65,
+   "DEF": 60,
+   "SPA": 110,
+   "SPD": 95,
+   "SPE": 130
+  },
+  "Joltik": {
+   "HP": 50,
+   "ATK": 47,
+   "DEF": 50,
+   "SPA": 57,
+   "SPD": 50,
+   "SPE": 65
+  },
+  "Jumpluff": {
+   "HP": 75,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 35,
+   "SPD": 95,
+   "SPE": 110
+  },
+  "Jynx": {
+   "HP": 65,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 115,
+   "SPD": 95,
+   "SPE": 100
+  },
+  "Kabuto": {
+   "HP": 30,
+   "ATK": 80,
+   "DEF": 90,
+   "SPA": 55,
+   "SPD": 45,
+   "SPE": 55
+  },
+  "Kabutops": {
+   "HP": 60,
+   "ATK": 115,
+   "DEF": 105,
+   "SPA": 65,
+   "SPD": 70,
+   "SPE": 80
+  },
+  "Kangaskhan": {
+   "HP": 105,
+   "ATK": 95,
+   "DEF": 80,
+   "SPA": 40,
+   "SPD": 80,
+   "SPE": 90
+  },
+  "Kangaskhan-Mega": {
+   "HP": 105,
+   "ATK": 125,
+   "DEF": 100,
+   "SPA": 60,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Karrablast": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 45,
+   "SPA": 40,
+   "SPD": 45,
+   "SPE": 60
+  },
+  "Kartana": {
+   "HP": 59,
+   "ATK": 181,
+   "DEF": 131,
+   "SPA": 59,
+   "SPD": 31,
+   "SPE": 109
+  },
+  "Kecleon": {
+   "HP": 85,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 120,
+   "SPE": 40
+  },
+  "Keldeo": {
+   "HP": 91,
+   "ATK": 72,
+   "DEF": 90,
+   "SPA": 129,
+   "SPD": 90,
+   "SPE": 108
+  },
+  "Kilowattrel": {
+   "HP": 70,
+   "ATK": 70,
+   "DEF": 60,
+   "SPA": 105,
+   "SPD": 60,
+   "SPE": 125
+  },
+  "Kingambit": {
+   "HP": 100,
+   "ATK": 135,
+   "DEF": 120,
+   "SPA": 60,
+   "SPD": 85,
+   "SPE": 50
+  },
+  "Kingdra": {
+   "HP": 75,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 95,
+   "SPD": 95,
+   "SPE": 85
+  },
+  "Kingler": {
+   "HP": 55,
+   "ATK": 130,
+   "DEF": 115,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Kingler-Mega": {
+   "HP": 55,
+   "ATK": 150,
+   "DEF": 130,
+   "SPA": 50,
+   "SPD": 75,
+   "SPE": 110
+  },
+  "Kirlia": {
+   "HP": 38,
+   "ATK": 35,
+   "DEF": 35,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 50
+  },
+  "Klawf": {
+   "HP": 70,
+   "ATK": 100,
+   "DEF": 115,
+   "SPA": 35,
+   "SPD": 55,
+   "SPE": 75
+  },
+  "Kleavor": {
+   "HP": 85,
+   "ATK": 135,
+   "DEF": 95,
+   "SPA": 30,
+   "SPD": 70,
+   "SPE": 85
+  },
+  "Klefki": {
+   "HP": 57,
+   "ATK": 80,
+   "DEF": 91,
+   "SPA": 80,
+   "SPD": 87,
+   "SPE": 75
+  },
+  "Klink": {
+   "HP": 40,
+   "ATK": 55,
+   "DEF": 70,
+   "SPA": 45,
+   "SPD": 60,
+   "SPE": 30
+  },
+  "Klinklang": {
+   "HP": 60,
+   "ATK": 100,
+   "DEF": 115,
+   "SPA": 70,
+   "SPD": 85,
+   "SPE": 90
+  },
+  "Koffing": {
+   "HP": 40,
+   "ATK": 65,
+   "DEF": 95,
+   "SPA": 60,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Komala": {
+   "HP": 75,
+   "ATK": 115,
+   "DEF": 65,
+   "SPA": 75,
+   "SPD": 95,
+   "SPE": 65
+  },
+  "Kommo-o": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 125,
+   "SPA": 100,
+   "SPD": 105,
+   "SPE": 85
+  },
+  "Koraidon": {
+   "HP": 100,
+   "ATK": 135,
+   "DEF": 115,
+   "SPA": 85,
+   "SPD": 100,
+   "SPE": 135
+  },
+  "Krabby": {
+   "HP": 30,
+   "ATK": 105,
+   "DEF": 90,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 50
+  },
+  "Kricketot": {
+   "HP": 37,
+   "ATK": 40,
+   "DEF": 41,
+   "SPA": 40,
+   "SPD": 41,
+   "SPE": 25
+  },
+  "Kricketune": {
+   "HP": 77,
+   "ATK": 95,
+   "DEF": 71,
+   "SPA": 55,
+   "SPD": 71,
+   "SPE": 80
+  },
+  "Krookodile": {
+   "HP": 95,
+   "ATK": 117,
+   "DEF": 80,
+   "SPA": 65,
+   "SPD": 70,
+   "SPE": 92
+  },
+  "Kubfu": {
+   "HP": 60,
+   "ATK": 90,
+   "DEF": 60,
+   "SPA": 53,
+   "SPD": 50,
+   "SPE": 72
+  },
+  "Kyogre": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 90,
+   "SPA": 150,
+   "SPD": 140,
+   "SPE": 90
+  },
+  "Kyogre-P": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 90,
+   "SPA": 180,
+   "SPD": 160,
+   "SPE": 90
+  },
+  "Kyurem": {
+   "HP": 125,
+   "ATK": 130,
+   "DEF": 90,
+   "SPA": 130,
+   "SPD": 90,
+   "SPE": 95
+  },
+  "Kyurem-B": {
+   "HP": 125,
+   "ATK": 170,
+   "DEF": 100,
+   "SPA": 120,
+   "SPD": 90,
+   "SPE": 95
+  },
+  "Kyurem-W": {
+   "HP": 125,
+   "ATK": 120,
+   "DEF": 90,
+   "SPA": 170,
+   "SPD": 100,
+   "SPE": 95
+  },
+  "Lampent": {
+   "HP": 60,
+   "ATK": 40,
+   "DEF": 60,
+   "SPA": 95,
+   "SPD": 60,
+   "SPE": 55
+  },
+  "Landorus-I": {
+   "HP": 89,
+   "ATK": 125,
+   "DEF": 90,
+   "SPA": 115,
+   "SPD": 80,
+   "SPE": 101
+  },
+  "Landorus-T": {
+   "HP": 89,
+   "ATK": 145,
+   "DEF": 90,
+   "SPA": 105,
+   "SPD": 80,
+   "SPE": 91
+  },
+  "Lanturn": {
+   "HP": 125,
+   "ATK": 58,
+   "DEF": 58,
+   "SPA": 76,
+   "SPD": 76,
+   "SPE": 67
+  },
+  "Lapras": {
+   "HP": 130,
+   "ATK": 85,
+   "DEF": 80,
+   "SPA": 85,
+   "SPD": 95,
+   "SPE": 60
+  },
+  "Lapras-Mega": {
+   "HP": 130,
+   "ATK": 105,
+   "DEF": 90,
+   "SPA": 115,
+   "SPD": 105,
+   "SPE": 70
+  },
+  "Latias": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 90,
+   "SPA": 110,
+   "SPD": 130,
+   "SPE": 110
+  },
+  "Latias-Mega": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 120,
+   "SPA": 140,
+   "SPD": 150,
+   "SPE": 110
+  },
+  "Latios": {
+   "HP": 80,
+   "ATK": 90,
+   "DEF": 80,
+   "SPA": 130,
+   "SPD": 110,
+   "SPE": 110
+  },
+  "Leafeon": {
+   "HP": 65,
+   "ATK": 130,
+   "DEF": 110,
+   "SPA": 60,
+   "SPD": 65,
+   "SPE": 95
+  },
+  "Leavanny": {
+   "HP": 75,
+   "ATK": 103,
+   "DEF": 80,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 92
+  },
+  "Lechonk": {
+   "HP": 54,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 35,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Ledian": {
+   "HP": 55,
+   "ATK": 90,
+   "DEF": 50,
+   "SPA": 35,
+   "SPD": 100,
+   "SPE": 85
+  },
+  "Ledyba": {
+   "HP": 40,
+   "ATK": 20,
+   "DEF": 30,
+   "SPA": 40,
+   "SPD": 80,
+   "SPE": 55
+  },
+  "Lickitung": {
+   "HP": 90,
+   "ATK": 55,
+   "DEF": 75,
+   "SPA": 60,
+   "SPD": 75,
+   "SPE": 30
+  },
+  "Liepard": {
+   "HP": 64,
+   "ATK": 98,
+   "DEF": 50,
+   "SPA": 78,
+   "SPD": 50,
+   "SPE": 106
+  },
+  "Lileep": {
+   "HP": 66,
+   "ATK": 41,
+   "DEF": 77,
+   "SPA": 61,
+   "SPD": 87,
+   "SPE": 23
+  },
+  "Lilligant": {
+   "HP": 70,
+   "ATK": 60,
+   "DEF": 75,
+   "SPA": 110,
+   "SPD": 75,
+   "SPE": 90
+  },
+  "Lilligant-H": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 50,
+   "SPD": 75,
+   "SPE": 105
+  },
+  "Lilligant-Hisui": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 50,
+   "SPD": 75,
+   "SPE": 105
+  },
+  "Lillipup": {
+   "HP": 45,
+   "ATK": 60,
+   "DEF": 45,
+   "SPA": 25,
+   "SPD": 45,
+   "SPE": 55
+  },
+  "Litleo": {
+   "HP": 62,
+   "ATK": 50,
+   "DEF": 58,
+   "SPA": 73,
+   "SPD": 54,
+   "SPE": 72
+  },
+  "Litten": {
+   "HP": 45,
+   "ATK": 65,
+   "DEF": 40,
+   "SPA": 60,
+   "SPD": 40,
+   "SPE": 70
+  },
+  "Lokix": {
+   "HP": 71,
+   "ATK": 102,
+   "DEF": 78,
+   "SPA": 52,
+   "SPD": 55,
+   "SPE": 92
+  },
+  "Lopunny": {
+   "HP": 65,
+   "ATK": 76,
+   "DEF": 84,
+   "SPA": 54,
+   "SPD": 96,
+   "SPE": 105
+  },
+  "Lopunny-Mega": {
+   "HP": 65,
+   "ATK": 136,
+   "DEF": 94,
+   "SPA": 54,
+   "SPD": 96,
+   "SPE": 135
+  },
+  "Lotad": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 30,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 30
+  },
+  "Loudred": {
+   "HP": 84,
+   "ATK": 71,
+   "DEF": 43,
+   "SPA": 71,
+   "SPD": 43,
+   "SPE": 48
+  },
+  "Lucario": {
+   "HP": 70,
+   "ATK": 110,
+   "DEF": 70,
+   "SPA": 115,
+   "SPD": 70,
+   "SPE": 90
+  },
+  "Lucario-Mega": {
+   "HP": 70,
+   "ATK": 145,
+   "DEF": 88,
+   "SPA": 140,
+   "SPD": 70,
+   "SPE": 112
+  },
+  "Ludicolo": {
+   "HP": 80,
+   "ATK": 70,
+   "DEF": 70,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Lugia": {
+   "HP": 106,
+   "ATK": 90,
+   "DEF": 130,
+   "SPA": 90,
+   "SPD": 154,
+   "SPE": 110
+  },
+  "Lumineon": {
+   "HP": 79,
+   "ATK": 59,
+   "DEF": 76,
+   "SPA": 96,
+   "SPD": 69,
+   "SPE": 101
+  },
+  "Lunala": {
+   "HP": 137,
+   "ATK": 113,
+   "DEF": 89,
+   "SPA": 137,
+   "SPD": 107,
+   "SPE": 97
+  },
+  "Lunatone": {
+   "HP": 90,
+   "ATK": 55,
+   "DEF": 65,
+   "SPA": 105,
+   "SPD": 85,
+   "SPE": 90
+  },
+  "Lurantis": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 90,
+   "SPA": 80,
+   "SPD": 90,
+   "SPE": 55
+  },
+  "Luvdisc": {
+   "HP": 43,
+   "ATK": 30,
+   "DEF": 55,
+   "SPA": 100,
+   "SPD": 65,
+   "SPE": 97
+  },
+  "Lycanroc": {
+   "HP": 75,
+   "ATK": 115,
+   "DEF": 65,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 112
+  },
+  "Lycanroc-D": {
+   "HP": 75,
+   "ATK": 117,
+   "DEF": 65,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 110
+  },
+  "Mabosstiff": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 90,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 85
+  },
+  "Machamp": {
+   "HP": 90,
+   "ATK": 130,
+   "DEF": 80,
+   "SPA": 65,
+   "SPD": 85,
+   "SPE": 55
+  },
+  "Machamp-Mega": {
+   "HP": 90,
+   "ATK": 145,
+   "DEF": 110,
+   "SPA": 65,
+   "SPD": 115,
+   "SPE": 75
+  },
+  "Machop": {
+   "HP": 70,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 35
+  },
+  "Magby": {
+   "HP": 45,
+   "ATK": 75,
+   "DEF": 37,
+   "SPA": 70,
+   "SPD": 55,
+   "SPE": 83
+  },
+  "Magcargo": {
+   "HP": 60,
+   "ATK": 50,
+   "DEF": 120,
+   "SPA": 90,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Magearna": {
+   "HP": 80,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 130,
+   "SPD": 115,
+   "SPE": 65
+  },
+  "Magearna-O": {
+   "HP": 80,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 130,
+   "SPD": 115,
+   "SPE": 65
+  },
+  "Magearna-Original": {
+   "HP": 80,
+   "ATK": 95,
+   "DEF": 115,
+   "SPA": 130,
+   "SPD": 115,
+   "SPE": 65
+  },
+  "Magikarp": {
+   "HP": 20,
+   "ATK": 10,
+   "DEF": 55,
+   "SPA": 15,
+   "SPD": 20,
+   "SPE": 80
+  },
+  "Magmar": {
+   "HP": 65,
+   "ATK": 95,
+   "DEF": 57,
+   "SPA": 100,
+   "SPD": 85,
+   "SPE": 93
+  },
+  "Magmortar": {
+   "HP": 75,
+   "ATK": 80,
+   "DEF": 67,
+   "SPA": 125,
+   "SPD": 95,
+   "SPE": 98
+  },
+  "Magnemite": {
+   "HP": 25,
+   "ATK": 35,
+   "DEF": 70,
+   "SPA": 95,
+   "SPD": 55,
+   "SPE": 45
+  },
+  "Magneton": {
+   "HP": 50,
+   "ATK": 60,
+   "DEF": 95,
+   "SPA": 120,
+   "SPD": 70,
+   "SPE": 70
+  },
+  "Magnezone": {
+   "HP": 70,
+   "ATK": 70,
+   "DEF": 115,
+   "SPA": 130,
+   "SPD": 90,
+   "SPE": 60
+  },
+  "Makuhita": {
+   "HP": 72,
+   "ATK": 60,
+   "DEF": 30,
+   "SPA": 20,
+   "SPD": 30,
+   "SPE": 25
+  },
+  "Mamoswine": {
+   "HP": 110,
+   "ATK": 130,
+   "DEF": 80,
+   "SPA": 70,
+   "SPD": 60,
+   "SPE": 80
+  },
+  "Manaphy": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Mandibuzz": {
+   "HP": 110,
+   "ATK": 65,
+   "DEF": 105,
+   "SPA": 55,
+   "SPD": 95,
+   "SPE": 80
+  },
+  "Manectric": {
+   "HP": 70,
+   "ATK": 75,
+   "DEF": 60,
+   "SPA": 105,
+   "SPD": 60,
+   "SPE": 105
+  },
+  "Manectric-Mega": {
+   "HP": 70,
+   "ATK": 75,
+   "DEF": 80,
+   "SPA": 135,
+   "SPD": 80,
+   "SPE": 135
+  },
+  "Mankey": {
+   "HP": 40,
+   "ATK": 80,
+   "DEF": 35,
+   "SPA": 35,
+   "SPD": 45,
+   "SPE": 70
+  },
+  "Mantine": {
+   "HP": 85,
+   "ATK": 40,
+   "DEF": 70,
+   "SPA": 90,
+   "SPD": 140,
+   "SPE": 70
+  },
+  "Mantine-S": {
+   "HP": 80,
+   "ATK": 30,
+   "DEF": 70,
+   "SPA": 100,
+   "SPD": 120,
+   "SPE": 95
+  },
+  "Mantine-Sevii": {
+   "HP": 80,
+   "ATK": 30,
+   "DEF": 70,
+   "SPA": 100,
+   "SPD": 120,
+   "SPE": 95
+  },
+  "Mantyke": {
+   "HP": 45,
+   "ATK": 20,
+   "DEF": 50,
+   "SPA": 60,
+   "SPD": 120,
+   "SPE": 50
+  },
+  "Mantyke-Sevii": {
+   "HP": 45,
+   "ATK": 20,
+   "DEF": 55,
+   "SPA": 70,
+   "SPD": 85,
+   "SPE": 70
+  },
+  "Maractus": {
+   "HP": 75,
+   "ATK": 106,
+   "DEF": 67,
+   "SPA": 85,
+   "SPD": 67,
+   "SPE": 60
+  },
+  "Mareanie": {
+   "HP": 50,
+   "ATK": 53,
+   "DEF": 62,
+   "SPA": 43,
+   "SPD": 52,
+   "SPE": 45
+  },
+  "Mareep": {
+   "HP": 55,
+   "ATK": 40,
+   "DEF": 40,
+   "SPA": 65,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Marill": {
+   "HP": 70,
+   "ATK": 20,
+   "DEF": 50,
+   "SPA": 20,
+   "SPD": 50,
+   "SPE": 40
+  },
+  "Marowak": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 110,
+   "SPA": 30,
+   "SPD": 80,
+   "SPE": 45
+  },
+  "Marowak-A": {
+   "HP": 60,
+   "ATK": 80,
+   "DEF": 110,
+   "SPA": 50,
+   "SPD": 80,
+   "SPE": 45
+  },
+  "Marowak-Alola": {
+   "HP": 60,
+   "ATK": 80,
+   "DEF": 110,
+   "SPA": 50,
+   "SPD": 80,
+   "SPE": 45
+  },
+  "Marshadow": {
+   "HP": 90,
+   "ATK": 125,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 90,
+   "SPE": 125
+  },
+  "Maschiff": {
+   "HP": 60,
+   "ATK": 78,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 51,
+   "SPE": 51
+  },
+  "Masquerain": {
+   "HP": 80,
+   "ATK": 60,
+   "DEF": 62,
+   "SPA": 100,
+   "SPD": 82,
+   "SPE": 80
+  },
+  "Maushold": {
+   "HP": 74,
+   "ATK": 75,
+   "DEF": 70,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 111
+  },
+  "Mawile": {
+   "HP": 50,
+   "ATK": 85,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 50
+  },
+  "Mawile-Mega": {
+   "HP": 50,
+   "ATK": 105,
+   "DEF": 125,
+   "SPA": 55,
+   "SPD": 95,
+   "SPE": 50
+  },
+  "Medicham": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 75,
+   "SPA": 60,
+   "SPD": 75,
+   "SPE": 80
+  },
+  "Medicham-Mega": {
+   "HP": 60,
+   "ATK": 100,
+   "DEF": 85,
+   "SPA": 80,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Meditite": {
+   "HP": 30,
+   "ATK": 40,
+   "DEF": 55,
+   "SPA": 40,
+   "SPD": 55,
+   "SPE": 60
+  },
+  "Meganium": {
+   "HP": 80,
+   "ATK": 82,
+   "DEF": 100,
+   "SPA": 83,
+   "SPD": 100,
+   "SPE": 80
+  },
+  "Melmetal": {
+   "HP": 135,
+   "ATK": 143,
+   "DEF": 143,
+   "SPA": 80,
+   "SPD": 65,
+   "SPE": 34
+  },
+  "Meloetta": {
+   "HP": 100,
+   "ATK": 77,
+   "DEF": 77,
+   "SPA": 128,
+   "SPD": 128,
+   "SPE": 90
+  },
+  "Meloetta-Pirouette": {
+   "HP": 100,
+   "ATK": 128,
+   "DEF": 90,
+   "SPA": 77,
+   "SPD": 77,
+   "SPE": 128
+  },
+  "Meltan": {
+   "HP": 46,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 55,
+   "SPD": 35,
+   "SPE": 34
+  },
+  "Meowscarada": {
+   "HP": 76,
+   "ATK": 110,
+   "DEF": 70,
+   "SPA": 81,
+   "SPD": 70,
+   "SPE": 123
+  },
+  "Meowth": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 35,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 90
+  },
+  "Meowth-Alola": {
+   "HP": 40,
+   "ATK": 35,
+   "DEF": 35,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 90
+  },
+  "Meowth-Galar": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 55,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 40
+  },
+  "Mesprit": {
+   "HP": 80,
+   "ATK": 105,
+   "DEF": 105,
+   "SPA": 105,
+   "SPD": 105,
+   "SPE": 80
+  },
+  "Metagross": {
+   "HP": 80,
+   "ATK": 135,
+   "DEF": 130,
+   "SPA": 95,
+   "SPD": 90,
+   "SPE": 70
+  },
+  "Metagross-Mega": {
+   "HP": 80,
+   "ATK": 145,
+   "DEF": 150,
+   "SPA": 105,
+   "SPD": 110,
+   "SPE": 110
+  },
+  "Mew": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Mewtwo": {
+   "HP": 106,
+   "ATK": 110,
+   "DEF": 90,
+   "SPA": 154,
+   "SPD": 90,
+   "SPE": 130
+  },
+  "Mewtwo-MegaX": {
+   "HP": 106,
+   "ATK": 190,
+   "DEF": 100,
+   "SPA": 154,
+   "SPD": 100,
+   "SPE": 130
+  },
+  "Mewtwo-MegaY": {
+   "HP": 106,
+   "ATK": 150,
+   "DEF": 70,
+   "SPA": 194,
+   "SPD": 120,
+   "SPE": 140
+  },
+  "Mienfoo": {
+   "HP": 45,
+   "ATK": 85,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 50,
+   "SPE": 65
+  },
+  "Mienshao": {
+   "HP": 65,
+   "ATK": 125,
+   "DEF": 60,
+   "SPA": 95,
+   "SPD": 60,
+   "SPE": 105
+  },
+  "Mightyena": {
+   "HP": 70,
+   "ATK": 95,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 70
+  },
+  "Milcery": {
+   "HP": 45,
+   "ATK": 40,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 61,
+   "SPE": 34
+  },
+  "Milotic": {
+   "HP": 95,
+   "ATK": 60,
+   "DEF": 84,
+   "SPA": 100,
+   "SPD": 125,
+   "SPE": 86
+  },
+  "Milotic-S": {
+   "HP": 95,
+   "ATK": 60,
+   "DEF": 84,
+   "SPA": 105,
+   "SPD": 125,
+   "SPE": 81
+  },
+  "Milotic-Sevii": {
+   "HP": 95,
+   "ATK": 60,
+   "DEF": 84,
+   "SPA": 105,
+   "SPD": 125,
+   "SPE": 81
+  },
+  "Miltank": {
+   "HP": 95,
+   "ATK": 85,
+   "DEF": 105,
+   "SPA": 40,
+   "SPD": 70,
+   "SPE": 100
+  },
+  "Mime Jr.": {
+   "HP": 20,
+   "ATK": 25,
+   "DEF": 45,
+   "SPA": 70,
+   "SPD": 90,
+   "SPE": 60
+  },
+  "Mimikyu": {
+   "HP": 55,
+   "ATK": 90,
+   "DEF": 80,
+   "SPA": 50,
+   "SPD": 105,
+   "SPE": 96
+  },
+  "Minccino": {
+   "HP": 55,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 75
+  },
+  "Minior": {
+   "HP": 60,
+   "ATK": 100,
+   "DEF": 60,
+   "SPA": 100,
+   "SPD": 60,
+   "SPE": 120
+  },
+  "Minun": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 75,
+   "SPA": 50,
+   "SPD": 40,
+   "SPE": 110
+  },
+  "Miraidon": {
+   "HP": 100,
+   "ATK": 85,
+   "DEF": 100,
+   "SPA": 135,
+   "SPD": 115,
+   "SPE": 135
+  },
+  "Misdreavus": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 85,
+   "SPD": 85,
+   "SPE": 85
+  },
+  "Mismagius": {
+   "HP": 70,
+   "ATK": 60,
+   "DEF": 70,
+   "SPA": 105,
+   "SPD": 105,
+   "SPE": 105
+  },
+  "Moltres": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 90,
+   "SPA": 125,
+   "SPD": 85,
+   "SPE": 90
+  },
+  "Moltres-G": {
+   "HP": 90,
+   "ATK": 85,
+   "DEF": 90,
+   "SPA": 100,
+   "SPD": 125,
+   "SPE": 90
+  },
+  "Moltres-Galar": {
+   "HP": 90,
+   "ATK": 85,
+   "DEF": 90,
+   "SPA": 100,
+   "SPD": 125,
+   "SPE": 90
+  },
+  "Morelull": {
+   "HP": 40,
+   "ATK": 35,
+   "DEF": 55,
+   "SPA": 65,
+   "SPD": 75,
+   "SPE": 15
+  },
+  "Morgrem": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 45,
+   "SPA": 75,
+   "SPD": 55,
+   "SPE": 70
+  },
+  "Morpeko": {
+   "HP": 58,
+   "ATK": 110,
+   "DEF": 58,
+   "SPA": 70,
+   "SPD": 58,
+   "SPE": 97
+  },
+  "Mr. Mime": {
+   "HP": 50,
+   "ATK": 45,
+   "DEF": 65,
+   "SPA": 100,
+   "SPD": 120,
+   "SPE": 90
+  },
+  "Mr. Mime-G": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 90,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Mr. Mime-Galar": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 90,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Mr. Rime": {
+   "HP": 80,
+   "ATK": 65,
+   "DEF": 75,
+   "SPA": 110,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Mudbray": {
+   "HP": 70,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 45
+  },
+  "Mudkip": {
+   "HP": 50,
+   "ATK": 70,
+   "DEF": 50,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 40
+  },
+  "Muk": {
+   "HP": 105,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 50
+  },
+  "Muk-A": {
+   "HP": 105,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 50
+  },
+  "Muk-Alola": {
+   "HP": 105,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 50
+  },
+  "Munchlax": {
+   "HP": 135,
+   "ATK": 85,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 85,
+   "SPE": 5
+  },
+  "Munkidori": {
+   "HP": 88,
+   "ATK": 75,
+   "DEF": 66,
+   "SPA": 130,
+   "SPD": 90,
+   "SPE": 106
+  },
+  "Munna": {
+   "HP": 76,
+   "ATK": 25,
+   "DEF": 45,
+   "SPA": 67,
+   "SPD": 55,
+   "SPE": 24
+  },
+  "Murkrow": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 42,
+   "SPA": 85,
+   "SPD": 42,
+   "SPE": 91
+  },
+  "Nacli": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 75,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 25
+  },
+  "Naganadel": {
+   "HP": 73,
+   "ATK": 73,
+   "DEF": 73,
+   "SPA": 127,
+   "SPD": 73,
+   "SPE": 121
+  },
+  "Natu": {
+   "HP": 40,
+   "ATK": 50,
+   "DEF": 45,
+   "SPA": 70,
+   "SPD": 45,
+   "SPE": 70
+  },
+  "Necrozma": {
+   "HP": 97,
+   "ATK": 107,
+   "DEF": 101,
+   "SPA": 127,
+   "SPD": 89,
+   "SPE": 79
+  },
+  "Necrozma-DM": {
+   "HP": 97,
+   "ATK": 157,
+   "DEF": 127,
+   "SPA": 113,
+   "SPD": 109,
+   "SPE": 77
+  },
+  "Necrozma-DW": {
+   "HP": 97,
+   "ATK": 113,
+   "DEF": 109,
+   "SPA": 157,
+   "SPD": 127,
+   "SPE": 77
+  },
+  "Necrozma-Ultra": {
+   "HP": 97,
+   "ATK": 167,
+   "DEF": 97,
+   "SPA": 167,
+   "SPD": 97,
+   "SPE": 129
+  },
+  "Nickit": {
+   "HP": 40,
+   "ATK": 28,
+   "DEF": 28,
+   "SPA": 47,
+   "SPD": 52,
+   "SPE": 50
+  },
+  "Nidoking": {
+   "HP": 81,
+   "ATK": 102,
+   "DEF": 77,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 85
+  },
+  "Nidoqueen": {
+   "HP": 90,
+   "ATK": 92,
+   "DEF": 87,
+   "SPA": 75,
+   "SPD": 85,
+   "SPE": 76
+  },
+  "Nidoran-F": {
+   "HP": 55,
+   "ATK": 47,
+   "DEF": 52,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 41
+  },
+  "Nidoran-M": {
+   "HP": 46,
+   "ATK": 57,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 50
+  },
+  "Nihilego": {
+   "HP": 109,
+   "ATK": 53,
+   "DEF": 47,
+   "SPA": 127,
+   "SPD": 131,
+   "SPE": 103
+  },
+  "Nincada": {
+   "HP": 31,
+   "ATK": 45,
+   "DEF": 90,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 40
+  },
+  "Ninetales": {
+   "HP": 73,
+   "ATK": 76,
+   "DEF": 75,
+   "SPA": 81,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Ninetales-A": {
+   "HP": 73,
+   "ATK": 67,
+   "DEF": 75,
+   "SPA": 81,
+   "SPD": 100,
+   "SPE": 109
+  },
+  "Ninetales-Alola": {
+   "HP": 73,
+   "ATK": 67,
+   "DEF": 75,
+   "SPA": 81,
+   "SPD": 100,
+   "SPE": 109
+  },
+  "Noctowl": {
+   "HP": 110,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 86,
+   "SPD": 96,
+   "SPE": 70
+  },
+  "Noibat": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 35,
+   "SPA": 45,
+   "SPD": 40,
+   "SPE": 55
+  },
+  "Noibat-Sevii": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 35,
+   "SPA": 30,
+   "SPD": 40,
+   "SPE": 55
+  },
+  "Noivern": {
+   "HP": 85,
+   "ATK": 70,
+   "DEF": 80,
+   "SPA": 102,
+   "SPD": 80,
+   "SPE": 123
+  },
+  "Nosepass": {
+   "HP": 30,
+   "ATK": 45,
+   "DEF": 135,
+   "SPA": 45,
+   "SPD": 90,
+   "SPE": 30
+  },
+  "Numel": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 40,
+   "SPA": 65,
+   "SPD": 45,
+   "SPE": 35
+  },
+  "Nymble": {
+   "HP": 33,
+   "ATK": 46,
+   "DEF": 40,
+   "SPA": 21,
+   "SPD": 25,
+   "SPE": 45
+  },
+  "Nymble-Sevii": {
+   "HP": 33,
+   "ATK": 46,
+   "DEF": 40,
+   "SPA": 21,
+   "SPD": 25,
+   "SPE": 45
+  },
+  "Obstagoon": {
+   "HP": 93,
+   "ATK": 90,
+   "DEF": 101,
+   "SPA": 60,
+   "SPD": 81,
+   "SPE": 95
+  },
+  "Octillery": {
+   "HP": 75,
+   "ATK": 105,
+   "DEF": 75,
+   "SPA": 105,
+   "SPD": 75,
+   "SPE": 75
+  },
+  "Oddish": {
+   "HP": 45,
+   "ATK": 50,
+   "DEF": 55,
+   "SPA": 75,
+   "SPD": 65,
+   "SPE": 30
+  },
+  "Ogerpon": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-C": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-Cornerstone": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-H": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-Hearthflame": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-W": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Ogerpon-Wellspring": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 84,
+   "SPA": 60,
+   "SPD": 96,
+   "SPE": 110
+  },
+  "Oinkologne-F": {
+   "HP": 115,
+   "ATK": 90,
+   "DEF": 70,
+   "SPA": 59,
+   "SPD": 90,
+   "SPE": 65
+  },
+  "Okidogi": {
+   "HP": 88,
+   "ATK": 128,
+   "DEF": 115,
+   "SPA": 58,
+   "SPD": 86,
+   "SPE": 80
+  },
+  "Omanyte": {
+   "HP": 35,
+   "ATK": 40,
+   "DEF": 100,
+   "SPA": 90,
+   "SPD": 55,
+   "SPE": 35
+  },
+  "Omastar": {
+   "HP": 70,
+   "ATK": 60,
+   "DEF": 125,
+   "SPA": 115,
+   "SPD": 70,
+   "SPE": 55
+  },
+  "Onix": {
+   "HP": 50,
+   "ATK": 60,
+   "DEF": 150,
+   "SPA": 30,
+   "SPD": 45,
+   "SPE": 65
+  },
+  "Oranguru": {
+   "HP": 90,
+   "ATK": 60,
+   "DEF": 110,
+   "SPA": 90,
+   "SPD": 80,
+   "SPE": 60
+  },
+  "Oricorio": {
+   "HP": 75,
+   "ATK": 70,
+   "DEF": 70,
+   "SPA": 98,
+   "SPD": 70,
+   "SPE": 93
+  },
+  "Oricorio-Sensu": {
+   "HP": 75,
+   "ATK": 70,
+   "DEF": 70,
+   "SPA": 98,
+   "SPD": 70,
+   "SPE": 93
+  },
+  "Orthworm": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 145,
+   "SPA": 60,
+   "SPD": 55,
+   "SPE": 65
+  },
+  "Oshawott": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 45,
+   "SPA": 63,
+   "SPD": 45,
+   "SPE": 45
+  },
+  "Overqwil": {
+   "HP": 95,
+   "ATK": 115,
+   "DEF": 100,
+   "SPA": 55,
+   "SPD": 80,
+   "SPE": 85
+  },
+  "Pachirisu": {
+   "HP": 75,
+   "ATK": 45,
+   "DEF": 70,
+   "SPA": 45,
+   "SPD": 95,
+   "SPE": 95
+  },
+  "Palafin": {
+   "HP": 100,
+   "ATK": 70,
+   "DEF": 72,
+   "SPA": 53,
+   "SPD": 62,
+   "SPE": 100
+  },
+  "Palafin-Hero": {
+   "HP": 100,
+   "ATK": 160,
+   "DEF": 97,
+   "SPA": 106,
+   "SPD": 87,
+   "SPE": 100
+  },
+  "Palkia": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 100,
+   "SPA": 150,
+   "SPD": 120,
+   "SPE": 100
+  },
+  "Palkia-O": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 150,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Palkia-Origin": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 150,
+   "SPD": 120,
+   "SPE": 120
+  },
+  "Palossand": {
+   "HP": 85,
+   "ATK": 75,
+   "DEF": 110,
+   "SPA": 100,
+   "SPD": 75,
+   "SPE": 35
+  },
+  "Pancham": {
+   "HP": 67,
+   "ATK": 82,
+   "DEF": 62,
+   "SPA": 46,
+   "SPD": 48,
+   "SPE": 43
+  },
+  "Pangoro": {
+   "HP": 95,
+   "ATK": 124,
+   "DEF": 78,
+   "SPA": 69,
+   "SPD": 71,
+   "SPE": 58
+  },
+  "Panpour": {
+   "HP": 50,
+   "ATK": 53,
+   "DEF": 48,
+   "SPA": 53,
+   "SPD": 48,
+   "SPE": 64
+  },
+  "Pansage": {
+   "HP": 50,
+   "ATK": 53,
+   "DEF": 48,
+   "SPA": 53,
+   "SPD": 48,
+   "SPE": 64
+  },
+  "Pansear": {
+   "HP": 50,
+   "ATK": 53,
+   "DEF": 48,
+   "SPA": 53,
+   "SPD": 48,
+   "SPE": 64
+  },
+  "Paras": {
+   "HP": 35,
+   "ATK": 70,
+   "DEF": 55,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 25
+  },
+  "Parasect": {
+   "HP": 80,
+   "ATK": 110,
+   "DEF": 100,
+   "SPA": 60,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Passimian": {
+   "HP": 100,
+   "ATK": 120,
+   "DEF": 90,
+   "SPA": 40,
+   "SPD": 75,
+   "SPE": 80
+  },
+  "Patrat": {
+   "HP": 45,
+   "ATK": 55,
+   "DEF": 39,
+   "SPA": 35,
+   "SPD": 39,
+   "SPE": 42
+  },
+  "Pawmi": {
+   "HP": 45,
+   "ATK": 50,
+   "DEF": 20,
+   "SPA": 40,
+   "SPD": 25,
+   "SPE": 60
+  },
+  "Pawmot": {
+   "HP": 70,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 70,
+   "SPD": 60,
+   "SPE": 105
+  },
+  "Pawniard": {
+   "HP": 45,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Pecharunt": {
+   "HP": 88,
+   "ATK": 88,
+   "DEF": 160,
+   "SPA": 88,
+   "SPD": 88,
+   "SPE": 88
+  },
+  "Pelipper": {
+   "HP": 60,
+   "ATK": 50,
+   "DEF": 100,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 65
+  },
+  "Perrserker": {
+   "HP": 90,
+   "ATK": 110,
+   "DEF": 100,
+   "SPA": 30,
+   "SPD": 60,
+   "SPE": 50
+  },
+  "Persian": {
+   "HP": 65,
+   "ATK": 80,
+   "DEF": 60,
+   "SPA": 60,
+   "SPD": 65,
+   "SPE": 115
+  },
+  "Persian-A": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 115
+  },
+  "Persian-Alola": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 115
+  },
+  "Petilil": {
+   "HP": 45,
+   "ATK": 35,
+   "DEF": 50,
+   "SPA": 70,
+   "SPD": 50,
+   "SPE": 30
+  },
+  "Phanpy": {
+   "HP": 90,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 40
+  },
+  "Phantump": {
+   "HP": 43,
+   "ATK": 70,
+   "DEF": 48,
+   "SPA": 50,
+   "SPD": 60,
+   "SPE": 38
+  },
+  "Pheromosa": {
+   "HP": 71,
+   "ATK": 137,
+   "DEF": 37,
+   "SPA": 137,
+   "SPD": 37,
+   "SPE": 151
+  },
+  "Phione": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 80
+  },
+  "Pidgeot-Mega": {
+   "HP": 83,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 135,
+   "SPD": 80,
+   "SPE": 121
+  },
+  "Pidgey": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 40,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 56
+  },
+  "Pidove": {
+   "HP": 50,
+   "ATK": 55,
+   "DEF": 50,
+   "SPA": 36,
+   "SPD": 30,
+   "SPE": 43
+  },
+  "Pikachu": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Belle": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Flying": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Libre": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-PhD": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Popstar": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Rockstar": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikachu-Surfing": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Pikipek": {
+   "HP": 35,
+   "ATK": 75,
+   "DEF": 30,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 65
+  },
+  "Piloswine": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 80,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 50
+  },
+  "Pincurchin": {
+   "HP": 68,
+   "ATK": 81,
+   "DEF": 95,
+   "SPA": 91,
+   "SPD": 85,
+   "SPE": 15
+  },
+  "Pineco": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 90,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 15
+  },
+  "Pinsir": {
+   "HP": 65,
+   "ATK": 125,
+   "DEF": 100,
+   "SPA": 55,
+   "SPD": 70,
+   "SPE": 85
+  },
+  "Pinsir-Mega": {
+   "HP": 65,
+   "ATK": 155,
+   "DEF": 120,
+   "SPA": 65,
+   "SPD": 90,
+   "SPE": 105
+  },
+  "Piplup": {
+   "HP": 53,
+   "ATK": 51,
+   "DEF": 53,
+   "SPA": 61,
+   "SPD": 56,
+   "SPE": 40
+  },
+  "Plusle": {
+   "HP": 60,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 110
+  },
+  "Poipole": {
+   "HP": 67,
+   "ATK": 73,
+   "DEF": 67,
+   "SPA": 73,
+   "SPD": 67,
+   "SPE": 73
+  },
+  "Politoed": {
+   "HP": 90,
+   "ATK": 75,
+   "DEF": 75,
+   "SPA": 90,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Poliwag": {
+   "HP": 40,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 90
+  },
+  "Poliwhirl": {
+   "HP": 65,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Poliwrath": {
+   "HP": 90,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 70,
+   "SPD": 90,
+   "SPE": 70
+  },
+  "Poltchageist": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 74,
+   "SPD": 54,
+   "SPE": 50
+  },
+  "Polteageist": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 134,
+   "SPD": 114,
+   "SPE": 70
+  },
+  "Ponyta": {
+   "HP": 50,
+   "ATK": 85,
+   "DEF": 55,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 90
+  },
+  "Ponyta-Galar": {
+   "HP": 50,
+   "ATK": 85,
+   "DEF": 55,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 90
+  },
+  "Poochyena": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 35,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 35
+  },
+  "Popplio": {
+   "HP": 50,
+   "ATK": 54,
+   "DEF": 54,
+   "SPA": 66,
+   "SPD": 56,
+   "SPE": 40
+  },
+  "Porygon": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 70,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 40
+  },
+  "Porygon2": {
+   "HP": 85,
+   "ATK": 80,
+   "DEF": 90,
+   "SPA": 105,
+   "SPD": 95,
+   "SPE": 60
+  },
+  "Primarina": {
+   "HP": 80,
+   "ATK": 74,
+   "DEF": 74,
+   "SPA": 126,
+   "SPD": 116,
+   "SPE": 60
+  },
+  "Primeape": {
+   "HP": 65,
+   "ATK": 105,
+   "DEF": 60,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 95
+  },
+  "Probopass": {
+   "HP": 65,
+   "ATK": 45,
+   "DEF": 145,
+   "SPA": 80,
+   "SPD": 150,
+   "SPE": 40
+  },
+  "Psyduck": {
+   "HP": 50,
+   "ATK": 52,
+   "DEF": 48,
+   "SPA": 65,
+   "SPD": 50,
+   "SPE": 55
+  },
+  "Pumpkaboo": {
+   "HP": 49,
+   "ATK": 44,
+   "DEF": 70,
+   "SPA": 66,
+   "SPD": 55,
+   "SPE": 51
+  },
+  "Pumpkaboo-La": {
+   "HP": 49,
+   "ATK": 44,
+   "DEF": 70,
+   "SPA": 66,
+   "SPD": 55,
+   "SPE": 51
+  },
+  "Pumpkaboo-Sm": {
+   "HP": 49,
+   "ATK": 44,
+   "DEF": 70,
+   "SPA": 66,
+   "SPD": 55,
+   "SPE": 51
+  },
+  "Pumpkaboo-Su": {
+   "HP": 49,
+   "ATK": 44,
+   "DEF": 70,
+   "SPA": 66,
+   "SPD": 55,
+   "SPE": 51
+  },
+  "Purrloin": {
+   "HP": 41,
+   "ATK": 50,
+   "DEF": 37,
+   "SPA": 50,
+   "SPD": 37,
+   "SPE": 66
+  },
+  "Pyroar": {
+   "HP": 86,
+   "ATK": 68,
+   "DEF": 72,
+   "SPA": 109,
+   "SPD": 66,
+   "SPE": 106
+  },
+  "Pyukumuku": {
+   "HP": 55,
+   "ATK": 60,
+   "DEF": 130,
+   "SPA": 30,
+   "SPD": 130,
+   "SPE": 5
+  },
+  "Quaquaval": {
+   "HP": 85,
+   "ATK": 120,
+   "DEF": 80,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 85
+  },
+  "Quaxly": {
+   "HP": 55,
+   "ATK": 65,
+   "DEF": 45,
+   "SPA": 50,
+   "SPD": 45,
+   "SPE": 50
+  },
+  "Qwilfish": {
+   "HP": 80,
+   "ATK": 105,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 85
+  },
+  "Qwilfish-H": {
+   "HP": 65,
+   "ATK": 95,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 85
+  },
+  "Qwilfish-Hisui": {
+   "HP": 65,
+   "ATK": 95,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 85
+  },
+  "Raging Bolt": {
+   "HP": 125,
+   "ATK": 73,
+   "DEF": 91,
+   "SPA": 137,
+   "SPD": 89,
+   "SPE": 75
+  },
+  "Raichu-A": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 50,
+   "SPA": 95,
+   "SPD": 85,
+   "SPE": 110
+  },
+  "Raikou": {
+   "HP": 90,
+   "ATK": 85,
+   "DEF": 75,
+   "SPA": 115,
+   "SPD": 100,
+   "SPE": 115
+  },
+  "Ralts": {
+   "HP": 28,
+   "ATK": 25,
+   "DEF": 25,
+   "SPA": 45,
+   "SPD": 35,
+   "SPE": 40
+  },
+  "Rampardos": {
+   "HP": 97,
+   "ATK": 165,
+   "DEF": 60,
+   "SPA": 65,
+   "SPD": 50,
+   "SPE": 58
+  },
+  "Rapidash": {
+   "HP": 65,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 125
+  },
+  "Rapidash-Galar": {
+   "HP": 65,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 125
+  },
+  "Raticate": {
+   "HP": 60,
+   "ATK": 91,
+   "DEF": 60,
+   "SPA": 50,
+   "SPD": 70,
+   "SPE": 97
+  },
+  "Raticate-Alola": {
+   "HP": 75,
+   "ATK": 86,
+   "DEF": 70,
+   "SPA": 40,
+   "SPD": 80,
+   "SPE": 77
+  },
+  "Rattata": {
+   "HP": 30,
+   "ATK": 56,
+   "DEF": 35,
+   "SPA": 25,
+   "SPD": 35,
+   "SPE": 72
+  },
+  "Rattata-Alola": {
+   "HP": 30,
+   "ATK": 56,
+   "DEF": 35,
+   "SPA": 25,
+   "SPD": 35,
+   "SPE": 72
+  },
+  "Rayquaza": {
+   "HP": 105,
+   "ATK": 150,
+   "DEF": 90,
+   "SPA": 150,
+   "SPD": 90,
+   "SPE": 95
+  },
+  "Rayquaza-Mega": {
+   "HP": 105,
+   "ATK": 180,
+   "DEF": 100,
+   "SPA": 180,
+   "SPD": 100,
+   "SPE": 115
+  },
+  "Regice": {
+   "HP": 80,
+   "ATK": 50,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 200,
+   "SPE": 50
+  },
+  "Regidrago": {
+   "HP": 200,
+   "ATK": 100,
+   "DEF": 50,
+   "SPA": 100,
+   "SPD": 50,
+   "SPE": 80
+  },
+  "Regieleki": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 50,
+   "SPA": 100,
+   "SPD": 50,
+   "SPE": 200
+  },
+  "Regigigas": {
+   "HP": 110,
+   "ATK": 160,
+   "DEF": 110,
+   "SPA": 80,
+   "SPD": 110,
+   "SPE": 100
+  },
+  "Regirock": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 200,
+   "SPA": 50,
+   "SPD": 100,
+   "SPE": 50
+  },
+  "Registeel": {
+   "HP": 80,
+   "ATK": 75,
+   "DEF": 150,
+   "SPA": 75,
+   "SPD": 150,
+   "SPE": 50
+  },
+  "Relicanth": {
+   "HP": 100,
+   "ATK": 105,
+   "DEF": 115,
+   "SPA": 45,
+   "SPD": 65,
+   "SPE": 55
+  },
+  "Rellor": {
+   "HP": 41,
+   "ATK": 50,
+   "DEF": 60,
+   "SPA": 31,
+   "SPD": 58,
+   "SPE": 30
+  },
+  "Remoraid": {
+   "HP": 35,
+   "ATK": 65,
+   "DEF": 35,
+   "SPA": 65,
+   "SPD": 35,
+   "SPE": 65
+  },
+  "Reshiram": {
+   "HP": 100,
+   "ATK": 120,
+   "DEF": 100,
+   "SPA": 150,
+   "SPD": 120,
+   "SPE": 90
+  },
+  "Reuniclus": {
+   "HP": 110,
+   "ATK": 65,
+   "DEF": 75,
+   "SPA": 125,
+   "SPD": 85,
+   "SPE": 30
+  },
+  "Revavroom": {
+   "HP": 80,
+   "ATK": 119,
+   "DEF": 90,
+   "SPA": 54,
+   "SPD": 67,
+   "SPE": 90
+  },
+  "Rhyhorn": {
+   "HP": 80,
+   "ATK": 85,
+   "DEF": 95,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 25
+  },
+  "Rhyperior": {
+   "HP": 115,
+   "ATK": 140,
+   "DEF": 130,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 40
+  },
+  "Ribombee": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 60,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 124
+  },
+  "Rillaboom": {
+   "HP": 100,
+   "ATK": 125,
+   "DEF": 90,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 85
+  },
+  "Riolu": {
+   "HP": 40,
+   "ATK": 70,
+   "DEF": 40,
+   "SPA": 35,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Roaring Moon": {
+   "HP": 105,
+   "ATK": 139,
+   "DEF": 71,
+   "SPA": 55,
+   "SPD": 101,
+   "SPE": 119
+  },
+  "Rockruff": {
+   "HP": 45,
+   "ATK": 65,
+   "DEF": 40,
+   "SPA": 30,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Roggenrola": {
+   "HP": 55,
+   "ATK": 75,
+   "DEF": 85,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 15
+  },
+  "Rolycoly": {
+   "HP": 30,
+   "ATK": 40,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 30
+  },
+  "Rookidee": {
+   "HP": 38,
+   "ATK": 47,
+   "DEF": 35,
+   "SPA": 33,
+   "SPD": 35,
+   "SPE": 57
+  },
+  "Roselia": {
+   "HP": 50,
+   "ATK": 60,
+   "DEF": 45,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 65
+  },
+  "Roserade": {
+   "HP": 60,
+   "ATK": 70,
+   "DEF": 65,
+   "SPA": 125,
+   "SPD": 105,
+   "SPE": 90
+  },
+  "Rotom": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 77,
+   "SPA": 95,
+   "SPD": 77,
+   "SPE": 91
+  },
+  "Rotom-F": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-Fan": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-Frost": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-H": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-Heat": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-Mow": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-W": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rotom-Wash": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 107,
+   "SPA": 105,
+   "SPD": 107,
+   "SPE": 86
+  },
+  "Rowlet": {
+   "HP": 68,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 42
+  },
+  "Rufflet": {
+   "HP": 70,
+   "ATK": 83,
+   "DEF": 50,
+   "SPA": 37,
+   "SPD": 50,
+   "SPE": 60
+  },
+  "Runerigus": {
+   "HP": 58,
+   "ATK": 95,
+   "DEF": 145,
+   "SPA": 50,
+   "SPD": 105,
+   "SPE": 30
+  },
+  "Sableye": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 75,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 50
+  },
+  "Sableye-Mega": {
+   "HP": 50,
+   "ATK": 85,
+   "DEF": 125,
+   "SPA": 85,
+   "SPD": 115,
+   "SPE": 20
+  },
+  "Salamence": {
+   "HP": 95,
+   "ATK": 135,
+   "DEF": 80,
+   "SPA": 110,
+   "SPD": 80,
+   "SPE": 100
+  },
+  "Salamence-Mega": {
+   "HP": 95,
+   "ATK": 145,
+   "DEF": 130,
+   "SPA": 120,
+   "SPD": 90,
+   "SPE": 120
+  },
+  "Salandit": {
+   "HP": 48,
+   "ATK": 44,
+   "DEF": 40,
+   "SPA": 71,
+   "SPD": 40,
+   "SPE": 77
+  },
+  "Salazzle": {
+   "HP": 68,
+   "ATK": 64,
+   "DEF": 60,
+   "SPA": 111,
+   "SPD": 60,
+   "SPE": 117
+  },
+  "Samurott": {
+   "HP": 95,
+   "ATK": 108,
+   "DEF": 85,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 90
+  },
+  "Samurott-H": {
+   "HP": 95,
+   "ATK": 108,
+   "DEF": 85,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 90
+  },
+  "Samurott-Hisui": {
+   "HP": 95,
+   "ATK": 108,
+   "DEF": 85,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 90
+  },
+  "Sandaconda": {
+   "HP": 72,
+   "ATK": 107,
+   "DEF": 125,
+   "SPA": 65,
+   "SPD": 70,
+   "SPE": 71
+  },
+  "Sandaconda-Mega": {
+   "HP": 72,
+   "ATK": 140,
+   "DEF": 160,
+   "SPA": 85,
+   "SPD": 90,
+   "SPE": 81
+  },
+  "Sandile": {
+   "HP": 50,
+   "ATK": 72,
+   "DEF": 35,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 65
+  },
+  "Sandshrew": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 85,
+   "SPA": 20,
+   "SPD": 30,
+   "SPE": 40
+  },
+  "Sandshrew-Alola": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 90,
+   "SPA": 10,
+   "SPD": 35,
+   "SPE": 40
+  },
+  "Sandslash": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 120,
+   "SPA": 25,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Sandslash-A": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 120,
+   "SPA": 25,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Sandslash-Alola": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 120,
+   "SPA": 25,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Sandy Shocks": {
+   "HP": 85,
+   "ATK": 81,
+   "DEF": 97,
+   "SPA": 121,
+   "SPD": 85,
+   "SPE": 101
+  },
+  "Sandygast": {
+   "HP": 55,
+   "ATK": 55,
+   "DEF": 80,
+   "SPA": 70,
+   "SPD": 45,
+   "SPE": 15
+  },
+  "Sawk": {
+   "HP": 75,
+   "ATK": 125,
+   "DEF": 75,
+   "SPA": 30,
+   "SPD": 75,
+   "SPE": 85
+  },
+  "Scatterbug": {
+   "HP": 38,
+   "ATK": 35,
+   "DEF": 40,
+   "SPA": 27,
+   "SPD": 25,
+   "SPE": 35
+  },
+  "Sceptile": {
+   "HP": 70,
+   "ATK": 105,
+   "DEF": 65,
+   "SPA": 85,
+   "SPD": 85,
+   "SPE": 120
+  },
+  "Sceptile-Mega": {
+   "HP": 70,
+   "ATK": 135,
+   "DEF": 75,
+   "SPA": 110,
+   "SPD": 85,
+   "SPE": 145
+  },
+  "Scizor": {
+   "HP": 70,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 55,
+   "SPD": 80,
+   "SPE": 65
+  },
+  "Scizor-Mega": {
+   "HP": 70,
+   "ATK": 150,
+   "DEF": 140,
+   "SPA": 65,
+   "SPD": 100,
+   "SPE": 75
+  },
+  "Scorbunny": {
+   "HP": 50,
+   "ATK": 71,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 69
+  },
+  "Scrafty": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 115,
+   "SPA": 45,
+   "SPD": 115,
+   "SPE": 58
+  },
+  "Scraggy": {
+   "HP": 50,
+   "ATK": 75,
+   "DEF": 70,
+   "SPA": 35,
+   "SPD": 70,
+   "SPE": 48
+  },
+  "Scream Tail": {
+   "HP": 115,
+   "ATK": 65,
+   "DEF": 99,
+   "SPA": 85,
+   "SPD": 115,
+   "SPE": 111
+  },
+  "Scyther": {
+   "HP": 70,
+   "ATK": 110,
+   "DEF": 80,
+   "SPA": 55,
+   "SPD": 80,
+   "SPE": 105
+  },
+  "Seadra": {
+   "HP": 55,
+   "ATK": 65,
+   "DEF": 95,
+   "SPA": 95,
+   "SPD": 45,
+   "SPE": 85
+  },
+  "Seaking": {
+   "HP": 80,
+   "ATK": 92,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 80,
+   "SPE": 68
+  },
+  "Sealeo": {
+   "HP": 90,
+   "ATK": 60,
+   "DEF": 70,
+   "SPA": 75,
+   "SPD": 70,
+   "SPE": 45
+  },
+  "Seedot": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 50,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 30
+  },
+  "Seel": {
+   "HP": 65,
+   "ATK": 45,
+   "DEF": 55,
+   "SPA": 45,
+   "SPD": 70,
+   "SPE": 45
+  },
+  "Seismitoad": {
+   "HP": 105,
+   "ATK": 95,
+   "DEF": 75,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 74
+  },
+  "Sentret": {
+   "HP": 35,
+   "ATK": 46,
+   "DEF": 34,
+   "SPA": 35,
+   "SPD": 45,
+   "SPE": 20
+  },
+  "Serperior": {
+   "HP": 75,
+   "ATK": 75,
+   "DEF": 95,
+   "SPA": 75,
+   "SPD": 95,
+   "SPE": 113
+  },
+  "Seviper": {
+   "HP": 83,
+   "ATK": 100,
+   "DEF": 83,
+   "SPA": 100,
+   "SPD": 83,
+   "SPE": 85
+  },
+  "Sewaddle": {
+   "HP": 45,
+   "ATK": 53,
+   "DEF": 70,
+   "SPA": 40,
+   "SPD": 60,
+   "SPE": 42
+  },
+  "Sharpedo": {
+   "HP": 70,
+   "ATK": 120,
+   "DEF": 40,
+   "SPA": 95,
+   "SPD": 40,
+   "SPE": 95
+  },
+  "Sharpedo-Mega": {
+   "HP": 70,
+   "ATK": 140,
+   "DEF": 70,
+   "SPA": 110,
+   "SPD": 65,
+   "SPE": 105
+  },
+  "Shaymin": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Shaymin-S": {
+   "HP": 100,
+   "ATK": 103,
+   "DEF": 75,
+   "SPA": 120,
+   "SPD": 75,
+   "SPE": 127
+  },
+  "Shaymin-Sky": {
+   "HP": 100,
+   "ATK": 103,
+   "DEF": 75,
+   "SPA": 120,
+   "SPD": 75,
+   "SPE": 127
+  },
+  "Shedinja": {
+   "HP": 1,
+   "ATK": 90,
+   "DEF": 45,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 40
+  },
+  "Shellder": {
+   "HP": 30,
+   "ATK": 65,
+   "DEF": 100,
+   "SPA": 45,
+   "SPD": 25,
+   "SPE": 40
+  },
+  "Shellos": {
+   "HP": 76,
+   "ATK": 48,
+   "DEF": 48,
+   "SPA": 57,
+   "SPD": 62,
+   "SPE": 34
+  },
+  "Shellos-East": {
+   "HP": 76,
+   "ATK": 48,
+   "DEF": 48,
+   "SPA": 57,
+   "SPD": 62,
+   "SPE": 34
+  },
+  "Shelmet": {
+   "HP": 50,
+   "ATK": 40,
+   "DEF": 85,
+   "SPA": 40,
+   "SPD": 65,
+   "SPE": 25
+  },
+  "Shieldon": {
+   "HP": 30,
+   "ATK": 42,
+   "DEF": 118,
+   "SPA": 42,
+   "SPD": 88,
+   "SPE": 30
+  },
+  "Shiftry": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 60,
+   "SPA": 110,
+   "SPD": 60,
+   "SPE": 80
+  },
+  "Shinx": {
+   "HP": 45,
+   "ATK": 65,
+   "DEF": 34,
+   "SPA": 40,
+   "SPD": 34,
+   "SPE": 45
+  },
+  "Shroodle": {
+   "HP": 40,
+   "ATK": 65,
+   "DEF": 35,
+   "SPA": 40,
+   "SPD": 35,
+   "SPE": 75
+  },
+  "Shroomish": {
+   "HP": 60,
+   "ATK": 40,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 60,
+   "SPE": 35
+  },
+  "Shuckle": {
+   "HP": 20,
+   "ATK": 10,
+   "DEF": 230,
+   "SPA": 10,
+   "SPD": 230,
+   "SPE": 5
+  },
+  "Shuppet": {
+   "HP": 44,
+   "ATK": 75,
+   "DEF": 35,
+   "SPA": 63,
+   "SPD": 33,
+   "SPE": 45
+  },
+  "Sigilyph": {
+   "HP": 72,
+   "ATK": 58,
+   "DEF": 80,
+   "SPA": 103,
+   "SPD": 80,
+   "SPE": 97
+  },
+  "Silicobra": {
+   "HP": 52,
+   "ATK": 57,
+   "DEF": 75,
+   "SPA": 35,
+   "SPD": 50,
+   "SPE": 46
+  },
+  "Silvally": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Silvally-Fairy": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Simipour": {
+   "HP": 75,
+   "ATK": 98,
+   "DEF": 63,
+   "SPA": 98,
+   "SPD": 63,
+   "SPE": 101
+  },
+  "Simisage": {
+   "HP": 75,
+   "ATK": 98,
+   "DEF": 63,
+   "SPA": 98,
+   "SPD": 63,
+   "SPE": 101
+  },
+  "Simisear": {
+   "HP": 75,
+   "ATK": 98,
+   "DEF": 63,
+   "SPA": 98,
+   "SPD": 63,
+   "SPE": 101
+  },
+  "Sinistcha": {
+   "HP": 71,
+   "ATK": 60,
+   "DEF": 106,
+   "SPA": 121,
+   "SPD": 80,
+   "SPE": 70
+  },
+  "Sinistea": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 74,
+   "SPD": 54,
+   "SPE": 50
+  },
+  "Sirfetch'd": {
+   "HP": 82,
+   "ATK": 135,
+   "DEF": 95,
+   "SPA": 68,
+   "SPD": 82,
+   "SPE": 65
+  },
+  "Sizzlipede": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 45,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 45
+  },
+  "Skarmory": {
+   "HP": 65,
+   "ATK": 80,
+   "DEF": 140,
+   "SPA": 40,
+   "SPD": 70,
+   "SPE": 70
+  },
+  "Skeledirge": {
+   "HP": 104,
+   "ATK": 75,
+   "DEF": 100,
+   "SPA": 110,
+   "SPD": 75,
+   "SPE": 66
+  },
+  "Skiddo": {
+   "HP": 66,
+   "ATK": 65,
+   "DEF": 48,
+   "SPA": 62,
+   "SPD": 57,
+   "SPE": 52
+  },
+  "Skitty": {
+   "HP": 50,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 50
+  },
+  "Skorupi": {
+   "HP": 40,
+   "ATK": 50,
+   "DEF": 90,
+   "SPA": 30,
+   "SPD": 55,
+   "SPE": 65
+  },
+  "Skrelp": {
+   "HP": 50,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 60,
+   "SPD": 60,
+   "SPE": 30
+  },
+  "Skuntank": {
+   "HP": 103,
+   "ATK": 93,
+   "DEF": 67,
+   "SPA": 91,
+   "SPD": 61,
+   "SPE": 84
+  },
+  "Skwovet": {
+   "HP": 70,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 25
+  },
+  "Slaking": {
+   "HP": 150,
+   "ATK": 160,
+   "DEF": 100,
+   "SPA": 95,
+   "SPD": 65,
+   "SPE": 100
+  },
+  "Slakoth": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 60,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 30
+  },
+  "Sliggoo-Hisui": {
+   "HP": 58,
+   "ATK": 75,
+   "DEF": 83,
+   "SPA": 83,
+   "SPD": 113,
+   "SPE": 40
+  },
+  "Slither Wing": {
+   "HP": 85,
+   "ATK": 135,
+   "DEF": 79,
+   "SPA": 85,
+   "SPD": 105,
+   "SPE": 81
+  },
+  "Slowbro": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 110,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Slowbro-G": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 105,
+   "SPA": 115,
+   "SPD": 70,
+   "SPE": 30
+  },
+  "Slowbro-Galar": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 105,
+   "SPA": 115,
+   "SPD": 70,
+   "SPE": 30
+  },
+  "Slowbro-Mega": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 180,
+   "SPA": 130,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Slowking": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 80,
+   "SPA": 100,
+   "SPD": 110,
+   "SPE": 30
+  },
+  "Slowpoke": {
+   "HP": 90,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 15
+  },
+  "Slowpoke-Galar": {
+   "HP": 90,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 15
+  },
+  "Slugma": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 40,
+   "SPA": 70,
+   "SPD": 40,
+   "SPE": 20
+  },
+  "Slurpuff": {
+   "HP": 82,
+   "ATK": 90,
+   "DEF": 86,
+   "SPA": 75,
+   "SPD": 75,
+   "SPE": 72
+  },
+  "Smeargle": {
+   "HP": 55,
+   "ATK": 20,
+   "DEF": 35,
+   "SPA": 20,
+   "SPD": 45,
+   "SPE": 75
+  },
+  "Smoliv": {
+   "HP": 41,
+   "ATK": 35,
+   "DEF": 45,
+   "SPA": 58,
+   "SPD": 51,
+   "SPE": 30
+  },
+  "Smoochum": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 15,
+   "SPA": 85,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Sneasel": {
+   "HP": 55,
+   "ATK": 95,
+   "DEF": 55,
+   "SPA": 35,
+   "SPD": 75,
+   "SPE": 115
+  },
+  "Sneasel-H": {
+   "HP": 55,
+   "ATK": 95,
+   "DEF": 55,
+   "SPA": 35,
+   "SPD": 75,
+   "SPE": 115
+  },
+  "Sneasel-Hisui": {
+   "HP": 55,
+   "ATK": 95,
+   "DEF": 55,
+   "SPA": 35,
+   "SPD": 75,
+   "SPE": 115
+  },
+  "Sneasler": {
+   "HP": 80,
+   "ATK": 130,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 80,
+   "SPE": 120
+  },
+  "Snivy": {
+   "HP": 45,
+   "ATK": 45,
+   "DEF": 55,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 63
+  },
+  "Snom": {
+   "HP": 30,
+   "ATK": 25,
+   "DEF": 35,
+   "SPA": 45,
+   "SPD": 30,
+   "SPE": 20
+  },
+  "Snorlax": {
+   "HP": 160,
+   "ATK": 110,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 110,
+   "SPE": 30
+  },
+  "Snorlax-Mega": {
+   "HP": 160,
+   "ATK": 160,
+   "DEF": 85,
+   "SPA": 80,
+   "SPD": 125,
+   "SPE": 30
+  },
+  "Snorunt": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 50
+  },
+  "Snover": {
+   "HP": 60,
+   "ATK": 62,
+   "DEF": 50,
+   "SPA": 62,
+   "SPD": 60,
+   "SPE": 40
+  },
+  "Snubbull": {
+   "HP": 60,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 30
+  },
+  "Sobble": {
+   "HP": 50,
+   "ATK": 40,
+   "DEF": 40,
+   "SPA": 70,
+   "SPD": 40,
+   "SPE": 70
+  },
+  "Solgaleo": {
+   "HP": 137,
+   "ATK": 137,
+   "DEF": 107,
+   "SPA": 113,
+   "SPD": 89,
+   "SPE": 97
+  },
+  "Solosis": {
+   "HP": 45,
+   "ATK": 30,
+   "DEF": 40,
+   "SPA": 105,
+   "SPD": 50,
+   "SPE": 20
+  },
+  "Solrock": {
+   "HP": 90,
+   "ATK": 105,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 90
+  },
+  "Spearow": {
+   "HP": 40,
+   "ATK": 60,
+   "DEF": 30,
+   "SPA": 31,
+   "SPD": 31,
+   "SPE": 70
+  },
+  "Spectrier": {
+   "HP": 100,
+   "ATK": 65,
+   "DEF": 60,
+   "SPA": 145,
+   "SPD": 80,
+   "SPE": 130
+  },
+  "Spheal": {
+   "HP": 70,
+   "ATK": 40,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 50,
+   "SPE": 25
+  },
+  "Spinarak": {
+   "HP": 40,
+   "ATK": 60,
+   "DEF": 40,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 30
+  },
+  "Spinda": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 80,
+   "SPD": 80,
+   "SPE": 80
+  },
+  "Spiritomb": {
+   "HP": 50,
+   "ATK": 92,
+   "DEF": 108,
+   "SPA": 92,
+   "SPD": 108,
+   "SPE": 35
+  },
+  "Spoink": {
+   "HP": 60,
+   "ATK": 25,
+   "DEF": 35,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 60
+  },
+  "Sprigatito": {
+   "HP": 40,
+   "ATK": 61,
+   "DEF": 54,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 65
+  },
+  "Spritzee": {
+   "HP": 78,
+   "ATK": 52,
+   "DEF": 60,
+   "SPA": 63,
+   "SPD": 65,
+   "SPE": 23
+  },
+  "Squawkabilly-G": {
+   "HP": 82,
+   "ATK": 96,
+   "DEF": 51,
+   "SPA": 45,
+   "SPD": 51,
+   "SPE": 92
+  },
+  "Squawkabilly-W": {
+   "HP": 82,
+   "ATK": 96,
+   "DEF": 51,
+   "SPA": 45,
+   "SPD": 51,
+   "SPE": 92
+  },
+  "Squirtle": {
+   "HP": 44,
+   "ATK": 48,
+   "DEF": 65,
+   "SPA": 50,
+   "SPD": 64,
+   "SPE": 43
+  },
+  "Stakataka": {
+   "HP": 61,
+   "ATK": 131,
+   "DEF": 211,
+   "SPA": 53,
+   "SPD": 101,
+   "SPE": 13
+  },
+  "Stantler": {
+   "HP": 73,
+   "ATK": 95,
+   "DEF": 62,
+   "SPA": 85,
+   "SPD": 65,
+   "SPE": 85
+  },
+  "Staraptor": {
+   "HP": 85,
+   "ATK": 120,
+   "DEF": 70,
+   "SPA": 50,
+   "SPD": 60,
+   "SPE": 100
+  },
+  "Staravia": {
+   "HP": 55,
+   "ATK": 75,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 40,
+   "SPE": 80
+  },
+  "Starly": {
+   "HP": 40,
+   "ATK": 55,
+   "DEF": 30,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 60
+  },
+  "Starmie": {
+   "HP": 60,
+   "ATK": 75,
+   "DEF": 85,
+   "SPA": 100,
+   "SPD": 85,
+   "SPE": 115
+  },
+  "Staryu": {
+   "HP": 30,
+   "ATK": 45,
+   "DEF": 55,
+   "SPA": 70,
+   "SPD": 55,
+   "SPE": 85
+  },
+  "Steelix": {
+   "HP": 75,
+   "ATK": 85,
+   "DEF": 200,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 30
+  },
+  "Stonjourner": {
+   "HP": 100,
+   "ATK": 125,
+   "DEF": 135,
+   "SPA": 20,
+   "SPD": 50,
+   "SPE": 80
+  },
+  "Stufful": {
+   "HP": 70,
+   "ATK": 75,
+   "DEF": 50,
+   "SPA": 45,
+   "SPD": 50,
+   "SPE": 50
+  },
+  "Stunfisk": {
+   "HP": 109,
+   "ATK": 66,
+   "DEF": 84,
+   "SPA": 81,
+   "SPD": 99,
+   "SPE": 32
+  },
+  "Stunfisk-Galar": {
+   "HP": 109,
+   "ATK": 81,
+   "DEF": 99,
+   "SPA": 66,
+   "SPD": 84,
+   "SPE": 32
+  },
+  "Stunky": {
+   "HP": 63,
+   "ATK": 63,
+   "DEF": 47,
+   "SPA": 41,
+   "SPD": 41,
+   "SPE": 74
+  },
+  "Suicune": {
+   "HP": 100,
+   "ATK": 75,
+   "DEF": 115,
+   "SPA": 90,
+   "SPD": 115,
+   "SPE": 85
+  },
+  "Sunflora": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 55,
+   "SPA": 135,
+   "SPD": 85,
+   "SPE": 55
+  },
+  "Sunkern": {
+   "HP": 30,
+   "ATK": 30,
+   "DEF": 30,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 30
+  },
+  "Surskit": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 32,
+   "SPA": 50,
+   "SPD": 52,
+   "SPE": 65
+  },
+  "Swablu": {
+   "HP": 45,
+   "ATK": 40,
+   "DEF": 60,
+   "SPA": 40,
+   "SPD": 75,
+   "SPE": 50
+  },
+  "Swadloon": {
+   "HP": 55,
+   "ATK": 63,
+   "DEF": 90,
+   "SPA": 50,
+   "SPD": 80,
+   "SPE": 42
+  },
+  "Swalot": {
+   "HP": 100,
+   "ATK": 53,
+   "DEF": 88,
+   "SPA": 93,
+   "SPD": 88,
+   "SPE": 55
+  },
+  "Swampert": {
+   "HP": 100,
+   "ATK": 110,
+   "DEF": 90,
+   "SPA": 85,
+   "SPD": 90,
+   "SPE": 60
+  },
+  "Swampert-Mega": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 110,
+   "SPA": 95,
+   "SPD": 110,
+   "SPE": 70
+  },
+  "Swanna": {
+   "HP": 75,
+   "ATK": 77,
+   "DEF": 63,
+   "SPA": 97,
+   "SPD": 63,
+   "SPE": 108
+  },
+  "Swellow": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 60,
+   "SPA": 75,
+   "SPD": 50,
+   "SPE": 125
+  },
+  "Swinub": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 50
+  },
+  "Swirlix": {
+   "HP": 62,
+   "ATK": 48,
+   "DEF": 66,
+   "SPA": 59,
+   "SPD": 57,
+   "SPE": 49
+  },
+  "Swoobat": {
+   "HP": 75,
+   "ATK": 57,
+   "DEF": 65,
+   "SPA": 77,
+   "SPD": 55,
+   "SPE": 114
+  },
+  "Sylveon": {
+   "HP": 95,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 110,
+   "SPD": 130,
+   "SPE": 60
+  },
+  "Tadbulb": {
+   "HP": 61,
+   "ATK": 31,
+   "DEF": 41,
+   "SPA": 59,
+   "SPD": 35,
+   "SPE": 45
+  },
+  "Taillow": {
+   "HP": 40,
+   "ATK": 55,
+   "DEF": 30,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 85
+  },
+  "Talonflame": {
+   "HP": 78,
+   "ATK": 91,
+   "DEF": 71,
+   "SPA": 74,
+   "SPD": 69,
+   "SPE": 126
+  },
+  "Tandemaus": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 45,
+   "SPA": 40,
+   "SPD": 45,
+   "SPE": 75
+  },
+  "Tangela": {
+   "HP": 65,
+   "ATK": 55,
+   "DEF": 115,
+   "SPA": 100,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Tangrowth": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 125,
+   "SPA": 110,
+   "SPD": 50,
+   "SPE": 50
+  },
+  "Tapu Bulu": {
+   "HP": 70,
+   "ATK": 130,
+   "DEF": 115,
+   "SPA": 85,
+   "SPD": 95,
+   "SPE": 75
+  },
+  "Tapu Fini": {
+   "HP": 70,
+   "ATK": 75,
+   "DEF": 115,
+   "SPA": 95,
+   "SPD": 130,
+   "SPE": 85
+  },
+  "Tapu Koko": {
+   "HP": 70,
+   "ATK": 115,
+   "DEF": 85,
+   "SPA": 95,
+   "SPD": 75,
+   "SPE": 130
+  },
+  "Tapu Lele": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 75,
+   "SPA": 130,
+   "SPD": 115,
+   "SPE": 95
+  },
+  "Tarountula": {
+   "HP": 35,
+   "ATK": 41,
+   "DEF": 45,
+   "SPA": 29,
+   "SPD": 40,
+   "SPE": 20
+  },
+  "Tatsugiri": {
+   "HP": 78,
+   "ATK": 50,
+   "DEF": 70,
+   "SPA": 120,
+   "SPD": 95,
+   "SPE": 82
+  },
+  "Tauros": {
+   "HP": 75,
+   "ATK": 100,
+   "DEF": 95,
+   "SPA": 70,
+   "SPD": 70,
+   "SPE": 110
+  },
+  "Tauros-Aqua": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 105,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 100
+  },
+  "Tauros-Blaze": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 105,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 100
+  },
+  "Tauros-Combat": {
+   "HP": 75,
+   "ATK": 110,
+   "DEF": 105,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 100
+  },
+  "Teddiursa": {
+   "HP": 60,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 40
+  },
+  "Teddiursa-Sevii": {
+   "HP": 55,
+   "ATK": 80,
+   "DEF": 50,
+   "SPA": 45,
+   "SPD": 50,
+   "SPE": 50
+  },
+  "Tentacool": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 35,
+   "SPA": 50,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Tentacruel": {
+   "HP": 80,
+   "ATK": 60,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 120,
+   "SPE": 100
+  },
+  "Tepig": {
+   "HP": 65,
+   "ATK": 63,
+   "DEF": 45,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 45
+  },
+  "Terapagos": {
+   "HP": 110,
+   "ATK": 95,
+   "DEF": 110,
+   "SPA": 105,
+   "SPD": 110,
+   "SPE": 85
+  },
+  "Terrakion": {
+   "HP": 91,
+   "ATK": 129,
+   "DEF": 90,
+   "SPA": 72,
+   "SPD": 90,
+   "SPE": 108
+  },
+  "Throh": {
+   "HP": 120,
+   "ATK": 100,
+   "DEF": 95,
+   "SPA": 30,
+   "SPD": 95,
+   "SPE": 45
+  },
+  "Thundurus-I": {
+   "HP": 79,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 125,
+   "SPD": 80,
+   "SPE": 111
+  },
+  "Thundurus-T": {
+   "HP": 79,
+   "ATK": 105,
+   "DEF": 70,
+   "SPA": 145,
+   "SPD": 80,
+   "SPE": 101
+  },
+  "Thwackey": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 55,
+   "SPD": 60,
+   "SPE": 80
+  },
+  "Timburr": {
+   "HP": 75,
+   "ATK": 80,
+   "DEF": 55,
+   "SPA": 25,
+   "SPD": 35,
+   "SPE": 35
+  },
+  "Ting-Lu": {
+   "HP": 155,
+   "ATK": 110,
+   "DEF": 125,
+   "SPA": 55,
+   "SPD": 80,
+   "SPE": 45
+  },
+  "Tinkatink": {
+   "HP": 50,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 35,
+   "SPD": 64,
+   "SPE": 58
+  },
+  "Tinkaton": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 87,
+   "SPA": 70,
+   "SPD": 105,
+   "SPE": 94
+  },
+  "Tinkatuff": {
+   "HP": 65,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 45,
+   "SPD": 82,
+   "SPE": 78
+  },
+  "Tirtouga": {
+   "HP": 54,
+   "ATK": 78,
+   "DEF": 103,
+   "SPA": 53,
+   "SPD": 45,
+   "SPE": 22
+  },
+  "Toedscool": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 35,
+   "SPA": 50,
+   "SPD": 100,
+   "SPE": 70
+  },
+  "Togedemaru": {
+   "HP": 65,
+   "ATK": 108,
+   "DEF": 63,
+   "SPA": 40,
+   "SPD": 73,
+   "SPE": 96
+  },
+  "Togekiss": {
+   "HP": 85,
+   "ATK": 50,
+   "DEF": 95,
+   "SPA": 120,
+   "SPD": 115,
+   "SPE": 80
+  },
+  "Togepi": {
+   "HP": 35,
+   "ATK": 20,
+   "DEF": 65,
+   "SPA": 40,
+   "SPD": 65,
+   "SPE": 20
+  },
+  "Togetic": {
+   "HP": 55,
+   "ATK": 40,
+   "DEF": 85,
+   "SPA": 80,
+   "SPD": 105,
+   "SPE": 40
+  },
+  "Torchic": {
+   "HP": 45,
+   "ATK": 60,
+   "DEF": 40,
+   "SPA": 70,
+   "SPD": 50,
+   "SPE": 45
+  },
+  "Torkoal": {
+   "HP": 70,
+   "ATK": 75,
+   "DEF": 140,
+   "SPA": 95,
+   "SPD": 70,
+   "SPE": 20
+  },
+  "Tornadus-I": {
+   "HP": 79,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 125,
+   "SPD": 80,
+   "SPE": 111
+  },
+  "Tornadus-T": {
+   "HP": 79,
+   "ATK": 100,
+   "DEF": 80,
+   "SPA": 110,
+   "SPD": 90,
+   "SPE": 121
+  },
+  "Torterra": {
+   "HP": 95,
+   "ATK": 109,
+   "DEF": 105,
+   "SPA": 75,
+   "SPD": 85,
+   "SPE": 56
+  },
+  "Totodile": {
+   "HP": 50,
+   "ATK": 65,
+   "DEF": 64,
+   "SPA": 44,
+   "SPD": 48,
+   "SPE": 43
+  },
+  "Toxapex": {
+   "HP": 50,
+   "ATK": 63,
+   "DEF": 152,
+   "SPA": 53,
+   "SPD": 142,
+   "SPE": 35
+  },
+  "Toxel": {
+   "HP": 40,
+   "ATK": 38,
+   "DEF": 35,
+   "SPA": 54,
+   "SPD": 35,
+   "SPE": 40
+  },
+  "Toxicroak": {
+   "HP": 83,
+   "ATK": 106,
+   "DEF": 65,
+   "SPA": 86,
+   "SPD": 65,
+   "SPE": 85
+  },
+  "Toxtricity": {
+   "HP": 75,
+   "ATK": 98,
+   "DEF": 70,
+   "SPA": 114,
+   "SPD": 70,
+   "SPE": 75
+  },
+  "Toxtricity-Mega": {
+   "HP": 75,
+   "ATK": 120,
+   "DEF": 80,
+   "SPA": 155,
+   "SPD": 80,
+   "SPE": 111
+  },
+  "Trapinch": {
+   "HP": 45,
+   "ATK": 100,
+   "DEF": 45,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 10
+  },
+  "Treecko": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 35,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 70
+  },
+  "Tropius": {
+   "HP": 99,
+   "ATK": 68,
+   "DEF": 83,
+   "SPA": 92,
+   "SPD": 87,
+   "SPE": 81
+  },
+  "Trubbish": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 62,
+   "SPA": 40,
+   "SPD": 62,
+   "SPE": 65
+  },
+  "Trumbeak": {
+   "HP": 55,
+   "ATK": 85,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Tsareena": {
+   "HP": 72,
+   "ATK": 120,
+   "DEF": 98,
+   "SPA": 50,
+   "SPD": 98,
+   "SPE": 72
+  },
+  "Turtonator": {
+   "HP": 70,
+   "ATK": 58,
+   "DEF": 135,
+   "SPA": 91,
+   "SPD": 85,
+   "SPE": 36
+  },
+  "Turtwig": {
+   "HP": 55,
+   "ATK": 68,
+   "DEF": 64,
+   "SPA": 45,
+   "SPD": 55,
+   "SPE": 31
+  },
+  "Tympole": {
+   "HP": 50,
+   "ATK": 50,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 40,
+   "SPE": 64
+  },
+  "Tynamo": {
+   "HP": 35,
+   "ATK": 55,
+   "DEF": 40,
+   "SPA": 45,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Type: Null": {
+   "HP": 95,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 95,
+   "SPD": 95,
+   "SPE": 59
+  },
+  "Typhlosion": {
+   "HP": 78,
+   "ATK": 84,
+   "DEF": 78,
+   "SPA": 109,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Typhlosion-Hisui": {
+   "HP": 73,
+   "ATK": 84,
+   "DEF": 78,
+   "SPA": 119,
+   "SPD": 85,
+   "SPE": 95
+  },
+  "Tyranitar": {
+   "HP": 100,
+   "ATK": 134,
+   "DEF": 110,
+   "SPA": 95,
+   "SPD": 100,
+   "SPE": 61
+  },
+  "Tyrantrum": {
+   "HP": 82,
+   "ATK": 121,
+   "DEF": 119,
+   "SPA": 69,
+   "SPD": 59,
+   "SPE": 71
+  },
+  "Tyrogue": {
+   "HP": 35,
+   "ATK": 35,
+   "DEF": 35,
+   "SPA": 35,
+   "SPD": 35,
+   "SPE": 35
+  },
+  "Tyrunt": {
+   "HP": 58,
+   "ATK": 89,
+   "DEF": 77,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 48
+  },
+  "Unown": {
+   "HP": 48,
+   "ATK": 48,
+   "DEF": 48,
+   "SPA": 96,
+   "SPD": 48,
+   "SPE": 96
+  },
+  "Ursaluna": {
+   "HP": 130,
+   "ATK": 140,
+   "DEF": 105,
+   "SPA": 45,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Ursaluna-BM": {
+   "HP": 113,
+   "ATK": 70,
+   "DEF": 120,
+   "SPA": 140,
+   "SPD": 65,
+   "SPE": 52
+  },
+  "Ursaring": {
+   "HP": 90,
+   "ATK": 130,
+   "DEF": 75,
+   "SPA": 75,
+   "SPD": 75,
+   "SPE": 55
+  },
+  "Ursaring-S": {
+   "HP": 100,
+   "ATK": 110,
+   "DEF": 90,
+   "SPA": 55,
+   "SPD": 90,
+   "SPE": 55
+  },
+  "Urshifu-R": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Urshifu-Rapid": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Urshifu-S": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Urshifu-Single": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Uxie": {
+   "HP": 75,
+   "ATK": 75,
+   "DEF": 130,
+   "SPA": 75,
+   "SPD": 130,
+   "SPE": 95
+  },
+  "Vanillite": {
+   "HP": 36,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 65,
+   "SPD": 60,
+   "SPE": 44
+  },
+  "Vanilluxe": {
+   "HP": 71,
+   "ATK": 90,
+   "DEF": 85,
+   "SPA": 110,
+   "SPD": 95,
+   "SPE": 84
+  },
+  "Vaporeon": {
+   "HP": 130,
+   "ATK": 65,
+   "DEF": 60,
+   "SPA": 110,
+   "SPD": 95,
+   "SPE": 65
+  },
+  "Varoom": {
+   "HP": 45,
+   "ATK": 70,
+   "DEF": 63,
+   "SPA": 30,
+   "SPD": 45,
+   "SPE": 47
+  },
+  "Veluza": {
+   "HP": 95,
+   "ATK": 102,
+   "DEF": 83,
+   "SPA": 78,
+   "SPD": 75,
+   "SPE": 70
+  },
+  "Venipede": {
+   "HP": 30,
+   "ATK": 45,
+   "DEF": 59,
+   "SPA": 30,
+   "SPD": 39,
+   "SPE": 57
+  },
+  "Venonat": {
+   "HP": 60,
+   "ATK": 55,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 55,
+   "SPE": 45
+  },
+  "Venusaur": {
+   "HP": 80,
+   "ATK": 82,
+   "DEF": 83,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 80
+  },
+  "Venusaur-Mega": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 123,
+   "SPA": 122,
+   "SPD": 120,
+   "SPE": 80
+  },
+  "Victini": {
+   "HP": 100,
+   "ATK": 100,
+   "DEF": 100,
+   "SPA": 100,
+   "SPD": 100,
+   "SPE": 100
+  },
+  "Victreebel": {
+   "HP": 80,
+   "ATK": 105,
+   "DEF": 70,
+   "SPA": 100,
+   "SPD": 75,
+   "SPE": 70
+  },
+  "Vikavolt": {
+   "HP": 77,
+   "ATK": 70,
+   "DEF": 90,
+   "SPA": 145,
+   "SPD": 75,
+   "SPE": 43
+  },
+  "Vileplume": {
+   "HP": 75,
+   "ATK": 80,
+   "DEF": 85,
+   "SPA": 110,
+   "SPD": 90,
+   "SPE": 50
+  },
+  "Virizion": {
+   "HP": 91,
+   "ATK": 90,
+   "DEF": 72,
+   "SPA": 90,
+   "SPD": 129,
+   "SPE": 108
+  },
+  "Vivillon": {
+   "HP": 80,
+   "ATK": 52,
+   "DEF": 50,
+   "SPA": 90,
+   "SPD": 50,
+   "SPE": 89
+  },
+  "Volbeat": {
+   "HP": 85,
+   "ATK": 47,
+   "DEF": 75,
+   "SPA": 90,
+   "SPD": 85,
+   "SPE": 100
+  },
+  "Volcanion": {
+   "HP": 80,
+   "ATK": 110,
+   "DEF": 120,
+   "SPA": 130,
+   "SPD": 90,
+   "SPE": 70
+  },
+  "Volcarona": {
+   "HP": 85,
+   "ATK": 60,
+   "DEF": 65,
+   "SPA": 135,
+   "SPD": 105,
+   "SPE": 100
+  },
+  "Voltorb": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 100
+  },
+  "Voltorb-H": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 100
+  },
+  "Voltorb-Hisui": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 50,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 100
+  },
+  "Vullaby": {
+   "HP": 70,
+   "ATK": 55,
+   "DEF": 75,
+   "SPA": 45,
+   "SPD": 65,
+   "SPE": 60
+  },
+  "Vulpix": {
+   "HP": 38,
+   "ATK": 41,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Vulpix-Alola": {
+   "HP": 38,
+   "ATK": 41,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 65,
+   "SPE": 65
+  },
+  "Wailmer": {
+   "HP": 130,
+   "ATK": 70,
+   "DEF": 35,
+   "SPA": 70,
+   "SPD": 35,
+   "SPE": 60
+  },
+  "Wailord": {
+   "HP": 150,
+   "ATK": 50,
+   "DEF": 80,
+   "SPA": 105,
+   "SPD": 80,
+   "SPE": 50
+  },
+  "Walking Wake": {
+   "HP": 99,
+   "ATK": 83,
+   "DEF": 91,
+   "SPA": 125,
+   "SPD": 83,
+   "SPE": 109
+  },
+  "Walrein": {
+   "HP": 90,
+   "ATK": 80,
+   "DEF": 90,
+   "SPA": 95,
+   "SPD": 90,
+   "SPE": 65
+  },
+  "Wartortle": {
+   "HP": 59,
+   "ATK": 63,
+   "DEF": 80,
+   "SPA": 65,
+   "SPD": 80,
+   "SPE": 58
+  },
+  "Wattrel": {
+   "HP": 40,
+   "ATK": 40,
+   "DEF": 35,
+   "SPA": 55,
+   "SPD": 40,
+   "SPE": 70
+  },
+  "Weavile": {
+   "HP": 70,
+   "ATK": 120,
+   "DEF": 65,
+   "SPA": 45,
+   "SPD": 85,
+   "SPE": 125
+  },
+  "Weedle": {
+   "HP": 40,
+   "ATK": 35,
+   "DEF": 30,
+   "SPA": 20,
+   "SPD": 20,
+   "SPE": 50
+  },
+  "Weezing": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 120,
+   "SPA": 85,
+   "SPD": 70,
+   "SPE": 60
+  },
+  "Weezing-G": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 120,
+   "SPA": 85,
+   "SPD": 70,
+   "SPE": 60
+  },
+  "Weezing-Galar": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 120,
+   "SPA": 85,
+   "SPD": 70,
+   "SPE": 60
+  },
+  "Whimsicott": {
+   "HP": 60,
+   "ATK": 67,
+   "DEF": 85,
+   "SPA": 77,
+   "SPD": 75,
+   "SPE": 116
+  },
+  "Whirlipede": {
+   "HP": 40,
+   "ATK": 55,
+   "DEF": 99,
+   "SPA": 40,
+   "SPD": 79,
+   "SPE": 47
+  },
+  "Whiscash": {
+   "HP": 110,
+   "ATK": 78,
+   "DEF": 73,
+   "SPA": 76,
+   "SPD": 71,
+   "SPE": 60
+  },
+  "Whismur": {
+   "HP": 64,
+   "ATK": 51,
+   "DEF": 23,
+   "SPA": 51,
+   "SPD": 23,
+   "SPE": 28
+  },
+  "Wigglytuff": {
+   "HP": 140,
+   "ATK": 70,
+   "DEF": 45,
+   "SPA": 85,
+   "SPD": 50,
+   "SPE": 45
+  },
+  "Wiglett": {
+   "HP": 10,
+   "ATK": 55,
+   "DEF": 25,
+   "SPA": 35,
+   "SPD": 25,
+   "SPE": 95
+  },
+  "Wimpod": {
+   "HP": 25,
+   "ATK": 35,
+   "DEF": 40,
+   "SPA": 20,
+   "SPD": 30,
+   "SPE": 80
+  },
+  "Wingull": {
+   "HP": 40,
+   "ATK": 30,
+   "DEF": 30,
+   "SPA": 55,
+   "SPD": 30,
+   "SPE": 85
+  },
+  "Wishiwashi": {
+   "HP": 55,
+   "ATK": 20,
+   "DEF": 20,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 40
+  },
+  "Wishiwashi-S-Sch": {
+   "HP": 60,
+   "ATK": 140,
+   "DEF": 130,
+   "SPA": 140,
+   "SPD": 135,
+   "SPE": 25
+  },
+  "Wishiwashi-Sch": {
+   "HP": 55,
+   "ATK": 140,
+   "DEF": 130,
+   "SPA": 140,
+   "SPD": 135,
+   "SPE": 30
+  },
+  "Wishiwashi-Sevii": {
+   "HP": 60,
+   "ATK": 20,
+   "DEF": 20,
+   "SPA": 25,
+   "SPD": 15,
+   "SPE": 35
+  },
+  "Wo-Chien": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 100,
+   "SPA": 95,
+   "SPD": 135,
+   "SPE": 70
+  },
+  "Wobbuffet": {
+   "HP": 190,
+   "ATK": 33,
+   "DEF": 58,
+   "SPA": 33,
+   "SPD": 58,
+   "SPE": 33
+  },
+  "Woobat": {
+   "HP": 65,
+   "ATK": 45,
+   "DEF": 43,
+   "SPA": 55,
+   "SPD": 43,
+   "SPE": 72
+  },
+  "Wooloo": {
+   "HP": 42,
+   "ATK": 40,
+   "DEF": 55,
+   "SPA": 40,
+   "SPD": 45,
+   "SPE": 48
+  },
+  "Wooper": {
+   "HP": 55,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 15
+  },
+  "Wooper-Paldea": {
+   "HP": 55,
+   "ATK": 45,
+   "DEF": 45,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 15
+  },
+  "Wormadam-Sa": {
+   "HP": 60,
+   "ATK": 59,
+   "DEF": 105,
+   "SPA": 79,
+   "SPD": 85,
+   "SPE": 36
+  },
+  "Wugtrio": {
+   "HP": 35,
+   "ATK": 115,
+   "DEF": 50,
+   "SPA": 35,
+   "SPD": 70,
+   "SPE": 120
+  },
+  "Wurmple": {
+   "HP": 45,
+   "ATK": 45,
+   "DEF": 35,
+   "SPA": 20,
+   "SPD": 30,
+   "SPE": 20
+  },
+  "Xatu": {
+   "HP": 65,
+   "ATK": 75,
+   "DEF": 70,
+   "SPA": 105,
+   "SPD": 70,
+   "SPE": 105
+  },
+  "Xerneas": {
+   "HP": 126,
+   "ATK": 131,
+   "DEF": 95,
+   "SPA": 131,
+   "SPD": 98,
+   "SPE": 99
+  },
+  "Xurkitree": {
+   "HP": 83,
+   "ATK": 69,
+   "DEF": 71,
+   "SPA": 173,
+   "SPD": 71,
+   "SPE": 98
+  },
+  "Yamask": {
+   "HP": 38,
+   "ATK": 30,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 30
+  },
+  "Yamask-Galar": {
+   "HP": 38,
+   "ATK": 55,
+   "DEF": 85,
+   "SPA": 30,
+   "SPD": 65,
+   "SPE": 30
+  },
+  "Yamper": {
+   "HP": 59,
+   "ATK": 45,
+   "DEF": 50,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 26
+  },
+  "Yanma": {
+   "HP": 65,
+   "ATK": 65,
+   "DEF": 45,
+   "SPA": 75,
+   "SPD": 45,
+   "SPE": 95
+  },
+  "Yanmega": {
+   "HP": 86,
+   "ATK": 76,
+   "DEF": 86,
+   "SPA": 116,
+   "SPD": 56,
+   "SPE": 95
+  },
+  "Yungoos": {
+   "HP": 48,
+   "ATK": 70,
+   "DEF": 30,
+   "SPA": 30,
+   "SPD": 30,
+   "SPE": 45
+  },
+  "Yveltal": {
+   "HP": 126,
+   "ATK": 131,
+   "DEF": 95,
+   "SPA": 131,
+   "SPD": 98,
+   "SPE": 99
+  },
+  "Zacian": {
+   "HP": 92,
+   "ATK": 120,
+   "DEF": 115,
+   "SPA": 80,
+   "SPD": 115,
+   "SPE": 138
+  },
+  "Zacian-C": {
+   "HP": 92,
+   "ATK": 150,
+   "DEF": 115,
+   "SPA": 80,
+   "SPD": 115,
+   "SPE": 148
+  },
+  "Zamazenta": {
+   "HP": 92,
+   "ATK": 120,
+   "DEF": 115,
+   "SPA": 80,
+   "SPD": 115,
+   "SPE": 138
+  },
+  "Zamazenta-C": {
+   "HP": 92,
+   "ATK": 120,
+   "DEF": 140,
+   "SPA": 80,
+   "SPD": 140,
+   "SPE": 128
+  },
+  "Zangoose": {
+   "HP": 73,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 100
+  },
+  "Zapdos": {
+   "HP": 90,
+   "ATK": 90,
+   "DEF": 85,
+   "SPA": 125,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Zapdos-G": {
+   "HP": 90,
+   "ATK": 125,
+   "DEF": 90,
+   "SPA": 85,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Zapdos-Galar": {
+   "HP": 90,
+   "ATK": 125,
+   "DEF": 90,
+   "SPA": 85,
+   "SPD": 90,
+   "SPE": 100
+  },
+  "Zarude": {
+   "HP": 105,
+   "ATK": 120,
+   "DEF": 105,
+   "SPA": 70,
+   "SPD": 95,
+   "SPE": 105
+  },
+  "Zebstrika": {
+   "HP": 75,
+   "ATK": 100,
+   "DEF": 63,
+   "SPA": 80,
+   "SPD": 63,
+   "SPE": 116
+  },
+  "Zebstrika-S": {
+   "HP": 75,
+   "ATK": 70,
+   "DEF": 63,
+   "SPA": 110,
+   "SPD": 63,
+   "SPE": 116
+  },
+  "Zekrom": {
+   "HP": 100,
+   "ATK": 150,
+   "DEF": 120,
+   "SPA": 120,
+   "SPD": 100,
+   "SPE": 90
+  },
+  "Zeraora": {
+   "HP": 88,
+   "ATK": 112,
+   "DEF": 75,
+   "SPA": 102,
+   "SPD": 80,
+   "SPE": 143
+  },
+  "Zigzagoon": {
+   "HP": 38,
+   "ATK": 30,
+   "DEF": 41,
+   "SPA": 30,
+   "SPD": 41,
+   "SPE": 60
+  },
+  "Zigzagoon-Galar": {
+   "HP": 38,
+   "ATK": 30,
+   "DEF": 41,
+   "SPA": 30,
+   "SPD": 41,
+   "SPE": 60
+  },
+  "Zoroark": {
+   "HP": 60,
+   "ATK": 105,
+   "DEF": 60,
+   "SPA": 120,
+   "SPD": 60,
+   "SPE": 105
+  },
+  "Zoroark-H": {
+   "HP": 55,
+   "ATK": 100,
+   "DEF": 60,
+   "SPA": 125,
+   "SPD": 60,
+   "SPE": 110
+  },
+  "Zoroark-Hisui": {
+   "HP": 55,
+   "ATK": 100,
+   "DEF": 60,
+   "SPA": 125,
+   "SPD": 60,
+   "SPE": 110
+  },
+  "Zorua": {
+   "HP": 40,
+   "ATK": 65,
+   "DEF": 40,
+   "SPA": 80,
+   "SPD": 40,
+   "SPE": 65
+  },
+  "Zorua-Hisui": {
+   "HP": 35,
+   "ATK": 60,
+   "DEF": 40,
+   "SPA": 85,
+   "SPD": 40,
+   "SPE": 70
+  },
+  "Zubat": {
+   "HP": 40,
+   "ATK": 45,
+   "DEF": 35,
+   "SPA": 30,
+   "SPD": 40,
+   "SPE": 55
+  },
+  "Zygarde": {
+   "HP": 108,
+   "ATK": 100,
+   "DEF": 121,
+   "SPA": 81,
+   "SPD": 95,
+   "SPE": 95
+  },
+  "Zygarde-10": {
+   "HP": 54,
+   "ATK": 100,
+   "DEF": 71,
+   "SPA": 61,
+   "SPD": 85,
+   "SPE": 115
+  },
+  "Zygarde-C": {
+   "HP": 216,
+   "ATK": 100,
+   "DEF": 121,
+   "SPA": 91,
+   "SPD": 95,
+   "SPE": 85
+  }
+ }
+}

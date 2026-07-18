@@ -1,0 +1,28 @@
+import type { AppState, GameMode, Run } from "../types";
+
+const KEY = "rr-tracker.v1";
+
+export function loadState(): AppState {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw) as AppState;
+  } catch {
+    // corrupted state: start fresh
+  }
+  return { runs: [], activeRunId: null };
+}
+
+export function saveState(state: AppState): void {
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+
+export function newRun(name: string, mode: GameMode): Run {
+  return {
+    id: `run-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    name,
+    mode,
+    createdAt: Date.now(),
+    encounters: {},
+    defeated: {},
+  };
+}
