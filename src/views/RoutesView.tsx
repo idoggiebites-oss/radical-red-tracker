@@ -79,6 +79,14 @@ export function RoutesView({
     ) {
       return true;
     }
+    if (
+      Object.entries(run?.seenSpecies ?? {}).some(
+        ([k, v]) =>
+          k.startsWith(loc.id + "|") && v.toLowerCase().includes(q),
+      )
+    ) {
+      return true;
+    }
     return Object.values(loc.methods).some((slots) =>
       slots?.some((s) => s.species.toLowerCase().includes(q)),
     );
@@ -149,18 +157,10 @@ export function RoutesView({
 
       {randomized && (
         <div className="randomizer-banner">
-          🎲 Species randomizer active
-          {run?.saveInfo?.random.scaledSpecies && " (scaled)"}
-          {run?.saveInfo && (
-            <>
-              {" "}
-              for trainer <strong>{run.saveInfo.trainerName || "?"}</strong>
-            </>
-          )}{" "}
-          — {Object.keys(run?.speciesMap ?? {}).length} mappings recorded. When
-          you meet a randomized Pokémon, click its slot's{" "}
-          <span className="map-hint">→ record</span> cell and enter what it
-          became; the mapping applies to that species everywhere.
+          🎲 Species randomizer active — type whatever you actually caught in
+          a route's species box (any species counts). If you want, click a
+          slot's <span className="map-hint">→ record</span> cell to note what
+          shows up in its place on that route.
         </div>
       )}
       {randomized && (
@@ -485,22 +485,24 @@ function RouteRow({
   toggle: () => void;
 }) {
   const enc = run?.encounters[loc.id];
-  const speciesMap = run?.speciesMap ?? {};
   // statics start collapsed (mostly post-game roamers); a manual toggle wins
   // over the default, and a tracked static keeps its status visible
   const [staticsOpen, setStaticsOpen] = useState<boolean | null>(null);
   const showStatics =
     staticsOpen ?? (staticsDefaultOpen || statics.some((ls) => run?.encounters[ls.id]));
 
-  const setMapping = (original: string, mapped: string) => {
+  const seenFor = (species: string) =>
+    run?.seenSpecies?.[`${loc.id}|${species}`];
+  const setSeen = (species: string, seen: string) => {
     updateRun((r) => {
-      const next = { ...(r.speciesMap ?? {}) };
-      if (mapped.trim()) {
-        next[original] = mapped.trim();
+      const next = { ...(r.seenSpecies ?? {}) };
+      const key = `${loc.id}|${species}`;
+      if (seen.trim()) {
+        next[key] = seen.trim();
       } else {
-        delete next[original];
+        delete next[key];
       }
-      return { ...r, speciesMap: next };
+      return { ...r, seenSpecies: next };
     });
   };
 
@@ -556,7 +558,7 @@ function RouteRow({
                 list={`species-${loc.id}`}
               />
               <datalist id={`species-${loc.id}`}>
-                {(loc.id === STARTER_ID
+                {(loc.id === STARTER_ID || randomized
                   ? ALL_SPECIES
                   : [...new Set(
                       Object.values(loc.methods).flatMap(
@@ -621,12 +623,7 @@ function RouteRow({
                     run={run}
                     updateRun={updateRun}
                     onPickRoute={
-                      run
-                        ? (sp) =>
-                            setEncounter({
-                              species: randomized ? (speciesMap[sp] ?? sp) : sp,
-                            })
-                        : undefined
+                      run ? (sp) => setEncounter({ species: sp }) : undefined
                     }
                   />
                 )}
@@ -640,15 +637,10 @@ function RouteRow({
                   <h4>{METHOD_LABELS[m]}</h4>
                   <EncounterTable
                     slots={slots}
-                    speciesMap={randomized ? speciesMap : undefined}
-                    onMap={randomized ? setMapping : undefined}
+                    seen={randomized ? seenFor : undefined}
+                    onSee={randomized ? setSeen : undefined}
                     onPick={
-                      run
-                        ? (sp) =>
-                            setEncounter({
-                              species: randomized ? (speciesMap[sp] ?? sp) : sp,
-                            })
-                        : undefined
+                      run ? (sp) => setEncounter({ species: sp }) : undefined
                     }
                   />
                 </div>
@@ -663,35 +655,35 @@ function RouteRow({
 
 function EncounterTable({
   slots,
-  speciesMap,
-  onMap,
+  seen,
+  onSee,
   onPick,
 }: {
   slots: EncounterSlot[];
-  /** when set, the species randomizer is active for this run */
-  speciesMap?: Record<string, string>;
-  onMap?: (original: string, mapped: string) => void;
+  /** when set, the species randomizer is active: per-route sighting notes */
+  seen?: (species: string) => string | undefined;
+  onSee?: (species: string, seen: string) => void;
   onPick?: (species: string) => void;
 }) {
   const [editing, setEditing] = useState<string | null>(null);
-  const randomized = speciesMap !== undefined;
+  const randomized = onSee !== undefined;
   return (
     <table>
       <tbody>
         {slots.map((s, i) => {
-          const mapped = speciesMap?.[s.species];
-          const shown = randomized ? (mapped ?? s.species) : s.species;
+          const sighted = seen?.(s.species);
+          const shown = sighted ?? s.species;
           return (
             <tr
               key={i}
               className={onPick ? "pickable" : ""}
               title={onPick ? `Set ${shown} as this route's encounter` : undefined}
-              onClick={() => onPick?.(s.species)}
+              onClick={() => onPick?.(shown)}
             >
               <td className="cell-sprite">
                 <Sprite species={s.species} size={32} />
               </td>
-              <td className={"cell-species" + (mapped ? " orig-species" : "")}>
+              <td className={"cell-species" + (sighted ? " orig-species" : "")}>
                 {s.species}
               </td>
               {randomized && (
@@ -701,28 +693,28 @@ function EncounterTable({
                       autoFocus
                       className="map-input"
                       list="all-species"
-                      defaultValue={mapped ?? ""}
-                      placeholder="Became…"
+                      defaultValue={sighted ?? ""}
+                      placeholder="Saw here…"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                          onMap?.(s.species, e.currentTarget.value);
+                          onSee?.(s.species, e.currentTarget.value);
                           setEditing(null);
                         } else if (e.key === "Escape") {
                           setEditing(null);
                         }
                       }}
                       onBlur={(e) => {
-                        onMap?.(s.species, e.currentTarget.value);
+                        onSee?.(s.species, e.currentTarget.value);
                         setEditing(null);
                       }}
                     />
-                  ) : mapped ? (
+                  ) : sighted ? (
                     <button
                       className="map-value"
-                      title="Edit mapping"
+                      title="Edit sighting"
                       onClick={() => setEditing(s.species)}
                     >
-                      → <Sprite species={mapped} size={26} /> {mapped}
+                      → <Sprite species={sighted} size={26} /> {sighted}
                     </button>
                   ) : (
                     <button

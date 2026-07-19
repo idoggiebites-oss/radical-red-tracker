@@ -251,9 +251,9 @@ function NewRunDialog({
             </div>
             {(saveInfo.random.normalSpecies || saveInfo.random.scaledSpecies) && (
               <div className="muted">
-                Species randomizer detected — route slots will let you record
-                what each species became; each discovery applies globally
-                (the mapping is 1-to-1 for the whole save).
+                Species randomizer detected — type whatever you actually catch
+                in a route's species box, and optionally note what shows up in
+                each slot.
               </div>
             )}
           </div>

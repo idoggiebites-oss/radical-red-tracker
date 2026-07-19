@@ -199,10 +199,13 @@ export interface Run {
   defeated: Record<number, boolean>;
   /** parsed from an uploaded .sav, if any */
   saveInfo?: RunSaveInfo;
-  /** randomizer discoveries: original species -> randomized species.
-   * RR's species randomizer is a global 1-to-1 mapping, so one discovery
-   * applies to every encounter slot of that species. */
+  /** legacy global randomizer mapping (original -> randomized species) from
+   * older runs; still read for starter identification, no longer written */
   speciesMap?: Record<string, string>;
+  /** species randomizer sightings, keyed `<locationId>|<docSpecies>` -> what
+   * actually appeared in that slot. Display-only and per route — catches are
+   * whatever the user types in the species box. */
+  seenSpecies?: Record<string, string>;
   /** manual randomizer toggles (Routes toolbar; the hidden save-file import
    * can also detect them): species unlocks the route "became…" mapping UI,
    * abilities frees the ability inputs in builds and the calc */
