@@ -57,7 +57,7 @@ export function TeamView({
   modeData: BossMode;
 }) {
   const [subtab, setSubtab] = useState<"roster" | "readiness">("roster");
-  const [sortStat, setSortStat] = useState<StatKey | "KOS" | "">("");
+  const [sortStat, setSortStat] = useState<StatKey | "KOS" | "BST" | "">("");
   const [filterType, setFilterType] = useState("");
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
   const [evolveOpen, setEvolveOpen] = useState<string | null>(null);
@@ -72,6 +72,10 @@ export function TeamView({
     }
     if (sortStat === "KOS") {
       out = [...out].sort(([, a], [, b]) => (b.kos ?? 0) - (a.kos ?? 0));
+    } else if (sortStat === "BST") {
+      out = [...out].sort(
+        ([, a], [, b]) => bstFor(b.species) - bstFor(a.species),
+      );
     } else if (sortStat) {
       out = [...out].sort(
         ([, a], [, b]) =>
@@ -179,10 +183,13 @@ export function TeamView({
         Sort by
         <select
           value={sortStat}
-          onChange={(e) => setSortStat(e.target.value as StatKey | "KOS" | "")}
+          onChange={(e) =>
+            setSortStat(e.target.value as StatKey | "KOS" | "BST" | "")
+          }
         >
           <option value="">Caught order</option>
           <option value="KOS">Most KOs</option>
+          <option value="BST">Highest BST</option>
           {STAT_KEYS.map((s) => (
             <option key={s} value={s}>
               Highest {s}
@@ -976,7 +983,7 @@ function Section({
   items: Entry[];
   empty: string;
   actions: (locId: string) => React.ReactNode;
-  highlightStat?: StatKey | "KOS" | "";
+  highlightStat?: StatKey | "KOS" | "BST" | "";
   buildOpen: string | null;
   setBuildOpen: (locId: string | null) => void;
   setBuild: (locId: string, build: MonBuild | undefined) => void;
@@ -1008,6 +1015,7 @@ function Section({
                   {e.nickname && <span className="muted"> · {e.species}</span>}
                   {highlightStat &&
                     highlightStat !== "KOS" &&
+                    highlightStat !== "BST" &&
                     statsFor(e.species)[highlightStat] !== undefined && (
                       <span className="stat-pill">
                         {highlightStat} {statsFor(e.species)[highlightStat]}
@@ -1089,6 +1097,7 @@ function Section({
                     </button>
                   )}
               </div>
+              <PartyStats species={e.species} />
             </div>
             {buildOpen === locId && (
               <BuildEditor
