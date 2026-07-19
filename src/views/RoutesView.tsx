@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   EncounterSlot,
   EncounterStatus,
@@ -13,6 +13,11 @@ import { hasSpeciesRandomizer } from "../lib/saveFile";
 import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
 import { STARTER_ID } from "../lib/storage";
 import { STARTER_TRIO } from "../lib/starters";
+import {
+  staticSlotId,
+  staticsByLocation,
+  type LocatedStatic,
+} from "../lib/statics";
 
 const STARTER_LOC: Location = {
   id: STARTER_ID,
@@ -59,15 +64,40 @@ export function RoutesView({
   const randomized =
     SAVE_FILE_FEATURE && run != null && hasSpeciesRandomizer(run.saveInfo);
 
+  const staticsMap = useMemo(() => staticsByLocation(data), [data]);
+  // statics in areas without a route row (Seafoam, Navel Rock, postgame ...)
+  const otherStatics = useMemo<LocatedStatic[]>(() => {
+    const placed = new Set(
+      Object.values(staticsMap).flatMap((list) => list.map((ls) => ls.static)),
+    );
+    return data.statics
+      .filter((s) => !placed.has(s))
+      .map((s) => ({ id: staticSlotId(s.species), static: s }));
+  }, [data, staticsMap]);
+
   const q = filter.trim().toLowerCase();
   const locations = data.locations.filter((loc) => {
     if (!showPostgame && loc.postgame) return false;
     if (!q) return true;
     if (loc.name.toLowerCase().includes(q)) return true;
+    if (
+      (staticsMap[loc.id] ?? []).some((ls) =>
+        ls.static.species.toLowerCase().includes(q),
+      )
+    ) {
+      return true;
+    }
     return Object.values(loc.methods).some((slots) =>
       slots?.some((s) => s.species.toLowerCase().includes(q)),
     );
   });
+  const otherFiltered = q
+    ? otherStatics.filter(
+        (ls) =>
+          ls.static.species.toLowerCase().includes(q) ||
+          ls.static.info.toLowerCase().includes(q),
+      )
+    : otherStatics;
 
   return (
     <div className="routes">
@@ -125,11 +155,153 @@ export function RoutesView({
           run={run}
           updateRun={updateRun}
           randomized={randomized}
+          statics={staticsMap[loc.id] ?? []}
           open={open === loc.id}
           toggle={() => setOpen(open === loc.id ? null : loc.id)}
         />
       ))}
+      {otherFiltered.length > 0 && (
+        <div className="route-row">
+          <button
+            className="route-head"
+            onClick={() => setOpen(open === "statics-other" ? null : "statics-other")}
+          >
+            <span className="route-name">
+              STATICS &amp; LEGENDARIES · OTHER AREAS
+              <span className="badge postgame">many post-game</span>
+            </span>
+            <span className="chev">{open === "statics-other" ? "▾" : "▸"}</span>
+          </button>
+          {open === "statics-other" && (
+            <div className="route-body">
+              <div className="method-table statics-table">
+                <StaticsTable
+                  statics={otherFiltered}
+                  run={run}
+                  updateRun={updateRun}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
+  );
+}
+
+function StaticsTable({
+  statics,
+  run,
+  updateRun,
+  onPickRoute,
+}: {
+  statics: LocatedStatic[];
+  run: Run | null;
+  updateRun: (fn: (run: Run) => Run) => void;
+  /** when set, offers using the route's encounter slot for the catch */
+  onPickRoute?: (species: string) => void;
+}) {
+  return (
+    <table>
+      <tbody>
+        {statics.map((ls) => (
+          <StaticRow
+            key={ls.id}
+            ls={ls}
+            run={run}
+            updateRun={updateRun}
+            onPickRoute={onPickRoute}
+          />
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+function StaticRow({
+  ls,
+  run,
+  updateRun,
+  onPickRoute,
+}: {
+  ls: LocatedStatic;
+  run: Run | null;
+  updateRun: (fn: (run: Run) => Run) => void;
+  onPickRoute?: (species: string) => void;
+}) {
+  const entry = run?.encounters[ls.id];
+
+  const setStatic = (patch: Partial<Run["encounters"][string]> | null) => {
+    updateRun((r) => {
+      const next = { ...r.encounters };
+      if (patch === null) {
+        delete next[ls.id];
+      } else {
+        const defaults: Run["encounters"][string] = {
+          species: ls.static.species,
+          nickname: "",
+          status: "caught",
+          inParty: false,
+        };
+        next[ls.id] = { ...defaults, ...next[ls.id], ...patch };
+      }
+      return { ...r, encounters: next };
+    });
+  };
+
+  return (
+    <tr className={entry ? `st-${entry.status}` : ""}>
+      <td className="cell-sprite">
+        <Sprite species={ls.static.species} size={32} />
+      </td>
+      <td className="cell-species">{ls.static.species}</td>
+      <td>
+        <TypeBadges species={ls.static.species} small />
+      </td>
+      <td className="static-info muted">{ls.static.info}</td>
+      {run && (
+        <td className="static-actions">
+          {entry ? (
+            <>
+              {STATUS_META.map((s) => (
+                <button
+                  key={s.id}
+                  className={
+                    entry.status === s.id ? `st-btn ${s.id} active` : "st-btn"
+                  }
+                  title={s.label}
+                  onClick={() => setStatic({ status: s.id })}
+                >
+                  {s.icon}
+                </button>
+              ))}
+              <button className="st-btn clear" onClick={() => setStatic(null)}>
+                Clear
+              </button>
+            </>
+          ) : (
+            <>
+              {onPickRoute && (
+                <button
+                  className="st-btn"
+                  title="Record it in this route's encounter slot"
+                  onClick={() => onPickRoute(ls.static.species)}
+                >
+                  → route slot
+                </button>
+              )}
+              <button
+                className="st-btn"
+                title="Track as an extra catch — keeps the route's encounter slot free"
+                onClick={() => setStatic({ status: "caught" })}
+              >
+                + extra catch
+              </button>
+            </>
+          )}
+        </td>
+      )}
+    </tr>
   );
 }
 
@@ -148,6 +320,7 @@ function RouteRow({
   run,
   updateRun,
   randomized,
+  statics = [],
   open,
   toggle,
 }: {
@@ -155,6 +328,7 @@ function RouteRow({
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
   randomized: boolean;
+  statics?: LocatedStatic[];
   open: boolean;
   toggle: () => void;
 }) {
@@ -282,6 +456,24 @@ function RouteRow({
                   Your pick decides the rival's starter — his team variants on
                   the Bosses tab filter accordingly.
                 </p>
+              </div>
+            )}
+            {statics.length > 0 && (
+              <div className="method-table statics-table">
+                <h4>Static / Legendary</h4>
+                <StaticsTable
+                  statics={statics}
+                  run={run}
+                  updateRun={updateRun}
+                  onPickRoute={
+                    run
+                      ? (sp) =>
+                          setEncounter({
+                            species: randomized ? (speciesMap[sp] ?? sp) : sp,
+                          })
+                      : undefined
+                  }
+                />
               </div>
             )}
             {(Object.keys(METHOD_LABELS) as MethodKey[]).map((m) => {

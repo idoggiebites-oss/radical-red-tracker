@@ -571,8 +571,13 @@ function ResultBlock({
           {l.error ? (
             <span className="muted">{l.error}</span>
           ) : (
-            <span className={l.maxPercent >= 100 ? ohkoClass : "result-desc"}>
+            <span
+              className={l.maxPercent >= 100 && !l.guard ? ohkoClass : "result-desc"}
+            >
               {l.desc}
+              {l.guard && (
+                <span className="guard-note"> — survives at 1 HP ({l.guard})</span>
+              )}
             </span>
           )}
         </div>

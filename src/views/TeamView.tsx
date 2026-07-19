@@ -638,11 +638,17 @@ function MoveMatchup({
 
 function TargetCard({ bm, line }: { bm: BossMon; line: MoveRange | null }) {
   const ok = line !== null && !line.error;
-  const ko = ok && line.minPercent >= 100;
-  const maybeKo = ok && !ko && line.maxPercent >= 100;
-  // remaining HP range: sure = survives even max damage, maybe = roll-dependent
-  const lo = ok ? Math.max(0, 100 - line.maxPercent) : 100;
-  const hi = ok ? Math.max(0, 100 - line.minPercent) : 100;
+  const guard = ok ? line.guard : undefined;
+  const ko = ok && !guard && line.minPercent >= 100;
+  const maybeKo = ok && !guard && !ko && line.maxPercent >= 100;
+  // remaining HP range: sure = survives even max damage, maybe = roll-dependent;
+  // a Sturdy/Focus Sash holder always keeps at least a 1 HP sliver
+  let lo = ok ? Math.max(0, 100 - line.maxPercent) : 100;
+  let hi = ok ? Math.max(0, 100 - line.minPercent) : 100;
+  if (guard) {
+    lo = Math.max(lo, 1);
+    hi = Math.max(hi, lo);
+  }
   const tone = lo < 25 ? " low" : lo < 55 ? " mid" : "";
   return (
     <div className="target-card">
@@ -653,14 +659,23 @@ function TargetCard({ bm, line }: { bm: BossMon; line: MoveRange | null }) {
           <span className={"hp-sure" + tone} style={{ width: `${lo}%` }} />
           <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
         </span>
-        <span className={"target-dmg" + (ko ? " ko" : maybeKo ? " maybe-ko" : "")}>
+        <span
+          className={"target-dmg" + (ko ? " ko" : maybeKo || guard ? " maybe-ko" : "")}
+          title={
+            guard
+              ? `${guard} keeps it at 1 HP through a single otherwise-lethal hit`
+              : undefined
+          }
+        >
           {!line
             ? "—"
             : line.error
               ? line.error
               : ko
                 ? `KO · ${line.minPercent}%+`
-                : `${line.minPercent}–${line.maxPercent}%${maybeKo ? " · may KO" : ""}`}
+                : guard
+                  ? `${line.minPercent}–${line.maxPercent}% · 1 HP (${guard})`
+                  : `${line.minPercent}–${line.maxPercent}%${maybeKo ? " · may KO" : ""}`}
         </span>
       </span>
     </div>
@@ -897,7 +912,11 @@ function Section({
                 </div>
                 <TypeBadges species={e.species} small />
                 <div className="team-loc muted">
-                  {locId === "starter" ? "starter · oak's lab" : locId.replace(/-/g, " ")}
+                  {locId === "starter"
+                    ? "starter · oak's lab"
+                    : locId.startsWith("static-")
+                      ? "static · " + locId.slice(7).replace(/-/g, " ")
+                      : locId.replace(/-/g, " ")}
                 </div>
                 {e.build && (
                   <div className="build-summary muted">

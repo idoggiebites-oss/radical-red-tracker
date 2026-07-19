@@ -248,7 +248,30 @@ export interface MatchupLine {
   move: string;
   desc: string;
   maxPercent: number;
+  /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
+  guard?: string;
   error?: string;
+}
+
+const MOLD_BREAKERS = new Set(["Mold Breaker", "Teravolt", "Turboblaze"]);
+
+/** "Sturdy" / "Focus Sash" when the defender survives an otherwise-lethal
+ * single hit from full HP; multi-hit moves break through, Mold Breaker
+ * ignores Sturdy but not the sash */
+function ohkoGuard(
+  attacker: rr.Pokemon,
+  defender: rr.Pokemon,
+  move: rr.Move,
+): string | undefined {
+  if ((move.hits ?? 1) > 1) return undefined;
+  if (
+    defender.hasAbility("Sturdy") &&
+    !MOLD_BREAKERS.has(attacker.ability ?? "")
+  ) {
+    return "Sturdy";
+  }
+  if (defender.hasItem("Focus Sash")) return "Focus Sash";
+  return undefined;
 }
 
 /** "Highest Lv -3" / "Player Max Level" style boss levels scale off the
@@ -267,6 +290,8 @@ export interface MoveRange {
   move: string;
   minPercent: number;
   maxPercent: number;
+  /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
+  guard?: string;
   error?: string;
 }
 
@@ -283,19 +308,16 @@ export function calcMoveRange(
     return { move: docMove, minPercent: 0, maxPercent: 0, error: "unknown move" };
   }
   try {
-    const result = rr.calculate(
-      GEN,
-      attacker,
-      defender,
-      new rr.Move(GEN, moveName),
-      new rr.Field(fieldOpts),
-    );
+    const move = new rr.Move(GEN, moveName);
+    const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
     const [min, max] = result.range();
     const hp = defender.maxHP();
+    const maxPercent = Math.round((max / hp) * 1000) / 10;
     return {
       move: moveName,
       minPercent: Math.round((min / hp) * 1000) / 10,
-      maxPercent: Math.round((max / hp) * 1000) / 10,
+      maxPercent,
+      guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
     };
   } catch {
     return { move: moveName, minPercent: 0, maxPercent: 0, error: "calc failed" };
@@ -399,13 +421,8 @@ export function calcMoves(
       continue;
     }
     try {
-      const result = rr.calculate(
-        GEN,
-        attacker,
-        defender,
-        new rr.Move(GEN, moveName),
-        new rr.Field(fieldOpts),
-      );
+      const move = new rr.Move(GEN, moveName);
+      const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
       const [, max] = result.range();
       const maxPercent = Math.round((max / defender.maxHP()) * 1000) / 10;
       let desc: string;
@@ -415,7 +432,12 @@ export function calcMoves(
         // desc() throws for pure status moves
         desc = "status move";
       }
-      lines.push({ move: moveName, desc, maxPercent });
+      lines.push({
+        move: moveName,
+        desc,
+        maxPercent,
+        guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
+      });
     } catch {
       lines.push({ move: moveName, desc: "", maxPercent: 0, error: "calc failed" });
     }

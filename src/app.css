@@ -496,6 +496,7 @@ tr.pickable:hover td { background: var(--bg3); }
 .result-line { display: flex; gap: 10px; align-items: baseline; padding: 3px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 .result-move { font-weight: 700; min-width: 110px; flex: 0 0 auto; }
 .result-desc.ohko { color: #ff8a8a; }
+.guard-note { color: #e8c13a; }
 
 .base-stats-line { font-size: 12px; }
 
@@ -528,6 +529,25 @@ tr.pickable:hover td { background: var(--bg3); }
 .calc-side-head { display: flex; align-items: center; gap: 12px; }
 .calc-side-head h3 { margin: 0; flex: 1; }
 .import-note { font-size: 12px; }
+
+/* ---- static encounters on routes ---- */
+
+.statics-table .static-info {
+  font-size: 12px;
+  max-width: 420px;
+  white-space: pre-line;
+}
+.static-actions {
+  white-space: nowrap;
+  text-align: right;
+}
+.static-actions .st-btn {
+  padding: 2px 7px;
+  font-size: 12px;
+  margin-left: 3px;
+}
+.statics-table tr.st-caught .cell-species { color: var(--caught); }
+.statics-table tr.st-fainted .cell-species { color: var(--fainted); }
 
 /* ---- battle readiness ---- */
 

@@ -25,10 +25,15 @@ export class Pokemon {
   species: { baseStats: Required<StatsTable> };
   stats: Required<StatsTable>;
   rawStats: Required<StatsTable>;
+  ability?: string;
+  item?: string;
+  hasAbility(...names: string[]): boolean;
+  hasItem(...names: string[]): boolean;
 }
 
 export class Move {
   constructor(gen: number | Generation, name: string, options?: Record<string, unknown>);
+  hits: number;
 }
 
 export interface FieldOptions {
