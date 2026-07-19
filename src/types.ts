@@ -203,6 +203,12 @@ export interface Run {
    * RR's species randomizer is a global 1-to-1 mapping, so one discovery
    * applies to every encounter slot of that species. */
   speciesMap?: Record<string, string>;
+  /** lab ball taken: 0 left/grass · 1 middle/water · 2 right/fire. The
+   * position decides the rival's counterpick even when the species are a
+   * different region's trio or randomized. */
+  starterPos?: 0 | 1 | 2;
+  /** which region's trio the lab offers (display only, default Kanto) */
+  starterRegion?: string;
 }
 
 export interface AppState {

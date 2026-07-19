@@ -12,7 +12,7 @@ import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
 import { hasSpeciesRandomizer } from "../lib/saveFile";
 import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
 import { STARTER_ID } from "../lib/storage";
-import { STARTER_TRIO } from "../lib/starters";
+import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
 import {
   staticSlotId,
   staticsByLocation,
@@ -25,12 +25,6 @@ const STARTER_LOC: Location = {
   postgame: false,
   methods: {},
 };
-
-const STARTER_SLOTS: EncounterSlot[] = STARTER_TRIO.map((species) => ({
-  species,
-  rarity: "",
-  levels: "5",
-}));
 
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
@@ -312,6 +306,115 @@ function StaticRow({
   );
 }
 
+/** lab balls in fixed left/middle/right order (grass/water/fire): pick a
+ * region's trio from the dropdown, or type over a slot for randomized
+ * starters — the picked POSITION is what drives rival boss variants */
+function StarterPicker({
+  run,
+  updateRun,
+}: {
+  run: Run;
+  updateRun: (fn: (run: Run) => Run) => void;
+}) {
+  const region =
+    STARTER_REGIONS.find((r) => r.region === (run.starterRegion ?? "Kanto")) ??
+    STARTER_REGIONS[0];
+  // per-slot species overrides; prefill the picked slot so the recorded
+  // species still shows after a reload
+  const [overrides, setOverrides] = useState<string[]>(() => {
+    const out = ["", "", ""];
+    const recorded = run.encounters[STARTER_ID]?.species;
+    if (
+      run.starterPos != null &&
+      recorded &&
+      recorded !== region.trio[run.starterPos]
+    ) {
+      out[run.starterPos] = recorded;
+    }
+    return out;
+  });
+
+  const pick = (species: string, pos: 0 | 1 | 2) => {
+    updateRun((r) => {
+      const defaults: Run["encounters"][string] = {
+        species,
+        nickname: "",
+        status: "caught",
+        inParty: false,
+      };
+      return {
+        ...r,
+        starterPos: pos,
+        encounters: {
+          ...r.encounters,
+          [STARTER_ID]: { ...defaults, ...r.encounters[STARTER_ID], species },
+        },
+      };
+    });
+  };
+
+  const picked = run.encounters[STARTER_ID]?.species ? run.starterPos : undefined;
+
+  return (
+    <div className="starter-picker">
+      <label className="starter-region muted">
+        Starter region
+        <select
+          value={region.region}
+          onChange={(e) =>
+            updateRun((r) => ({ ...r, starterRegion: e.target.value }))
+          }
+        >
+          {STARTER_REGIONS.map((r) => (
+            <option key={r.region}>{r.region}</option>
+          ))}
+        </select>
+      </label>
+      <div className="starter-slots">
+        {([0, 1, 2] as const).map((pos) => {
+          const shown = overrides[pos].trim() || region.trio[pos];
+          return (
+            <div
+              key={pos}
+              className={"starter-slot" + (picked === pos ? " active" : "")}
+            >
+              <span className="slot-label">{POSITION_LABELS[pos]}</span>
+              <button
+                className="starter-choice"
+                title={`Record the ${POSITION_LABELS[pos].toLowerCase()} ball as your starter`}
+                onClick={() => pick(shown, pos)}
+              >
+                <Sprite species={shown} size={40} />
+                <span className="starter-choice-name">{shown}</span>
+                <TypeBadges species={shown} small />
+              </button>
+              <input
+                placeholder="Randomized? type it…"
+                list="starter-species"
+                value={overrides[pos]}
+                onChange={(e) => {
+                  const next = [...overrides];
+                  next[pos] = e.target.value;
+                  setOverrides(next);
+                  // retyping the already-picked slot fixes the record live
+                  if (picked === pos) {
+                    pick(e.target.value.trim() || region.trio[pos], pos);
+                  }
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+      <datalist id="starter-species">
+        {ALL_SPECIES.map((s) => (
+          <option key={s} value={s} />
+        ))}
+      </datalist>
+    </div>
+  );
+}
+
 function RouteStats({ run }: { run: Run }) {
   const all = Object.values(run.encounters);
   const n = (s: EncounterStatus) => all.filter((e) => e.status === s).length;
@@ -451,25 +554,16 @@ function RouteRow({
           )}
 
           <div className="method-tables">
-            {loc.id === STARTER_ID && (
-              <div className="method-table">
+            {loc.id === STARTER_ID && run && (
+              <div className="method-table starter-table">
                 <h4>Oak's Lab · pick one</h4>
-                <EncounterTable
-                  slots={STARTER_SLOTS}
-                  speciesMap={randomized ? speciesMap : undefined}
-                  onMap={randomized ? setMapping : undefined}
-                  onPick={
-                    run
-                      ? (sp) =>
-                          setEncounter({
-                            species: randomized ? (speciesMap[sp] ?? sp) : sp,
-                          })
-                      : undefined
-                  }
-                />
+                <StarterPicker run={run} updateRun={updateRun} />
                 <p className="muted starter-note">
-                  Your pick decides the rival's starter — his team variants on
-                  the Bosses tab filter accordingly.
+                  The ball position decides the rival's counterpick (he takes
+                  the one that beats yours), so his team variants on the
+                  Bosses tab filter by position — even with another region's
+                  trio or randomized starters. Randomized? Type what appeared
+                  in a slot before picking it.
                 </p>
               </div>
             )}

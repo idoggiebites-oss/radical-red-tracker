@@ -6,6 +6,30 @@ import { preEvolutionsFor } from "./effectiveness";
  * the one that counters yours, which decides his teams all game */
 export const STARTER_TRIO = ["Bulbasaur", "Charmander", "Squirtle"] as const;
 
+/** the lab balls are always ordered grass / water / fire left→right, so the
+ * POSITION taken identifies the matchup even with regional or randomized
+ * starters; these are the Kanto equivalents per position */
+export const POSITION_KANTO = ["Bulbasaur", "Squirtle", "Charmander"] as const;
+
+export const POSITION_LABELS = [
+  "Left · Grass",
+  "Middle · Water",
+  "Right · Fire",
+] as const;
+
+/** regional trios in lab order (grass, water, fire) */
+export const STARTER_REGIONS: { region: string; trio: readonly [string, string, string] }[] = [
+  { region: "Kanto", trio: ["Bulbasaur", "Squirtle", "Charmander"] },
+  { region: "Johto", trio: ["Chikorita", "Totodile", "Cyndaquil"] },
+  { region: "Hoenn", trio: ["Treecko", "Mudkip", "Torchic"] },
+  { region: "Sinnoh", trio: ["Turtwig", "Piplup", "Chimchar"] },
+  { region: "Unova", trio: ["Snivy", "Oshawott", "Tepig"] },
+  { region: "Kalos", trio: ["Chespin", "Froakie", "Fennekin"] },
+  { region: "Alola", trio: ["Rowlet", "Popplio", "Litten"] },
+  { region: "Galar", trio: ["Grookey", "Sobble", "Scorbunny"] },
+  { region: "Paldea", trio: ["Sprigatito", "Quaxly", "Fuecoco"] },
+];
+
 const RIVAL_COUNTER: Record<string, string> = {
   Bulbasaur: "Charmander",
   Charmander: "Squirtle",
@@ -28,9 +52,11 @@ function withPreEvolutions(species: string): string[] {
   return [...seen];
 }
 
-/** which trio slot the player took: direct pick, or reverse-lookup through
- * the randomizer mapping when the recorded starter is a mapped species */
+/** which trio slot the player took: the recorded ball position when we have
+ * it (works for any region/randomizer), else the legacy species lookup —
+ * direct pick or reverse through the randomizer mapping */
 export function playerStarterBase(run: Run | null): string | null {
+  if (run?.starterPos != null) return POSITION_KANTO[run.starterPos];
   const recorded = run?.encounters[STARTER_ID]?.species;
   if (!recorded) return null;
   for (const species of withPreEvolutions(recorded)) {

@@ -787,8 +787,44 @@ tr.pickable:hover td { background: var(--bg3); }
   font-size: 12px;
 }
 
-.starter-note { font-size: 12.5px; max-width: 340px; }
+.starter-note { font-size: 12.5px; max-width: 480px; }
 .starter-filter-note { font-size: 13px; margin: 0 0 8px; }
+
+/* ---- starter picker ---- */
+
+.starter-table { flex: 1 1 100%; }
+.starter-picker { display: flex; flex-direction: column; gap: 10px; }
+.starter-region { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.starter-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 640px;
+}
+.starter-slot { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.slot-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.starter-choice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  text-align: left;
+  padding: 8px;
+  background: var(--bg);
+}
+.starter-slot.active .slot-label { color: var(--accent2); }
+.starter-slot.active .starter-choice { border-color: var(--accent2); background: var(--bg3); }
+.starter-choice-name { font-weight: 600; }
+.starter-slot input { width: 100%; padding: 3px 8px; font-size: 13px; }
+@media (max-width: 640px) {
+  .starter-slots { grid-template-columns: 1fr; max-width: none; }
+}
 
 /* ---- calc totals & field ---- */
 

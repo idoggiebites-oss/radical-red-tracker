@@ -57,9 +57,12 @@ NOT model Sturdy/Focus Sash, so we flag "survives at 1 HP" ourselves
 - `src/App.tsx` — tabs (Routes/Bosses/Team/Reference), run switcher, level
   cap pill. Runs live in `AppState.runs`; encounters keyed by location id.
 - Pseudo-location ids in `run.encounters`: `starter` (Oak's lab pick — also
-  drives rival boss-variant filtering via `src/lib/starters.ts`, which walks
-  pre-evolution chains) and `static-<species-slug>` ("extra catch" of a
-  static/legendary). Anything stored there flows through Team/builds/
+  drives rival boss-variant filtering via `src/lib/starters.ts`: the recorded
+  ball position `run.starterPos` (0 left/grass · 1 middle/water · 2
+  right/fire) maps to a Kanto equivalent, falling back to pre-evolution-chain
+  walking for legacy runs; the Routes picker offers regional trios
+  (`STARTER_REGIONS`) plus per-slot free-text for randomizers) and
+  `static-<species-slug>` ("extra catch" of a static/legendary). Anything stored there flows through Team/builds/
   readiness/evolve automatically.
 - `src/views/RoutesView.tsx` — encounter tables per method, starter picker,
   static/legendary capture (`src/lib/statics.ts` matches location names in
