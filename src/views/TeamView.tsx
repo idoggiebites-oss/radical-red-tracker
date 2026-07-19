@@ -43,6 +43,10 @@ const EMPTY_BUILD: MonBuild = {
 
 type Entry = [string, Run["encounters"][string]];
 
+/** base stat total, 0 when the species is unknown to the dex data */
+const bstFor = (species: string) =>
+  Object.values(statsFor(species)).reduce((sum, v) => sum + (v ?? 0), 0);
+
 export function TeamView({
   run,
   updateRun,
@@ -1059,6 +1063,14 @@ function Section({
                     +
                   </button>
                 </div>
+                {bstFor(e.species) > 0 && (
+                  <div className="bst-line">
+                    <span className="ko-label" title="Base stat total">
+                      BST
+                    </span>
+                    <span className="bst-val">{bstFor(e.species)}</span>
+                  </div>
+                )}
               </div>
               <div className="team-actions">
                 {actions(locId)}
