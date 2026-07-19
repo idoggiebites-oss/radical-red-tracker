@@ -116,7 +116,40 @@ export interface PlayerMonConfig {
   ability: string;
   item: string;
   evs: Record<string, number>;
+  ivs?: Record<string, number>;
   moves: string[];
+}
+
+/** stat raised / lowered by each nature (neutral natures omitted) */
+export const NATURE_EFFECTS: Record<string, { plus: string; minus: string }> = {
+  Adamant: { plus: "ATK", minus: "SPA" },
+  Bold: { plus: "DEF", minus: "ATK" },
+  Brave: { plus: "ATK", minus: "SPE" },
+  Calm: { plus: "SPD", minus: "ATK" },
+  Careful: { plus: "SPD", minus: "SPA" },
+  Gentle: { plus: "SPD", minus: "DEF" },
+  Hasty: { plus: "SPE", minus: "DEF" },
+  Impish: { plus: "DEF", minus: "SPA" },
+  Jolly: { plus: "SPE", minus: "SPA" },
+  Lax: { plus: "DEF", minus: "SPD" },
+  Lonely: { plus: "ATK", minus: "DEF" },
+  Mild: { plus: "SPA", minus: "DEF" },
+  Modest: { plus: "SPA", minus: "ATK" },
+  Naive: { plus: "SPE", minus: "SPD" },
+  Naughty: { plus: "ATK", minus: "SPD" },
+  Quiet: { plus: "SPA", minus: "SPE" },
+  Rash: { plus: "SPA", minus: "SPD" },
+  Relaxed: { plus: "DEF", minus: "SPE" },
+  Sassy: { plus: "SPD", minus: "SPE" },
+  Timid: { plus: "SPE", minus: "ATK" },
+};
+
+/** actual computed stats (level/nature/EVs/IVs applied), keyed by label */
+export function computedStats(cfg: PlayerMonConfig): Record<string, number> | null {
+  const p = buildPlayerPokemon(cfg);
+  if (!p) return null;
+  const s = p.stats;
+  return { HP: s.hp, ATK: s.atk, DEF: s.def, SPA: s.spa, SPD: s.spd, SPE: s.spe };
 }
 
 export interface MatchupLine {
@@ -169,6 +202,11 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
     const key = EV_KEYS[k];
     if (key && v > 0) evs[key] = v;
   }
+  const ivs: rr.StatsTable = {};
+  for (const [k, v] of Object.entries(cfg.ivs ?? {})) {
+    const key = EV_KEYS[k];
+    if (key) ivs[key] = Math.max(0, Math.min(31, v));
+  }
   try {
     return new rr.Pokemon(GEN, species, {
       level: cfg.level,
@@ -176,6 +214,7 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
       ability: cfg.ability || undefined,
       item: cleanItem(cfg.item),
       evs,
+      ivs,
     });
   } catch {
     return null;

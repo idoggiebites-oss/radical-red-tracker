@@ -496,3 +496,8 @@ tr.pickable:hover td { background: var(--bg3); }
 .result-desc.ohko { color: #ff8a8a; }
 
 .base-stats-line { font-size: 12px; }
+
+.result-desc.ohko-good { color: #7fe0ab; }
+.nature-line { font-size: 12.5px; }
+.nature-plus { color: #7fe0ab; }
+.nature-minus { color: #ff8a8a; }

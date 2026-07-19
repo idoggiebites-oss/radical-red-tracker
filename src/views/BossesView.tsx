@@ -25,6 +25,18 @@ export function BossesView({
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState(modeData.categories[0]?.name ?? "");
 
+  // the cap of the next undefeated required trainer = the level you play at
+  const levelCap = useMemo(() => {
+    const order = modeData.trainerOrder;
+    for (let i = 0; i < order.length; i++) {
+      if (!run?.defeated[i] && !order[i].optional) {
+        const cap = parseInt(order[i].levelCap, 10);
+        if (!Number.isNaN(cap)) return cap;
+      }
+    }
+    return undefined;
+  }, [run, modeData]);
+
   return (
     <div className="bosses">
       <div className="toolbar">
@@ -65,7 +77,12 @@ export function BossesView({
       {view === "order" ? (
         <TrainerOrder modeData={modeData} run={run} updateRun={updateRun} />
       ) : (
-        <BossTeams modeData={modeData} category={category} filter={filter} />
+        <BossTeams
+          modeData={modeData}
+          category={category}
+          filter={filter}
+          levelCap={levelCap}
+        />
       )}
     </div>
   );
@@ -139,10 +156,12 @@ function BossTeams({
   modeData,
   category,
   filter,
+  levelCap,
 }: {
   modeData: BossMode;
   category: string;
   filter: string;
+  levelCap?: number;
 }) {
   const q = filter.trim().toLowerCase();
   const cat = modeData.categories.find((c) => c.name === category);
@@ -158,14 +177,14 @@ function BossTeams({
   return (
     <div className="boss-list">
       {bosses.map((b, i) => (
-        <BossCard key={i} boss={b} />
+        <BossCard key={i} boss={b} levelCap={levelCap} />
       ))}
       {bosses.length === 0 && <p className="muted">No bosses match.</p>}
     </div>
   );
 }
 
-function BossCard({ boss }: { boss: Boss }) {
+function BossCard({ boss, levelCap }: { boss: Boss; levelCap?: number }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="boss-card">
@@ -204,7 +223,12 @@ function BossCard({ boss }: { boss: Boss }) {
           <TeamWeaknesses boss={boss} />
           <div className="mon-grid">
             {boss.pokemon.map((m, i) => (
-              <MonCard key={i} mon={m} battleEffect={boss.battleEffect} />
+              <MonCard
+                key={i}
+                mon={m}
+                battleEffect={boss.battleEffect}
+                levelCap={levelCap}
+              />
             ))}
           </div>
         </>
@@ -282,7 +306,15 @@ function MonDefenses({ mon }: { mon: BossMon }) {
 
 const STAT_ORDER = ["HP", "ATK", "DEF", "SPA", "SPD", "SPE"];
 
-function MonCard({ mon, battleEffect }: { mon: BossMon; battleEffect: string }) {
+function MonCard({
+  mon,
+  battleEffect,
+  levelCap,
+}: {
+  mon: BossMon;
+  battleEffect: string;
+  levelCap?: number;
+}) {
   const [calcOpen, setCalcOpen] = useState(false);
   return (
     <div className="mon-card">
@@ -305,6 +337,7 @@ function MonCard({ mon, battleEffect }: { mon: BossMon; battleEffect: string }) 
         <CalcPanel
           mon={mon}
           battleEffect={battleEffect}
+          levelCap={levelCap}
           onClose={() => setCalcOpen(false)}
         />
       )}

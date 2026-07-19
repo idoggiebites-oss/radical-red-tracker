@@ -7,10 +7,12 @@ import {
   ITEM_NAMES,
   MOVE_NAMES,
   NATURES,
+  NATURE_EFFECTS,
   buildBossPokemon,
   buildPlayerPokemon,
   calcBaseStats,
   calcMoves,
+  computedStats,
   fieldFromBattleEffect,
   resolveSpecies,
   type MatchupLine,
@@ -26,33 +28,42 @@ const DEFAULT_CFG: PlayerMonConfig = {
   ability: "",
   item: "",
   evs: { HP: 0, ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
+  ivs: { HP: 31, ATK: 31, DEF: 31, SPA: 31, SPD: 31, SPE: 31 },
   moves: ["", "", "", ""],
 };
 
-function loadCfg(): PlayerMonConfig {
+function loadCfg(levelCap?: number): PlayerMonConfig {
+  let cfg = DEFAULT_CFG;
   try {
     const raw = localStorage.getItem(CFG_KEY);
-    if (raw) return { ...DEFAULT_CFG, ...JSON.parse(raw) };
+    if (raw) {
+      const saved = JSON.parse(raw);
+      cfg = { ...DEFAULT_CFG, ...saved, ivs: { ...DEFAULT_CFG.ivs, ...saved.ivs } };
+    }
   } catch {
     // fall through to defaults
   }
-  return DEFAULT_CFG;
+  // you're normally playing at the level cap
+  if (levelCap) cfg = { ...cfg, level: levelCap };
+  return cfg;
 }
 
 export function CalcPanel({
   mon,
   battleEffect,
+  levelCap,
   onClose,
 }: {
   mon: BossMon;
   battleEffect: string;
+  levelCap?: number;
   onClose: () => void;
 }) {
   const parsedLevel = parseInt(mon.level, 10);
   const [bossLevel, setBossLevel] = useState(
     Number.isNaN(parsedLevel) ? 50 : parsedLevel,
   );
-  const [cfg, setCfg] = useState<PlayerMonConfig>(loadCfg);
+  const [cfg, setCfg] = useState<PlayerMonConfig>(() => loadCfg(levelCap));
   const [applyField, setApplyField] = useState(true);
 
   const update = (patch: Partial<PlayerMonConfig>) => {
@@ -201,10 +212,32 @@ export function CalcPanel({
                   .join(" · ")}
               </div>
             )}
+            <NatureLine cfg={cfg} />
+            <div className="calc-row evs">
+              {Object.keys(cfg.ivs ?? {}).map((k) => (
+                <label key={k}>
+                  {k} IV
+                  <input
+                    type="number"
+                    min={0}
+                    max={31}
+                    value={cfg.ivs?.[k] ?? 31}
+                    onChange={(e) =>
+                      update({
+                        ivs: {
+                          ...(cfg.ivs ?? {}),
+                          [k]: Math.max(0, Math.min(31, parseInt(e.target.value, 10) || 0)),
+                        },
+                      })
+                    }
+                  />
+                </label>
+              ))}
+            </div>
             <div className="calc-row evs">
               {Object.keys(cfg.evs).map((k) => (
                 <label key={k}>
-                  {k}
+                  {k} EV
                   <input
                     type="number"
                     min={0}
@@ -277,8 +310,16 @@ export function CalcPanel({
                   ? "— they outspeed"
                   : "— speed tie"}
             </div>
-            <ResultBlock title={`${mon.species}'s moves vs you`} lines={results.incoming} />
-            <ResultBlock title="Your moves vs them" lines={results.outgoing} />
+            <ResultBlock
+              title={`${mon.species}'s moves vs you`}
+              lines={results.incoming}
+              tone="incoming"
+            />
+            <ResultBlock
+              title="Your moves vs them"
+              lines={results.outgoing}
+              tone="outgoing"
+            />
           </div>
         )}
         {!results && !bossUnknown && (
@@ -293,7 +334,42 @@ export function CalcPanel({
   );
 }
 
-function ResultBlock({ title, lines }: { title: string; lines: MatchupLine[] }) {
+function NatureLine({ cfg }: { cfg: PlayerMonConfig }) {
+  const effect = NATURE_EFFECTS[cfg.nature];
+  if (!cfg.species || resolveSpecies(cfg.species) === null) return null;
+  if (!effect) {
+    return (
+      <div className="muted nature-line">
+        {cfg.nature}: neutral nature — no stat changes
+      </div>
+    );
+  }
+  const withNature = computedStats(cfg);
+  const neutral = computedStats({ ...cfg, nature: "Serious" });
+  if (!withNature || !neutral) return null;
+  return (
+    <div className="nature-line">
+      {cfg.nature}:{" "}
+      <span className="nature-plus">
+        +{effect.plus} ({neutral[effect.plus]} → {withNature[effect.plus]})
+      </span>{" "}
+      <span className="nature-minus">
+        −{effect.minus} ({neutral[effect.minus]} → {withNature[effect.minus]})
+      </span>
+    </div>
+  );
+}
+
+function ResultBlock({
+  title,
+  lines,
+  tone,
+}: {
+  title: string;
+  lines: MatchupLine[];
+  tone: "incoming" | "outgoing";
+}) {
+  const ohkoClass = tone === "incoming" ? "result-desc ohko" : "result-desc ohko-good";
   return (
     <div className="result-block">
       <h4>{title}</h4>
@@ -304,7 +380,7 @@ function ResultBlock({ title, lines }: { title: string; lines: MatchupLine[] }) 
           {l.error ? (
             <span className="muted">{l.error}</span>
           ) : (
-            <span className={l.maxPercent >= 100 ? "result-desc ohko" : "result-desc"}>
+            <span className={l.maxPercent >= 100 ? ohkoClass : "result-desc"}>
               {l.desc}
             </span>
           )}
