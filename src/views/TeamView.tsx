@@ -23,11 +23,13 @@ import {
   ITEM_NAMES,
   MOVE_NAMES,
   NATURES,
+  NATURE_EFFECTS,
   buildBossPokemon,
   buildPlayerPokemon,
   calcMoveRange,
   defaultBossLevel,
   fieldFromBattleEffect,
+  statTotals,
   type MoveRange,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
@@ -165,8 +167,10 @@ export function TeamView({
   };
 
   const anyAbility = abilitiesRandomized(run);
+  const levelCap = nextLevelCap(modeData, run) ?? 50;
 
   const sectionShared = {
+    statLevel: levelCap,
     buildOpen,
     setBuildOpen,
     setBuild,
@@ -342,6 +346,62 @@ export function TeamView({
       </>
       )}
     </div>
+  );
+}
+
+/** battle-current stats at the given level: the build's nature, ability and
+ * item applied (Light Ball, Choice items, Huge Power, ...); nature ups/downs
+ * and item/ability-modified stats are tinted */
+function CurrentStats({
+  species,
+  build,
+  level,
+}: {
+  species: string;
+  build?: MonBuild;
+  level: number;
+}) {
+  const cfg: PlayerMonConfig = {
+    species,
+    level,
+    nature: build?.nature || "Serious",
+    ability: build?.ability || abilitiesFor(species)[0] || "",
+    item: build?.item ?? "",
+    evs: {},
+    moves: [],
+  };
+  const t = statTotals(cfg, {});
+  if (!t) return null;
+  const nature = NATURE_EFFECTS[cfg.nature];
+  const cls = (k: string) =>
+    t.itemMods[k] || t.abilityMods[k]
+      ? "alt-speed"
+      : nature?.plus === k
+        ? "nature-plus"
+        : nature?.minus === k
+          ? "nature-minus"
+          : "";
+  return (
+    <table className="stat-table">
+      <thead>
+        <tr>
+          <th></th>
+          {STAT_KEYS.map((s) => (
+            <th key={s}>{s}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="k">Lv {level}</td>
+          {STAT_KEYS.map((s) => (
+            <td key={s} className={cls(s)}>
+              {t.totals[s] ?? "–"}
+            </td>
+          ))}
+        </tr>
+      </tbody>
+    </table>
   );
 }
 
@@ -977,6 +1037,7 @@ function Section({
   setSpecies,
   canEvolve = true,
   anyAbility,
+  statLevel,
   extraPanel,
 }: {
   title: string;
@@ -993,6 +1054,8 @@ function Section({
   setSpecies: (locId: string, species: string) => void;
   canEvolve?: boolean;
   anyAbility?: boolean;
+  /** level the current-stats row is computed at (the run's level cap) */
+  statLevel: number;
   /** section-specific panel under a card (graveyard: death notes editor) */
   extraPanel?: (locId: string, e: Entry[1]) => React.ReactNode;
 }) {
@@ -1097,7 +1160,11 @@ function Section({
                     </button>
                   )}
               </div>
-              <PartyStats species={e.species} />
+              <CurrentStats
+                species={e.species}
+                build={e.build}
+                level={statLevel}
+              />
             </div>
             {buildOpen === locId && (
               <BuildEditor
