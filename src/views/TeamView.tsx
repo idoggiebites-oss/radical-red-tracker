@@ -56,6 +56,7 @@ export function TeamView({
   const [filterType, setFilterType] = useState("");
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
   const [evolveOpen, setEvolveOpen] = useState<string | null>(null);
+  const [notesOpen, setNotesOpen] = useState<string | null>(null);
 
   if (!run) return <p className="muted">Create or select a run to see your team.</p>;
 
@@ -135,6 +136,21 @@ export function TeamView({
       encounters: {
         ...r.encounters,
         [locId]: { ...r.encounters[locId], status: "fainted", inParty: false },
+      },
+    }));
+    // open the post-mortem editor right away, while the loss is fresh
+    setNotesOpen(locId);
+  };
+
+  const setDeath = (
+    locId: string,
+    patch: Partial<Pick<Run["encounters"][string], "deathTags" | "deathNote">>,
+  ) => {
+    updateRun((r) => ({
+      ...r,
+      encounters: {
+        ...r.encounters,
+        [locId]: { ...r.encounters[locId], ...patch },
       },
     }));
   };
@@ -283,20 +299,30 @@ export function TeamView({
         canEvolve={false}
         {...sectionShared}
         actions={(id) => (
-          <button
-            onClick={() =>
-              updateRun((r) => ({
-                ...r,
-                encounters: {
-                  ...r.encounters,
-                  [id]: { ...r.encounters[id], status: "caught" },
-                },
-              }))
-            }
-          >
-            Revive (undo)
-          </button>
+          <>
+            <button onClick={() => setNotesOpen(notesOpen === id ? null : id)}>
+              Notes
+            </button>
+            <button
+              onClick={() =>
+                updateRun((r) => ({
+                  ...r,
+                  encounters: {
+                    ...r.encounters,
+                    [id]: { ...r.encounters[id], status: "caught" },
+                  },
+                }))
+              }
+            >
+              Revive (undo)
+            </button>
+          </>
         )}
+        extraPanel={(id, e) =>
+          notesOpen === id ? (
+            <DeathNotesEditor entry={e} onChange={(p) => setDeath(id, p)} />
+          ) : null
+        }
       />
       </>
       )}
@@ -813,6 +839,53 @@ function BuildEditor({
   );
 }
 
+const DEATH_TAGS = [
+  "Sacrificed",
+  "Bad luck",
+  "Crit",
+  "Status effect",
+  "Wrong matchup",
+  "Misplay",
+  "Underleveled",
+];
+
+/** post-mortem panel for graveyard entries: cause-of-death tags + a
+ * free-form note, saved straight into the encounter like builds are */
+function DeathNotesEditor({
+  entry,
+  onChange,
+}: {
+  entry: Entry[1];
+  onChange: (patch: { deathTags?: string[]; deathNote?: string }) => void;
+}) {
+  const tags = entry.deathTags ?? [];
+  const toggle = (t: string) =>
+    onChange({
+      deathTags: tags.includes(t) ? tags.filter((x) => x !== t) : [...tags, t],
+    });
+  return (
+    <div className="death-editor">
+      <div className="death-tag-row">
+        {DEATH_TAGS.map((t) => (
+          <button
+            key={t}
+            className={tags.includes(t) ? "death-tag-btn active" : "death-tag-btn"}
+            onClick={() => toggle(t)}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <textarea
+        rows={3}
+        placeholder="What happened? The situation, the mistake, the lesson…"
+        value={entry.deathNote ?? ""}
+        onChange={(e) => onChange({ deathNote: e.target.value })}
+      />
+    </div>
+  );
+}
+
 function EvolvePanel({
   species,
   onPick,
@@ -870,6 +943,7 @@ function Section({
   setEvolveOpen,
   setSpecies,
   canEvolve = true,
+  extraPanel,
 }: {
   title: string;
   items: Entry[];
@@ -884,6 +958,8 @@ function Section({
   setEvolveOpen: (locId: string | null) => void;
   setSpecies: (locId: string, species: string) => void;
   canEvolve?: boolean;
+  /** section-specific panel under a card (graveyard: death notes editor) */
+  extraPanel?: (locId: string, e: Entry[1]) => React.ReactNode;
 }) {
   return (
     <section className="team-section">
@@ -930,6 +1006,23 @@ function Section({
                     )}
                   </div>
                 )}
+                {e.status === "fainted" &&
+                  ((e.deathTags?.length ?? 0) > 0 || e.deathNote) && (
+                    <div className="death-summary">
+                      {e.deathTags && e.deathTags.length > 0 && (
+                        <div className="death-tags">
+                          {e.deathTags.map((t) => (
+                            <span key={t} className="death-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {e.deathNote && (
+                        <div className="death-note muted">{e.deathNote}</div>
+                      )}
+                    </div>
+                  )}
                 <div className="ko-counter">
                   <span className="ko-label" title="Enemy Pokémon knocked out by this one">
                     KOs
@@ -975,6 +1068,7 @@ function Section({
                 onPick={(sp) => setSpecies(locId, sp)}
               />
             )}
+            {extraPanel?.(locId, e)}
           </div>
         ))}
       </div>

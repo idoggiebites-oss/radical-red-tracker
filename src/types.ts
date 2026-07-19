@@ -169,6 +169,10 @@ export interface RouteEncounter {
    * Missing on runs created before the field existed — treat as 0. */
   kos?: number;
   build?: MonBuild;
+  /** post-mortem: quick cause-of-death tags and a free-form note on what
+   * went wrong, edited from the graveyard */
+  deathTags?: string[];
+  deathNote?: string;
 }
 
 export interface RunSaveInfo {

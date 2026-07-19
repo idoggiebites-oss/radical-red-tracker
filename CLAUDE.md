@@ -67,7 +67,9 @@ NOT model Sturdy/Focus Sash, so we flag "survives at 1 HP" ourselves
 - `src/views/BossesView.tsx` — trainer order/level caps + boss teams.
 - `src/views/TeamView.tsx` — subtabs "Party & Box" (party/box/graveyard, KO
   counters, build editor, Evolve/Devolve via `evolutionsFor`/
-  `preEvolutionsFor` in `src/lib/effectiveness.ts`) and "Battle readiness"
+  `preEvolutionsFor` in `src/lib/effectiveness.ts`; graveyard entries carry
+  post-mortem notes + cause tags — `deathTags`/`deathNote` on
+  `RouteEncounter`, editor auto-opens on faint) and "Battle readiness"
   (two-column grid areas ph/bh/pc/bc/mu, weather picker seeded from boss
   battle effect, MoveMatchup HP-bar damage grid).
 - Shared: `src/components/MonCard.tsx` (boss mon card + `SpeciesDefenses`),

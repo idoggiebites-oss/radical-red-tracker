@@ -39,7 +39,7 @@ button.primary { background: var(--accent); border-color: var(--accent); }
 button.danger { color: #ff8a8a; }
 button:disabled { opacity: 0.45; cursor: default; }
 
-input, select {
+input, select, textarea {
   background: var(--bg2);
   color: var(--text);
   border: 1px solid var(--line);
@@ -47,7 +47,7 @@ input, select {
   padding: 6px 10px;
   font: inherit;
 }
-input:focus, select:focus { outline: none; border-color: var(--accent2); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent2); }
 
 /* ---- layout ---- */
 
@@ -727,6 +727,37 @@ tr.pickable:hover td { background: var(--bg3); }
 .target-dmg.ko { color: #7fe0ab; font-weight: 700; }
 .target-dmg.maybe-ko { color: #e8c13a; }
 
+/* ---- death notes ---- */
+
+.death-summary { margin-top: 3px; }
+.death-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.death-tag {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #40261a;
+  color: #ffab7a;
+}
+.death-note { font-size: 12.5px; white-space: pre-line; margin-top: 3px; }
+.death-editor {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.death-tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.death-tag-btn { font-size: 12px; padding: 2px 10px; border-radius: 999px; }
+.death-tag-btn.active {
+  background: #40261a;
+  border-color: var(--fainted);
+  color: #ffab7a;
+}
+.death-editor textarea { resize: vertical; min-height: 58px; }
+
 /* ---- evolve panel ---- */
 
 .evolve-panel {
@@ -785,7 +816,7 @@ tr.pickable:hover td { background: var(--bg3); }
   .app { padding: 0 10px 40px; }
 
   /* ios safari zooms the page when focusing inputs under 16px */
-  input, select { font-size: 16px; }
+  input, select, textarea { font-size: 16px; }
 
   .topbar { gap: 8px 12px; padding: 10px 0; }
   .cap-pill { font-size: 13px; padding: 3px 12px; }
