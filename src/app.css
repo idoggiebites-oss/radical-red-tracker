@@ -501,3 +501,28 @@ tr.pickable:hover td { background: var(--bg3); }
 .nature-line { font-size: 12.5px; }
 .nature-plus { color: #7fe0ab; }
 .nature-minus { color: #ff8a8a; }
+
+/* ---- team builds & calc extras ---- */
+
+.team-card-wrap { display: flex; flex-direction: column; }
+.build-summary { font-size: 12px; }
+.build-editor {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.build-editor-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.calc-side-head { display: flex; align-items: center; gap: 12px; }
+.calc-side-head h3 { margin: 0; flex: 1; }
+.import-note { font-size: 12px; }

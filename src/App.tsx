@@ -109,8 +109,8 @@ export default function App() {
       {creating && (
         <NewRunDialog
           onCancel={() => setCreating(false)}
-          onCreate={(name, m, saveInfo) => {
-            const r = newRun(name, m, saveInfo);
+          onCreate={(name, m, saveInfo, starter) => {
+            const r = newRun(name, m, saveInfo, starter);
             setState((s) => ({ runs: [...s.runs, r], activeRunId: r.id }));
             setCreating(false);
           }}
@@ -158,19 +158,32 @@ export default function App() {
   );
 }
 
+// the egg vendor shard lists in the docs are exactly the starter trios
+const STARTER_OPTIONS = [
+  ...(encounters.eggVendor["GREEN SHARD"] ?? []),
+  ...(encounters.eggVendor["RED SHARD"] ?? []),
+  ...(encounters.eggVendor["BLUE SHARD"] ?? []),
+];
+
 function NewRunDialog({
   onCreate,
   onCancel,
 }: {
-  onCreate: (name: string, mode: GameMode, saveInfo?: RunSaveInfo) => void;
+  onCreate: (
+    name: string,
+    mode: GameMode,
+    saveInfo?: RunSaveInfo,
+    starter?: string,
+  ) => void;
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
   const [mode, setMode] = useState<GameMode>("hardcore");
+  const [starter, setStarter] = useState("");
   const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
   const [saveError, setSaveError] = useState("");
 
-  const create = () => onCreate(name.trim(), mode, saveInfo);
+  const create = () => onCreate(name.trim(), mode, saveInfo, starter);
 
   const onSaveFile = async (file: File | undefined) => {
     setSaveError("");
@@ -220,6 +233,20 @@ function NewRunDialog({
             <option value="hardcore">Hardcore / Restricted</option>
           </select>
         </label>
+        <label>
+          Starter Pokémon (optional)
+          <input
+            list="starter-options"
+            placeholder="e.g. Sprigatito"
+            value={starter}
+            onChange={(e) => setStarter(e.target.value)}
+          />
+        </label>
+        <datalist id="starter-options">
+          {STARTER_OPTIONS.map((s) => (
+            <option key={s} value={s} />
+          ))}
+        </datalist>
         {SAVE_FILE_FEATURE && (
           <label>
             Save file (optional)

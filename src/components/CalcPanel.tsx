@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { BossMon } from "../types";
+import type { BossMon, MonBuild } from "../types";
 import { Sprite } from "./Sprite";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import {
@@ -20,6 +20,13 @@ import {
 } from "../lib/damagecalc";
 
 const CFG_KEY = "rr-tracker.calcMon";
+const CAUGHT_ONLY_KEY = "rr-tracker.calcCaughtOnly";
+
+export interface CaughtMon {
+  species: string;
+  nickname: string;
+  build?: MonBuild;
+}
 
 const DEFAULT_CFG: PlayerMonConfig = {
   species: "",
@@ -52,11 +59,13 @@ export function CalcPanel({
   mon,
   battleEffect,
   levelCap,
+  caught = [],
   onClose,
 }: {
   mon: BossMon;
   battleEffect: string;
   levelCap?: number;
+  caught?: CaughtMon[];
   onClose: () => void;
 }) {
   const parsedLevel = parseInt(mon.level, 10);
@@ -65,12 +74,30 @@ export function CalcPanel({
   );
   const [cfg, setCfg] = useState<PlayerMonConfig>(() => loadCfg(levelCap));
   const [applyField, setApplyField] = useState(true);
+  const [caughtOnly, setCaughtOnly] = useState(
+    () => localStorage.getItem(CAUGHT_ONLY_KEY) === "1",
+  );
+  const [importedFrom, setImportedFrom] = useState("");
 
   const update = (patch: Partial<PlayerMonConfig>) => {
     setCfg((c) => {
       const next = { ...c, ...patch };
-      // keep the ability legal for the chosen species
       if (patch.species !== undefined) {
+        // pull in the build configured on the Team tab for this Pokémon
+        const owned = caught.find(
+          (m) => m.species.toLowerCase() === next.species.toLowerCase().trim(),
+        );
+        if (owned?.build) {
+          const b = owned.build;
+          next.nature = b.nature || next.nature;
+          next.ability = b.ability || next.ability;
+          next.item = b.item;
+          next.moves = [...b.moves, "", "", "", ""].slice(0, 4);
+          setImportedFrom(owned.nickname || owned.species);
+        } else {
+          setImportedFrom("");
+        }
+        // keep the ability legal for the chosen species
         const legal = abilitiesFor(next.species);
         if (legal.length > 0 && !legal.includes(next.ability)) {
           next.ability = legal[0];
@@ -80,6 +107,23 @@ export function CalcPanel({
       return next;
     });
   };
+
+  const resetCfg = () => {
+    localStorage.removeItem(CFG_KEY);
+    setImportedFrom("");
+    setCfg(loadCfg(levelCap));
+  };
+
+  const toggleCaughtOnly = (on: boolean) => {
+    setCaughtOnly(on);
+    localStorage.setItem(CAUGHT_ONLY_KEY, on ? "1" : "0");
+  };
+
+  const caughtSpecies = useMemo(
+    () => [...new Set(caught.map((m) => m.species))].sort(),
+    [caught],
+  );
+  const speciesOptions = caughtOnly && caught.length > 0 ? caughtSpecies : ALL_SPECIES;
 
   const playerAbilities = abilitiesFor(cfg.species);
   const playerStats = cfg.species ? calcBaseStats(cfg.species) : null;
@@ -148,7 +192,27 @@ export function CalcPanel({
           </div>
 
           <div className="calc-side">
-            <h3>Your Pokémon</h3>
+            <div className="calc-side-head">
+              <h3>Your Pokémon</h3>
+              {caught.length > 0 && (
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={caughtOnly}
+                    onChange={(e) => toggleCaughtOnly(e.target.checked)}
+                  />
+                  Caught only
+                </label>
+              )}
+              <button className="st-btn clear" onClick={resetCfg}>
+                Clear
+              </button>
+            </div>
+            {importedFrom && (
+              <div className="muted import-note">
+                Imported build from <strong>{importedFrom}</strong> (Team tab)
+              </div>
+            )}
             <div className="calc-row">
               <input
                 placeholder="Species"
@@ -279,7 +343,7 @@ export function CalcPanel({
         </div>
 
         <datalist id="all-species-calc">
-          {ALL_SPECIES.map((s) => (
+          {speciesOptions.map((s) => (
             <option key={s} value={s} />
           ))}
         </datalist>

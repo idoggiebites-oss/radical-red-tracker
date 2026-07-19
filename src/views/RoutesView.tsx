@@ -11,6 +11,14 @@ import { Sprite } from "../components/Sprite";
 import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
 import { hasSpeciesRandomizer } from "../lib/saveFile";
 import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
+import { STARTER_ID } from "../lib/storage";
+
+const STARTER_LOC: Location = {
+  id: STARTER_ID,
+  name: "STARTER · OAK'S LAB",
+  postgame: false,
+  methods: {},
+};
 
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
@@ -93,6 +101,16 @@ export function RoutesView({
         </datalist>
       )}
 
+      {run && !q && (
+        <RouteRow
+          loc={STARTER_LOC}
+          run={run}
+          updateRun={updateRun}
+          randomized={randomized}
+          open={open === STARTER_ID}
+          toggle={() => setOpen(open === STARTER_ID ? null : STARTER_ID)}
+        />
+      )}
       {locations.map((loc) => (
         <RouteRow
           key={loc.id}
@@ -198,11 +216,14 @@ function RouteRow({
                 list={`species-${loc.id}`}
               />
               <datalist id={`species-${loc.id}`}>
-                {[...new Set(
-                  Object.values(loc.methods).flatMap(
-                    (slots) => slots?.map((s) => s.species) ?? [],
-                  ),
-                )].map((s) => (
+                {(loc.id === STARTER_ID
+                  ? ALL_SPECIES
+                  : [...new Set(
+                      Object.values(loc.methods).flatMap(
+                        (slots) => slots?.map((s) => s.species) ?? [],
+                      ),
+                    )]
+                ).map((s) => (
                   <option key={s} value={s} />
                 ))}
               </datalist>

@@ -149,6 +149,15 @@ export type GameMode = "default" | "hardcore";
 
 export type EncounterStatus = "caught" | "fainted" | "missed" | "skipped";
 
+/** the set a caught Pokémon is actually running, editable on the Team tab
+ * and imported by the damage calculator */
+export interface MonBuild {
+  nature: string;
+  ability: string;
+  item: string;
+  moves: string[];
+}
+
 export interface RouteEncounter {
   species: string;
   nickname: string;
@@ -157,6 +166,7 @@ export interface RouteEncounter {
   /** enemy Pokémon this one has knocked out during the run (usage tracker).
    * Missing on runs created before the field existed — treat as 0. */
   kos?: number;
+  build?: MonBuild;
 }
 
 export interface RunSaveInfo {

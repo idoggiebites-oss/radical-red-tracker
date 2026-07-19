@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import type { Boss, BossMode, BossMon, GameMode, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { TypeBadges } from "../components/TypeBadges";
-import { CalcPanel } from "../components/CalcPanel";
+import { CalcPanel, type CaughtMon } from "../components/CalcPanel";
 import {
   ALL_TYPES,
   defensiveProfile,
@@ -36,6 +36,14 @@ export function BossesView({
     }
     return undefined;
   }, [run, modeData]);
+
+  const caught = useMemo<CaughtMon[]>(
+    () =>
+      Object.values(run?.encounters ?? {})
+        .filter((e) => e.species && e.status === "caught")
+        .map((e) => ({ species: e.species, nickname: e.nickname, build: e.build })),
+    [run],
+  );
 
   return (
     <div className="bosses">
@@ -82,6 +90,7 @@ export function BossesView({
           category={category}
           filter={filter}
           levelCap={levelCap}
+          caught={caught}
         />
       )}
     </div>
@@ -157,11 +166,13 @@ function BossTeams({
   category,
   filter,
   levelCap,
+  caught,
 }: {
   modeData: BossMode;
   category: string;
   filter: string;
   levelCap?: number;
+  caught?: CaughtMon[];
 }) {
   const q = filter.trim().toLowerCase();
   const cat = modeData.categories.find((c) => c.name === category);
@@ -177,14 +188,22 @@ function BossTeams({
   return (
     <div className="boss-list">
       {bosses.map((b, i) => (
-        <BossCard key={i} boss={b} levelCap={levelCap} />
+        <BossCard key={i} boss={b} levelCap={levelCap} caught={caught} />
       ))}
       {bosses.length === 0 && <p className="muted">No bosses match.</p>}
     </div>
   );
 }
 
-function BossCard({ boss, levelCap }: { boss: Boss; levelCap?: number }) {
+function BossCard({
+  boss,
+  levelCap,
+  caught,
+}: {
+  boss: Boss;
+  levelCap?: number;
+  caught?: CaughtMon[];
+}) {
   const [open, setOpen] = useState(false);
   return (
     <div className="boss-card">
@@ -228,6 +247,7 @@ function BossCard({ boss, levelCap }: { boss: Boss; levelCap?: number }) {
                 mon={m}
                 battleEffect={boss.battleEffect}
                 levelCap={levelCap}
+                caught={caught}
               />
             ))}
           </div>
@@ -310,10 +330,12 @@ function MonCard({
   mon,
   battleEffect,
   levelCap,
+  caught,
 }: {
   mon: BossMon;
   battleEffect: string;
   levelCap?: number;
+  caught?: CaughtMon[];
 }) {
   const [calcOpen, setCalcOpen] = useState(false);
   return (
@@ -338,6 +360,7 @@ function MonCard({
           mon={mon}
           battleEffect={battleEffect}
           levelCap={levelCap}
+          caught={caught}
           onClose={() => setCalcOpen(false)}
         />
       )}
