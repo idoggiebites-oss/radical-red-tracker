@@ -141,6 +141,8 @@ export interface ItemsData {
   overworld: ItemArea[];
   megaStones: ItemEntry[];
   zCrystals: ItemEntry[];
+  /** normalized item name -> RR dex item ID, for item sprites */
+  spriteIds: Record<string, number>;
 }
 
 // ------------------------------------------------------------- run state

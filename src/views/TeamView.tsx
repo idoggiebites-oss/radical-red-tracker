@@ -1,7 +1,13 @@
 import { useState } from "react";
-import type { MonBuild, Run } from "../types";
+import type { Boss, BossMode, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
+import { ItemSprite } from "../components/ItemSprite";
+import { MonCard } from "../components/MonCard";
+import { type CaughtMon } from "../components/CalcPanel";
 import { TypeBadges, abilitiesFor, typesFor } from "../components/TypeBadges";
+import { isNoItem } from "../lib/itemSprites";
+import { nextLevelCap } from "../lib/levelCap";
+import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import {
   ALL_TYPES,
   STAT_KEYS,
@@ -25,10 +31,13 @@ type Entry = [string, Run["encounters"][string]];
 export function TeamView({
   run,
   updateRun,
+  modeData,
 }: {
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
+  modeData: BossMode;
 }) {
+  const [subtab, setSubtab] = useState<"roster" | "readiness">("roster");
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "">("");
   const [filterType, setFilterType] = useState("");
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
@@ -54,6 +63,9 @@ export function TeamView({
   };
 
   const entries = Object.entries(run.encounters).filter(([, e]) => e.species);
+  const caughtMons: CaughtMon[] = entries
+    .filter(([, e]) => e.status === "caught")
+    .map(([, e]) => ({ species: e.species, nickname: e.nickname, build: e.build }));
   const partyAll = entries.filter(([, e]) => e.status === "caught" && e.inParty);
   const party = refine(partyAll);
   const box = refine(entries.filter(([, e]) => e.status === "caught" && !e.inParty));
@@ -167,7 +179,23 @@ export function TeamView({
 
   return (
     <div className="team">
-      <div className="toolbar">{toolbar}</div>
+      <div className="toolbar">
+        <div className="segmented">
+          <button
+            className={subtab === "roster" ? "active" : ""}
+            onClick={() => setSubtab("roster")}
+          >
+            Party &amp; Box
+          </button>
+          <button
+            className={subtab === "readiness" ? "active" : ""}
+            onClick={() => setSubtab("readiness")}
+          >
+            Battle readiness
+          </button>
+        </div>
+        {subtab === "roster" && toolbar}
+      </div>
       <datalist id="team-items">
         {ITEM_NAMES.map((i) => (
           <option key={i} value={i} />
@@ -183,6 +211,30 @@ export function TeamView({
           <option key={a} value={a} />
         ))}
       </datalist>
+      {subtab === "readiness" && (
+        <div className="readiness">
+          <div className="readiness-col">
+            <Section
+              title="Party"
+              items={partyAll}
+              empty="No Pokémon in the party — promote some from the box."
+              {...sectionShared}
+              canEvolve={false}
+              actions={() => null}
+            />
+          </div>
+          <div className="readiness-col">
+            <BossPicker
+              key={run.id}
+              modeData={modeData}
+              run={run}
+              caught={caughtMons}
+            />
+          </div>
+        </div>
+      )}
+      {subtab === "roster" && (
+      <>
       <Section
         title="Party"
         items={party}
@@ -244,6 +296,112 @@ export function TeamView({
           </button>
         )}
       />
+      </>
+      )}
+    </div>
+  );
+}
+
+function BossPicker({
+  modeData,
+  run,
+  caught,
+}: {
+  modeData: BossMode;
+  run: Run;
+  caught: CaughtMon[];
+}) {
+  // remember the last viewed boss per run
+  const storageKey = `rr-tracker.readinessBoss.${run.id}`;
+  const [selected, setSelected] = useState(
+    () => localStorage.getItem(storageKey) ?? "",
+  );
+  const select = (v: string) => {
+    setSelected(v);
+    localStorage.setItem(storageKey, v);
+  };
+  const rivalStarter = rivalStarterFor(run);
+  const levelCap = nextLevelCap(modeData, run);
+  const [catName, idxStr] = selected.split("|");
+  const boss = modeData.categories
+    .find((c) => c.name === catName)
+    ?.bosses[Number(idxStr)];
+  return (
+    <div className="boss-picker">
+      <label className="boss-picker-label">
+        Boss team
+        <select value={selected} onChange={(e) => select(e.target.value)}>
+          <option value="">— choose a boss —</option>
+          {modeData.categories.map((cat) => (
+            <optgroup key={cat.name} label={cat.name}>
+              {cat.bosses.map((b, i) =>
+                bossMatchesStarter(b.subtitle, rivalStarter) ? (
+                  <option key={i} value={`${cat.name}|${i}`}>
+                    {b.title}
+                    {b.subtitle ? ` — ${b.subtitle}` : ""}
+                  </option>
+                ) : null,
+              )}
+            </optgroup>
+          ))}
+        </select>
+      </label>
+      {boss ? (
+        <BossPreview key={selected} boss={boss} levelCap={levelCap} caught={caught} />
+      ) : (
+        <p className="muted">Pick a boss team to check your party against.</p>
+      )}
+    </div>
+  );
+}
+
+function BossPreview({
+  boss,
+  levelCap,
+  caught,
+}: {
+  boss: Boss;
+  levelCap?: number;
+  caught: CaughtMon[];
+}) {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <div className="boss-preview">
+      {boss.battleEffect && (
+        <div className="battle-effect">⚡ {boss.battleEffect}</div>
+      )}
+      {boss.pokemon.map((m, i) => (
+        <div key={i} className={open === i ? "preview-wrap open" : "preview-wrap"}>
+          <button
+            className={"preview-row" + (open === i ? " open" : "")}
+            onClick={() => setOpen(open === i ? null : i)}
+          >
+            <Sprite species={m.species} size={40} />
+            <span className="team-info">
+              <span className="team-name">{m.species}</span>
+              <TypeBadges species={m.species} small />
+              <span className="preview-meta muted">
+                Lv. {m.level || "?"}
+                {m.item && !isNoItem(m.item) && (
+                  <>
+                    {" · "}
+                    <ItemSprite name={m.item} size={18} /> {m.item}
+                  </>
+                )}
+              </span>
+            </span>
+            <span className="chev">{open === i ? "▾" : "▸"}</span>
+          </button>
+          {open === i && (
+            <MonCard
+              mon={m}
+              battleEffect={boss.battleEffect}
+              levelCap={levelCap}
+              caught={caught}
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 }
@@ -433,7 +591,12 @@ function Section({
                   <div className="build-summary muted">
                     {e.build.nature}
                     {e.build.ability && ` · ${e.build.ability}`}
-                    {e.build.item && ` · ${e.build.item}`}
+                    {e.build.item && (
+                      <>
+                        {" · "}
+                        <ItemSprite name={e.build.item} size={18} /> {e.build.item}
+                      </>
+                    )}
                   </div>
                 )}
                 <div className="ko-counter">

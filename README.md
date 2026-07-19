@@ -69,8 +69,12 @@ by how many team members they hit super-effectively.
   speed stats incl. weather-boosted values, battle effects (permanent
   weather/terrain), and the full trainer order with level caps.
 
-Sprites are loaded best-effort from Pokémon Showdown's CDN and hidden
-when offline or unavailable — the app works fully without them.
+Sprites are loaded best-effort and hidden when offline or unavailable —
+the app works fully without them. Pokémon come from Pokémon Showdown's
+CDN; held-item icons come from the RR Pokédex repo's `graphics/items/`
+(by dex item ID, which covers RR's custom mega stones) with PokeAPI's
+sprites repo as fallback, shown next to boss items, team builds, the
+calc, and the Reference tab's item lists.
 
 ## Damage calculator
 

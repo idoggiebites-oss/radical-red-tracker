@@ -645,8 +645,18 @@ def evo_description(evo: list, data: dict, type_names: dict) -> str:
     return ""
 
 
-def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
-    data = fetch_rrdex(refresh)
+def item_sprite_ids(data: dict) -> dict:
+    """normalized item name -> dex item ID; the dex repo hosts the sprite
+    for item N at graphics/items/N.png (incl. RR's custom mega stones)"""
+    out = {}
+    for iid, item in data["items"].items():
+        n = norm_species(item["name"])
+        if n and n not in out:
+            out[n] = iid
+    return out
+
+
+def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
     type_names = {t["ID"]: t["name"] for t in data["types"].values()}
     colors = {t["name"]: t["color"] for t in data["types"].values()}
     # matchup rows are attacker -> per-defender-ID values: 0=1x, 5=0.5x, 20=2x, 1=0x
@@ -1216,7 +1226,9 @@ def main():
     bosses = {"default": default, "hardcore": hardcore}
 
     print("RR dex types:")
-    types = build_types(encounters, bosses, refresh)
+    rrdex = fetch_rrdex(refresh)
+    types = build_types(encounters, bosses, rrdex)
+    items["spriteIds"] = item_sprite_ids(rrdex)
 
     (OUT / "encounters.json").write_text(json.dumps(encounters, ensure_ascii=False, indent=1))
     (OUT / "bosses.json").write_text(json.dumps(bosses, ensure_ascii=False, indent=1))

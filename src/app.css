@@ -120,6 +120,8 @@ input:focus, select:focus { outline: none; border-color: var(--accent2); }
 /* ---- sprites ---- */
 .sprite { image-rendering: pixelated; vertical-align: middle; object-fit: contain; }
 .sprite-fallback { display: inline-block; vertical-align: middle; }
+.item-sprite { image-rendering: pixelated; vertical-align: middle; object-fit: contain; }
+.cell-item-sprite { width: 28px; text-align: center; }
 
 /* ---- routes ---- */
 
@@ -526,6 +528,49 @@ tr.pickable:hover td { background: var(--bg3); }
 .calc-side-head { display: flex; align-items: center; gap: 12px; }
 .calc-side-head h3 { margin: 0; flex: 1; }
 .import-note { font-size: 12px; }
+
+/* ---- battle readiness ---- */
+
+.readiness {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 950px) {
+  .readiness { grid-template-columns: 1fr; }
+}
+.boss-picker { display: flex; flex-direction: column; gap: 10px; }
+.boss-picker-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.boss-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+.boss-preview > .battle-effect { grid-column: 1 / -1; }
+.preview-wrap.open { grid-column: 1 / -1; }
+.preview-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+.preview-row .team-name { display: block; }
+.preview-row.open { border-radius: 8px 8px 0 0; }
+.preview-row.open + .mon-card { border-radius: 0 0 8px 8px; border-top: none; }
+.preview-meta { display: flex; align-items: center; gap: 4px; font-size: 12px; }
 
 /* ---- evolve panel ---- */
 

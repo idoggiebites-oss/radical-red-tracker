@@ -8,6 +8,7 @@ import type {
   TmEntry,
 } from "../types";
 import { Sprite } from "../components/Sprite";
+import { ItemSprite } from "../components/ItemSprite";
 import { TypeBadges } from "../components/TypeBadges";
 
 const items = itemsJson as unknown as ItemsData;
@@ -219,6 +220,9 @@ function ItemList({ q }: { q: string }) {
                 <tbody>
                   {list.map((i, idx) => (
                     <tr key={idx}>
+                      <td className="cell-item-sprite">
+                        <ItemSprite name={i.name} />
+                      </td>
                       <td className="tm-move">{i.name}</td>
                       <td>{i.location}</td>
                     </tr>
@@ -237,6 +241,9 @@ function ItemList({ q }: { q: string }) {
               <tbody>
                 {a.items.map((i, idx) => (
                   <tr key={idx}>
+                    <td className="cell-item-sprite">
+                      <ItemSprite name={i.name} />
+                    </td>
                     <td className="tm-move">{i.name}</td>
                     <td>{i.location}</td>
                   </tr>
@@ -314,6 +321,9 @@ function RaidLocationCard({ loc, q }: { loc: RaidLocation; q: string }) {
           <tbody>
             {den.drops.map((d, i) => (
               <tr key={i}>
+                <td className="cell-item-sprite">
+                  <ItemSprite name={d.item} />
+                </td>
                 <td>{d.item}</td>
                 <td className="cell-rarity">{d.rarity}</td>
               </tr>

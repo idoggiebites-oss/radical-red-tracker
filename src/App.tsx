@@ -144,7 +144,9 @@ export default function App() {
         {tab === "bosses" && (
           <BossesView modeData={modeData} mode={mode} run={run} updateRun={updateRun} />
         )}
-        {tab === "team" && <TeamView run={run} updateRun={updateRun} />}
+        {tab === "team" && (
+          <TeamView run={run} updateRun={updateRun} modeData={modeData} />
+        )}
         {tab === "reference" && <ReferenceView data={encounters} />}
       </main>
 

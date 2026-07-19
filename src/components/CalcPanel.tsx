@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { BossMon, MonBuild } from "../types";
 import { Sprite } from "./Sprite";
+import { ItemSprite } from "./ItemSprite";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import {
   ABILITY_NAMES,
@@ -213,7 +214,8 @@ export function CalcPanel({
               )}
             </label>
             <div className="muted">
-              {mon.nature} · {mon.ability} · {mon.item || "no item"}
+              {mon.nature} · {mon.ability} · <ItemSprite name={mon.item} size={18} />{" "}
+              {mon.item || "no item"}
               {mon.speedStat && ` · sheet speed ${mon.speedStat}`}
             </div>
             {battleEffect && (
