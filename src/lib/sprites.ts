@@ -1,32 +1,99 @@
-/** Best-effort sprite URLs from Pokémon Showdown's name-based sprite CDN.
- * The docs use short form suffixes (Geodude-A, Zorua-Hisui, Rotom-F ...).
- * Unknown names simply 404 and the <img> hides itself. */
+/** Best-effort sprite URLs: Pokémon Showdown's name-based CDN first, then
+ * the RR Pokédex repo's front sprite by dex ID — that one covers RR customs
+ * (Sevii forms, custom megas) Showdown will never have. Unknown names simply
+ * 404 through the chain and the <img> hides itself. */
 
+import typesJson from "../data/types.json";
+
+const SPRITE_IDS = (typesJson as unknown as { spriteIds: Record<string, number> })
+  .spriteIds;
+
+const RRDEX_SPECIES =
+  "https://raw.githubusercontent.com/JwowSquared/Radical-Red-Pokedex/master/graphics/species/front";
+
+/** normalized doc names -> Showdown slugs, where suffix expansion can't
+ * get there. Keys are post-normalization (lowercase, punctuation and
+ * spaces stripped, accents folded). */
 const SPECIAL: Record<string, string> = {
+  // dashes that are part of the name, not a form
+  "ho-oh": "hooh",
+  "porygon-z": "porygonz",
+  "nidoran-f": "nidoranf",
+  "nidoran-m": "nidoranm",
+  "jangmo-o": "jangmoo",
+  "hakamo-o": "hakamoo",
+  "kommo-o": "kommoo",
+  "chi-yu": "chiyu",
+  "chien-pao": "chienpao",
+  "ting-lu": "tinglu",
+  "wo-chien": "wochien",
+  // rotom / deoxys / paldea short forms
   "rotom-f": "rotom-frost",
   "rotom-w": "rotom-wash",
   "rotom-h": "rotom-heat",
   "rotom-s": "rotom-fan",
   "rotom-c": "rotom-mow",
+  "deoxys-a": "deoxys-attack",
+  "deoxys-d": "deoxys-defense",
+  "deoxys-s": "deoxys-speed",
   "tauros-blaze": "tauros-paldeablaze",
   "tauros-aqua": "tauros-paldeaaqua",
   "tauros-combat": "tauros-paldeacombat",
   "ursaluna-bm": "ursaluna-bloodmoon",
-  "farfetch-d": "farfetchd",
-  "farfetch-d-galar": "farfetchd-galar",
-  "sirfetch-d": "sirfetchd",
-  "mr-mime": "mrmime",
-  "mr-mime-galar": "mrmime-galar",
-  "mr-rime": "mrrime",
-  "mime-jr": "mimejr",
-  "type-null": "typenull",
-  "ho-oh": "hooh",
-  "porygon-z": "porygonz",
-  "nidoran-f": "nidoranf",
-  "nidoran-m": "nidoranm",
-  "deoxys-a": "deoxys-attack",
-  "deoxys-d": "deoxys-defense",
-  "deoxys-s": "deoxys-speed",
+  // regional short forms not covered by the generic suffix expansion
+  "farfetchd-g": "farfetchd-galar",
+  "mrmime-g": "mrmime-galar",
+  // legendaries & forms the docs abbreviate
+  "landorus-i": "landorus",
+  "landorus-t": "landorus-therian",
+  "thundurus-i": "thundurus",
+  "thundurus-t": "thundurus-therian",
+  "tornadus-i": "tornadus",
+  "tornadus-t": "tornadus-therian",
+  "enamorus-i": "enamorus",
+  "enamorus-t": "enamorus-therian",
+  "kyurem-b": "kyurem-black",
+  "kyurem-w": "kyurem-white",
+  "calyrex-i": "calyrex-ice",
+  "calyrex-s": "calyrex-shadow",
+  "necrozma-dm": "necrozma-duskmane",
+  "necrozma-dw": "necrozma-dawnwings",
+  "zacian-c": "zacian-crowned",
+  "zamazenta-c": "zamazenta-crowned",
+  "zygarde-c": "zygarde-complete",
+  "hoopa-u": "hoopa-unbound",
+  "giratina-o": "giratina-origin",
+  "palkia-o": "palkia-origin",
+  "magearna-o": "magearna-original",
+  "shaymin-s": "shaymin-sky",
+  "lycanroc-d": "lycanroc-dusk",
+  "urshifu-r": "urshifu-rapidstrike",
+  "urshifu-rapid": "urshifu-rapidstrike",
+  "urshifu-rapid-strike": "urshifu-rapidstrike",
+  "urshifu-s": "urshifu",
+  "urshifu-single": "urshifu",
+  "ogerpon-c": "ogerpon-cornerstone",
+  "ogerpon-h": "ogerpon-hearthflame",
+  "ogerpon-w": "ogerpon-wellspring",
+  "groudon-p": "groudon-primal",
+  "kyogre-p": "kyogre-primal",
+  "wishiwashi-sch": "wishiwashi-school",
+  "darmanitan-z": "darmanitan-zen",
+  "darmanitan-gz": "darmanitan-galarzen",
+  "cramorant-gorg": "cramorant-gorging",
+  "eternatus-max": "eternatus-eternamax",
+  "gourgeist-su": "gourgeist-super",
+  "pumpkaboo-su": "pumpkaboo-super",
+  "pumpkaboo-sm": "pumpkaboo-small",
+  "pumpkaboo-la": "pumpkaboo-large",
+  "indeedee-m": "indeedee",
+  "squawkabilly-g": "squawkabilly",
+  "squawkabilly-w": "squawkabilly-white",
+  "wormadam-sa": "wormadam-sandy",
+  "toxtricity-low-key": "toxtricity-lowkey",
+  "basculin-blue": "basculin-bluestriped",
+  "alcremie-strbrry": "alcremie",
+  "anycappikachu": "pikachu",
 };
 
 const SUFFIX: Record<string, string> = {
@@ -49,17 +116,25 @@ const SUFFIX: Record<string, string> = {
 
 export function spriteUrls(species: string): string[] {
   const slug = speciesSlug(species);
-  return [
+  const urls = [
     `https://play.pokemonshowdown.com/sprites/gen5/${slug}.png`,
     `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`,
   ];
+  const id = SPRITE_IDS[species];
+  if (id !== undefined) urls.push(`${RRDEX_SPECIES}/${id}.png`);
+  return urls;
 }
 
 function speciesSlug(species: string): string {
+  // Showdown filenames drop punctuation and join multi-word names with
+  // nothing ("Tapu Koko" -> tapukoko, "Mr. Mime" -> mrmime, Flabébé ->
+  // flabebe); dashes only separate forms
   let slug = species
     .toLowerCase()
-    .replace(/[’']/g, "-")
-    .replace(/[. ]+/g, "-")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[’'.:]/g, "")
+    .replace(/\s+/g, "")
     .replace(/-+/g, "-")
     .replace(/-$/, "");
   if (SPECIAL[slug]) {

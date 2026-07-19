@@ -745,11 +745,21 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
         if evos:
             species_evolutions[app_name] = evos
 
+    # app species name -> dex species ID; the dex repo hosts the sprite for
+    # mon N at graphics/species/front/N.png (covers RR customs like Sevii
+    # forms and custom megas that Showdown's CDN doesn't have)
+    sprite_ids = {}
+    for name in species_types:
+        key = resolve_species_key(name, by_norm)
+        mon = mon_by_norm.get(key) if key else None
+        if mon:
+            sprite_ids[name] = mon["ID"]
+
     print(f"  types resolved for {len(species_types)} species "
           f"({len(species_evolutions)} with evolutions)")
     return {"colors": colors, "matchup": matchup, "species": species_types,
             "stats": species_stats, "abilities": species_abilities,
-            "evolutions": species_evolutions}
+            "evolutions": species_evolutions, "spriteIds": sprite_ids}
 
 
 RAID_HEADER = re.compile(r"^\s*--\s*(.+?)\s*--\s*(★+)?\s*$")
