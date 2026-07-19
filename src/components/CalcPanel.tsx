@@ -4,6 +4,7 @@ import { Sprite } from "./Sprite";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import {
   ABILITY_NAMES,
+  BOOST_STATS,
   ITEM_NAMES,
   MOVE_NAMES,
   NATURES,
@@ -13,11 +14,16 @@ import {
   calcBaseStats,
   calcMoves,
   computedStats,
+  effectiveSpeed,
   fieldFromBattleEffect,
   resolveSpecies,
+  statTotals,
   type MatchupLine,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
+
+const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow"];
+const TERRAINS = ["Electric", "Grassy", "Psychic", "Misty"];
 
 const CFG_KEY = "rr-tracker.calcMon";
 const CAUGHT_ONLY_KEY = "rr-tracker.calcCaughtOnly";
@@ -36,6 +42,7 @@ const DEFAULT_CFG: PlayerMonConfig = {
   item: "",
   evs: { HP: 0, ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
   ivs: { HP: 31, ATK: 31, DEF: 31, SPA: 31, SPD: 31, SPE: 31 },
+  boosts: { ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
   moves: ["", "", "", ""],
 };
 
@@ -45,7 +52,12 @@ function loadCfg(levelCap?: number): PlayerMonConfig {
     const raw = localStorage.getItem(CFG_KEY);
     if (raw) {
       const saved = JSON.parse(raw);
-      cfg = { ...DEFAULT_CFG, ...saved, ivs: { ...DEFAULT_CFG.ivs, ...saved.ivs } };
+      cfg = {
+        ...DEFAULT_CFG,
+        ...saved,
+        ivs: { ...DEFAULT_CFG.ivs, ...saved.ivs },
+        boosts: { ...DEFAULT_CFG.boosts, ...saved.boosts },
+      };
     }
   } catch {
     // fall through to defaults
@@ -73,7 +85,12 @@ export function CalcPanel({
     Number.isNaN(parsedLevel) ? 50 : parsedLevel,
   );
   const [cfg, setCfg] = useState<PlayerMonConfig>(() => loadCfg(levelCap));
-  const [applyField, setApplyField] = useState(true);
+  const bossField = useMemo(
+    () => (battleEffect ? fieldFromBattleEffect(battleEffect) : {}),
+    [battleEffect],
+  );
+  const [weather, setWeather] = useState(bossField.weather ?? "");
+  const [terrain, setTerrain] = useState(bossField.terrain ?? "");
   const [caughtOnly, setCaughtOnly] = useState(
     () => localStorage.getItem(CAUGHT_ONLY_KEY) === "1",
   );
@@ -129,8 +146,11 @@ export function CalcPanel({
   const playerStats = cfg.species ? calcBaseStats(cfg.species) : null;
 
   const fieldOpts = useMemo(
-    () => (applyField && battleEffect ? fieldFromBattleEffect(battleEffect) : {}),
-    [applyField, battleEffect],
+    () => ({
+      weather: weather || undefined,
+      terrain: terrain || undefined,
+    }),
+    [weather, terrain],
   );
 
   const bossUnknown = resolveSpecies(mon.species) === null;
@@ -145,7 +165,12 @@ export function CalcPanel({
       cfg.moves.filter((m) => m.trim()),
       fieldOpts,
     );
-    return { incoming, outgoing, bossSpeed: boss.stats.spe, playerSpeed: player.stats.spe };
+    return {
+      incoming,
+      outgoing,
+      bossSpeed: effectiveSpeed(boss, fieldOpts),
+      playerSpeed: effectiveSpeed(player, fieldOpts),
+    };
   }, [mon, bossLevel, cfg, fieldOpts]);
 
   return (
@@ -180,15 +205,32 @@ export function CalcPanel({
               {mon.speedStat && ` · sheet speed ${mon.speedStat}`}
             </div>
             {battleEffect && (
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  checked={applyField}
-                  onChange={(e) => setApplyField(e.target.checked)}
-                />
-                Apply battle effect: {battleEffect.toLowerCase()}
-              </label>
+              <div className="muted">Battle effect: {battleEffect.toLowerCase()}</div>
             )}
+            <div className="calc-row">
+              <label className="field-select">
+                Weather
+                <select value={weather} onChange={(e) => setWeather(e.target.value)}>
+                  <option value="">None</option>
+                  {WEATHERS.map((w) => (
+                    <option key={w} value={w}>
+                      {w}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="field-select">
+                Terrain
+                <select value={terrain} onChange={(e) => setTerrain(e.target.value)}>
+                  <option value="">None</option>
+                  {TERRAINS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           </div>
 
           <div className="calc-side">
@@ -277,6 +319,8 @@ export function CalcPanel({
               </div>
             )}
             <NatureLine cfg={cfg} />
+            <ModifierLine cfg={cfg} fieldOpts={fieldOpts} />
+            <TotalsWithBoosts cfg={cfg} fieldOpts={fieldOpts} update={update} />
             <div className="calc-row evs">
               {Object.keys(cfg.ivs ?? {}).map((k) => (
                 <label key={k}>
@@ -420,6 +464,86 @@ function NatureLine({ cfg }: { cfg: PlayerMonConfig }) {
       <span className="nature-minus">
         −{effect.minus} ({neutral[effect.minus]} → {withNature[effect.minus]})
       </span>
+    </div>
+  );
+}
+
+function ModifierLine({
+  cfg,
+  fieldOpts,
+}: {
+  cfg: PlayerMonConfig;
+  fieldOpts: Parameters<typeof statTotals>[1];
+}) {
+  if (!cfg.species || resolveSpecies(cfg.species) === null) return null;
+  const t = statTotals(cfg, fieldOpts);
+  if (!t) return null;
+  const parts: string[] = [];
+  const fmt = (mods: Partial<Record<string, number>>, source: string) => {
+    const entries = Object.entries(mods);
+    if (entries.length > 0) {
+      parts.push(
+        `${source}: ${entries.map(([k, v]) => `${k} ×${v}`).join(", ")}`,
+      );
+    }
+  };
+  if (cfg.item) fmt(t.itemMods, cfg.item);
+  if (cfg.ability) fmt(t.abilityMods, cfg.ability);
+  return (
+    <div className="modifier-line">
+      {parts.length > 0 ? (
+        <span className="nature-plus">{parts.join(" · ")}</span>
+      ) : (
+        <span className="muted">Item/ability: no stat modifiers</span>
+      )}
+    </div>
+  );
+}
+
+function TotalsWithBoosts({
+  cfg,
+  fieldOpts,
+  update,
+}: {
+  cfg: PlayerMonConfig;
+  fieldOpts: Parameters<typeof statTotals>[1];
+  update: (patch: Partial<PlayerMonConfig>) => void;
+}) {
+  if (!cfg.species || resolveSpecies(cfg.species) === null) return null;
+  const t = statTotals(cfg, fieldOpts);
+  if (!t) return null;
+  return (
+    <div className="totals-grid">
+      <div className="totals-cell">
+        <span className="k">HP</span>
+        <span className="total-val">{t.totals.HP}</span>
+      </div>
+      {BOOST_STATS.map((k) => {
+        const boost = cfg.boosts?.[k] ?? 0;
+        return (
+          <div key={k} className="totals-cell">
+            <span className="k">{k}</span>
+            <span className={"total-val" + (boost > 0 ? " nature-plus" : boost < 0 ? " nature-minus" : "")}>
+              {t.totals[k]}
+            </span>
+            <select
+              title={`${k} stage`}
+              value={boost}
+              onChange={(e) =>
+                update({
+                  boosts: { ...(cfg.boosts ?? {}), [k]: parseInt(e.target.value, 10) },
+                })
+              }
+            >
+              {Array.from({ length: 13 }, (_, i) => 6 - i).map((n) => (
+                <option key={n} value={n}>
+                  {n > 0 ? `+${n}` : n}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      })}
     </div>
   );
 }

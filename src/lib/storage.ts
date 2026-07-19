@@ -19,13 +19,8 @@ export function saveState(state: AppState): void {
 /** pseudo location id for the starter Pokémon (not a route encounter) */
 export const STARTER_ID = "starter";
 
-export function newRun(
-  name: string,
-  mode: GameMode,
-  saveInfo?: RunSaveInfo,
-  starter?: string,
-): Run {
-  const run: Run = {
+export function newRun(name: string, mode: GameMode, saveInfo?: RunSaveInfo): Run {
+  return {
     id: `run-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     name,
     mode,
@@ -35,14 +30,4 @@ export function newRun(
     saveInfo,
     speciesMap: {},
   };
-  if (starter?.trim()) {
-    run.encounters[STARTER_ID] = {
-      species: starter.trim(),
-      nickname: "",
-      status: "caught",
-      inParty: true,
-      kos: 0,
-    };
-  }
-  return run;
 }

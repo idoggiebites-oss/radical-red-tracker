@@ -2,6 +2,7 @@
  * Gen 9 in the vendored data set carries the Radical Red changes. */
 
 import * as rr from "rr-damage-calc";
+import { getFinalSpeed } from "rr-damage-calc/mechanics/util.js";
 import type { BossMon } from "../types";
 
 export const GEN = 9;
@@ -117,7 +118,98 @@ export interface PlayerMonConfig {
   item: string;
   evs: Record<string, number>;
   ivs?: Record<string, number>;
+  /** in-battle stat stages, -6..+6 */
+  boosts?: Record<string, number>;
   moves: string[];
+}
+
+export const BOOST_STATS = ["ATK", "DEF", "SPA", "SPD", "SPE"] as const;
+
+const stageMult = (n: number) => (n >= 0 ? (2 + n) / 2 : 2 / (2 - n));
+
+/** stat multipliers granted by a held item (display + totals) */
+export function itemStatMods(
+  item: string,
+  speciesName: string,
+  nfe: boolean,
+): Partial<Record<string, number>> {
+  switch (rr.toID(item || "")) {
+    case "choiceband": return { ATK: 1.5 };
+    case "choicespecs": return { SPA: 1.5 };
+    case "choicescarf": return { SPE: 1.5 };
+    case "assaultvest": return { SPD: 1.5 };
+    case "eviolite": return nfe ? { DEF: 1.5, SPD: 1.5 } : {};
+    case "ironball": return { SPE: 0.5 };
+    case "lightball":
+      return speciesName.startsWith("Pikachu") ? { ATK: 2, SPA: 2 } : {};
+    case "thickclub":
+      return /^(Cubone|Marowak)/.test(speciesName) ? { ATK: 2 } : {};
+    case "deepseatooth":
+      return speciesName === "Clamperl" ? { SPA: 2 } : {};
+    case "deepseascale":
+      return speciesName === "Clamperl" ? { SPD: 2 } : {};
+    default: return {};
+  }
+}
+
+/** stat multipliers granted by an ability under the given field */
+export function abilityStatMods(
+  ability: string,
+  item: string,
+  fieldOpts: rr.FieldOptions,
+  stats: Record<string, number>,
+): Partial<Record<string, number>> {
+  const id = rr.toID(ability || "");
+  if (id === "hugepower" || id === "purepower") return { ATK: 2 };
+  if (id === "hustle" || id === "gorillatactics") return { ATK: 1.5 };
+  if (id === "furcoat") return { DEF: 2 };
+  const booster = rr.toID(item || "") === "boosterenergy";
+  const active =
+    (id === "protosynthesis" && (fieldOpts.weather === "Sun" || booster)) ||
+    (id === "quarkdrive" && (fieldOpts.terrain === "Electric" || booster));
+  if (active) {
+    // boosts the holder's highest non-HP stat
+    let best = "ATK";
+    for (const k of BOOST_STATS) {
+      if ((stats[k] ?? 0) > (stats[best] ?? 0)) best = k;
+    }
+    return { [best]: best === "SPE" ? 1.5 : 1.3 };
+  }
+  return {};
+}
+
+export interface StatTotals {
+  itemMods: Partial<Record<string, number>>;
+  abilityMods: Partial<Record<string, number>>;
+  totals: Record<string, number>;
+}
+
+/** battle-effective stats: nature/EV/IV stats with item, ability, boost
+ * stages and field applied. Speed uses the engine's getFinalSpeed. */
+export function statTotals(
+  cfg: PlayerMonConfig,
+  fieldOpts: rr.FieldOptions,
+): StatTotals | null {
+  const pokemon = buildPlayerPokemon(cfg);
+  const speciesName = resolveSpecies(cfg.species);
+  if (!pokemon || !speciesName) return null;
+  const nfe = !!gen.species.get(rr.toID(speciesName))?.nfe;
+  const base = computedStats(cfg);
+  if (!base) return null;
+  const itemMods = itemStatMods(cfg.item, speciesName, nfe);
+  const abilityMods = abilityStatMods(cfg.ability, cfg.item, fieldOpts, base);
+  const totals: Record<string, number> = { HP: base.HP };
+  for (const k of BOOST_STATS) {
+    if (k === "SPE") {
+      totals[k] = effectiveSpeed(pokemon, fieldOpts);
+      continue;
+    }
+    let v = Math.floor(base[k] * stageMult(cfg.boosts?.[k] ?? 0));
+    if (itemMods[k]) v = Math.floor(v * itemMods[k]!);
+    if (abilityMods[k]) v = Math.floor(v * abilityMods[k]!);
+    totals[k] = v;
+  }
+  return { itemMods, abilityMods, totals };
 }
 
 /** stat raised / lowered by each nature (neutral natures omitted) */
@@ -207,6 +299,11 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
     const key = EV_KEYS[k];
     if (key) ivs[key] = Math.max(0, Math.min(31, v));
   }
+  const boosts: rr.StatsTable = {};
+  for (const [k, v] of Object.entries(cfg.boosts ?? {})) {
+    const key = EV_KEYS[k];
+    if (key && v !== 0) boosts[key] = Math.max(-6, Math.min(6, v));
+  }
   try {
     return new rr.Pokemon(GEN, species, {
       level: cfg.level,
@@ -215,9 +312,24 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
       item: cleanItem(cfg.item),
       evs,
       ivs,
+      boosts,
     });
   } catch {
     return null;
+  }
+}
+
+/** effective speed with item (Choice Scarf, Iron Ball), ability and field
+ * (Swift Swim in rain etc.) applied — Pokemon.stats.spe alone ignores these */
+export function effectiveSpeed(
+  pokemon: rr.Pokemon,
+  fieldOpts: rr.FieldOptions,
+): number {
+  try {
+    const field = new rr.Field(fieldOpts) as rr.Field & { attackerSide: unknown };
+    return getFinalSpeed(gen, pokemon, field, field.attackerSide);
+  } catch {
+    return pokemon.stats.spe;
   }
 }
 

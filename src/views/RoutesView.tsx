@@ -12,6 +12,7 @@ import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
 import { hasSpeciesRandomizer } from "../lib/saveFile";
 import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
 import { STARTER_ID } from "../lib/storage";
+import { STARTER_TRIO } from "../lib/starters";
 
 const STARTER_LOC: Location = {
   id: STARTER_ID,
@@ -19,6 +20,12 @@ const STARTER_LOC: Location = {
   postgame: false,
   methods: {},
 };
+
+const STARTER_SLOTS: EncounterSlot[] = STARTER_TRIO.map((species) => ({
+  species,
+  rarity: "",
+  levels: "5",
+}));
 
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
@@ -253,6 +260,28 @@ function RouteRow({
           )}
 
           <div className="method-tables">
+            {loc.id === STARTER_ID && (
+              <div className="method-table">
+                <h4>Oak's Lab · pick one</h4>
+                <EncounterTable
+                  slots={STARTER_SLOTS}
+                  speciesMap={randomized ? speciesMap : undefined}
+                  onMap={randomized ? setMapping : undefined}
+                  onPick={
+                    run
+                      ? (sp) =>
+                          setEncounter({
+                            species: randomized ? (speciesMap[sp] ?? sp) : sp,
+                          })
+                      : undefined
+                  }
+                />
+                <p className="muted starter-note">
+                  Your pick decides the rival's starter — his team variants on
+                  the Bosses tab filter accordingly.
+                </p>
+              </div>
+            )}
             {(Object.keys(METHOD_LABELS) as MethodKey[]).map((m) => {
               const slots = loc.methods[m];
               if (!slots || slots.length === 0) return null;

@@ -3,6 +3,7 @@ import type { Boss, BossMode, BossMon, GameMode, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { TypeBadges } from "../components/TypeBadges";
 import { CalcPanel, type CaughtMon } from "../components/CalcPanel";
+import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import {
   ALL_TYPES,
   defensiveProfile,
@@ -44,6 +45,8 @@ export function BossesView({
         .map((e) => ({ species: e.species, nickname: e.nickname, build: e.build })),
     [run],
   );
+
+  const rivalStarter = useMemo(() => rivalStarterFor(run), [run]);
 
   return (
     <div className="bosses">
@@ -91,6 +94,7 @@ export function BossesView({
           filter={filter}
           levelCap={levelCap}
           caught={caught}
+          rivalStarter={rivalStarter}
         />
       )}
     </div>
@@ -167,17 +171,23 @@ function BossTeams({
   filter,
   levelCap,
   caught,
+  rivalStarter,
 }: {
   modeData: BossMode;
   category: string;
   filter: string;
   levelCap?: number;
   caught?: CaughtMon[];
+  rivalStarter?: string | null;
 }) {
   const q = filter.trim().toLowerCase();
   const cat = modeData.categories.find((c) => c.name === category);
   if (!cat) return null;
-  const bosses = cat.bosses.filter((b) => {
+  const starterFiltered = cat.bosses.filter((b) =>
+    bossMatchesStarter(b.subtitle, rivalStarter ?? null),
+  );
+  const hiddenVariants = cat.bosses.length - starterFiltered.length;
+  const bosses = starterFiltered.filter((b) => {
     if (!q) return true;
     return (
       b.title.toLowerCase().includes(q) ||
@@ -187,6 +197,12 @@ function BossTeams({
   });
   return (
     <div className="boss-list">
+      {hiddenVariants > 0 && (
+        <p className="muted starter-filter-note">
+          Hiding {hiddenVariants} rival team{hiddenVariants > 1 ? "s" : ""} for
+          other starters (rival has {rivalStarter} in this run).
+        </p>
+      )}
       {bosses.map((b, i) => (
         <BossCard key={i} boss={b} levelCap={levelCap} caught={caught} />
       ))}

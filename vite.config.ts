@@ -8,5 +8,7 @@ export default defineConfig({
   base: '/radical-red-tracker/',
   // rr-damage-calc is a linked local package of CommonJS bundles; force
   // pre-bundling so the dev server converts it to ESM
-  optimizeDeps: { include: ['rr-damage-calc'] },
+  optimizeDeps: {
+    include: ['rr-damage-calc', 'rr-damage-calc/mechanics/util.js'],
+  },
 })
