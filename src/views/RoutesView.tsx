@@ -8,7 +8,9 @@ import type {
   Run,
 } from "../types";
 import { Sprite } from "../components/Sprite";
-import { TypeBadges } from "../components/TypeBadges";
+import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
+import { hasSpeciesRandomizer } from "../lib/saveFile";
+import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
 
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
@@ -38,6 +40,9 @@ export function RoutesView({
   const [showPostgame, setShowPostgame] = useState(false);
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState<string | null>(null);
+
+  const randomized =
+    SAVE_FILE_FEATURE && run != null && hasSpeciesRandomizer(run.saveInfo);
 
   const q = filter.trim().toLowerCase();
   const locations = data.locations.filter((loc) => {
@@ -69,12 +74,32 @@ export function RoutesView({
         {run && <RouteStats run={run} />}
       </div>
 
+      {randomized && (
+        <div className="randomizer-banner">
+          🎲 Species randomizer active
+          {run?.saveInfo?.random.scaledSpecies && " (scaled)"} for trainer{" "}
+          <strong>{run?.saveInfo?.trainerName || "?"}</strong> —{" "}
+          {Object.keys(run?.speciesMap ?? {}).length} mappings recorded. When
+          you meet a randomized Pokémon, click its slot's{" "}
+          <span className="map-hint">→ record</span> cell and enter what it
+          became; the mapping applies to that species everywhere.
+        </div>
+      )}
+      {randomized && (
+        <datalist id="all-species">
+          {ALL_SPECIES.map((s) => (
+            <option key={s} value={s} />
+          ))}
+        </datalist>
+      )}
+
       {locations.map((loc) => (
         <RouteRow
           key={loc.id}
           loc={loc}
           run={run}
           updateRun={updateRun}
+          randomized={randomized}
           open={open === loc.id}
           toggle={() => setOpen(open === loc.id ? null : loc.id)}
         />
@@ -97,16 +122,31 @@ function RouteRow({
   loc,
   run,
   updateRun,
+  randomized,
   open,
   toggle,
 }: {
   loc: Location;
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
+  randomized: boolean;
   open: boolean;
   toggle: () => void;
 }) {
   const enc = run?.encounters[loc.id];
+  const speciesMap = run?.speciesMap ?? {};
+
+  const setMapping = (original: string, mapped: string) => {
+    updateRun((r) => {
+      const next = { ...(r.speciesMap ?? {}) };
+      if (mapped.trim()) {
+        next[original] = mapped.trim();
+      } else {
+        delete next[original];
+      }
+      return { ...r, speciesMap: next };
+    });
+  };
 
   const setEncounter = (patch: Partial<Run["encounters"][string]> | null) => {
     updateRun((r) => {
@@ -200,7 +240,16 @@ function RouteRow({
                   <h4>{METHOD_LABELS[m]}</h4>
                   <EncounterTable
                     slots={slots}
-                    onPick={run ? (sp) => setEncounter({ species: sp }) : undefined}
+                    speciesMap={randomized ? speciesMap : undefined}
+                    onMap={randomized ? setMapping : undefined}
+                    onPick={
+                      run
+                        ? (sp) =>
+                            setEncounter({
+                              species: randomized ? (speciesMap[sp] ?? sp) : sp,
+                            })
+                        : undefined
+                    }
                   />
                 </div>
               );
@@ -214,32 +263,85 @@ function RouteRow({
 
 function EncounterTable({
   slots,
+  speciesMap,
+  onMap,
   onPick,
 }: {
   slots: EncounterSlot[];
+  /** when set, the species randomizer is active for this run */
+  speciesMap?: Record<string, string>;
+  onMap?: (original: string, mapped: string) => void;
   onPick?: (species: string) => void;
 }) {
+  const [editing, setEditing] = useState<string | null>(null);
+  const randomized = speciesMap !== undefined;
   return (
     <table>
       <tbody>
-        {slots.map((s, i) => (
-          <tr
-            key={i}
-            className={onPick ? "pickable" : ""}
-            title={onPick ? `Set ${s.species} as this route's encounter` : undefined}
-            onClick={() => onPick?.(s.species)}
-          >
-            <td className="cell-sprite">
-              <Sprite species={s.species} size={32} />
-            </td>
-            <td className="cell-species">{s.species}</td>
-            <td>
-              <TypeBadges species={s.species} small />
-            </td>
-            <td className="cell-rarity">{s.rarity}</td>
-            <td className="cell-levels">{s.levels && `Lv. ${s.levels}`}</td>
-          </tr>
-        ))}
+        {slots.map((s, i) => {
+          const mapped = speciesMap?.[s.species];
+          const shown = randomized ? (mapped ?? s.species) : s.species;
+          return (
+            <tr
+              key={i}
+              className={onPick ? "pickable" : ""}
+              title={onPick ? `Set ${shown} as this route's encounter` : undefined}
+              onClick={() => onPick?.(s.species)}
+            >
+              <td className="cell-sprite">
+                <Sprite species={s.species} size={32} />
+              </td>
+              <td className={"cell-species" + (mapped ? " orig-species" : "")}>
+                {s.species}
+              </td>
+              {randomized && (
+                <td className="cell-mapped" onClick={(e) => e.stopPropagation()}>
+                  {editing === s.species ? (
+                    <input
+                      autoFocus
+                      className="map-input"
+                      list="all-species"
+                      defaultValue={mapped ?? ""}
+                      placeholder="Became…"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          onMap?.(s.species, e.currentTarget.value);
+                          setEditing(null);
+                        } else if (e.key === "Escape") {
+                          setEditing(null);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        onMap?.(s.species, e.currentTarget.value);
+                        setEditing(null);
+                      }}
+                    />
+                  ) : mapped ? (
+                    <button
+                      className="map-value"
+                      title="Edit mapping"
+                      onClick={() => setEditing(s.species)}
+                    >
+                      → <Sprite species={mapped} size={26} /> {mapped}
+                    </button>
+                  ) : (
+                    <button
+                      className="map-hint"
+                      onClick={() => setEditing(s.species)}
+                    >
+                      → record
+                    </button>
+                  )}
+                </td>
+              )}
+              <td>
+                <TypeBadges species={shown} small />
+              </td>
+              <td className="cell-rarity">{s.rarity}</td>
+              <td className="cell-levels">{s.levels && `Lv. ${s.levels}`}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

@@ -1,8 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import encountersJson from "./data/encounters.json";
 import bossesJson from "./data/bosses.json";
-import type { AppState, BossesData, EncountersData, GameMode, Run } from "./types";
+import type {
+  AppState,
+  BossesData,
+  EncountersData,
+  GameMode,
+  Run,
+  RunSaveInfo,
+} from "./types";
 import { loadState, newRun, saveState } from "./lib/storage";
+import { readSaveFile } from "./lib/saveFile";
+import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { RoutesView } from "./views/RoutesView";
 import { BossesView } from "./views/BossesView";
 import { TeamView } from "./views/TeamView";
@@ -100,8 +109,8 @@ export default function App() {
       {creating && (
         <NewRunDialog
           onCancel={() => setCreating(false)}
-          onCreate={(name, m) => {
-            const r = newRun(name, m);
+          onCreate={(name, m, saveInfo) => {
+            const r = newRun(name, m, saveInfo);
             setState((s) => ({ runs: [...s.runs, r], activeRunId: r.id }));
             setCreating(false);
           }}
@@ -153,11 +162,41 @@ function NewRunDialog({
   onCreate,
   onCancel,
 }: {
-  onCreate: (name: string, mode: GameMode) => void;
+  onCreate: (name: string, mode: GameMode, saveInfo?: RunSaveInfo) => void;
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
   const [mode, setMode] = useState<GameMode>("hardcore");
+  const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
+  const [saveError, setSaveError] = useState("");
+
+  const create = () => onCreate(name.trim(), mode, saveInfo);
+
+  const onSaveFile = async (file: File | undefined) => {
+    setSaveError("");
+    setSaveInfo(undefined);
+    if (!file) return;
+    const info = readSaveFile(await file.arrayBuffer());
+    if (!info) {
+      setSaveError(
+        "Couldn't read that file. Make sure it's the emulator's battery save (.sav), not a save state.",
+      );
+      return;
+    }
+    setSaveInfo(info);
+    // the save knows which mode the run is actually in
+    setMode(info.hardmode || info.restricted ? "hardcore" : "default");
+  };
+
+  const randomFlags = saveInfo
+    ? [
+        saveInfo.random.normalSpecies && "Species",
+        saveInfo.random.scaledSpecies && "Scaled species",
+        saveInfo.random.learnset && "Learnset",
+        saveInfo.random.abilities && "Abilities",
+      ].filter(Boolean)
+    : [];
+
   return (
     <div className="dialog-backdrop" onClick={onCancel}>
       <div className="dialog" onClick={(e) => e.stopPropagation()}>
@@ -170,7 +209,7 @@ function NewRunDialog({
             placeholder="e.g. Attempt #3"
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && name.trim()) onCreate(name.trim(), mode);
+              if (e.key === "Enter" && name.trim()) create();
             }}
           />
         </label>
@@ -181,13 +220,45 @@ function NewRunDialog({
             <option value="hardcore">Hardcore / Restricted</option>
           </select>
         </label>
+        {SAVE_FILE_FEATURE && (
+          <label>
+            Save file (optional)
+            <input
+              type="file"
+              accept=".sav,.sa2,.fla"
+              onChange={(e) => onSaveFile(e.target.files?.[0])}
+            />
+          </label>
+        )}
+        {saveError && <p className="save-error">{saveError}</p>}
+        {saveInfo && (
+          <div className="save-summary">
+            <div>
+              Trainer <strong>{saveInfo.trainerName || "?"}</strong>
+              {" · "}
+              {saveInfo.hardmode
+                ? "Hardcore"
+                : saveInfo.restricted
+                  ? "Restricted"
+                  : "Default"}{" "}
+              mode
+            </div>
+            <div>
+              Randomizers:{" "}
+              {randomFlags.length > 0 ? randomFlags.join(", ") : "none"}
+            </div>
+            {(saveInfo.random.normalSpecies || saveInfo.random.scaledSpecies) && (
+              <div className="muted">
+                Species randomizer detected — route slots will let you record
+                what each species became; each discovery applies globally
+                (the mapping is 1-to-1 for the whole save).
+              </div>
+            )}
+          </div>
+        )}
         <div className="dialog-actions">
           <button onClick={onCancel}>Cancel</button>
-          <button
-            className="primary"
-            disabled={!name.trim()}
-            onClick={() => onCreate(name.trim(), mode)}
-          >
+          <button className="primary" disabled={!name.trim()} onClick={create}>
             Create
           </button>
         </div>

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { Boss, BossMode, BossMon, GameMode, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { TypeBadges } from "../components/TypeBadges";
+import { CalcPanel } from "../components/CalcPanel";
 import {
   ALL_TYPES,
   defensiveProfile,
@@ -203,7 +204,7 @@ function BossCard({ boss }: { boss: Boss }) {
           <TeamWeaknesses boss={boss} />
           <div className="mon-grid">
             {boss.pokemon.map((m, i) => (
-              <MonCard key={i} mon={m} />
+              <MonCard key={i} mon={m} battleEffect={boss.battleEffect} />
             ))}
           </div>
         </>
@@ -281,7 +282,8 @@ function MonDefenses({ mon }: { mon: BossMon }) {
 
 const STAT_ORDER = ["HP", "ATK", "DEF", "SPA", "SPD", "SPE"];
 
-function MonCard({ mon }: { mon: BossMon }) {
+function MonCard({ mon, battleEffect }: { mon: BossMon; battleEffect: string }) {
+  const [calcOpen, setCalcOpen] = useState(false);
   return (
     <div className="mon-card">
       <div className="mon-head">
@@ -291,7 +293,21 @@ function MonCard({ mon }: { mon: BossMon }) {
           <div className="mon-level">Lv. {mon.level || "?"}</div>
           <TypeBadges species={mon.species} small />
         </div>
+        <button
+          className="calc-btn"
+          title="Damage calculator"
+          onClick={() => setCalcOpen(true)}
+        >
+          Calc
+        </button>
       </div>
+      {calcOpen && (
+        <CalcPanel
+          mon={mon}
+          battleEffect={battleEffect}
+          onClose={() => setCalcOpen(false)}
+        />
+      )}
       <div className="mon-meta">
         <div>
           <span className="k">Ability</span> {mon.ability || "—"}

@@ -159,6 +159,19 @@ export interface RouteEncounter {
   kos?: number;
 }
 
+export interface RunSaveInfo {
+  trainerName: string;
+  trainedId: number;
+  hardmode: boolean;
+  restricted: boolean;
+  random: {
+    abilities: boolean;
+    learnset: boolean;
+    normalSpecies: boolean;
+    scaledSpecies: boolean;
+  };
+}
+
 export interface Run {
   id: string;
   name: string;
@@ -168,6 +181,12 @@ export interface Run {
   encounters: Record<string, RouteEncounter>;
   /** trainer-order index -> defeated */
   defeated: Record<number, boolean>;
+  /** parsed from an uploaded .sav, if any */
+  saveInfo?: RunSaveInfo;
+  /** randomizer discoveries: original species -> randomized species.
+   * RR's species randomizer is a global 1-to-1 mapping, so one discovery
+   * applies to every encounter slot of that species. */
+  speciesMap?: Record<string, string>;
 }
 
 export interface AppState {

@@ -67,3 +67,13 @@ by how many team members they hit super-effectively.
 
 Sprites are loaded best-effort from Pokémon Showdown's CDN and hidden
 when offline or unavailable — the app works fully without them.
+
+## Damage calculator
+
+Boss Pokémon cards have a **Calc** button: the boss side is pre-filled
+from the docs (level, nature, ability, item, EVs, moves — with permanent
+weather/terrain auto-applied), you enter your Pokémon, and it shows
+damage ranges and KO chances both ways. Powered by the vendored engine
+from the community's
+[Radical Red damage calculator](https://github.com/RadicalRedShowdown/calc)
+(MIT, the code behind calc.radicalred.net) in `vendor/rrcalc/`.

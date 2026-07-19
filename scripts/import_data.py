@@ -593,8 +593,11 @@ def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
             if def_name is not None and mult[val] != 1:
                 row[def_name] = mult[val]
         matchup[t["name"]] = row
+    ability_names = {a["ID"]: a["names"][0] for a in data["abilities"].values()
+                     if a.get("names")}
     by_norm: dict[str, list[str]] = {}
     stats_by_norm: dict[str, dict] = {}
+    abilities_by_norm: dict[str, list[str]] = {}
     for mon in data["species"].values():
         seen = []
         for tid in mon["type"]:
@@ -607,9 +610,16 @@ def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
         hp, atk, dfs, spe, spa, spd = mon["stats"]
         stats_by_norm[n] = {"HP": hp, "ATK": atk, "DEF": dfs,
                             "SPA": spa, "SPD": spd, "SPE": spe}
+        mon_abilities = []
+        for pair in mon.get("abilities", []):
+            name = ability_names.get(pair[0])
+            if name and name not in mon_abilities:
+                mon_abilities.append(name)
+        abilities_by_norm[n] = mon_abilities
 
     species_types = {}
     species_stats = {}
+    species_abilities = {}
     unresolved = []
     for name in sorted(collect_species_names(encounters, bosses)):
         if name.strip("?") == "":  # unknown trade placeholders
@@ -620,11 +630,12 @@ def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
         else:
             species_types[name] = by_norm[key]
             species_stats[name] = stats_by_norm[key]
+            species_abilities[name] = abilities_by_norm[key]
     if unresolved:
         warn(f"types: {len(unresolved)} unresolved species: {unresolved}")
     print(f"  types resolved for {len(species_types)} species")
     return {"colors": colors, "matchup": matchup, "species": species_types,
-            "stats": species_stats}
+            "stats": species_stats, "abilities": species_abilities}
 
 
 RAID_HEADER = re.compile(r"^\s*--\s*(.+?)\s*--\s*(★+)?\s*$")

@@ -1,4 +1,4 @@
-import type { AppState, GameMode, Run } from "../types";
+import type { AppState, GameMode, Run, RunSaveInfo } from "../types";
 
 const KEY = "rr-tracker.v1";
 
@@ -16,7 +16,7 @@ export function saveState(state: AppState): void {
   localStorage.setItem(KEY, JSON.stringify(state));
 }
 
-export function newRun(name: string, mode: GameMode): Run {
+export function newRun(name: string, mode: GameMode, saveInfo?: RunSaveInfo): Run {
   return {
     id: `run-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     name,
@@ -24,5 +24,7 @@ export function newRun(name: string, mode: GameMode): Run {
     createdAt: Date.now(),
     encounters: {},
     defeated: {},
+    saveInfo,
+    speciesMap: {},
   };
 }
