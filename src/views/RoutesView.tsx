@@ -202,7 +202,9 @@ function RouteRow({
           <span className="route-enc">
             <Sprite species={enc.species} size={28} />
             <span>
-              {enc.nickname ? `${enc.nickname} (${enc.species})` : enc.species}
+              {enc.nickname
+                ? `${enc.nickname}${enc.species ? ` (${enc.species})` : ""}`
+                : enc.species || "—"}
             </span>
             <span className={`badge ${enc.status}`}>
               {STATUS_META.find((s) => s.id === enc.status)?.label}

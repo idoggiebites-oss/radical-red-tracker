@@ -2,7 +2,10 @@ import { useState } from "react";
 import { spriteUrls } from "../lib/sprites";
 
 export function Sprite({ species, size = 40 }: { species: string; size?: number }) {
-  const [srcIdx, setSrcIdx] = useState(0);
+  // track which species the fallback index belongs to, so a re-used
+  // component slot retries from the first URL when its species changes
+  const [state, setState] = useState({ species, srcIdx: 0 });
+  const srcIdx = state.species === species ? state.srcIdx : 0;
   const urls = spriteUrls(species);
   if (srcIdx >= urls.length)
     return <span className="sprite-fallback" style={{ width: size, height: size }} />;
@@ -14,7 +17,7 @@ export function Sprite({ species, size = 40 }: { species: string; size?: number 
       width={size}
       height={size}
       loading="lazy"
-      onError={() => setSrcIdx(srcIdx + 1)}
+      onError={() => setState({ species, srcIdx: srcIdx + 1 })}
     />
   );
 }

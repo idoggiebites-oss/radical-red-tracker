@@ -579,6 +579,72 @@ def collect_species_names(encounters: dict, bosses: dict):
     return names
 
 
+# evolution entries are [method, param, target_species_id, extra]; the method
+# semantics mirror the dex site's top-level 'evolutions' template table
+MEGA_EVO_METHOD = 254  # battle-only forms (mega/primal), not real evolutions
+
+
+def evo_description(evo: list, data: dict, type_names: dict) -> str:
+    method, param, _target = evo[0], evo[1], evo[2]
+    extra = evo[3] if len(evo) > 3 else 0
+
+    def item_name(i):
+        return data["items"].get(i, {}).get("name", f"item {i}")
+
+    def move_name(i):
+        return data["moves"].get(i, {}).get("name", f"move {i}")
+
+    if method == 1:
+        return "on level up with high friendship"
+    if method == 2:
+        return "on level up with high friendship (day)"
+    if method == 3:
+        return "on level up with high friendship (night)"
+    if method in (4, 13):
+        return f"at Lv {param}"
+    if method == 7:
+        s = f"with a {item_name(param)}"
+        if param == 101:  # gendered Shellder line split in the dex data
+            s += " (female)" if extra == 254 else " (male)"
+        return s
+    if method == 8:
+        return f"at Lv {param} when Atk > Def"
+    if method == 9:
+        return f"at Lv {param} when Atk = Def"
+    if method == 10:
+        return f"at Lv {param} when Atk < Def"
+    if method in (11, 12):
+        return f"at Lv {param} (50% chance)"
+    if method == 14:
+        return "when evolving to Ninjask, with an open party slot and a Poké Ball"
+    if method == 16:
+        return f"at Lv {param} in overworld rain"
+    if method == 17:
+        return f"on level up with high friendship, knowing a {type_names.get(param, '?')}-type move"
+    if method == 18:
+        return f"at Lv {param} with a {type_names.get(extra, '?')}-type Pokémon in the party"
+    if method == 20:
+        return f"at Lv {param} (male)"
+    if method == 21:
+        return f"at Lv {param} (female)"
+    if method == 22:
+        return f"at Lv {param} (night)"
+    if method == 23:
+        return f"at Lv {param} (day)"
+    if method == 26:
+        return f"on level up knowing {move_name(param)}"
+    if method == 27:
+        return f"on level up with {data['species'].get(param, {}).get('key', '?')} in the party"
+    if method == 28:
+        when = "(day)" if extra == 1041 else "(night)" if extra == 5144 else "(dusk)"
+        return f"at Lv {param} {when}"
+    if method == 30:
+        return f"at Lv {param} (Amped natures)"
+    if method == 31:
+        return f"at Lv {param} (Low-Key natures)"
+    return ""
+
+
 def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
     data = fetch_rrdex(refresh)
     type_names = {t["ID"]: t["name"] for t in data["types"].values()}
@@ -598,7 +664,9 @@ def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
     by_norm: dict[str, list[str]] = {}
     stats_by_norm: dict[str, dict] = {}
     abilities_by_norm: dict[str, list[str]] = {}
+    mon_by_norm: dict[str, dict] = {}
     for mon in data["species"].values():
+        mon_by_norm[norm_species(mon["key"])] = mon
         seen = []
         for tid in mon["type"]:
             tname = type_names.get(tid)
@@ -633,9 +701,45 @@ def build_types(encounters: dict, bosses: dict, refresh: bool) -> dict:
             species_abilities[name] = abilities_by_norm[key]
     if unresolved:
         warn(f"types: {len(unresolved)} unresolved species: {unresolved}")
-    print(f"  types resolved for {len(species_types)} species")
+
+    # follow evolution chains so evolved forms that never appear in the docs
+    # (Ivysaur, Charizard, ...) are still known to the app — types, stats,
+    # abilities, species pickers and the Team tab's Evolve action
+    mon_by_id = data["species"]
+    species_evolutions: dict[str, list[dict]] = {}
+    pending = [(name, resolve_species_key(name, by_norm))
+               for name in species_types]
+    while pending:
+        app_name, norm = pending.pop()
+        if norm is None or app_name in species_evolutions:
+            continue
+        mon = mon_by_norm.get(norm)
+        if not mon:
+            continue
+        evos = []
+        for evo in mon.get("evolutions", []):
+            if evo[0] == MEGA_EVO_METHOD:
+                continue
+            target = mon_by_id.get(evo[2])
+            if not target:
+                continue
+            evos.append({"to": target["key"],
+                         "how": evo_description(evo, data, type_names)})
+            tname = target["key"]
+            if tname not in species_types:
+                tnorm = norm_species(tname)
+                species_types[tname] = by_norm[tnorm]
+                species_stats[tname] = stats_by_norm[tnorm]
+                species_abilities[tname] = abilities_by_norm[tnorm]
+                pending.append((tname, tnorm))
+        if evos:
+            species_evolutions[app_name] = evos
+
+    print(f"  types resolved for {len(species_types)} species "
+          f"({len(species_evolutions)} with evolutions)")
     return {"colors": colors, "matchup": matchup, "species": species_types,
-            "stats": species_stats, "abilities": species_abilities}
+            "stats": species_stats, "abilities": species_abilities,
+            "evolutions": species_evolutions}
 
 
 RAID_HEADER = re.compile(r"^\s*--\s*(.+?)\s*--\s*(★+)?\s*$")

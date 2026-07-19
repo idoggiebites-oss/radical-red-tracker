@@ -46,6 +46,18 @@ const DEFAULT_CFG: PlayerMonConfig = {
   moves: ["", "", "", ""],
 };
 
+/** "Highest Lv -3" / "Player Max Level" style boss levels scale off the
+ * player's highest level — at cap play that's the level cap. */
+function defaultBossLevel(level: string, levelCap?: number): number {
+  const n = parseInt(level, 10);
+  if (!Number.isNaN(n)) return n;
+  if (levelCap) {
+    const m = level.match(/-\s*(\d+)/);
+    return levelCap - (m ? parseInt(m[1], 10) : 0);
+  }
+  return 50;
+}
+
 function loadCfg(levelCap?: number): PlayerMonConfig {
   let cfg = DEFAULT_CFG;
   try {
@@ -81,8 +93,8 @@ export function CalcPanel({
   onClose: () => void;
 }) {
   const parsedLevel = parseInt(mon.level, 10);
-  const [bossLevel, setBossLevel] = useState(
-    Number.isNaN(parsedLevel) ? 50 : parsedLevel,
+  const [bossLevel, setBossLevel] = useState(() =>
+    defaultBossLevel(mon.level, levelCap),
   );
   const [cfg, setCfg] = useState<PlayerMonConfig>(() => loadCfg(levelCap));
   const bossField = useMemo(

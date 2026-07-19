@@ -5,7 +5,13 @@ const data = typesJson as unknown as {
   matchup: Record<string, Record<string, number>>;
   species: Record<string, string[]>;
   stats: Record<string, Record<string, number>>;
+  evolutions: Record<string, Evolution[]>;
 };
+
+export interface Evolution {
+  to: string;
+  how: string;
+}
 
 export const STAT_KEYS = ["HP", "ATK", "DEF", "SPA", "SPD", "SPE"] as const;
 export type StatKey = (typeof STAT_KEYS)[number];
@@ -13,6 +19,33 @@ export type StatKey = (typeof STAT_KEYS)[number];
 /** RR base stats for a docs species name (empty if unknown). */
 export function statsFor(species: string): Partial<Record<StatKey, number>> {
   return data.stats[species] ?? {};
+}
+
+/** what this species can evolve into (RR evolution data, megas excluded) */
+export function evolutionsFor(species: string): Evolution[] {
+  return data.evolutions[species] ?? [];
+}
+
+const preEvolutions: Record<string, string[]> = {};
+for (const [from, evos] of Object.entries(data.evolutions)) {
+  for (const ev of evos) {
+    (preEvolutions[ev.to] ??= []).push(from);
+  }
+}
+// the docs sometimes name the same mon twice ("Pikachu" / "Any Cap Pikachu");
+// keep only the shortest name of each identically-statted duplicate
+for (const [target, froms] of Object.entries(preEvolutions)) {
+  const bySig = new Map<string, string>();
+  for (const f of [...froms].sort((a, b) => a.length - b.length)) {
+    const sig = JSON.stringify([data.species[f], data.stats[f]]);
+    if (!bySig.has(sig)) bySig.set(sig, f);
+  }
+  preEvolutions[target] = [...bySig.values()];
+}
+
+/** species that evolve into this one (for devolving a mistaken evolve) */
+export function preEvolutionsFor(species: string): string[] {
+  return preEvolutions[species] ?? [];
 }
 
 export const ALL_TYPES = Object.keys(data.matchup);

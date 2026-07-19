@@ -181,7 +181,9 @@ function BossTeams({
   rivalStarter?: string | null;
 }) {
   const q = filter.trim().toLowerCase();
-  const cat = modeData.categories.find((c) => c.name === category);
+  const cat =
+    modeData.categories.find((c) => c.name === category) ??
+    modeData.categories[0];
   if (!cat) return null;
   const starterFiltered = cat.bosses.filter((b) =>
     bossMatchesStarter(b.subtitle, rivalStarter ?? null),

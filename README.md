@@ -40,7 +40,11 @@ Every species string that appears in the docs is resolved to its RR dex
 entry at import time; unresolved names are reported as warnings.
 
 The Team tab's box can be sorted by any RR base stat (highest Speed,
-Attack, …) and filtered by type, using the same dex data.
+Attack, …) and filtered by type, using the same dex data. Caught Pokémon
+have an **Evolve** button that follows the RR dex evolution data (level,
+stone, friendship etc. shown per option, megas excluded) — evolving
+updates the mon everywhere while keeping its nickname, build and KO
+count, and a devolve option undoes a mis-click.
 
 Boss teams include a type-effectiveness helper: each Pokémon card lists
 its weaknesses/resistances/immunities (accounting for defensive

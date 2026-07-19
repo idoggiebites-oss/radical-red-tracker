@@ -5,6 +5,8 @@ import { TypeBadges, abilitiesFor, typesFor } from "../components/TypeBadges";
 import {
   ALL_TYPES,
   STAT_KEYS,
+  evolutionsFor,
+  preEvolutionsFor,
   statsFor,
   typeColor,
   type StatKey,
@@ -30,6 +32,7 @@ export function TeamView({
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "">("");
   const [filterType, setFilterType] = useState("");
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
+  const [evolveOpen, setEvolveOpen] = useState<string | null>(null);
 
   if (!run) return <p className="muted">Create or select a run to see your team.</p>;
 
@@ -76,6 +79,17 @@ export function TeamView({
     }));
   };
 
+  const setSpecies = (locId: string, species: string) => {
+    updateRun((r) => ({
+      ...r,
+      encounters: {
+        ...r.encounters,
+        [locId]: { ...r.encounters[locId], species },
+      },
+    }));
+    setEvolveOpen(null);
+  };
+
   const addKo = (locId: string, delta: number) => {
     updateRun((r) => ({
       ...r,
@@ -99,7 +113,15 @@ export function TeamView({
     }));
   };
 
-  const sectionShared = { buildOpen, setBuildOpen, setBuild, addKo };
+  const sectionShared = {
+    buildOpen,
+    setBuildOpen,
+    setBuild,
+    addKo,
+    evolveOpen,
+    setEvolveOpen,
+    setSpecies,
+  };
 
   const toolbar = (
     <div className="box-toolbar">
@@ -204,6 +226,7 @@ export function TeamView({
         items={graveyard}
         empty={filteredEmpty("No losses yet. Keep it that way.")}
         highlightStat={sortStat}
+        canEvolve={false}
         {...sectionShared}
         actions={(id) => (
           <button
@@ -305,6 +328,46 @@ function BuildEditor({
   );
 }
 
+function EvolvePanel({
+  species,
+  onPick,
+}: {
+  species: string;
+  onPick: (species: string) => void;
+}) {
+  const evos = evolutionsFor(species);
+  const pres = preEvolutionsFor(species);
+  return (
+    <div className="evolve-panel">
+      {evos.map((ev) => (
+        <button
+          key={ev.to}
+          className="evolve-option"
+          onClick={() => onPick(ev.to)}
+        >
+          <Sprite species={ev.to} size={36} />
+          <span className="evolve-name">{ev.to}</span>
+          <TypeBadges species={ev.to} small />
+          <span className="muted">{ev.how}</span>
+        </button>
+      ))}
+      {evos.length === 0 && (
+        <span className="muted">{species} doesn't evolve further.</span>
+      )}
+      {pres.length > 0 && (
+        <div className="evolve-devolve">
+          <span className="muted">Devolve (undo):</span>
+          {pres.map((p) => (
+            <button key={p} className="st-btn clear" onClick={() => onPick(p)}>
+              ← {p}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Top-level component (not defined inside TeamView's render) so React keeps
  * the subtree mounted across re-renders — otherwise inputs lose focus on
  * every keystroke. */
@@ -318,6 +381,10 @@ function Section({
   setBuildOpen,
   setBuild,
   addKo,
+  evolveOpen,
+  setEvolveOpen,
+  setSpecies,
+  canEvolve = true,
 }: {
   title: string;
   items: Entry[];
@@ -328,6 +395,10 @@ function Section({
   setBuildOpen: (locId: string | null) => void;
   setBuild: (locId: string, build: MonBuild | undefined) => void;
   addKo: (locId: string, delta: number) => void;
+  evolveOpen: string | null;
+  setEvolveOpen: (locId: string | null) => void;
+  setSpecies: (locId: string, species: string) => void;
+  canEvolve?: boolean;
 }) {
   return (
     <section className="team-section">
@@ -383,6 +454,17 @@ function Section({
                 <button onClick={() => setBuildOpen(buildOpen === locId ? null : locId)}>
                   {e.build ? "Edit build" : "Build"}
                 </button>
+                {canEvolve &&
+                  (evolutionsFor(e.species).length > 0 ||
+                    preEvolutionsFor(e.species).length > 0) && (
+                    <button
+                      onClick={() =>
+                        setEvolveOpen(evolveOpen === locId ? null : locId)
+                      }
+                    >
+                      Evolve
+                    </button>
+                  )}
               </div>
             </div>
             {buildOpen === locId && (
@@ -391,6 +473,12 @@ function Section({
                 build={e.build ?? EMPTY_BUILD}
                 onChange={(b) => setBuild(locId, b)}
                 onClear={() => setBuild(locId, undefined)}
+              />
+            )}
+            {evolveOpen === locId && (
+              <EvolvePanel
+                species={e.species}
+                onPick={(sp) => setSpecies(locId, sp)}
               />
             )}
           </div>

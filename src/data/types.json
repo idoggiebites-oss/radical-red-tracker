@@ -4260,6 +4260,481 @@
   "Zygarde-C": [
    "Dragon",
    "Ground"
+  ],
+  "Linoone-Galar": [
+   "Dark",
+   "Normal"
+  ],
+  "Linoone": [
+   "Normal"
+  ],
+  "Silcoon": [
+   "Bug"
+  ],
+  "Cascoon": [
+   "Bug"
+  ],
+  "Beautifly": [
+   "Bug",
+   "Flying"
+  ],
+  "Quagsire": [
+   "Water",
+   "Ground"
+  ],
+  "Dubwool": [
+   "Normal"
+  ],
+  "Scolipede": [
+   "Bug",
+   "Poison"
+  ],
+  "Kakuna": [
+   "Bug",
+   "Poison"
+  ],
+  "Beedrill": [
+   "Bug",
+   "Poison"
+  ],
+  "Blastoise": [
+   "Water"
+  ],
+  "Venomoth": [
+   "Bug",
+   "Psychic"
+  ],
+  "Vanillish": [
+   "Ice"
+  ],
+  "Eelektrik": [
+   "Electric"
+  ],
+  "Palpitoad": [
+   "Water",
+   "Ground"
+  ],
+  "Grotle": [
+   "Grass"
+  ],
+  "Toucannon": [
+   "Normal",
+   "Flying"
+  ],
+  "Vibrava": [
+   "Ground",
+   "Dragon"
+  ],
+  "Toxtricity-Low-Key": [
+   "Electric",
+   "Poison"
+  ],
+  "Croconaw": [
+   "Water"
+  ],
+  "Combusken": [
+   "Fire",
+   "Fighting"
+  ],
+  "Toedscruel": [
+   "Ground",
+   "Grass"
+  ],
+  "Gurdurr": [
+   "Fighting"
+  ],
+  "Pignite": [
+   "Fire",
+   "Fighting"
+  ],
+  "Ursaring-Sevii": [
+   "Ghost",
+   "Fighting"
+  ],
+  "Spidops": [
+   "Bug"
+  ],
+  "Wyrdeer": [
+   "Normal",
+   "Psychic"
+  ],
+  "Aromatisse": [
+   "Fairy"
+  ],
+  "Floragato": [
+   "Grass"
+  ],
+  "Duosion": [
+   "Psychic"
+  ],
+  "Drizzile": [
+   "Water"
+  ],
+  "Servine": [
+   "Grass"
+  ],
+  "Dolliv": [
+   "Grass",
+   "Normal"
+  ],
+  "Arboliva": [
+   "Grass",
+   "Normal"
+  ],
+  "Slowking-Galar": [
+   "Psychic",
+   "Poison"
+  ],
+  "Vigoroth": [
+   "Normal"
+  ],
+  "Delcatty": [
+   "Normal"
+  ],
+  "Gogoat": [
+   "Grass"
+  ],
+  "Grafaiai": [
+   "Poison",
+   "Normal"
+  ],
+  "Luxio": [
+   "Electric"
+  ],
+  "Luxray": [
+   "Electric",
+   "Dark"
+  ],
+  "Bastiodon": [
+   "Rock",
+   "Steel"
+  ],
+  "Nuzleaf": [
+   "Grass",
+   "Dark"
+  ],
+  "Raboot": [
+   "Fire"
+  ],
+  "Spewpa": [
+   "Bug"
+  ],
+  "Krokorok": [
+   "Ground",
+   "Dark"
+  ],
+  "Corvisquire": [
+   "Flying"
+  ],
+  "Lycanroc-Dusk": [
+   "Rock"
+  ],
+  "Lycanroc-Midnight": [
+   "Rock"
+  ],
+  "Rhydon": [
+   "Ground",
+   "Rock"
+  ],
+  "Rabsca": [
+   "Bug",
+   "Psychic"
+  ],
+  "Quaxwell": [
+   "Water"
+  ],
+  "Gourgeist": [
+   "Ghost",
+   "Grass"
+  ],
+  "Porygon-Z": [
+   "Normal"
+  ],
+  "Prinplup": [
+   "Water"
+  ],
+  "Raichu": [
+   "Electric",
+   "Normal"
+  ],
+  "Raichu-Alola": [
+   "Electric",
+   "Psychic"
+  ],
+  "Tranquill": [
+   "Normal",
+   "Flying"
+  ],
+  "Unfezant": [
+   "Normal",
+   "Flying"
+  ],
+  "Pidgeotto": [
+   "Normal",
+   "Flying"
+  ],
+  "Pidgeot": [
+   "Normal",
+   "Flying"
+  ],
+  "Trevenant": [
+   "Ghost",
+   "Grass"
+  ],
+  "Pawmo": [
+   "Electric",
+   "Fighting"
+  ],
+  "Watchog": [
+   "Normal"
+  ],
+  "Gloom": [
+   "Grass",
+   "Poison"
+  ],
+  "Lokix-Sevii": [
+   "Bug",
+   "Dragon"
+  ],
+  "Camerupt": [
+   "Fire",
+   "Ground"
+  ],
+  "Noivern-Sevii": [
+   "Rock",
+   "Ghost"
+  ],
+  "Ninjask": [
+   "Bug",
+   "Flying"
+  ],
+  "Nidorino": [
+   "Poison"
+  ],
+  "Nidorina": [
+   "Poison"
+  ],
+  "Thievul": [
+   "Dark"
+  ],
+  "Naclstack": [
+   "Rock"
+  ],
+  "Musharna": [
+   "Psychic"
+  ],
+  "Marshtomp": [
+   "Water",
+   "Ground"
+  ],
+  "Mudsdale": [
+   "Ground"
+  ],
+  "Shiinotic": [
+   "Grass",
+   "Fairy"
+  ],
+  "Alcremie": [
+   "Fairy"
+  ],
+  "Flaaffy": [
+   "Electric"
+  ],
+  "Machoke": [
+   "Fighting"
+  ],
+  "Lombre": [
+   "Water",
+   "Grass"
+  ],
+  "Torracat": [
+   "Fire"
+  ],
+  "Herdier": [
+   "Normal"
+  ],
+  "Stoutland": [
+   "Normal"
+  ],
+  "Lickilicky": [
+   "Normal"
+  ],
+  "Oinkologne": [
+   "Normal"
+  ],
+  "Urshifu": [
+   "Fighting",
+   "Dark"
+  ],
+  "Urshifu-Rapid-Strike": [
+   "Fighting",
+   "Water"
+  ],
+  "Klang": [
+   "Steel"
+  ],
+  "Gallade": [
+   "Psychic",
+   "Fighting"
+  ],
+  "Malamar": [
+   "Dark",
+   "Psychic"
+  ],
+  "Skiploom": [
+   "Grass",
+   "Flying"
+  ],
+  "Hattrem": [
+   "Psychic"
+  ],
+  "Golem-Alola": [
+   "Rock",
+   "Electric"
+  ],
+  "Gothorita": [
+   "Psychic"
+  ],
+  "Eldegoss": [
+   "Grass"
+  ],
+  "Purugly": [
+   "Normal"
+  ],
+  "Crocalor": [
+   "Fire"
+  ],
+  "Fletchinder": [
+   "Fire",
+   "Flying"
+  ],
+  "Floette": [
+   "Fairy"
+  ],
+  "Dachsbun": [
+   "Fairy"
+  ],
+  "Braixen": [
+   "Fire"
+  ],
+  "Sirfetch’d": [
+   "Fighting"
+  ],
+  "Meowstic": [
+   "Psychic"
+  ],
+  "Meowstic-F": [
+   "Psychic"
+  ],
+  "Beheeyem": [
+   "Psychic"
+  ],
+  "Umbreon": [
+   "Dark"
+  ],
+  "Sawsbuck": [
+   "Normal",
+   "Grass"
+  ],
+  "Quilava": [
+   "Fire"
+  ],
+  "Vespiquen": [
+   "Bug",
+   "Flying"
+  ],
+  "Clawitzer-Sevii": [
+   "Bug",
+   "Dark"
+  ],
+  "Monferno": [
+   "Fire",
+   "Fighting"
+  ],
+  "Bayleef": [
+   "Grass"
+  ],
+  "Quilladin": [
+   "Grass"
+  ],
+  "Chesnaught": [
+   "Grass",
+   "Fighting"
+  ],
+  "Metapod": [
+   "Bug"
+  ],
+  "Scovillain": [
+   "Grass",
+   "Fire"
+  ],
+  "Wormadam-Trash": [
+   "Bug",
+   "Steel"
+  ],
+  "Mothim": [
+   "Bug",
+   "Flying"
+  ],
+  "Diggersby": [
+   "Normal",
+   "Ground"
+  ],
+  "Brambleghast": [
+   "Grass",
+   "Ghost"
+  ],
+  "Steenee": [
+   "Grass"
+  ],
+  "Sudowoodo": [
+   "Rock"
+  ],
+  "Zebstrika-Sevii": [
+   "Ice",
+   "Electric"
+  ],
+  "Dottler": [
+   "Bug",
+   "Psychic"
+  ],
+  "Orbeetle": [
+   "Bug",
+   "Psychic"
+  ],
+  "Weepinbell": [
+   "Grass",
+   "Poison"
+  ],
+  "Claydol": [
+   "Ground",
+   "Psychic"
+  ],
+  "Fraxure": [
+   "Dragon"
+  ],
+  "Lairon": [
+   "Steel",
+   "Rock"
+  ],
+  "Flapple": [
+   "Grass",
+   "Dragon"
+  ],
+  "Appletun": [
+   "Grass",
+   "Dragon"
+  ],
+  "Armaldo": [
+   "Rock",
+   "Bug"
+  ],
+  "Aurorus": [
+   "Rock",
+   "Ice"
+  ],
+  "Kadabra": [
+   "Psychic"
   ]
  },
  "stats": {
@@ -13326,6 +13801,1086 @@
    "SPA": 91,
    "SPD": 95,
    "SPE": 85
+  },
+  "Linoone-Galar": {
+   "HP": 78,
+   "ATK": 70,
+   "DEF": 61,
+   "SPA": 50,
+   "SPD": 61,
+   "SPE": 100
+  },
+  "Linoone": {
+   "HP": 85,
+   "ATK": 85,
+   "DEF": 61,
+   "SPA": 50,
+   "SPD": 61,
+   "SPE": 100
+  },
+  "Silcoon": {
+   "HP": 50,
+   "ATK": 35,
+   "DEF": 55,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 15
+  },
+  "Cascoon": {
+   "HP": 50,
+   "ATK": 35,
+   "DEF": 55,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 15
+  },
+  "Beautifly": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 50,
+   "SPA": 105,
+   "SPD": 50,
+   "SPE": 75
+  },
+  "Quagsire": {
+   "HP": 100,
+   "ATK": 85,
+   "DEF": 90,
+   "SPA": 65,
+   "SPD": 65,
+   "SPE": 35
+  },
+  "Dubwool": {
+   "HP": 82,
+   "ATK": 80,
+   "DEF": 100,
+   "SPA": 60,
+   "SPD": 90,
+   "SPE": 88
+  },
+  "Scolipede": {
+   "HP": 60,
+   "ATK": 100,
+   "DEF": 89,
+   "SPA": 55,
+   "SPD": 69,
+   "SPE": 112
+  },
+  "Kakuna": {
+   "HP": 45,
+   "ATK": 25,
+   "DEF": 50,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 35
+  },
+  "Beedrill": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 40,
+   "SPA": 45,
+   "SPD": 80,
+   "SPE": 75
+  },
+  "Blastoise": {
+   "HP": 79,
+   "ATK": 83,
+   "DEF": 100,
+   "SPA": 85,
+   "SPD": 105,
+   "SPE": 78
+  },
+  "Venomoth": {
+   "HP": 70,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 95,
+   "SPD": 75,
+   "SPE": 90
+  },
+  "Vanillish": {
+   "HP": 51,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 80,
+   "SPD": 75,
+   "SPE": 59
+  },
+  "Eelektrik": {
+   "HP": 65,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 75,
+   "SPD": 70,
+   "SPE": 40
+  },
+  "Palpitoad": {
+   "HP": 75,
+   "ATK": 65,
+   "DEF": 55,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 69
+  },
+  "Grotle": {
+   "HP": 75,
+   "ATK": 89,
+   "DEF": 85,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 36
+  },
+  "Toucannon": {
+   "HP": 90,
+   "ATK": 120,
+   "DEF": 75,
+   "SPA": 75,
+   "SPD": 75,
+   "SPE": 60
+  },
+  "Vibrava": {
+   "HP": 50,
+   "ATK": 70,
+   "DEF": 50,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 70
+  },
+  "Toxtricity-Low-Key": {
+   "HP": 75,
+   "ATK": 98,
+   "DEF": 70,
+   "SPA": 114,
+   "SPD": 70,
+   "SPE": 75
+  },
+  "Croconaw": {
+   "HP": 65,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 59,
+   "SPD": 63,
+   "SPE": 58
+  },
+  "Combusken": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 60,
+   "SPA": 85,
+   "SPD": 60,
+   "SPE": 55
+  },
+  "Toedscruel": {
+   "HP": 80,
+   "ATK": 60,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 120,
+   "SPE": 100
+  },
+  "Gurdurr": {
+   "HP": 85,
+   "ATK": 105,
+   "DEF": 85,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 40
+  },
+  "Pignite": {
+   "HP": 90,
+   "ATK": 93,
+   "DEF": 55,
+   "SPA": 70,
+   "SPD": 55,
+   "SPE": 55
+  },
+  "Ursaring-Sevii": {
+   "HP": 100,
+   "ATK": 110,
+   "DEF": 90,
+   "SPA": 55,
+   "SPD": 90,
+   "SPE": 55
+  },
+  "Spidops": {
+   "HP": 85,
+   "ATK": 89,
+   "DEF": 92,
+   "SPA": 32,
+   "SPD": 86,
+   "SPE": 35
+  },
+  "Wyrdeer": {
+   "HP": 103,
+   "ATK": 80,
+   "DEF": 82,
+   "SPA": 110,
+   "SPD": 85,
+   "SPE": 65
+  },
+  "Aromatisse": {
+   "HP": 101,
+   "ATK": 62,
+   "DEF": 82,
+   "SPA": 99,
+   "SPD": 89,
+   "SPE": 29
+  },
+  "Floragato": {
+   "HP": 61,
+   "ATK": 80,
+   "DEF": 63,
+   "SPA": 60,
+   "SPD": 63,
+   "SPE": 83
+  },
+  "Duosion": {
+   "HP": 65,
+   "ATK": 40,
+   "DEF": 50,
+   "SPA": 125,
+   "SPD": 60,
+   "SPE": 30
+  },
+  "Drizzile": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 55,
+   "SPA": 95,
+   "SPD": 55,
+   "SPE": 90
+  },
+  "Servine": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 75,
+   "SPA": 60,
+   "SPD": 75,
+   "SPE": 83
+  },
+  "Dolliv": {
+   "HP": 52,
+   "ATK": 53,
+   "DEF": 60,
+   "SPA": 78,
+   "SPD": 78,
+   "SPE": 33
+  },
+  "Arboliva": {
+   "HP": 78,
+   "ATK": 69,
+   "DEF": 90,
+   "SPA": 125,
+   "SPD": 109,
+   "SPE": 39
+  },
+  "Slowking-Galar": {
+   "HP": 95,
+   "ATK": 65,
+   "DEF": 80,
+   "SPA": 110,
+   "SPD": 110,
+   "SPE": 30
+  },
+  "Vigoroth": {
+   "HP": 80,
+   "ATK": 80,
+   "DEF": 80,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 90
+  },
+  "Delcatty": {
+   "HP": 70,
+   "ATK": 65,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 90
+  },
+  "Gogoat": {
+   "HP": 123,
+   "ATK": 100,
+   "DEF": 72,
+   "SPA": 67,
+   "SPD": 87,
+   "SPE": 74
+  },
+  "Grafaiai": {
+   "HP": 63,
+   "ATK": 95,
+   "DEF": 65,
+   "SPA": 80,
+   "SPD": 72,
+   "SPE": 110
+  },
+  "Luxio": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 49,
+   "SPA": 60,
+   "SPD": 49,
+   "SPE": 60
+  },
+  "Luxray": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 79,
+   "SPA": 95,
+   "SPD": 79,
+   "SPE": 70
+  },
+  "Bastiodon": {
+   "HP": 60,
+   "ATK": 52,
+   "DEF": 168,
+   "SPA": 47,
+   "SPD": 138,
+   "SPE": 30
+  },
+  "Nuzleaf": {
+   "HP": 70,
+   "ATK": 70,
+   "DEF": 40,
+   "SPA": 60,
+   "SPD": 40,
+   "SPE": 60
+  },
+  "Raboot": {
+   "HP": 65,
+   "ATK": 86,
+   "DEF": 60,
+   "SPA": 55,
+   "SPD": 60,
+   "SPE": 94
+  },
+  "Spewpa": {
+   "HP": 45,
+   "ATK": 22,
+   "DEF": 60,
+   "SPA": 27,
+   "SPD": 30,
+   "SPE": 29
+  },
+  "Krokorok": {
+   "HP": 60,
+   "ATK": 82,
+   "DEF": 45,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 74
+  },
+  "Corvisquire": {
+   "HP": 68,
+   "ATK": 67,
+   "DEF": 55,
+   "SPA": 43,
+   "SPD": 55,
+   "SPE": 77
+  },
+  "Lycanroc-Dusk": {
+   "HP": 75,
+   "ATK": 117,
+   "DEF": 65,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 110
+  },
+  "Lycanroc-Midnight": {
+   "HP": 85,
+   "ATK": 115,
+   "DEF": 75,
+   "SPA": 55,
+   "SPD": 75,
+   "SPE": 82
+  },
+  "Rhydon": {
+   "HP": 105,
+   "ATK": 130,
+   "DEF": 120,
+   "SPA": 45,
+   "SPD": 45,
+   "SPE": 40
+  },
+  "Rabsca": {
+   "HP": 75,
+   "ATK": 50,
+   "DEF": 85,
+   "SPA": 115,
+   "SPD": 100,
+   "SPE": 45
+  },
+  "Quaxwell": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 60,
+   "SPE": 65
+  },
+  "Gourgeist": {
+   "HP": 65,
+   "ATK": 58,
+   "DEF": 122,
+   "SPA": 90,
+   "SPD": 75,
+   "SPE": 84
+  },
+  "Porygon-Z": {
+   "HP": 85,
+   "ATK": 80,
+   "DEF": 70,
+   "SPA": 135,
+   "SPD": 75,
+   "SPE": 90
+  },
+  "Prinplup": {
+   "HP": 64,
+   "ATK": 66,
+   "DEF": 68,
+   "SPA": 81,
+   "SPD": 76,
+   "SPE": 50
+  },
+  "Raichu": {
+   "HP": 70,
+   "ATK": 100,
+   "DEF": 55,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 110
+  },
+  "Raichu-Alola": {
+   "HP": 60,
+   "ATK": 85,
+   "DEF": 50,
+   "SPA": 95,
+   "SPD": 85,
+   "SPE": 110
+  },
+  "Tranquill": {
+   "HP": 62,
+   "ATK": 77,
+   "DEF": 62,
+   "SPA": 50,
+   "SPD": 42,
+   "SPE": 65
+  },
+  "Unfezant": {
+   "HP": 80,
+   "ATK": 105,
+   "DEF": 80,
+   "SPA": 65,
+   "SPD": 55,
+   "SPE": 93
+  },
+  "Pidgeotto": {
+   "HP": 63,
+   "ATK": 60,
+   "DEF": 55,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 71
+  },
+  "Pidgeot": {
+   "HP": 83,
+   "ATK": 80,
+   "DEF": 75,
+   "SPA": 70,
+   "SPD": 70,
+   "SPE": 101
+  },
+  "Trevenant": {
+   "HP": 85,
+   "ATK": 120,
+   "DEF": 82,
+   "SPA": 65,
+   "SPD": 82,
+   "SPE": 56
+  },
+  "Pawmo": {
+   "HP": 60,
+   "ATK": 75,
+   "DEF": 40,
+   "SPA": 50,
+   "SPD": 40,
+   "SPE": 85
+  },
+  "Watchog": {
+   "HP": 85,
+   "ATK": 100,
+   "DEF": 69,
+   "SPA": 60,
+   "SPD": 69,
+   "SPE": 77
+  },
+  "Gloom": {
+   "HP": 60,
+   "ATK": 65,
+   "DEF": 70,
+   "SPA": 85,
+   "SPD": 75,
+   "SPE": 40
+  },
+  "Lokix-Sevii": {
+   "HP": 71,
+   "ATK": 102,
+   "DEF": 78,
+   "SPA": 52,
+   "SPD": 55,
+   "SPE": 92
+  },
+  "Camerupt": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 105,
+   "SPD": 75,
+   "SPE": 40
+  },
+  "Noivern-Sevii": {
+   "HP": 85,
+   "ATK": 102,
+   "DEF": 80,
+   "SPA": 70,
+   "SPD": 80,
+   "SPE": 123
+  },
+  "Ninjask": {
+   "HP": 61,
+   "ATK": 90,
+   "DEF": 45,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 160
+  },
+  "Nidorino": {
+   "HP": 61,
+   "ATK": 72,
+   "DEF": 57,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 65
+  },
+  "Nidorina": {
+   "HP": 70,
+   "ATK": 62,
+   "DEF": 67,
+   "SPA": 55,
+   "SPD": 55,
+   "SPE": 56
+  },
+  "Thievul": {
+   "HP": 70,
+   "ATK": 58,
+   "DEF": 58,
+   "SPA": 97,
+   "SPD": 92,
+   "SPE": 110
+  },
+  "Naclstack": {
+   "HP": 60,
+   "ATK": 60,
+   "DEF": 100,
+   "SPA": 35,
+   "SPD": 65,
+   "SPE": 35
+  },
+  "Musharna": {
+   "HP": 116,
+   "ATK": 55,
+   "DEF": 85,
+   "SPA": 107,
+   "SPD": 95,
+   "SPE": 29
+  },
+  "Marshtomp": {
+   "HP": 70,
+   "ATK": 85,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 50
+  },
+  "Mudsdale": {
+   "HP": 100,
+   "ATK": 125,
+   "DEF": 100,
+   "SPA": 55,
+   "SPD": 85,
+   "SPE": 35
+  },
+  "Shiinotic": {
+   "HP": 75,
+   "ATK": 45,
+   "DEF": 80,
+   "SPA": 90,
+   "SPD": 100,
+   "SPE": 30
+  },
+  "Alcremie": {
+   "HP": 65,
+   "ATK": 60,
+   "DEF": 75,
+   "SPA": 110,
+   "SPD": 121,
+   "SPE": 64
+  },
+  "Flaaffy": {
+   "HP": 70,
+   "ATK": 55,
+   "DEF": 55,
+   "SPA": 80,
+   "SPD": 60,
+   "SPE": 45
+  },
+  "Machoke": {
+   "HP": 80,
+   "ATK": 100,
+   "DEF": 70,
+   "SPA": 50,
+   "SPD": 60,
+   "SPE": 45
+  },
+  "Lombre": {
+   "HP": 60,
+   "ATK": 50,
+   "DEF": 50,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 50
+  },
+  "Torracat": {
+   "HP": 65,
+   "ATK": 85,
+   "DEF": 50,
+   "SPA": 80,
+   "SPD": 50,
+   "SPE": 90
+  },
+  "Herdier": {
+   "HP": 65,
+   "ATK": 80,
+   "DEF": 65,
+   "SPA": 35,
+   "SPD": 65,
+   "SPE": 60
+  },
+  "Stoutland": {
+   "HP": 90,
+   "ATK": 115,
+   "DEF": 90,
+   "SPA": 45,
+   "SPD": 90,
+   "SPE": 80
+  },
+  "Lickilicky": {
+   "HP": 110,
+   "ATK": 95,
+   "DEF": 95,
+   "SPA": 80,
+   "SPD": 95,
+   "SPE": 30
+  },
+  "Oinkologne": {
+   "HP": 110,
+   "ATK": 100,
+   "DEF": 75,
+   "SPA": 59,
+   "SPD": 80,
+   "SPE": 65
+  },
+  "Urshifu": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Urshifu-Rapid-Strike": {
+   "HP": 100,
+   "ATK": 130,
+   "DEF": 100,
+   "SPA": 63,
+   "SPD": 60,
+   "SPE": 97
+  },
+  "Klang": {
+   "HP": 60,
+   "ATK": 80,
+   "DEF": 95,
+   "SPA": 70,
+   "SPD": 85,
+   "SPE": 50
+  },
+  "Gallade": {
+   "HP": 68,
+   "ATK": 125,
+   "DEF": 65,
+   "SPA": 65,
+   "SPD": 115,
+   "SPE": 80
+  },
+  "Malamar": {
+   "HP": 86,
+   "ATK": 92,
+   "DEF": 88,
+   "SPA": 68,
+   "SPD": 75,
+   "SPE": 73
+  },
+  "Skiploom": {
+   "HP": 55,
+   "ATK": 45,
+   "DEF": 50,
+   "SPA": 45,
+   "SPD": 65,
+   "SPE": 80
+  },
+  "Hattrem": {
+   "HP": 57,
+   "ATK": 40,
+   "DEF": 65,
+   "SPA": 86,
+   "SPD": 73,
+   "SPE": 49
+  },
+  "Golem-Alola": {
+   "HP": 80,
+   "ATK": 120,
+   "DEF": 130,
+   "SPA": 55,
+   "SPD": 65,
+   "SPE": 45
+  },
+  "Gothorita": {
+   "HP": 60,
+   "ATK": 45,
+   "DEF": 70,
+   "SPA": 75,
+   "SPD": 85,
+   "SPE": 55
+  },
+  "Eldegoss": {
+   "HP": 75,
+   "ATK": 50,
+   "DEF": 90,
+   "SPA": 90,
+   "SPD": 120,
+   "SPE": 60
+  },
+  "Purugly": {
+   "HP": 100,
+   "ATK": 82,
+   "DEF": 79,
+   "SPA": 54,
+   "SPD": 74,
+   "SPE": 112
+  },
+  "Crocalor": {
+   "HP": 81,
+   "ATK": 55,
+   "DEF": 78,
+   "SPA": 90,
+   "SPD": 58,
+   "SPE": 49
+  },
+  "Fletchinder": {
+   "HP": 62,
+   "ATK": 73,
+   "DEF": 55,
+   "SPA": 56,
+   "SPD": 52,
+   "SPE": 84
+  },
+  "Floette": {
+   "HP": 54,
+   "ATK": 45,
+   "DEF": 47,
+   "SPA": 75,
+   "SPD": 98,
+   "SPE": 52
+  },
+  "Dachsbun": {
+   "HP": 57,
+   "ATK": 80,
+   "DEF": 115,
+   "SPA": 50,
+   "SPD": 80,
+   "SPE": 95
+  },
+  "Braixen": {
+   "HP": 59,
+   "ATK": 59,
+   "DEF": 58,
+   "SPA": 90,
+   "SPD": 70,
+   "SPE": 73
+  },
+  "Sirfetch’d": {
+   "HP": 82,
+   "ATK": 135,
+   "DEF": 95,
+   "SPA": 68,
+   "SPD": 82,
+   "SPE": 65
+  },
+  "Meowstic": {
+   "HP": 74,
+   "ATK": 48,
+   "DEF": 76,
+   "SPA": 63,
+   "SPD": 81,
+   "SPE": 104
+  },
+  "Meowstic-F": {
+   "HP": 74,
+   "ATK": 48,
+   "DEF": 76,
+   "SPA": 63,
+   "SPD": 81,
+   "SPE": 104
+  },
+  "Beheeyem": {
+   "HP": 95,
+   "ATK": 75,
+   "DEF": 75,
+   "SPA": 125,
+   "SPD": 95,
+   "SPE": 40
+  },
+  "Umbreon": {
+   "HP": 95,
+   "ATK": 65,
+   "DEF": 110,
+   "SPA": 60,
+   "SPD": 130,
+   "SPE": 65
+  },
+  "Sawsbuck": {
+   "HP": 80,
+   "ATK": 110,
+   "DEF": 70,
+   "SPA": 60,
+   "SPD": 70,
+   "SPE": 105
+  },
+  "Quilava": {
+   "HP": 58,
+   "ATK": 64,
+   "DEF": 58,
+   "SPA": 80,
+   "SPD": 65,
+   "SPE": 80
+  },
+  "Vespiquen": {
+   "HP": 85,
+   "ATK": 80,
+   "DEF": 102,
+   "SPA": 80,
+   "SPD": 102,
+   "SPE": 40
+  },
+  "Clawitzer-Sevii": {
+   "HP": 81,
+   "ATK": 63,
+   "DEF": 83,
+   "SPA": 110,
+   "SPD": 79,
+   "SPE": 97
+  },
+  "Monferno": {
+   "HP": 64,
+   "ATK": 78,
+   "DEF": 52,
+   "SPA": 78,
+   "SPD": 52,
+   "SPE": 81
+  },
+  "Bayleef": {
+   "HP": 60,
+   "ATK": 62,
+   "DEF": 80,
+   "SPA": 63,
+   "SPD": 80,
+   "SPE": 60
+  },
+  "Quilladin": {
+   "HP": 61,
+   "ATK": 78,
+   "DEF": 95,
+   "SPA": 56,
+   "SPD": 58,
+   "SPE": 57
+  },
+  "Chesnaught": {
+   "HP": 88,
+   "ATK": 107,
+   "DEF": 122,
+   "SPA": 74,
+   "SPD": 75,
+   "SPE": 64
+  },
+  "Metapod": {
+   "HP": 50,
+   "ATK": 20,
+   "DEF": 55,
+   "SPA": 25,
+   "SPD": 25,
+   "SPE": 30
+  },
+  "Scovillain": {
+   "HP": 85,
+   "ATK": 78,
+   "DEF": 65,
+   "SPA": 118,
+   "SPD": 65,
+   "SPE": 75
+  },
+  "Wormadam-Trash": {
+   "HP": 60,
+   "ATK": 59,
+   "DEF": 95,
+   "SPA": 79,
+   "SPD": 95,
+   "SPE": 36
+  },
+  "Mothim": {
+   "HP": 70,
+   "ATK": 84,
+   "DEF": 50,
+   "SPA": 94,
+   "SPD": 50,
+   "SPE": 80
+  },
+  "Diggersby": {
+   "HP": 85,
+   "ATK": 56,
+   "DEF": 77,
+   "SPA": 50,
+   "SPD": 77,
+   "SPE": 78
+  },
+  "Brambleghast": {
+   "HP": 55,
+   "ATK": 115,
+   "DEF": 70,
+   "SPA": 80,
+   "SPD": 70,
+   "SPE": 90
+  },
+  "Steenee": {
+   "HP": 52,
+   "ATK": 70,
+   "DEF": 48,
+   "SPA": 70,
+   "SPD": 48,
+   "SPE": 62
+  },
+  "Sudowoodo": {
+   "HP": 90,
+   "ATK": 100,
+   "DEF": 115,
+   "SPA": 30,
+   "SPD": 65,
+   "SPE": 30
+  },
+  "Zebstrika-Sevii": {
+   "HP": 75,
+   "ATK": 70,
+   "DEF": 63,
+   "SPA": 110,
+   "SPD": 63,
+   "SPE": 116
+  },
+  "Dottler": {
+   "HP": 50,
+   "ATK": 35,
+   "DEF": 80,
+   "SPA": 50,
+   "SPD": 90,
+   "SPE": 30
+  },
+  "Orbeetle": {
+   "HP": 60,
+   "ATK": 45,
+   "DEF": 110,
+   "SPA": 80,
+   "SPD": 120,
+   "SPE": 90
+  },
+  "Weepinbell": {
+   "HP": 65,
+   "ATK": 90,
+   "DEF": 50,
+   "SPA": 85,
+   "SPD": 45,
+   "SPE": 55
+  },
+  "Claydol": {
+   "HP": 60,
+   "ATK": 70,
+   "DEF": 105,
+   "SPA": 80,
+   "SPD": 120,
+   "SPE": 75
+  },
+  "Fraxure": {
+   "HP": 66,
+   "ATK": 117,
+   "DEF": 70,
+   "SPA": 40,
+   "SPD": 50,
+   "SPE": 67
+  },
+  "Lairon": {
+   "HP": 60,
+   "ATK": 90,
+   "DEF": 140,
+   "SPA": 50,
+   "SPD": 50,
+   "SPE": 40
+  },
+  "Flapple": {
+   "HP": 70,
+   "ATK": 110,
+   "DEF": 80,
+   "SPA": 95,
+   "SPD": 60,
+   "SPE": 70
+  },
+  "Appletun": {
+   "HP": 110,
+   "ATK": 85,
+   "DEF": 80,
+   "SPA": 100,
+   "SPD": 80,
+   "SPE": 30
+  },
+  "Armaldo": {
+   "HP": 100,
+   "ATK": 125,
+   "DEF": 100,
+   "SPA": 45,
+   "SPD": 80,
+   "SPE": 45
+  },
+  "Aurorus": {
+   "HP": 123,
+   "ATK": 77,
+   "DEF": 72,
+   "SPA": 99,
+   "SPD": 92,
+   "SPE": 58
+  },
+  "Kadabra": {
+   "HP": 40,
+   "ATK": 35,
+   "DEF": 30,
+   "SPA": 120,
+   "SPD": 70,
+   "SPE": 105
   }
  },
  "abilities": {
@@ -18076,6 +19631,3675 @@
   ],
   "Zygarde-C": [
    "Power Construct"
+  ],
+  "Linoone-Galar": [
+   "Quick Feet",
+   "Pickup",
+   "Gluttony"
+  ],
+  "Linoone": [
+   "Quick Feet",
+   "Pickup",
+   "Gluttony"
+  ],
+  "Silcoon": [
+   "Shed Skin"
+  ],
+  "Cascoon": [
+   "Run Away",
+   "Shed Skin"
+  ],
+  "Beautifly": [
+   "Rivalry",
+   "Swarm"
+  ],
+  "Quagsire": [
+   "Unaware",
+   "Damp",
+   "Water Absorb"
+  ],
+  "Dubwool": [
+   "Bulletproof",
+   "Fluffy",
+   "Steadfast"
+  ],
+  "Scolipede": [
+   "Speed Boost",
+   "Poison Touch",
+   "Swarm"
+  ],
+  "Kakuna": [
+   "Shed Skin"
+  ],
+  "Beedrill": [
+   "Sniper",
+   "Swarm"
+  ],
+  "Blastoise": [
+   "Rain Dish",
+   "Torrent"
+  ],
+  "Venomoth": [
+   "Wonder Skin",
+   "Shield Dust",
+   "Tinted Lens"
+  ],
+  "Vanillish": [
+   "Weak Armor",
+   "Ice Body",
+   "Slush Rush"
+  ],
+  "Eelektrik": [
+   "Levitate"
+  ],
+  "Palpitoad": [
+   "Water Absorb",
+   "Swift Swim",
+   "Hydration"
+  ],
+  "Grotle": [
+   "Rock Head",
+   "Overgrow",
+   "Self Sufficient"
+  ],
+  "Toucannon": [
+   "Sheer Force",
+   "Frisk",
+   "Skill Link"
+  ],
+  "Vibrava": [
+   "Tinted Lens",
+   "Levitate",
+   "Compound Eyes"
+  ],
+  "Toxtricity-Low-Key": [
+   "Technician",
+   "Punk Rock",
+   "Minus"
+  ],
+  "Croconaw": [
+   "Strong Jaw",
+   "Sheer Force"
+  ],
+  "Combusken": [
+   "Speed Boost",
+   "Striker"
+  ],
+  "Toedscruel": [
+   "Clear Body",
+   "Mold Breaker"
+  ],
+  "Gurdurr": [
+   "Iron Fist",
+   "Guts",
+   "Sheer Force"
+  ],
+  "Pignite": [
+   "Thick Fat",
+   "Blaze"
+  ],
+  "Ursaring-Sevii": [
+   "Iron Fist",
+   "Guts",
+   "Quick Feet"
+  ],
+  "Spidops": [
+   "Insomnia",
+   "Stakeout"
+  ],
+  "Wyrdeer": [
+   "Fur Coat",
+   "Intimidate",
+   "Sap Sipper"
+  ],
+  "Aromatisse": [
+   "Aroma Veil",
+   "Fairy Aura"
+  ],
+  "Floragato": [
+   "Protean",
+   "Overgrow"
+  ],
+  "Duosion": [
+   "Regenerator",
+   "Overcoat",
+   "Magic Guard"
+  ],
+  "Drizzile": [
+   "Sniper",
+   "Torrent"
+  ],
+  "Servine": [
+   "Contrary",
+   "Overgrow"
+  ],
+  "Dolliv": [
+   "Harvest",
+   "Early Bird"
+  ],
+  "Arboliva": [
+   "Harvest",
+   "Seed Sower"
+  ],
+  "Slowking-Galar": [
+   "Regenerator",
+   "Oblivious",
+   "Own Tempo"
+  ],
+  "Vigoroth": [
+   "Insomnia"
+  ],
+  "Delcatty": [
+   "Feline Prowess",
+   "Cute Charm",
+   "Wonder Skin"
+  ],
+  "Gogoat": [
+   "Grass Pelt",
+   "Sap Sipper"
+  ],
+  "Grafaiai": [
+   "Prankster",
+   "Unburden",
+   "Poison Touch"
+  ],
+  "Luxio": [
+   "Guts",
+   "Rivalry",
+   "Intimidate"
+  ],
+  "Luxray": [
+   "Guts",
+   "Rivalry",
+   "Intimidate"
+  ],
+  "Bastiodon": [
+   "Soundproof",
+   "Valiant Shield"
+  ],
+  "Nuzleaf": [
+   "Infiltrator",
+   "Chlorophyll",
+   "Early Bird"
+  ],
+  "Raboot": [
+   "Protean",
+   "Blaze"
+  ],
+  "Spewpa": [
+   "Friend Guard",
+   "Shed Skin"
+  ],
+  "Krokorok": [
+   "Anger Point",
+   "Intimidate",
+   "Moxie"
+  ],
+  "Corvisquire": [
+   "Frisk",
+   "Unnerve"
+  ],
+  "Lycanroc-Dusk": [
+   "Tough Claws"
+  ],
+  "Lycanroc-Midnight": [
+   "No Guard",
+   "Frisk",
+   "Insomnia"
+  ],
+  "Rhydon": [
+   "Reckless",
+   "Lightning Rod",
+   "Rock Head"
+  ],
+  "Rabsca": [
+   "Synchronize",
+   "Telepathy"
+  ],
+  "Quaxwell": [
+   "Moxie",
+   "Torrent"
+  ],
+  "Gourgeist": [
+   "Flare Boost",
+   "Pickup",
+   "Frisk"
+  ],
+  "Porygon-Z": [
+   "Analytic",
+   "Adaptability",
+   "Download"
+  ],
+  "Prinplup": [
+   "Competitive",
+   "Torrent"
+  ],
+  "Raichu": [
+   "Lightning Rod",
+   "Static"
+  ],
+  "Raichu-Alola": [
+   "Surge Surfer"
+  ],
+  "Tranquill": [
+   "Rivalry",
+   "Frisk",
+   "Super Luck"
+  ],
+  "Unfezant": [
+   "Rivalry",
+   "Frisk",
+   "Super Luck"
+  ],
+  "Pidgeotto": [
+   "No Guard",
+   "Frisk"
+  ],
+  "Pidgeot": [
+   "No Guard",
+   "Frisk"
+  ],
+  "Trevenant": [
+   "Harvest",
+   "Natural Cure",
+   "Frisk"
+  ],
+  "Pawmo": [
+   "Iron Fist",
+   "Volt Absorb",
+   "Natural Cure"
+  ],
+  "Watchog": [
+   "Frisk",
+   "Analytic",
+   "No Guard"
+  ],
+  "Gloom": [
+   "Stench",
+   "Chlorophyll"
+  ],
+  "Lokix-Sevii": [
+   "Swarm",
+   "Tinted Lens"
+  ],
+  "Camerupt": [
+   "Anger Point",
+   "Magma Armor",
+   "Solid Rock"
+  ],
+  "Noivern-Sevii": [
+   "Levitate",
+   "Rock Head",
+   "Sturdy"
+  ],
+  "Ninjask": [
+   "Infiltrator",
+   "Speed Boost"
+  ],
+  "Nidorino": [
+   "Hustle",
+   "Poison Touch",
+   "Rivalry"
+  ],
+  "Nidorina": [
+   "Hustle",
+   "Poison Touch",
+   "Rivalry"
+  ],
+  "Thievul": [
+   "Stakeout",
+   "Run Away",
+   "Unburden"
+  ],
+  "Naclstack": [
+   "Clear Body",
+   "Sturdy",
+   "Purifying Salt"
+  ],
+  "Musharna": [
+   "Unaware",
+   "Synchronize"
+  ],
+  "Marshtomp": [
+   "Damp",
+   "Torrent"
+  ],
+  "Mudsdale": [
+   "Gooey",
+   "Striker",
+   "Stamina"
+  ],
+  "Shiinotic": [
+   "Rain Dish",
+   "Effect Spore",
+   "Illuminate"
+  ],
+  "Alcremie": [
+   "Aroma Veil",
+   "Sweet Veil"
+  ],
+  "Flaaffy": [
+   "Plus",
+   "Static",
+   "Illuminate"
+  ],
+  "Machoke": [
+   "Steadfast",
+   "Guts",
+   "No Guard"
+  ],
+  "Lombre": [
+   "Own Tempo",
+   "Swift Swim",
+   "Rain Dish"
+  ],
+  "Torracat": [
+   "Intimidate",
+   "Blaze"
+  ],
+  "Herdier": [
+   "Scrappy",
+   "Intimidate",
+   "Sand Rush"
+  ],
+  "Stoutland": [
+   "Scrappy",
+   "Intimidate",
+   "Sand Rush"
+  ],
+  "Lickilicky": [
+   "Cloud Nine",
+   "Own Tempo",
+   "Unaware"
+  ],
+  "Oinkologne": [
+   "Thick Fat",
+   "Mummy",
+   "Gluttony"
+  ],
+  "Urshifu": [
+   "Unseen Fist"
+  ],
+  "Urshifu-Rapid-Strike": [
+   "Unseen Fist"
+  ],
+  "Klang": [
+   "Clear Body",
+   "Plus",
+   "Minus"
+  ],
+  "Gallade": [
+   "Justified",
+   "Steadfast",
+   "Sharpness"
+  ],
+  "Malamar": [
+   "Infiltrator",
+   "Contrary",
+   "Suction Cups"
+  ],
+  "Skiploom": [
+   "Infiltrator",
+   "Chlorophyll",
+   "Leaf Guard"
+  ],
+  "Hattrem": [
+   "Magic Bounce"
+  ],
+  "Golem-Alola": [
+   "Galvanize",
+   "Rock Head",
+   "Magnet Pull"
+  ],
+  "Gothorita": [
+   "Shadow Tag",
+   "Frisk",
+   "Competitive"
+  ],
+  "Eldegoss": [
+   "Effect Spore",
+   "Cotton Down",
+   "Regenerator"
+  ],
+  "Purugly": [
+   "Defiant",
+   "Thick Fat",
+   "Own Tempo"
+  ],
+  "Crocalor": [
+   "Unaware",
+   "Blaze"
+  ],
+  "Fletchinder": [
+   "Gale Wings",
+   "Flame Body"
+  ],
+  "Floette": [
+   "Natural Cure"
+  ],
+  "Dachsbun": [
+   "Aroma Veil",
+   "Well-Baked Body"
+  ],
+  "Braixen": [
+   "Magic Guard",
+   "Blaze"
+  ],
+  "Sirfetch’d": [
+   "Scrappy",
+   "Sharpness"
+  ],
+  "Meowstic": [
+   "Infiltrator",
+   "Prankster",
+   "Feline Prowess"
+  ],
+  "Meowstic-F": [
+   "Infiltrator",
+   "Competitive",
+   "Feline Prowess"
+  ],
+  "Beheeyem": [
+   "Analytic",
+   "Synchronize"
+  ],
+  "Umbreon": [
+   "Inner Focus",
+   "Synchronize"
+  ],
+  "Sawsbuck": [
+   "Serene Grace",
+   "Chlorophyll",
+   "Sap Sipper"
+  ],
+  "Quilava": [
+   "Flash Fire",
+   "Blaze"
+  ],
+  "Vespiquen": [
+   "Unnerve",
+   "Dazzling"
+  ],
+  "Clawitzer-Sevii": [
+   "Mega Launcher"
+  ],
+  "Monferno": [
+   "Iron Fist",
+   "Blaze"
+  ],
+  "Bayleef": [
+   "Leaf Guard",
+   "Overgrow"
+  ],
+  "Quilladin": [
+   "Iron Barbs",
+   "Bulletproof"
+  ],
+  "Chesnaught": [
+   "Iron Barbs",
+   "Bulletproof"
+  ],
+  "Metapod": [
+   "Shed Skin"
+  ],
+  "Scovillain": [
+   "Chlorophyll",
+   "Insomnia"
+  ],
+  "Wormadam-Trash": [
+   "Overcoat"
+  ],
+  "Mothim": [
+   "Tinted Lens",
+   "Swarm"
+  ],
+  "Diggersby": [
+   "Huge Power",
+   "Pickup",
+   "Cheek Pouch"
+  ],
+  "Brambleghast": [
+   "Wind Rider",
+   "Infiltrator"
+  ],
+  "Steenee": [
+   "Sweet Veil",
+   "Leaf Guard",
+   "Oblivious"
+  ],
+  "Sudowoodo": [
+   "Sturdy",
+   "Rock Head"
+  ],
+  "Zebstrika-Sevii": [
+   "Ice Body",
+   "Lightning Rod",
+   "Illuminate"
+  ],
+  "Dottler": [
+   "Telepathy",
+   "Swarm",
+   "Compound Eyes"
+  ],
+  "Orbeetle": [
+   "Telepathy",
+   "Swarm",
+   "Frisk"
+  ],
+  "Weepinbell": [
+   "Gluttony",
+   "Chlorophyll"
+  ],
+  "Claydol": [
+   "Levitate"
+  ],
+  "Fraxure": [
+   "Unnerve",
+   "Rivalry",
+   "Mold Breaker"
+  ],
+  "Lairon": [
+   "Heavy Metal",
+   "Sturdy",
+   "Rock Head"
+  ],
+  "Flapple": [
+   "Hustle",
+   "Ripen",
+   "Gluttony"
+  ],
+  "Appletun": [
+   "Thick Fat",
+   "Ripen",
+   "Gluttony"
+  ],
+  "Armaldo": [
+   "Swift Swim",
+   "Battle Armor",
+   "Skill Link"
+  ],
+  "Aurorus": [
+   "Snow Warning",
+   "Refrigerate"
+  ],
+  "Kadabra": [
+   "Magic Guard",
+   "Synchronize",
+   "Inner Focus"
+  ]
+ },
+ "evolutions": {
+  "Zubat": [
+   {
+    "to": "Golbat",
+    "how": "at Lv 22"
+   }
+  ],
+  "Zorua-Hisui": [
+   {
+    "to": "Zoroark-Hisui",
+    "how": "at Lv 30"
+   }
+  ],
+  "Zorua": [
+   {
+    "to": "Zoroark",
+    "how": "at Lv 30"
+   }
+  ],
+  "Zigzagoon-Galar": [
+   {
+    "to": "Linoone-Galar",
+    "how": "at Lv 16"
+   }
+  ],
+  "Linoone-Galar": [
+   {
+    "to": "Obstagoon",
+    "how": "at Lv 35 (night)"
+   }
+  ],
+  "Zigzagoon": [
+   {
+    "to": "Linoone",
+    "how": "at Lv 16"
+   }
+  ],
+  "Yungoos": [
+   {
+    "to": "Gumshoos",
+    "how": "at Lv 16 (day)"
+   }
+  ],
+  "Yanma": [
+   {
+    "to": "Yanmega",
+    "how": "on level up knowing Ancient Power"
+   },
+   {
+    "to": "Yanmega",
+    "how": "at Lv 45"
+   }
+  ],
+  "Yamper": [
+   {
+    "to": "Boltund",
+    "how": "at Lv 25"
+   }
+  ],
+  "Yamask-Galar": [
+   {
+    "to": "Runerigus",
+    "how": "at Lv 35"
+   }
+  ],
+  "Yamask": [
+   {
+    "to": "Cofagrigus",
+    "how": "at Lv 34"
+   }
+  ],
+  "Wurmple": [
+   {
+    "to": "Silcoon",
+    "how": "at Lv 7 (50% chance)"
+   },
+   {
+    "to": "Cascoon",
+    "how": "at Lv 7 (50% chance)"
+   }
+  ],
+  "Cascoon": [
+   {
+    "to": "Dustox",
+    "how": "at Lv 10"
+   }
+  ],
+  "Silcoon": [
+   {
+    "to": "Beautifly",
+    "how": "at Lv 10"
+   }
+  ],
+  "Wooper-Paldea": [
+   {
+    "to": "Clodsire",
+    "how": "at Lv 20"
+   }
+  ],
+  "Wooper": [
+   {
+    "to": "Quagsire",
+    "how": "at Lv 20"
+   }
+  ],
+  "Wooloo": [
+   {
+    "to": "Dubwool",
+    "how": "at Lv 24"
+   }
+  ],
+  "Woobat": [
+   {
+    "to": "Swoobat",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Wingull": [
+   {
+    "to": "Pelipper",
+    "how": "at Lv 25"
+   }
+  ],
+  "Wimpod": [
+   {
+    "to": "Golisopod",
+    "how": "at Lv 30"
+   }
+  ],
+  "Wiglett": [
+   {
+    "to": "Wugtrio",
+    "how": "at Lv 22"
+   }
+  ],
+  "Whismur": [
+   {
+    "to": "Loudred",
+    "how": "at Lv 20"
+   }
+  ],
+  "Whirlipede": [
+   {
+    "to": "Scolipede",
+    "how": "at Lv 30"
+   }
+  ],
+  "Weedle": [
+   {
+    "to": "Kakuna",
+    "how": "at Lv 7"
+   }
+  ],
+  "Kakuna": [
+   {
+    "to": "Beedrill",
+    "how": "at Lv 10"
+   }
+  ],
+  "Wattrel": [
+   {
+    "to": "Kilowattrel",
+    "how": "at Lv 25"
+   }
+  ],
+  "Wartortle": [
+   {
+    "to": "Blastoise",
+    "how": "at Lv 36"
+   }
+  ],
+  "Wailmer": [
+   {
+    "to": "Wailord",
+    "how": "at Lv 40"
+   }
+  ],
+  "Vulpix-Alola": [
+   {
+    "to": "Ninetales-Alola",
+    "how": "with a Ice Stone"
+   }
+  ],
+  "Vulpix": [
+   {
+    "to": "Ninetales",
+    "how": "with a Fire Stone"
+   }
+  ],
+  "Vullaby": [
+   {
+    "to": "Mandibuzz",
+    "how": "at Lv 45"
+   }
+  ],
+  "Voltorb-Hisui": [
+   {
+    "to": "Electrode-Hisui",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Voltorb-H": [
+   {
+    "to": "Electrode-Hisui",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Voltorb": [
+   {
+    "to": "Electrode",
+    "how": "at Lv 28"
+   }
+  ],
+  "Venonat": [
+   {
+    "to": "Venomoth",
+    "how": "at Lv 27"
+   }
+  ],
+  "Venipede": [
+   {
+    "to": "Whirlipede",
+    "how": "at Lv 22"
+   }
+  ],
+  "Varoom": [
+   {
+    "to": "Revavroom",
+    "how": "at Lv 34"
+   }
+  ],
+  "Vanillite": [
+   {
+    "to": "Vanillish",
+    "how": "at Lv 35"
+   }
+  ],
+  "Vanillish": [
+   {
+    "to": "Vanilluxe",
+    "how": "at Lv 44"
+   }
+  ],
+  "Ursaring": [
+   {
+    "to": "Ursaluna",
+    "how": "at Lv 48"
+   }
+  ],
+  "Tyrunt": [
+   {
+    "to": "Tyrantrum",
+    "how": "at Lv 39 (day)"
+   }
+  ],
+  "Tyrogue": [
+   {
+    "to": "Hitmonlee",
+    "how": "at Lv 20 when Atk > Def"
+   },
+   {
+    "to": "Hitmontop",
+    "how": "at Lv 20 when Atk = Def"
+   },
+   {
+    "to": "Hitmonchan",
+    "how": "at Lv 20 when Atk < Def"
+   }
+  ],
+  "Type: Null": [
+   {
+    "to": "Silvally",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Tynamo": [
+   {
+    "to": "Eelektrik",
+    "how": "at Lv 36"
+   }
+  ],
+  "Eelektrik": [
+   {
+    "to": "Eelektross",
+    "how": "with a ThunderStone"
+   }
+  ],
+  "Tympole": [
+   {
+    "to": "Palpitoad",
+    "how": "at Lv 23"
+   }
+  ],
+  "Palpitoad": [
+   {
+    "to": "Seismitoad",
+    "how": "at Lv 36"
+   }
+  ],
+  "Turtwig": [
+   {
+    "to": "Grotle",
+    "how": "at Lv 16"
+   }
+  ],
+  "Grotle": [
+   {
+    "to": "Torterra",
+    "how": "at Lv 36"
+   }
+  ],
+  "Trumbeak": [
+   {
+    "to": "Toucannon",
+    "how": "at Lv 28"
+   }
+  ],
+  "Trubbish": [
+   {
+    "to": "Garbodor",
+    "how": "at Lv 28"
+   }
+  ],
+  "Treecko": [
+   {
+    "to": "Grovyle",
+    "how": "at Lv 16"
+   }
+  ],
+  "Trapinch": [
+   {
+    "to": "Vibrava",
+    "how": "at Lv 34"
+   }
+  ],
+  "Vibrava": [
+   {
+    "to": "Flygon",
+    "how": "at Lv 44"
+   }
+  ],
+  "Toxel": [
+   {
+    "to": "Toxtricity",
+    "how": "at Lv 30 (Amped natures)"
+   },
+   {
+    "to": "Toxtricity-Low-Key",
+    "how": "at Lv 30 (Low-Key natures)"
+   }
+  ],
+  "Totodile": [
+   {
+    "to": "Croconaw",
+    "how": "at Lv 16"
+   }
+  ],
+  "Croconaw": [
+   {
+    "to": "Feraligatr",
+    "how": "at Lv 36"
+   }
+  ],
+  "Torchic": [
+   {
+    "to": "Combusken",
+    "how": "at Lv 16"
+   }
+  ],
+  "Combusken": [
+   {
+    "to": "Blaziken",
+    "how": "at Lv 36"
+   }
+  ],
+  "Togetic": [
+   {
+    "to": "Togekiss",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Togepi": [
+   {
+    "to": "Togetic",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Toedscool": [
+   {
+    "to": "Toedscruel",
+    "how": "at Lv 28"
+   }
+  ],
+  "Tirtouga": [
+   {
+    "to": "Carracosta",
+    "how": "at Lv 34"
+   }
+  ],
+  "Tinkatuff": [
+   {
+    "to": "Tinkaton",
+    "how": "at Lv 36"
+   }
+  ],
+  "Tinkatink": [
+   {
+    "to": "Tinkatuff",
+    "how": "at Lv 23"
+   }
+  ],
+  "Timburr": [
+   {
+    "to": "Gurdurr",
+    "how": "at Lv 25"
+   }
+  ],
+  "Gurdurr": [
+   {
+    "to": "Conkeldurr",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Thwackey": [
+   {
+    "to": "Rillaboom",
+    "how": "at Lv 36"
+   }
+  ],
+  "Tepig": [
+   {
+    "to": "Pignite",
+    "how": "at Lv 16"
+   }
+  ],
+  "Pignite": [
+   {
+    "to": "Emboar",
+    "how": "at Lv 36"
+   }
+  ],
+  "Tentacool": [
+   {
+    "to": "Tentacruel",
+    "how": "at Lv 28"
+   }
+  ],
+  "Teddiursa-Sevii": [
+   {
+    "to": "Ursaring-Sevii",
+    "how": "at Lv 28"
+   }
+  ],
+  "Teddiursa": [
+   {
+    "to": "Ursaring",
+    "how": "at Lv 28"
+   }
+  ],
+  "Tarountula": [
+   {
+    "to": "Spidops",
+    "how": "at Lv 15"
+   }
+  ],
+  "Tangela": [
+   {
+    "to": "Tangrowth",
+    "how": "on level up knowing Ancient Power"
+   },
+   {
+    "to": "Tangrowth",
+    "how": "at Lv 45"
+   }
+  ],
+  "Tandemaus": [
+   {
+    "to": "Maushold",
+    "how": "at Lv 25"
+   }
+  ],
+  "Taillow": [
+   {
+    "to": "Swellow",
+    "how": "at Lv 22"
+   }
+  ],
+  "Tadbulb": [
+   {
+    "to": "Bellibolt",
+    "how": "with a ThunderStone"
+   }
+  ],
+  "Swirlix": [
+   {
+    "to": "Slurpuff",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Swinub": [
+   {
+    "to": "Piloswine",
+    "how": "at Lv 28"
+   }
+  ],
+  "Swadloon": [
+   {
+    "to": "Leavanny",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Swablu": [
+   {
+    "to": "Altaria",
+    "how": "at Lv 35"
+   }
+  ],
+  "Surskit": [
+   {
+    "to": "Masquerain",
+    "how": "at Lv 22"
+   }
+  ],
+  "Sunkern": [
+   {
+    "to": "Sunflora",
+    "how": "with a Sun Stone"
+   }
+  ],
+  "Stunky": [
+   {
+    "to": "Skuntank",
+    "how": "at Lv 28"
+   }
+  ],
+  "Stufful": [
+   {
+    "to": "Bewear",
+    "how": "at Lv 27"
+   }
+  ],
+  "Staryu": [
+   {
+    "to": "Starmie",
+    "how": "with a Water Stone"
+   }
+  ],
+  "Starly": [
+   {
+    "to": "Staravia",
+    "how": "at Lv 14"
+   }
+  ],
+  "Staravia": [
+   {
+    "to": "Staraptor",
+    "how": "at Lv 34"
+   }
+  ],
+  "Stantler": [
+   {
+    "to": "Wyrdeer",
+    "how": "at Lv 44"
+   }
+  ],
+  "Squirtle": [
+   {
+    "to": "Wartortle",
+    "how": "at Lv 16"
+   }
+  ],
+  "Spritzee": [
+   {
+    "to": "Aromatisse",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Sprigatito": [
+   {
+    "to": "Floragato",
+    "how": "at Lv 16"
+   }
+  ],
+  "Floragato": [
+   {
+    "to": "Meowscarada",
+    "how": "at Lv 36"
+   }
+  ],
+  "Spoink": [
+   {
+    "to": "Grumpig",
+    "how": "at Lv 32"
+   }
+  ],
+  "Spinarak": [
+   {
+    "to": "Ariados",
+    "how": "at Lv 16"
+   }
+  ],
+  "Spheal": [
+   {
+    "to": "Sealeo",
+    "how": "at Lv 32"
+   }
+  ],
+  "Spearow": [
+   {
+    "to": "Fearow",
+    "how": "at Lv 20"
+   }
+  ],
+  "Solosis": [
+   {
+    "to": "Duosion",
+    "how": "at Lv 28"
+   }
+  ],
+  "Duosion": [
+   {
+    "to": "Reuniclus",
+    "how": "at Lv 41"
+   }
+  ],
+  "Sobble": [
+   {
+    "to": "Drizzile",
+    "how": "at Lv 16"
+   }
+  ],
+  "Drizzile": [
+   {
+    "to": "Inteleon",
+    "how": "at Lv 36"
+   }
+  ],
+  "Snubbull": [
+   {
+    "to": "Granbull",
+    "how": "at Lv 23"
+   }
+  ],
+  "Snover": [
+   {
+    "to": "Abomasnow",
+    "how": "at Lv 36"
+   }
+  ],
+  "Snorunt": [
+   {
+    "to": "Glalie",
+    "how": "at Lv 42"
+   },
+   {
+    "to": "Froslass",
+    "how": "with a Dawn Stone (female)"
+   }
+  ],
+  "Snom": [
+   {
+    "to": "Frosmoth",
+    "how": "on level up with high friendship (night)"
+   }
+  ],
+  "Snivy": [
+   {
+    "to": "Servine",
+    "how": "at Lv 16"
+   }
+  ],
+  "Servine": [
+   {
+    "to": "Serperior",
+    "how": "at Lv 36"
+   }
+  ],
+  "Sneasel-Hisui": [
+   {
+    "to": "Sneasler",
+    "how": "at Lv 47"
+   }
+  ],
+  "Sneasel-H": [
+   {
+    "to": "Sneasler",
+    "how": "at Lv 47"
+   }
+  ],
+  "Sneasel": [
+   {
+    "to": "Weavile",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Smoochum": [
+   {
+    "to": "Jynx",
+    "how": "at Lv 27"
+   }
+  ],
+  "Smoliv": [
+   {
+    "to": "Dolliv",
+    "how": "at Lv 23"
+   }
+  ],
+  "Dolliv": [
+   {
+    "to": "Arboliva",
+    "how": "at Lv 35"
+   }
+  ],
+  "Slugma": [
+   {
+    "to": "Magcargo",
+    "how": "at Lv 23"
+   }
+  ],
+  "Slowpoke-Galar": [
+   {
+    "to": "Slowbro-Galar",
+    "how": "at Lv 37"
+   },
+   {
+    "to": "Slowking-Galar",
+    "how": "with a King's Rock"
+   }
+  ],
+  "Slowpoke": [
+   {
+    "to": "Slowbro",
+    "how": "at Lv 37"
+   },
+   {
+    "to": "Slowking",
+    "how": "with a King's Rock"
+   }
+  ],
+  "Sliggoo-Hisui": [
+   {
+    "to": "Goodra-Hisui",
+    "how": "at Lv 50 in overworld rain"
+   }
+  ],
+  "Slakoth": [
+   {
+    "to": "Vigoroth",
+    "how": "at Lv 16"
+   }
+  ],
+  "Vigoroth": [
+   {
+    "to": "Slaking",
+    "how": "at Lv 36"
+   }
+  ],
+  "Skwovet": [
+   {
+    "to": "Greedent",
+    "how": "at Lv 23"
+   }
+  ],
+  "Skrelp": [
+   {
+    "to": "Dragalge",
+    "how": "at Lv 44"
+   }
+  ],
+  "Skorupi": [
+   {
+    "to": "Drapion",
+    "how": "at Lv 40"
+   }
+  ],
+  "Skitty": [
+   {
+    "to": "Delcatty",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Skiddo": [
+   {
+    "to": "Gogoat",
+    "how": "at Lv 28"
+   }
+  ],
+  "Sizzlipede": [
+   {
+    "to": "Centiskorch",
+    "how": "at Lv 28"
+   }
+  ],
+  "Sinistea": [
+   {
+    "to": "Polteageist",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Silicobra": [
+   {
+    "to": "Sandaconda",
+    "how": "at Lv 36"
+   }
+  ],
+  "Shuppet": [
+   {
+    "to": "Banette",
+    "how": "at Lv 36"
+   }
+  ],
+  "Shroomish": [
+   {
+    "to": "Breloom",
+    "how": "at Lv 23"
+   }
+  ],
+  "Shroodle": [
+   {
+    "to": "Grafaiai",
+    "how": "at Lv 27"
+   }
+  ],
+  "Shinx": [
+   {
+    "to": "Luxio",
+    "how": "at Lv 15"
+   }
+  ],
+  "Luxio": [
+   {
+    "to": "Luxray",
+    "how": "at Lv 30"
+   }
+  ],
+  "Shieldon": [
+   {
+    "to": "Bastiodon",
+    "how": "at Lv 30"
+   }
+  ],
+  "Shelmet": [
+   {
+    "to": "Accelgor",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Shellos-East": [
+   {
+    "to": "Gastrodon",
+    "how": "at Lv 32"
+   }
+  ],
+  "Shellos": [
+   {
+    "to": "Gastrodon",
+    "how": "at Lv 32"
+   }
+  ],
+  "Shellder": [
+   {
+    "to": "Cloyster",
+    "how": "with a Water Stone"
+   }
+  ],
+  "Sewaddle": [
+   {
+    "to": "Swadloon",
+    "how": "at Lv 16"
+   }
+  ],
+  "Sentret": [
+   {
+    "to": "Furret",
+    "how": "at Lv 15"
+   }
+  ],
+  "Seel": [
+   {
+    "to": "Dewgong",
+    "how": "at Lv 34"
+   }
+  ],
+  "Seedot": [
+   {
+    "to": "Nuzleaf",
+    "how": "at Lv 14"
+   }
+  ],
+  "Nuzleaf": [
+   {
+    "to": "Shiftry",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Sealeo": [
+   {
+    "to": "Walrein",
+    "how": "at Lv 44"
+   }
+  ],
+  "Seadra": [
+   {
+    "to": "Kingdra",
+    "how": "with a Prism Scale"
+   }
+  ],
+  "Scyther": [
+   {
+    "to": "Scizor",
+    "how": "with a Metal Coat"
+   },
+   {
+    "to": "Kleavor",
+    "how": "with a King's Rock"
+   }
+  ],
+  "Scraggy": [
+   {
+    "to": "Scrafty",
+    "how": "at Lv 36"
+   }
+  ],
+  "Scorbunny": [
+   {
+    "to": "Raboot",
+    "how": "at Lv 16"
+   }
+  ],
+  "Raboot": [
+   {
+    "to": "Cinderace",
+    "how": "at Lv 36"
+   }
+  ],
+  "Scatterbug": [
+   {
+    "to": "Spewpa",
+    "how": "at Lv 9"
+   }
+  ],
+  "Spewpa": [
+   {
+    "to": "Vivillon",
+    "how": "at Lv 12"
+   }
+  ],
+  "Sandygast": [
+   {
+    "to": "Palossand",
+    "how": "at Lv 42"
+   }
+  ],
+  "Sandshrew-Alola": [
+   {
+    "to": "Sandslash-Alola",
+    "how": "with a Ice Stone"
+   }
+  ],
+  "Sandshrew": [
+   {
+    "to": "Sandslash",
+    "how": "at Lv 22"
+   }
+  ],
+  "Sandile": [
+   {
+    "to": "Krokorok",
+    "how": "at Lv 28"
+   }
+  ],
+  "Krokorok": [
+   {
+    "to": "Krookodile",
+    "how": "at Lv 40"
+   }
+  ],
+  "Salandit": [
+   {
+    "to": "Salazzle",
+    "how": "at Lv 33 (female)"
+   }
+  ],
+  "Rufflet": [
+   {
+    "to": "Braviary-Hisui",
+    "how": "at Lv 36 (night)"
+   },
+   {
+    "to": "Braviary",
+    "how": "at Lv 36 (day)"
+   }
+  ],
+  "Rowlet": [
+   {
+    "to": "Dartrix",
+    "how": "at Lv 16"
+   }
+  ],
+  "Roselia": [
+   {
+    "to": "Roserade",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Rookidee": [
+   {
+    "to": "Corvisquire",
+    "how": "at Lv 16"
+   }
+  ],
+  "Corvisquire": [
+   {
+    "to": "Corviknight",
+    "how": "at Lv 38"
+   }
+  ],
+  "Rolycoly": [
+   {
+    "to": "Carkol",
+    "how": "at Lv 16"
+   }
+  ],
+  "Roggenrola": [
+   {
+    "to": "Boldore",
+    "how": "at Lv 23"
+   }
+  ],
+  "Rockruff": [
+   {
+    "to": "Lycanroc-Dusk",
+    "how": "at Lv 25 (dusk)"
+   },
+   {
+    "to": "Lycanroc",
+    "how": "at Lv 25 (day)"
+   },
+   {
+    "to": "Lycanroc-Midnight",
+    "how": "at Lv 25 (night)"
+   }
+  ],
+  "Riolu": [
+   {
+    "to": "Lucario",
+    "how": "at Lv 30 (day)"
+   }
+  ],
+  "Rhyhorn": [
+   {
+    "to": "Rhydon",
+    "how": "at Lv 42"
+   }
+  ],
+  "Rhydon": [
+   {
+    "to": "Rhyperior",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Remoraid": [
+   {
+    "to": "Octillery",
+    "how": "at Lv 25"
+   }
+  ],
+  "Rellor": [
+   {
+    "to": "Rabsca",
+    "how": "at Lv 16"
+   }
+  ],
+  "Rattata-Alola": [
+   {
+    "to": "Raticate-Alola",
+    "how": "at Lv 16 (night)"
+   }
+  ],
+  "Rattata": [
+   {
+    "to": "Raticate",
+    "how": "at Lv 16"
+   }
+  ],
+  "Ralts": [
+   {
+    "to": "Kirlia",
+    "how": "at Lv 20"
+   }
+  ],
+  "Qwilfish-Hisui": [
+   {
+    "to": "Overqwil",
+    "how": "at Lv 36"
+   }
+  ],
+  "Qwilfish-H": [
+   {
+    "to": "Overqwil",
+    "how": "at Lv 36"
+   }
+  ],
+  "Quaxly": [
+   {
+    "to": "Quaxwell",
+    "how": "at Lv 16"
+   }
+  ],
+  "Quaxwell": [
+   {
+    "to": "Quaquaval",
+    "how": "at Lv 36"
+   }
+  ],
+  "Purrloin": [
+   {
+    "to": "Liepard",
+    "how": "at Lv 20"
+   }
+  ],
+  "Pumpkaboo-Su": [
+   {
+    "to": "Gourgeist",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Pumpkaboo-Sm": [
+   {
+    "to": "Gourgeist",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Pumpkaboo-La": [
+   {
+    "to": "Gourgeist",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Pumpkaboo": [
+   {
+    "to": "Gourgeist",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Psyduck": [
+   {
+    "to": "Golduck",
+    "how": "at Lv 27"
+   }
+  ],
+  "Primeape": [
+   {
+    "to": "Annihilape",
+    "how": "on level up knowing Shadow Punch"
+   },
+   {
+    "to": "Annihilape",
+    "how": "at Lv 45"
+   }
+  ],
+  "Porygon2": [
+   {
+    "to": "Porygon-Z",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Porygon": [
+   {
+    "to": "Porygon2",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Popplio": [
+   {
+    "to": "Brionne",
+    "how": "at Lv 16"
+   }
+  ],
+  "Poochyena": [
+   {
+    "to": "Mightyena",
+    "how": "at Lv 16"
+   }
+  ],
+  "Ponyta-Galar": [
+   {
+    "to": "Rapidash-Galar",
+    "how": "at Lv 28"
+   }
+  ],
+  "Ponyta": [
+   {
+    "to": "Rapidash",
+    "how": "at Lv 28"
+   }
+  ],
+  "Poltchageist": [
+   {
+    "to": "Sinistcha",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Poliwhirl": [
+   {
+    "to": "Poliwrath",
+    "how": "with a Water Stone"
+   },
+   {
+    "to": "Politoed",
+    "how": "with a King's Rock"
+   }
+  ],
+  "Poliwag": [
+   {
+    "to": "Poliwhirl",
+    "how": "at Lv 25"
+   }
+  ],
+  "Poipole": [
+   {
+    "to": "Naganadel",
+    "how": "on level up knowing Dragon Pulse"
+   }
+  ],
+  "Piplup": [
+   {
+    "to": "Prinplup",
+    "how": "at Lv 16"
+   }
+  ],
+  "Prinplup": [
+   {
+    "to": "Empoleon",
+    "how": "at Lv 36"
+   }
+  ],
+  "Pineco": [
+   {
+    "to": "Forretress",
+    "how": "at Lv 28"
+   }
+  ],
+  "Piloswine": [
+   {
+    "to": "Mamoswine",
+    "how": "on level up knowing Ancient Power"
+   },
+   {
+    "to": "Mamoswine",
+    "how": "at Lv 45"
+   }
+  ],
+  "Pikipek": [
+   {
+    "to": "Trumbeak",
+    "how": "at Lv 14"
+   }
+  ],
+  "Pikachu": [
+   {
+    "to": "Raichu",
+    "how": "with a ThunderStone"
+   },
+   {
+    "to": "Raichu-Alola",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Pidove": [
+   {
+    "to": "Tranquill",
+    "how": "at Lv 16"
+   }
+  ],
+  "Tranquill": [
+   {
+    "to": "Unfezant",
+    "how": "at Lv 28"
+   }
+  ],
+  "Pidgey": [
+   {
+    "to": "Pidgeotto",
+    "how": "at Lv 16"
+   }
+  ],
+  "Pidgeotto": [
+   {
+    "to": "Pidgeot",
+    "how": "at Lv 36"
+   }
+  ],
+  "Phantump": [
+   {
+    "to": "Trevenant",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Phanpy": [
+   {
+    "to": "Donphan",
+    "how": "at Lv 25"
+   }
+  ],
+  "Petilil": [
+   {
+    "to": "Lilligant",
+    "how": "with a Sun Stone"
+   },
+   {
+    "to": "Lilligant-Hisui",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Pawniard": [
+   {
+    "to": "Bisharp",
+    "how": "at Lv 36"
+   }
+  ],
+  "Pawmi": [
+   {
+    "to": "Pawmo",
+    "how": "at Lv 16"
+   }
+  ],
+  "Pawmo": [
+   {
+    "to": "Pawmot",
+    "how": "at Lv 32"
+   }
+  ],
+  "Patrat": [
+   {
+    "to": "Watchog",
+    "how": "at Lv 16"
+   }
+  ],
+  "Paras": [
+   {
+    "to": "Parasect",
+    "how": "at Lv 23"
+   }
+  ],
+  "Pansear": [
+   {
+    "to": "Simisear",
+    "how": "with a Fire Stone"
+   }
+  ],
+  "Pansage": [
+   {
+    "to": "Simisage",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Panpour": [
+   {
+    "to": "Simipour",
+    "how": "with a Water Stone"
+   }
+  ],
+  "Pancham": [
+   {
+    "to": "Pangoro",
+    "how": "at Lv 32 with a Dark-type Pokémon in the party"
+   }
+  ],
+  "Oshawott": [
+   {
+    "to": "Dewott",
+    "how": "at Lv 16"
+   }
+  ],
+  "Onix": [
+   {
+    "to": "Steelix",
+    "how": "with a Metal Coat"
+   }
+  ],
+  "Omanyte": [
+   {
+    "to": "Omastar",
+    "how": "at Lv 34"
+   }
+  ],
+  "Oddish": [
+   {
+    "to": "Gloom",
+    "how": "at Lv 16"
+   }
+  ],
+  "Gloom": [
+   {
+    "to": "Bellossom",
+    "how": "with a Sun Stone"
+   },
+   {
+    "to": "Vileplume",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Nymble-Sevii": [
+   {
+    "to": "Lokix-Sevii",
+    "how": "at Lv 23"
+   }
+  ],
+  "Nymble": [
+   {
+    "to": "Lokix",
+    "how": "at Lv 23"
+   }
+  ],
+  "Numel": [
+   {
+    "to": "Camerupt",
+    "how": "at Lv 33"
+   }
+  ],
+  "Nosepass": [
+   {
+    "to": "Probopass",
+    "how": "with a Metal Coat"
+   }
+  ],
+  "Noibat-Sevii": [
+   {
+    "to": "Noivern-Sevii",
+    "how": "at Lv 36"
+   }
+  ],
+  "Noibat": [
+   {
+    "to": "Noivern",
+    "how": "at Lv 36"
+   }
+  ],
+  "Nincada": [
+   {
+    "to": "Ninjask",
+    "how": "at Lv 16"
+   },
+   {
+    "to": "Shedinja",
+    "how": "when evolving to Ninjask, with an open party slot and a Poké Ball"
+   }
+  ],
+  "Nidoran-M": [
+   {
+    "to": "Nidorino",
+    "how": "at Lv 16"
+   }
+  ],
+  "Nidorino": [
+   {
+    "to": "Nidoking",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Nidoran-F": [
+   {
+    "to": "Nidorina",
+    "how": "at Lv 16"
+   }
+  ],
+  "Nidorina": [
+   {
+    "to": "Nidoqueen",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Nickit": [
+   {
+    "to": "Thievul",
+    "how": "at Lv 18"
+   }
+  ],
+  "Natu": [
+   {
+    "to": "Xatu",
+    "how": "at Lv 25"
+   }
+  ],
+  "Nacli": [
+   {
+    "to": "Naclstack",
+    "how": "at Lv 23"
+   }
+  ],
+  "Naclstack": [
+   {
+    "to": "Garganacl",
+    "how": "at Lv 38"
+   }
+  ],
+  "Murkrow": [
+   {
+    "to": "Honchkrow",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Munna": [
+   {
+    "to": "Musharna",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Munchlax": [
+   {
+    "to": "Snorlax",
+    "how": "at Lv 30"
+   }
+  ],
+  "Mudkip": [
+   {
+    "to": "Marshtomp",
+    "how": "at Lv 16"
+   }
+  ],
+  "Marshtomp": [
+   {
+    "to": "Swampert",
+    "how": "at Lv 36"
+   }
+  ],
+  "Mudbray": [
+   {
+    "to": "Mudsdale",
+    "how": "at Lv 30"
+   }
+  ],
+  "Mr. Mime-Galar": [
+   {
+    "to": "Mr. Rime",
+    "how": "at Lv 42"
+   }
+  ],
+  "Mr. Mime-G": [
+   {
+    "to": "Mr. Rime",
+    "how": "at Lv 42"
+   }
+  ],
+  "Morgrem": [
+   {
+    "to": "Grimmsnarl",
+    "how": "at Lv 36"
+   }
+  ],
+  "Morelull": [
+   {
+    "to": "Shiinotic",
+    "how": "at Lv 24"
+   }
+  ],
+  "Misdreavus": [
+   {
+    "to": "Mismagius",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Minccino": [
+   {
+    "to": "Cinccino",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Mime Jr.": [
+   {
+    "to": "Mr. Mime",
+    "how": "on level up knowing Mimic"
+   },
+   {
+    "to": "Mr. Mime",
+    "how": "at Lv 35"
+   },
+   {
+    "to": "Mr. Mime-Galar",
+    "how": "with a Ice Stone"
+   }
+  ],
+  "Milcery": [
+   {
+    "to": "Alcremie",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Mienfoo": [
+   {
+    "to": "Mienshao",
+    "how": "at Lv 28"
+   }
+  ],
+  "Meowth-Galar": [
+   {
+    "to": "Perrserker",
+    "how": "at Lv 28"
+   }
+  ],
+  "Meowth-Alola": [
+   {
+    "to": "Persian-Alola",
+    "how": "at Lv 28"
+   }
+  ],
+  "Meowth": [
+   {
+    "to": "Persian",
+    "how": "at Lv 28"
+   }
+  ],
+  "Meltan": [
+   {
+    "to": "Melmetal",
+    "how": "with a Metal Coat"
+   }
+  ],
+  "Meditite": [
+   {
+    "to": "Medicham",
+    "how": "at Lv 37"
+   }
+  ],
+  "Maschiff": [
+   {
+    "to": "Mabosstiff",
+    "how": "at Lv 23"
+   }
+  ],
+  "Marill": [
+   {
+    "to": "Azumarill",
+    "how": "at Lv 18"
+   }
+  ],
+  "Mareep": [
+   {
+    "to": "Flaaffy",
+    "how": "at Lv 15"
+   }
+  ],
+  "Flaaffy": [
+   {
+    "to": "Ampharos",
+    "how": "at Lv 30"
+   }
+  ],
+  "Mareanie": [
+   {
+    "to": "Toxapex",
+    "how": "at Lv 38"
+   }
+  ],
+  "Mantyke-Sevii": [
+   {
+    "to": "Mantine-Sevii",
+    "how": "at Lv 30"
+   },
+   {
+    "to": "Mantine-Sevii",
+    "how": "on level up with Remoraid in the party"
+   }
+  ],
+  "Mantyke": [
+   {
+    "to": "Mantine",
+    "how": "at Lv 30"
+   },
+   {
+    "to": "Mantine",
+    "how": "on level up with Remoraid in the party"
+   }
+  ],
+  "Mankey": [
+   {
+    "to": "Primeape",
+    "how": "at Lv 28"
+   }
+  ],
+  "Makuhita": [
+   {
+    "to": "Hariyama",
+    "how": "at Lv 24"
+   }
+  ],
+  "Magneton": [
+   {
+    "to": "Magnezone",
+    "how": "with a ThunderStone"
+   }
+  ],
+  "Magnemite": [
+   {
+    "to": "Magneton",
+    "how": "at Lv 30"
+   }
+  ],
+  "Magmar": [
+   {
+    "to": "Magmortar",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Magikarp": [
+   {
+    "to": "Gyarados",
+    "how": "at Lv 20"
+   }
+  ],
+  "Magby": [
+   {
+    "to": "Magmar",
+    "how": "at Lv 27"
+   }
+  ],
+  "Machop": [
+   {
+    "to": "Machoke",
+    "how": "at Lv 28"
+   }
+  ],
+  "Machoke": [
+   {
+    "to": "Machamp",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Loudred": [
+   {
+    "to": "Exploud",
+    "how": "at Lv 36"
+   }
+  ],
+  "Lotad": [
+   {
+    "to": "Lombre",
+    "how": "at Lv 14"
+   }
+  ],
+  "Lombre": [
+   {
+    "to": "Ludicolo",
+    "how": "with a Water Stone"
+   }
+  ],
+  "Litten": [
+   {
+    "to": "Torracat",
+    "how": "at Lv 16"
+   }
+  ],
+  "Torracat": [
+   {
+    "to": "Incineroar",
+    "how": "at Lv 36"
+   }
+  ],
+  "Litleo": [
+   {
+    "to": "Pyroar",
+    "how": "at Lv 28"
+   }
+  ],
+  "Lillipup": [
+   {
+    "to": "Herdier",
+    "how": "at Lv 16"
+   }
+  ],
+  "Herdier": [
+   {
+    "to": "Stoutland",
+    "how": "at Lv 32"
+   }
+  ],
+  "Lileep": [
+   {
+    "to": "Cradily",
+    "how": "at Lv 30"
+   }
+  ],
+  "Lickitung": [
+   {
+    "to": "Lickilicky",
+    "how": "on level up knowing Rollout"
+   },
+   {
+    "to": "Lickilicky",
+    "how": "at Lv 35"
+   }
+  ],
+  "Ledyba": [
+   {
+    "to": "Ledian",
+    "how": "at Lv 16"
+   }
+  ],
+  "Lechonk": [
+   {
+    "to": "Oinkologne-F",
+    "how": "at Lv 16 (female)"
+   },
+   {
+    "to": "Oinkologne",
+    "how": "at Lv 16 (male)"
+   }
+  ],
+  "Lampent": [
+   {
+    "to": "Chandelure",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Kubfu": [
+   {
+    "to": "Urshifu",
+    "how": "with a Dusk Stone"
+   },
+   {
+    "to": "Urshifu-Rapid-Strike",
+    "how": "with a Water Stone"
+   }
+  ],
+  "Kricketot": [
+   {
+    "to": "Kricketune",
+    "how": "at Lv 10"
+   }
+  ],
+  "Krabby": [
+   {
+    "to": "Kingler",
+    "how": "at Lv 28"
+   }
+  ],
+  "Koffing": [
+   {
+    "to": "Weezing",
+    "how": "at Lv 35 (day)"
+   },
+   {
+    "to": "Weezing-Galar",
+    "how": "at Lv 35 (night)"
+   }
+  ],
+  "Klink": [
+   {
+    "to": "Klang",
+    "how": "at Lv 38"
+   }
+  ],
+  "Klang": [
+   {
+    "to": "Klinklang",
+    "how": "at Lv 49"
+   }
+  ],
+  "Kirlia": [
+   {
+    "to": "Gardevoir",
+    "how": "at Lv 30"
+   },
+   {
+    "to": "Gallade",
+    "how": "with a Dawn Stone (male)"
+   }
+  ],
+  "Karrablast": [
+   {
+    "to": "Escavalier",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Kabuto": [
+   {
+    "to": "Kabutops",
+    "how": "at Lv 34"
+   }
+  ],
+  "Joltik": [
+   {
+    "to": "Galvantula",
+    "how": "at Lv 32"
+   }
+  ],
+  "Jigglypuff": [
+   {
+    "to": "Wigglytuff",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Ivysaur": [
+   {
+    "to": "Venusaur",
+    "how": "at Lv 36"
+   }
+  ],
+  "Inkay": [
+   {
+    "to": "Malamar",
+    "how": "at Lv 30"
+   }
+  ],
+  "Impidimp": [
+   {
+    "to": "Morgrem",
+    "how": "at Lv 27"
+   }
+  ],
+  "Houndour": [
+   {
+    "to": "Houndoom",
+    "how": "at Lv 23"
+   }
+  ],
+  "Horsea": [
+   {
+    "to": "Seadra",
+    "how": "at Lv 32"
+   }
+  ],
+  "Hoppip": [
+   {
+    "to": "Skiploom",
+    "how": "at Lv 16"
+   }
+  ],
+  "Skiploom": [
+   {
+    "to": "Jumpluff",
+    "how": "at Lv 27"
+   }
+  ],
+  "Hoothoot": [
+   {
+    "to": "Noctowl",
+    "how": "at Lv 16"
+   }
+  ],
+  "Hippopotas": [
+   {
+    "to": "Hippowdon",
+    "how": "at Lv 34"
+   }
+  ],
+  "Helioptile": [
+   {
+    "to": "Heliolisk",
+    "how": "with a Sun Stone"
+   }
+  ],
+  "Haunter": [
+   {
+    "to": "Gengar",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Hatenna": [
+   {
+    "to": "Hattrem",
+    "how": "at Lv 28"
+   }
+  ],
+  "Hattrem": [
+   {
+    "to": "Hatterene",
+    "how": "at Lv 42"
+   }
+  ],
+  "Gulpin": [
+   {
+    "to": "Swalot",
+    "how": "at Lv 26"
+   }
+  ],
+  "Grubbin": [
+   {
+    "to": "Charjabug",
+    "how": "at Lv 20"
+   }
+  ],
+  "Growlithe-Hisui": [
+   {
+    "to": "Arcanine-Hisui",
+    "how": "with a Fire Stone"
+   }
+  ],
+  "Growlithe": [
+   {
+    "to": "Arcanine",
+    "how": "with a Fire Stone"
+   }
+  ],
+  "Grovyle": [
+   {
+    "to": "Sceptile",
+    "how": "at Lv 36"
+   }
+  ],
+  "Grookey": [
+   {
+    "to": "Thwackey",
+    "how": "at Lv 16"
+   }
+  ],
+  "Grimer-Alola": [
+   {
+    "to": "Muk-Alola",
+    "how": "at Lv 40"
+   }
+  ],
+  "Grimer": [
+   {
+    "to": "Muk",
+    "how": "at Lv 40"
+   }
+  ],
+  "Greavard": [
+   {
+    "to": "Houndstone",
+    "how": "at Lv 30 (night)"
+   }
+  ],
+  "Graveler-Alola": [
+   {
+    "to": "Golem-Alola",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Graveler": [
+   {
+    "to": "Golem",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Gothita": [
+   {
+    "to": "Gothorita",
+    "how": "at Lv 28"
+   }
+  ],
+  "Gothorita": [
+   {
+    "to": "Gothitelle",
+    "how": "at Lv 36"
+   }
+  ],
+  "Gossifleur": [
+   {
+    "to": "Eldegoss",
+    "how": "at Lv 20"
+   }
+  ],
+  "Golett": [
+   {
+    "to": "Golurk",
+    "how": "at Lv 34"
+   }
+  ],
+  "Goldeen": [
+   {
+    "to": "Seaking",
+    "how": "at Lv 33"
+   }
+  ],
+  "Golbat": [
+   {
+    "to": "Crobat",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Glimmet": [
+   {
+    "to": "Glimmora",
+    "how": "at Lv 35"
+   }
+  ],
+  "Gligar": [
+   {
+    "to": "Gliscor",
+    "how": "with a Dusk Stone"
+   }
+  ],
+  "Glameow": [
+   {
+    "to": "Purugly",
+    "how": "at Lv 28"
+   }
+  ],
+  "Girafarig": [
+   {
+    "to": "Farigiraf",
+    "how": "on level up knowing Twin Beam"
+   },
+   {
+    "to": "Farigiraf",
+    "how": "at Lv 45"
+   }
+  ],
+  "Gimmighoul": [
+   {
+    "to": "Gholdengo",
+    "how": "at Lv 45"
+   }
+  ],
+  "Geodude-Alola": [
+   {
+    "to": "Graveler-Alola",
+    "how": "at Lv 23"
+   }
+  ],
+  "Geodude-A": [
+   {
+    "to": "Graveler-Alola",
+    "how": "at Lv 23"
+   }
+  ],
+  "Geodude": [
+   {
+    "to": "Graveler",
+    "how": "at Lv 23"
+   }
+  ],
+  "Gastly": [
+   {
+    "to": "Haunter",
+    "how": "at Lv 23"
+   }
+  ],
+  "Gabite": [
+   {
+    "to": "Garchomp",
+    "how": "at Lv 48"
+   }
+  ],
+  "Fuecoco": [
+   {
+    "to": "Crocalor",
+    "how": "at Lv 16"
+   }
+  ],
+  "Crocalor": [
+   {
+    "to": "Skeledirge",
+    "how": "at Lv 36"
+   }
+  ],
+  "Frogadier": [
+   {
+    "to": "Greninja",
+    "how": "at Lv 36"
+   }
+  ],
+  "Froakie": [
+   {
+    "to": "Frogadier",
+    "how": "at Lv 16"
+   }
+  ],
+  "Frillish": [
+   {
+    "to": "Jellicent",
+    "how": "at Lv 40"
+   }
+  ],
+  "Foongus": [
+   {
+    "to": "Amoonguss",
+    "how": "at Lv 36"
+   }
+  ],
+  "Fomantis": [
+   {
+    "to": "Lurantis",
+    "how": "at Lv 34 (day)"
+   }
+  ],
+  "Flittle": [
+   {
+    "to": "Espathra",
+    "how": "at Lv 34"
+   }
+  ],
+  "Fletchling": [
+   {
+    "to": "Fletchinder",
+    "how": "at Lv 17"
+   }
+  ],
+  "Fletchinder": [
+   {
+    "to": "Talonflame",
+    "how": "at Lv 35"
+   }
+  ],
+  "Flabébé": [
+   {
+    "to": "Floette",
+    "how": "at Lv 16"
+   }
+  ],
+  "Floette": [
+   {
+    "to": "Florges",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Finneon": [
+   {
+    "to": "Lumineon",
+    "how": "at Lv 23"
+   }
+  ],
+  "Finizen": [
+   {
+    "to": "Palafin",
+    "how": "at Lv 38"
+   }
+  ],
+  "Fidough": [
+   {
+    "to": "Dachsbun",
+    "how": "at Lv 26"
+   }
+  ],
+  "Ferroseed": [
+   {
+    "to": "Ferrothorn",
+    "how": "at Lv 40"
+   }
+  ],
+  "Fennekin": [
+   {
+    "to": "Braixen",
+    "how": "at Lv 16"
+   }
+  ],
+  "Braixen": [
+   {
+    "to": "Delphox",
+    "how": "at Lv 36"
+   }
+  ],
+  "Feebas-Sevii": [
+   {
+    "to": "Milotic-Sevii",
+    "how": "with a Prism Scale"
+   }
+  ],
+  "Feebas": [
+   {
+    "to": "Milotic",
+    "how": "with a Prism Scale"
+   }
+  ],
+  "Farfetch'd-Galar": [
+   {
+    "to": "Sirfetch’d",
+    "how": "at Lv 30"
+   }
+  ],
+  "Farfetch'd-G": [
+   {
+    "to": "Sirfetch’d",
+    "how": "at Lv 30"
+   }
+  ],
+  "Exeggcute": [
+   {
+    "to": "Exeggutor",
+    "how": "with a Leaf Stone"
+   },
+   {
+    "to": "Exeggutor-Alola",
+    "how": "with a Sun Stone"
+   }
+  ],
+  "Espurr": [
+   {
+    "to": "Meowstic",
+    "how": "at Lv 23 (male)"
+   },
+   {
+    "to": "Meowstic-F",
+    "how": "at Lv 23 (female)"
+   }
+  ],
+  "Elgyem": [
+   {
+    "to": "Beheeyem",
+    "how": "at Lv 34"
+   }
+  ],
+  "Elekid": [
+   {
+    "to": "Electabuzz",
+    "how": "at Lv 27"
+   }
+  ],
+  "Electrike": [
+   {
+    "to": "Manectric",
+    "how": "at Lv 26"
+   }
+  ],
+  "Electabuzz": [
+   {
+    "to": "Electivire",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Ekans": [
+   {
+    "to": "Arbok",
+    "how": "at Lv 22"
+   }
+  ],
+  "Eevee": [
+   {
+    "to": "Espeon",
+    "how": "on level up with high friendship (day)"
+   },
+   {
+    "to": "Umbreon",
+    "how": "on level up with high friendship (night)"
+   },
+   {
+    "to": "Flareon",
+    "how": "with a Fire Stone"
+   },
+   {
+    "to": "Jolteon",
+    "how": "with a ThunderStone"
+   },
+   {
+    "to": "Vaporeon",
+    "how": "with a Water Stone"
+   },
+   {
+    "to": "Leafeon",
+    "how": "with a Leaf Stone"
+   },
+   {
+    "to": "Glaceon",
+    "how": "with a Ice Stone"
+   },
+   {
+    "to": "Sylveon",
+    "how": "on level up with high friendship, knowing a Fairy-type move"
+   }
+  ],
+  "Dwebble": [
+   {
+    "to": "Crustle",
+    "how": "at Lv 34"
+   }
+  ],
+  "Dusclops": [
+   {
+    "to": "Dusknoir",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Duraludon": [
+   {
+    "to": "Archaludon",
+    "how": "at Lv 50"
+   }
+  ],
+  "Dunsparce": [
+   {
+    "to": "Dudunsparce",
+    "how": "on level up knowing Hyper Drill"
+   },
+   {
+    "to": "Dudunsparce",
+    "how": "at Lv 45"
+   }
+  ],
+  "Ducklett": [
+   {
+    "to": "Swanna",
+    "how": "at Lv 28"
+   }
+  ],
+  "Drowzee": [
+   {
+    "to": "Hypno",
+    "how": "at Lv 26"
+   }
+  ],
+  "Drilbur": [
+   {
+    "to": "Excadrill",
+    "how": "at Lv 31"
+   }
+  ],
+  "Drifloon": [
+   {
+    "to": "Drifblim",
+    "how": "at Lv 28"
+   }
+  ],
+  "Doduo-Sevii": [
+   {
+    "to": "Dodrio-Sevii",
+    "how": "at Lv 31"
+   }
+  ],
+  "Doduo": [
+   {
+    "to": "Dodrio",
+    "how": "at Lv 31"
+   }
+  ],
+  "Dipplin": [
+   {
+    "to": "Hydrapple",
+    "how": "at Lv 44"
+   }
+  ],
+  "Diglett-Alola": [
+   {
+    "to": "Dugtrio-Alola",
+    "how": "at Lv 22"
+   }
+  ],
+  "Diglett": [
+   {
+    "to": "Dugtrio",
+    "how": "at Lv 22"
+   }
+  ],
+  "Dewpider": [
+   {
+    "to": "Araquanid",
+    "how": "at Lv 22"
+   }
+  ],
+  "Dewott": [
+   {
+    "to": "Samurott-Hisui",
+    "how": "at Lv 36 (night)"
+   },
+   {
+    "to": "Samurott",
+    "how": "at Lv 36 (day)"
+   }
+  ],
+  "Deerling-Winter": [
+   {
+    "to": "Sawsbuck",
+    "how": "at Lv 28"
+   }
+  ],
+  "Deerling-Summer": [
+   {
+    "to": "Sawsbuck",
+    "how": "at Lv 28"
+   }
+  ],
+  "Deerling-Autumn": [
+   {
+    "to": "Sawsbuck",
+    "how": "at Lv 28"
+   }
+  ],
+  "Deerling": [
+   {
+    "to": "Sawsbuck",
+    "how": "at Lv 28"
+   }
+  ],
+  "Darumaka": [
+   {
+    "to": "Darmanitan",
+    "how": "at Lv 35"
+   }
+  ],
+  "Dartrix": [
+   {
+    "to": "Decidueye",
+    "how": "at Lv 36 (night)"
+   },
+   {
+    "to": "Decidueye-Hisui",
+    "how": "at Lv 36 (day)"
+   }
+  ],
+  "Cyndaquil": [
+   {
+    "to": "Quilava",
+    "how": "at Lv 16"
+   }
+  ],
+  "Quilava": [
+   {
+    "to": "Typhlosion-Hisui",
+    "how": "at Lv 36 (night)"
+   },
+   {
+    "to": "Typhlosion",
+    "how": "at Lv 36 (day)"
+   }
+  ],
+  "Cutiefly": [
+   {
+    "to": "Ribombee",
+    "how": "at Lv 25"
+   }
+  ],
+  "Cufant": [
+   {
+    "to": "Copperajah",
+    "how": "at Lv 34"
+   }
+  ],
+  "Cubone": [
+   {
+    "to": "Marowak",
+    "how": "at Lv 28 (day)"
+   },
+   {
+    "to": "Marowak-Alola",
+    "how": "at Lv 28 (night)"
+   }
+  ],
+  "Cubchoo": [
+   {
+    "to": "Beartic",
+    "how": "at Lv 36"
+   }
+  ],
+  "Croagunk": [
+   {
+    "to": "Toxicroak",
+    "how": "at Lv 37"
+   }
+  ],
+  "Cranidos": [
+   {
+    "to": "Rampardos",
+    "how": "at Lv 30"
+   }
+  ],
+  "Crabrawler": [
+   {
+    "to": "Crabominable",
+    "how": "at Lv 30"
+   }
+  ],
+  "Cottonee": [
+   {
+    "to": "Whimsicott",
+    "how": "with a Sun Stone"
+   }
+  ],
+  "Cosmog": [
+   {
+    "to": "Cosmoem",
+    "how": "at Lv 43"
+   }
+  ],
+  "Cosmoem": [
+   {
+    "to": "Solgaleo",
+    "how": "at Lv 64 (day)"
+   },
+   {
+    "to": "Lunala",
+    "how": "at Lv 64 (night)"
+   }
+  ],
+  "Corsola-Galar": [
+   {
+    "to": "Cursola",
+    "how": "at Lv 38"
+   }
+  ],
+  "Corphish": [
+   {
+    "to": "Crawdaunt",
+    "how": "at Lv 28"
+   }
+  ],
+  "Combee": [
+   {
+    "to": "Vespiquen",
+    "how": "at Lv 21 (female)"
+   }
+  ],
+  "Clobbopus": [
+   {
+    "to": "Grapploct",
+    "how": "on level up knowing Taunt"
+   },
+   {
+    "to": "Grapploct",
+    "how": "at Lv 36"
+   }
+  ],
+  "Clefairy": [
+   {
+    "to": "Clefable",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Clauncher-Sevii": [
+   {
+    "to": "Clawitzer-Sevii",
+    "how": "at Lv 34"
+   }
+  ],
+  "Clauncher": [
+   {
+    "to": "Clawitzer",
+    "how": "at Lv 34"
+   }
+  ],
+  "Clamperl": [
+   {
+    "to": "Huntail",
+    "how": "with a Water Stone"
+   },
+   {
+    "to": "Gorebyss",
+    "how": "with a Sun Stone"
+   }
+  ],
+  "Chingling": [
+   {
+    "to": "Chimecho",
+    "how": "on level up with high friendship (night)"
+   }
+  ],
+  "Chinchou": [
+   {
+    "to": "Lanturn",
+    "how": "at Lv 27"
+   }
+  ],
+  "Chimchar": [
+   {
+    "to": "Monferno",
+    "how": "at Lv 16"
+   }
+  ],
+  "Monferno": [
+   {
+    "to": "Infernape",
+    "how": "at Lv 36"
+   }
+  ],
+  "Chikorita": [
+   {
+    "to": "Bayleef",
+    "how": "at Lv 16"
+   }
+  ],
+  "Bayleef": [
+   {
+    "to": "Meganium",
+    "how": "at Lv 32"
+   }
+  ],
+  "Chewtle": [
+   {
+    "to": "Drednaw",
+    "how": "at Lv 22"
+   }
+  ],
+  "Chespin": [
+   {
+    "to": "Quilladin",
+    "how": "at Lv 16"
+   }
+  ],
+  "Quilladin": [
+   {
+    "to": "Chesnaught",
+    "how": "at Lv 36"
+   }
+  ],
+  "Cherubi": [
+   {
+    "to": "Cherrim",
+    "how": "at Lv 25"
+   }
+  ],
+  "Charmeleon": [
+   {
+    "to": "Charizard",
+    "how": "at Lv 36"
+   }
+  ],
+  "Charmander": [
+   {
+    "to": "Charmeleon",
+    "how": "at Lv 16"
+   }
+  ],
+  "Charjabug": [
+   {
+    "to": "Vikavolt",
+    "how": "with a ThunderStone"
+   }
+  ],
+  "Charcadet": [
+   {
+    "to": "Armarouge",
+    "how": "with a Sun Stone"
+   },
+   {
+    "to": "Ceruledge",
+    "how": "with a Moon Stone"
+   }
+  ],
+  "Chansey": [
+   {
+    "to": "Blissey",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Cetoddle": [
+   {
+    "to": "Cetitan",
+    "how": "with a Ice Stone"
+   }
+  ],
+  "Caterpie": [
+   {
+    "to": "Metapod",
+    "how": "at Lv 7"
+   }
+  ],
+  "Metapod": [
+   {
+    "to": "Butterfree",
+    "how": "at Lv 10"
+   }
+  ],
+  "Carvanha": [
+   {
+    "to": "Sharpedo",
+    "how": "at Lv 30"
+   }
+  ],
+  "Carkol": [
+   {
+    "to": "Coalossal",
+    "how": "at Lv 34"
+   }
+  ],
+  "Capsakid": [
+   {
+    "to": "Scovillain",
+    "how": "with a Fire Stone"
+   }
+  ],
+  "Cacnea": [
+   {
+    "to": "Cacturne",
+    "how": "at Lv 28"
+   }
+  ],
+  "Burmy-Trash": [
+   {
+    "to": "Wormadam-Trash",
+    "how": "at Lv 16 (female)"
+   },
+   {
+    "to": "Mothim",
+    "how": "at Lv 16 (male)"
+   }
+  ],
+  "Burmy-Sandy": [
+   {
+    "to": "Wormadam-Trash",
+    "how": "at Lv 16 (female)"
+   },
+   {
+    "to": "Mothim",
+    "how": "at Lv 16 (male)"
+   }
+  ],
+  "Burmy": [
+   {
+    "to": "Wormadam-Trash",
+    "how": "at Lv 16 (female)"
+   },
+   {
+    "to": "Mothim",
+    "how": "at Lv 16 (male)"
+   }
+  ],
+  "Bunnelby": [
+   {
+    "to": "Diggersby",
+    "how": "at Lv 20"
+   }
+  ],
+  "Buneary": [
+   {
+    "to": "Lopunny",
+    "how": "on level up with high friendship"
+   }
+  ],
+  "Bulbasaur": [
+   {
+    "to": "Ivysaur",
+    "how": "at Lv 16"
+   }
+  ],
+  "Buizel": [
+   {
+    "to": "Floatzel",
+    "how": "at Lv 26"
+   }
+  ],
+  "Budew": [
+   {
+    "to": "Roselia",
+    "how": "on level up with high friendship (day)"
+   }
+  ],
+  "Bronzor": [
+   {
+    "to": "Bronzong",
+    "how": "at Lv 33"
+   }
+  ],
+  "Brionne": [
+   {
+    "to": "Primarina",
+    "how": "at Lv 36"
+   }
+  ],
+  "Bramblin": [
+   {
+    "to": "Brambleghast",
+    "how": "at Lv 27"
+   }
+  ],
+  "Bounsweet": [
+   {
+    "to": "Steenee",
+    "how": "at Lv 18"
+   }
+  ],
+  "Steenee": [
+   {
+    "to": "Tsareena",
+    "how": "on level up knowing Stomp"
+   },
+   {
+    "to": "Tsareena",
+    "how": "at Lv 45"
+   }
+  ],
+  "Bonsly": [
+   {
+    "to": "Sudowoodo",
+    "how": "on level up knowing Mimic"
+   },
+   {
+    "to": "Sudowoodo",
+    "how": "at Lv 34"
+   }
+  ],
+  "Boldore": [
+   {
+    "to": "Gigalith",
+    "how": "with a Link Cable"
+   }
+  ],
+  "Blitzle-Sevii": [
+   {
+    "to": "Zebstrika-Sevii",
+    "how": "at Lv 27"
+   }
+  ],
+  "Blitzle": [
+   {
+    "to": "Zebstrika",
+    "how": "at Lv 27"
+   }
+  ],
+  "Blipbug": [
+   {
+    "to": "Dottler",
+    "how": "at Lv 10"
+   }
+  ],
+  "Dottler": [
+   {
+    "to": "Orbeetle",
+    "how": "at Lv 27"
+   }
+  ],
+  "Bisharp": [
+   {
+    "to": "Kingambit",
+    "how": "at Lv 50"
+   }
+  ],
+  "Binacle": [
+   {
+    "to": "Barbaracle",
+    "how": "at Lv 35"
+   }
+  ],
+  "Bidoof": [
+   {
+    "to": "Bibarel",
+    "how": "at Lv 15"
+   }
+  ],
+  "Bergmite": [
+   {
+    "to": "Avalugg-Hisui",
+    "how": "with a Ice Stone"
+   },
+   {
+    "to": "Avalugg",
+    "how": "at Lv 36"
+   }
+  ],
+  "Bellsprout": [
+   {
+    "to": "Weepinbell",
+    "how": "at Lv 21"
+   }
+  ],
+  "Weepinbell": [
+   {
+    "to": "Victreebel",
+    "how": "with a Leaf Stone"
+   }
+  ],
+  "Basculin-Blue": [
+   {
+    "to": "Basculegion",
+    "how": "at Lv 44 (male)"
+   },
+   {
+    "to": "Basculegion-F",
+    "how": "at Lv 44 (female)"
+   }
+  ],
+  "Basculin": [
+   {
+    "to": "Basculegion",
+    "how": "at Lv 44 (male)"
+   },
+   {
+    "to": "Basculegion-F",
+    "how": "at Lv 44 (female)"
+   }
+  ],
+  "Barboach": [
+   {
+    "to": "Whiscash",
+    "how": "at Lv 30"
+   }
+  ],
+  "Baltoy": [
+   {
+    "to": "Claydol",
+    "how": "at Lv 36"
+   }
+  ],
+  "Axew": [
+   {
+    "to": "Fraxure",
+    "how": "at Lv 36"
+   }
+  ],
+  "Fraxure": [
+   {
+    "to": "Haxorus",
+    "how": "at Lv 44"
+   }
+  ],
+  "Arrokuda": [
+   {
+    "to": "Barraskewda",
+    "how": "at Lv 26"
+   }
+  ],
+  "Aron": [
+   {
+    "to": "Lairon",
+    "how": "at Lv 32"
+   }
+  ],
+  "Lairon": [
+   {
+    "to": "Aggron",
+    "how": "at Lv 42"
+   }
+  ],
+  "Archen": [
+   {
+    "to": "Archeops",
+    "how": "at Lv 34"
+   }
+  ],
+  "Applin": [
+   {
+    "to": "Flapple",
+    "how": "with a Leaf Stone"
+   },
+   {
+    "to": "Appletun",
+    "how": "with a Sun Stone"
+   },
+   {
+    "to": "Dipplin",
+    "how": "at Lv 30"
+   }
+  ],
+  "Any Cap Pikachu": [
+   {
+    "to": "Raichu",
+    "how": "with a ThunderStone"
+   },
+   {
+    "to": "Raichu-Alola",
+    "how": "with a Shiny Stone"
+   }
+  ],
+  "Anorith": [
+   {
+    "to": "Armaldo",
+    "how": "at Lv 30"
+   }
+  ],
+  "Amaura": [
+   {
+    "to": "Aurorus",
+    "how": "at Lv 39 (night)"
+   }
+  ],
+  "Aipom": [
+   {
+    "to": "Ambipom",
+    "how": "on level up knowing Double Hit"
+   },
+   {
+    "to": "Ambipom",
+    "how": "at Lv 34"
+   }
+  ],
+  "Abra": [
+   {
+    "to": "Kadabra",
+    "how": "at Lv 16"
+   }
+  ],
+  "Kadabra": [
+   {
+    "to": "Alakazam",
+    "how": "with a Link Cable"
+   }
+  ],
+  "\u0010Sandile": [
+   {
+    "to": "Krokorok",
+    "how": "at Lv 28"
+   }
   ]
  }
 }
