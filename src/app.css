@@ -560,7 +560,8 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 @media (max-width: 950px) {
   .readiness {
-    grid-template-columns: 1fr;
+    /* minmax(0,) so the boss select's long options can't stretch the column */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "ph" "pc" "bh" "bc" "mu";
   }
 }
@@ -578,7 +579,9 @@ tr.pickable:hover td { background: var(--bg3); }
   font-size: 13px;
   color: var(--muted);
   flex: 1;
+  min-width: 0;
 }
+.boss-picker-label select { width: 100%; min-width: 0; }
 .readiness-preview {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -807,6 +810,21 @@ tr.pickable:hover td { background: var(--bg3); }
   .readiness-head { flex-wrap: wrap; }
   .matchup-toolbar { flex-wrap: wrap; }
   .attacker-label { min-width: 0; flex: 1 1 100%; }
+
+  /* readiness matchup: move name above its target grid, attacker as a
+   * horizontal strip instead of a tall full-width column */
+  .matchup-row { flex-direction: column; align-items: stretch; gap: 6px; }
+  .matchup-move { flex: none; }
+  .matchup-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .matchup-attacker {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 3px;
+    align-items: center;
+  }
+  .matchup-attacker > * { grid-column: 2; }
+  .matchup-attacker > :first-child { grid-column: 1; grid-row: 1 / span 3; }
 
   .dialog { width: min(340px, calc(100vw - 24px)); }
 }
