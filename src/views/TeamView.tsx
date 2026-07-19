@@ -504,6 +504,7 @@ function ReadinessView({
       </div>
       {boss && party.length > 0 && (
         <MoveMatchup
+          runId={run.id}
           party={party}
           boss={boss}
           levelCap={levelCap}
@@ -518,19 +519,29 @@ function ReadinessView({
 /** one row per move of the chosen party mon; each row previews the damage
  * against every Pokémon of the selected boss as an HP bar */
 function MoveMatchup({
+  runId,
   party,
   boss,
   levelCap,
   weather,
   terrain,
 }: {
+  runId: string;
   party: Entry[];
   boss: Boss;
   levelCap?: number;
   weather: string;
   terrain: string;
 }) {
-  const [sel, setSel] = useState("");
+  // remember the last attacker per run, like the boss selection
+  const storageKey = `rr-tracker.readinessAttacker.${runId}`;
+  const [sel, setSel] = useState(
+    () => localStorage.getItem(storageKey) ?? "",
+  );
+  const select = (v: string) => {
+    setSel(v);
+    localStorage.setItem(storageKey, v);
+  };
   const active = party.find(([id]) => id === sel) ?? party[0];
   if (!active) return null;
   const [activeId, mon] = active;
@@ -559,7 +570,7 @@ function MoveMatchup({
       <div className="matchup-toolbar">
         <label className="boss-picker-label attacker-label">
           Attacker
-          <select value={activeId} onChange={(e) => setSel(e.target.value)}>
+          <select value={activeId} onChange={(e) => select(e.target.value)}>
             {party.map(([id, e]) => (
               <option key={id} value={id}>
                 {e.nickname ? `${e.nickname} (${e.species})` : e.species}
