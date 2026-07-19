@@ -734,16 +734,7 @@ tr.pickable:hover td { background: var(--bg3); }
 
 /* ---- death notes ---- */
 
-.death-summary { margin-top: 3px; }
-.death-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.death-tag {
-  font-size: 11px;
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: #40261a;
-  color: #ffab7a;
-}
-.death-note { font-size: 12.5px; white-space: pre-line; margin-top: 3px; }
+.notes-marked { border-color: var(--fainted); color: #ffab7a; }
 .death-editor {
   background: var(--bg);
   border: 1px solid var(--line);

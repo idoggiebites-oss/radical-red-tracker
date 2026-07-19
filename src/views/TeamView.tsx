@@ -319,7 +319,15 @@ export function TeamView({
         {...sectionShared}
         actions={(id) => (
           <>
-            <button onClick={() => setNotesOpen(notesOpen === id ? null : id)}>
+            <button
+              className={
+                (run.encounters[id]?.deathTags?.length ?? 0) > 0 ||
+                run.encounters[id]?.deathNote
+                  ? "notes-marked"
+                  : undefined
+              }
+              onClick={() => setNotesOpen(notesOpen === id ? null : id)}
+            >
               Notes
             </button>
             <button
@@ -1105,23 +1113,6 @@ function Section({
                     )}
                   </div>
                 )}
-                {e.status === "fainted" &&
-                  ((e.deathTags?.length ?? 0) > 0 || e.deathNote) && (
-                    <div className="death-summary">
-                      {e.deathTags && e.deathTags.length > 0 && (
-                        <div className="death-tags">
-                          {e.deathTags.map((t) => (
-                            <span key={t} className="death-tag">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      {e.deathNote && (
-                        <div className="death-note muted">{e.deathNote}</div>
-                      )}
-                    </div>
-                  )}
                 <div className="ko-counter">
                   <span className="ko-label" title="Enemy Pokémon knocked out by this one">
                     KOs
