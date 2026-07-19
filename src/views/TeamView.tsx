@@ -523,6 +523,7 @@ function ReadinessView({
             boss={boss}
             levelCap={levelCap}
             caught={caught}
+            hardcore={run.mode === "hardcore"}
           />
         ) : (
           <p className="muted">Pick a boss team to check your party against.</p>
@@ -712,10 +713,12 @@ function BossPreview({
   boss,
   levelCap,
   caught,
+  hardcore,
 }: {
   boss: Boss;
   levelCap?: number;
   caught: CaughtMon[];
+  hardcore?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
@@ -751,6 +754,7 @@ function BossPreview({
               battleEffect={boss.battleEffect}
               levelCap={levelCap}
               caught={caught}
+              hardcore={hardcore}
             />
           )}
         </div>

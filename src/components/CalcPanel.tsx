@@ -74,12 +74,15 @@ export function CalcPanel({
   battleEffect,
   levelCap,
   caught = [],
+  hardcore = false,
   onClose,
 }: {
   mon: BossMon;
   battleEffect: string;
   levelCap?: number;
   caught?: CaughtMon[];
+  /** hardcore/restricted mode disables player EVs in-game */
+  hardcore?: boolean;
   onClose: () => void;
 }) {
   const parsedLevel = parseInt(mon.level, 10);
@@ -146,6 +149,11 @@ export function CalcPanel({
 
   const playerAbilities = abilitiesFor(cfg.species);
   const playerStats = cfg.species ? calcBaseStats(cfg.species) : null;
+  // ignore any saved EV spread in hardcore without clearing the stored cfg
+  const calcCfg = useMemo(
+    () => (hardcore ? { ...cfg, evs: {} } : cfg),
+    [cfg, hardcore],
+  );
 
   const fieldOpts = useMemo(
     () => ({
@@ -158,13 +166,13 @@ export function CalcPanel({
   const bossUnknown = resolveSpecies(mon.species) === null;
   const results = useMemo(() => {
     const boss = buildBossPokemon(mon, bossLevel);
-    const player = cfg.species ? buildPlayerPokemon(cfg) : null;
+    const player = calcCfg.species ? buildPlayerPokemon(calcCfg) : null;
     if (!boss || !player) return null;
     const incoming = calcMoves(boss, player, mon.moves, fieldOpts);
     const outgoing = calcMoves(
       player,
       boss,
-      cfg.moves.filter((m) => m.trim()),
+      calcCfg.moves.filter((m) => m.trim()),
       fieldOpts,
     );
     return {
@@ -173,7 +181,7 @@ export function CalcPanel({
       bossSpeed: effectiveSpeed(boss, fieldOpts),
       playerSpeed: effectiveSpeed(player, fieldOpts),
     };
-  }, [mon, bossLevel, cfg, fieldOpts]);
+  }, [mon, bossLevel, calcCfg, fieldOpts]);
 
   return (
     <div className="dialog-backdrop" onClick={onClose}>
@@ -322,8 +330,8 @@ export function CalcPanel({
               </div>
             )}
             <NatureLine cfg={cfg} />
-            <ModifierLine cfg={cfg} fieldOpts={fieldOpts} />
-            <TotalsWithBoosts cfg={cfg} fieldOpts={fieldOpts} update={update} />
+            <ModifierLine cfg={calcCfg} fieldOpts={fieldOpts} />
+            <TotalsWithBoosts cfg={calcCfg} fieldOpts={fieldOpts} update={update} />
             <div className="calc-row evs">
               {Object.keys(cfg.ivs ?? {}).map((k) => (
                 <label key={k}>
@@ -345,28 +353,30 @@ export function CalcPanel({
                 </label>
               ))}
             </div>
-            <div className="calc-row evs">
-              {Object.keys(cfg.evs).map((k) => (
-                <label key={k}>
-                  {k} EV
-                  <input
-                    type="number"
-                    min={0}
-                    max={252}
-                    step={4}
-                    value={cfg.evs[k]}
-                    onChange={(e) =>
-                      update({
-                        evs: {
-                          ...cfg.evs,
-                          [k]: Math.max(0, Math.min(252, parseInt(e.target.value, 10) || 0)),
-                        },
-                      })
-                    }
-                  />
-                </label>
-              ))}
-            </div>
+            {!hardcore && (
+              <div className="calc-row evs">
+                {Object.keys(cfg.evs).map((k) => (
+                  <label key={k}>
+                    {k} EV
+                    <input
+                      type="number"
+                      min={0}
+                      max={252}
+                      step={4}
+                      value={cfg.evs[k]}
+                      onChange={(e) =>
+                        update({
+                          evs: {
+                            ...cfg.evs,
+                            [k]: Math.max(0, Math.min(252, parseInt(e.target.value, 10) || 0)),
+                          },
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+              </div>
+            )}
             <div className="calc-row">
               {cfg.moves.map((m, i) => (
                 <input

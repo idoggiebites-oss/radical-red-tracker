@@ -81,6 +81,7 @@ export function BossesView({
           levelCap={levelCap}
           caught={caught}
           rivalStarter={rivalStarter}
+          hardcore={mode === "hardcore"}
         />
       )}
     </div>
@@ -158,6 +159,7 @@ function BossTeams({
   levelCap,
   caught,
   rivalStarter,
+  hardcore,
 }: {
   modeData: BossMode;
   category: string;
@@ -165,6 +167,7 @@ function BossTeams({
   levelCap?: number;
   caught?: CaughtMon[];
   rivalStarter?: string | null;
+  hardcore?: boolean;
 }) {
   const q = filter.trim().toLowerCase();
   const cat =
@@ -192,7 +195,13 @@ function BossTeams({
         </p>
       )}
       {bosses.map((b, i) => (
-        <BossCard key={i} boss={b} levelCap={levelCap} caught={caught} />
+        <BossCard
+          key={i}
+          boss={b}
+          levelCap={levelCap}
+          caught={caught}
+          hardcore={hardcore}
+        />
       ))}
       {bosses.length === 0 && <p className="muted">No bosses match.</p>}
     </div>
@@ -203,10 +212,12 @@ function BossCard({
   boss,
   levelCap,
   caught,
+  hardcore,
 }: {
   boss: Boss;
   levelCap?: number;
   caught?: CaughtMon[];
+  hardcore?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -252,6 +263,7 @@ function BossCard({
                 battleEffect={boss.battleEffect}
                 levelCap={levelCap}
                 caught={caught}
+                hardcore={hardcore}
               />
             ))}
           </div>
