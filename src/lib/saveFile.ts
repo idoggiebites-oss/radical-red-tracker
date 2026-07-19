@@ -6,6 +6,8 @@
  * +0xFFC). The most recent copy of sector 0 holds trainer info and the
  * randomizer option flags; sector 4 holds game mode flags. */
 
+import type { Run } from "../types";
+import { SAVE_FILE_FEATURE } from "./featureFlags";
 import { CHARSET } from "./saveCharset";
 
 export interface SaveInfo {
@@ -90,4 +92,16 @@ export function readSaveFile(buffer: ArrayBuffer): SaveInfo | null {
 
 export function hasSpeciesRandomizer(info: SaveInfo | undefined | null): boolean {
   return !!info && (info.random.normalSpecies || info.random.scaledSpecies);
+}
+
+/** manual toggle on the run, or (behind the save-file flag) detected from
+ * the uploaded save */
+export function speciesRandomized(run: Run | null): boolean {
+  if (run?.randomizer?.species) return true;
+  return SAVE_FILE_FEATURE && !!run && hasSpeciesRandomizer(run.saveInfo);
+}
+
+export function abilitiesRandomized(run: Run | null): boolean {
+  if (run?.randomizer?.abilities) return true;
+  return SAVE_FILE_FEATURE && !!run?.saveInfo?.random.abilities;
 }

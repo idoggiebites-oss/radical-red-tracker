@@ -3,6 +3,7 @@ import type { Boss, BossMode, GameMode, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
 import { type CaughtMon } from "../components/CalcPanel";
+import { abilitiesRandomized } from "../lib/saveFile";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import { nextLevelCap } from "../lib/levelCap";
 import { ALL_TYPES, defensiveProfile, typeColor } from "../lib/effectiveness";
@@ -82,6 +83,7 @@ export function BossesView({
           caught={caught}
           rivalStarter={rivalStarter}
           hardcore={mode === "hardcore"}
+          anyAbility={abilitiesRandomized(run)}
         />
       )}
     </div>
@@ -160,6 +162,7 @@ function BossTeams({
   caught,
   rivalStarter,
   hardcore,
+  anyAbility,
 }: {
   modeData: BossMode;
   category: string;
@@ -168,6 +171,7 @@ function BossTeams({
   caught?: CaughtMon[];
   rivalStarter?: string | null;
   hardcore?: boolean;
+  anyAbility?: boolean;
 }) {
   const q = filter.trim().toLowerCase();
   const cat =
@@ -201,6 +205,7 @@ function BossTeams({
           levelCap={levelCap}
           caught={caught}
           hardcore={hardcore}
+          anyAbility={anyAbility}
         />
       ))}
       {bosses.length === 0 && <p className="muted">No bosses match.</p>}
@@ -213,11 +218,13 @@ function BossCard({
   levelCap,
   caught,
   hardcore,
+  anyAbility,
 }: {
   boss: Boss;
   levelCap?: number;
   caught?: CaughtMon[];
   hardcore?: boolean;
+  anyAbility?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -264,6 +271,7 @@ function BossCard({
                 levelCap={levelCap}
                 caught={caught}
                 hardcore={hardcore}
+                anyAbility={anyAbility}
               />
             ))}
           </div>

@@ -203,6 +203,10 @@ export interface Run {
    * RR's species randomizer is a global 1-to-1 mapping, so one discovery
    * applies to every encounter slot of that species. */
   speciesMap?: Record<string, string>;
+  /** manual randomizer toggles (Routes toolbar; the hidden save-file import
+   * can also detect them): species unlocks the route "became…" mapping UI,
+   * abilities frees the ability inputs in builds and the calc */
+  randomizer?: { species?: boolean; abilities?: boolean };
   /** lab ball taken: 0 left/grass · 1 middle/water · 2 right/fire. The
    * position decides the rival's counterpick even when the species are a
    * different region's trio or randomized. */

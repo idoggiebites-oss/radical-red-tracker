@@ -6,6 +6,7 @@ import { MonCard, SpeciesDefenses } from "../components/MonCard";
 import { type CaughtMon } from "../components/CalcPanel";
 import { TypeBadges, abilitiesFor, typesFor } from "../components/TypeBadges";
 import { isNoItem } from "../lib/itemSprites";
+import { abilitiesRandomized } from "../lib/saveFile";
 import { nextLevelCap } from "../lib/levelCap";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import {
@@ -155,6 +156,8 @@ export function TeamView({
     }));
   };
 
+  const anyAbility = abilitiesRandomized(run);
+
   const sectionShared = {
     buildOpen,
     setBuildOpen,
@@ -163,6 +166,7 @@ export function TeamView({
     evolveOpen,
     setEvolveOpen,
     setSpecies,
+    anyAbility,
   };
 
   const toolbar = (
@@ -360,9 +364,11 @@ function PartyStats({ species }: { species: string }) {
 function PartyPreview({
   party,
   setBuild,
+  anyAbility,
 }: {
   party: Entry[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
+  anyAbility?: boolean;
 }) {
   const [open, setOpen] = useState<string | null>(null);
   return (
@@ -414,6 +420,7 @@ function PartyPreview({
                 build={e.build ?? EMPTY_BUILD}
                 onChange={(b) => setBuild(locId, b)}
                 onClear={() => setBuild(locId, undefined)}
+                anyAbility={anyAbility}
               />
             </div>
           )}
@@ -514,7 +521,11 @@ function ReadinessView({
             No Pokémon in the party — promote some from the box.
           </p>
         )}
-        <PartyPreview party={party} setBuild={setBuild} />
+        <PartyPreview
+          party={party}
+          setBuild={setBuild}
+          anyAbility={abilitiesRandomized(run)}
+        />
       </div>
       <div className="readiness-col col-boss">
         {boss ? (
@@ -524,6 +535,7 @@ function ReadinessView({
             levelCap={levelCap}
             caught={caught}
             hardcore={run.mode === "hardcore"}
+            anyAbility={abilitiesRandomized(run)}
           />
         ) : (
           <p className="muted">Pick a boss team to check your party against.</p>
@@ -714,11 +726,13 @@ function BossPreview({
   levelCap,
   caught,
   hardcore,
+  anyAbility,
 }: {
   boss: Boss;
   levelCap?: number;
   caught: CaughtMon[];
   hardcore?: boolean;
+  anyAbility?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
@@ -755,6 +769,7 @@ function BossPreview({
               levelCap={levelCap}
               caught={caught}
               hardcore={hardcore}
+              anyAbility={anyAbility}
             />
           )}
         </div>
@@ -768,11 +783,14 @@ function BuildEditor({
   build,
   onChange,
   onClear,
+  anyAbility,
 }: {
   species: string;
   build: MonBuild;
   onChange: (build: MonBuild) => void;
   onClear: () => void;
+  /** ability randomizer active: accept any ability, not just legal ones */
+  anyAbility?: boolean;
 }) {
   const legalAbilities = abilitiesFor(species);
   return (
@@ -787,7 +805,7 @@ function BuildEditor({
             <option key={n}>{n}</option>
           ))}
         </select>
-        {legalAbilities.length > 0 ? (
+        {legalAbilities.length > 0 && !anyAbility ? (
           <select
             title="Ability"
             value={build.ability || legalAbilities[0]}
@@ -947,6 +965,7 @@ function Section({
   setEvolveOpen,
   setSpecies,
   canEvolve = true,
+  anyAbility,
   extraPanel,
 }: {
   title: string;
@@ -962,6 +981,7 @@ function Section({
   setEvolveOpen: (locId: string | null) => void;
   setSpecies: (locId: string, species: string) => void;
   canEvolve?: boolean;
+  anyAbility?: boolean;
   /** section-specific panel under a card (graveyard: death notes editor) */
   extraPanel?: (locId: string, e: Entry[1]) => React.ReactNode;
 }) {
@@ -1064,6 +1084,7 @@ function Section({
                 build={e.build ?? EMPTY_BUILD}
                 onChange={(b) => setBuild(locId, b)}
                 onClear={() => setBuild(locId, undefined)}
+                anyAbility={anyAbility}
               />
             )}
             {evolveOpen === locId && (

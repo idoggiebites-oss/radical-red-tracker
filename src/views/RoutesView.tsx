@@ -9,8 +9,7 @@ import type {
 } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
-import { hasSpeciesRandomizer } from "../lib/saveFile";
-import { SAVE_FILE_FEATURE } from "../lib/featureFlags";
+import { speciesRandomized } from "../lib/saveFile";
 import { STARTER_ID } from "../lib/storage";
 import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
 import {
@@ -55,8 +54,7 @@ export function RoutesView({
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState<string | null>(null);
 
-  const randomized =
-    SAVE_FILE_FEATURE && run != null && hasSpeciesRandomizer(run.saveInfo);
+  const randomized = speciesRandomized(run);
 
   const staticsMap = useMemo(() => staticsByLocation(data), [data]);
   // statics in areas without a route row (Seafoam, Navel Rock, postgame ...)
@@ -110,15 +108,56 @@ export function RoutesView({
           />
           Show post-game
         </label>
+        {run && (
+          <>
+            <label
+              className="checkbox"
+              title="Species randomizer: record what each route slot became"
+            >
+              <input
+                type="checkbox"
+                checked={!!run.randomizer?.species}
+                onChange={(e) =>
+                  updateRun((r) => ({
+                    ...r,
+                    randomizer: { ...r.randomizer, species: e.target.checked },
+                  }))
+                }
+              />
+              🎲 Species
+            </label>
+            <label
+              className="checkbox"
+              title="Ability randomizer: builds and the calc accept any ability"
+            >
+              <input
+                type="checkbox"
+                checked={!!run.randomizer?.abilities}
+                onChange={(e) =>
+                  updateRun((r) => ({
+                    ...r,
+                    randomizer: { ...r.randomizer, abilities: e.target.checked },
+                  }))
+                }
+              />
+              🎲 Abilities
+            </label>
+          </>
+        )}
         {run && <RouteStats run={run} />}
       </div>
 
       {randomized && (
         <div className="randomizer-banner">
           🎲 Species randomizer active
-          {run?.saveInfo?.random.scaledSpecies && " (scaled)"} for trainer{" "}
-          <strong>{run?.saveInfo?.trainerName || "?"}</strong> —{" "}
-          {Object.keys(run?.speciesMap ?? {}).length} mappings recorded. When
+          {run?.saveInfo?.random.scaledSpecies && " (scaled)"}
+          {run?.saveInfo && (
+            <>
+              {" "}
+              for trainer <strong>{run.saveInfo.trainerName || "?"}</strong>
+            </>
+          )}{" "}
+          — {Object.keys(run?.speciesMap ?? {}).length} mappings recorded. When
           you meet a randomized Pokémon, click its slot's{" "}
           <span className="map-hint">→ record</span> cell and enter what it
           became; the mapping applies to that species everywhere.

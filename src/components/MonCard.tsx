@@ -55,6 +55,7 @@ export function MonCard({
   levelCap,
   caught,
   hardcore,
+  anyAbility,
 }: {
   mon: BossMon;
   battleEffect: string;
@@ -62,6 +63,8 @@ export function MonCard({
   caught?: CaughtMon[];
   /** hardcore/restricted run: the calc hides player EV inputs */
   hardcore?: boolean;
+  /** ability randomizer active: the calc accepts any player ability */
+  anyAbility?: boolean;
 }) {
   const [calcOpen, setCalcOpen] = useState(false);
   return (
@@ -88,6 +91,7 @@ export function MonCard({
           levelCap={levelCap}
           caught={caught}
           hardcore={hardcore}
+          anyAbility={anyAbility}
           onClose={() => setCalcOpen(false)}
         />
       )}

@@ -75,6 +75,7 @@ export function CalcPanel({
   levelCap,
   caught = [],
   hardcore = false,
+  anyAbility = false,
   onClose,
 }: {
   mon: BossMon;
@@ -83,6 +84,8 @@ export function CalcPanel({
   caught?: CaughtMon[];
   /** hardcore/restricted mode disables player EVs in-game */
   hardcore?: boolean;
+  /** ability randomizer active: accept any ability, not just legal ones */
+  anyAbility?: boolean;
   onClose: () => void;
 }) {
   const parsedLevel = parseInt(mon.level, 10);
@@ -119,10 +122,12 @@ export function CalcPanel({
         } else {
           setImportedFrom("");
         }
-        // keep the ability legal for the chosen species
-        const legal = abilitiesFor(next.species);
-        if (legal.length > 0 && !legal.includes(next.ability)) {
-          next.ability = legal[0];
+        // keep the ability legal for the chosen species (unless randomized)
+        if (!anyAbility) {
+          const legal = abilitiesFor(next.species);
+          if (legal.length > 0 && !legal.includes(next.ability)) {
+            next.ability = legal[0];
+          }
         }
       }
       localStorage.setItem(CFG_KEY, JSON.stringify(next));
@@ -291,7 +296,7 @@ export function CalcPanel({
               </select>
             </div>
             <div className="calc-row">
-              {playerAbilities.length > 0 ? (
+              {playerAbilities.length > 0 && !anyAbility ? (
                 <select
                   title="Ability"
                   value={cfg.ability}

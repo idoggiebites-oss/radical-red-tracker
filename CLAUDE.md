@@ -77,8 +77,11 @@ NOT model Sturdy/Focus Sash, so we flag "survives at 1 HP" ourselves
   battle effect, MoveMatchup HP-bar damage grid).
 - Shared: `src/components/MonCard.tsx` (boss mon card + `SpeciesDefenses`),
   `CalcPanel.tsx` (full calculator dialog), `src/lib/levelCap.ts`.
-- Hidden feature: save-file upload + randomizer mapping behind
-  `SAVE_FILE_FEATURE=false` in `src/lib/featureFlags.ts`.
+- Randomizer: manual 🎲 toggles on the Routes toolbar (`run.randomizer`) —
+  species unlocks the route "became…" mapping UI, abilities frees ability
+  inputs in builds/calc (`speciesRandomized`/`abilitiesRandomized` in
+  `src/lib/saveFile.ts`). Hidden feature: save-file upload (which detects the
+  same flags) behind `SAVE_FILE_FEATURE=false` in `src/lib/featureFlags.ts`.
 
 ## Conventions & gotchas
 
