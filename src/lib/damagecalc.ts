@@ -251,6 +251,57 @@ export interface MatchupLine {
   error?: string;
 }
 
+/** "Highest Lv -3" / "Player Max Level" style boss levels scale off the
+ * player's highest level — at cap play that's the level cap. */
+export function defaultBossLevel(level: string, levelCap?: number): number {
+  const n = parseInt(level, 10);
+  if (!Number.isNaN(n)) return n;
+  if (levelCap) {
+    const m = level.match(/-\s*(\d+)/);
+    return levelCap - (m ? parseInt(m[1], 10) : 0);
+  }
+  return 50;
+}
+
+export interface MoveRange {
+  move: string;
+  minPercent: number;
+  maxPercent: number;
+  error?: string;
+}
+
+/** min–max damage of one move as % of the defender's max HP */
+export function calcMoveRange(
+  attacker: rr.Pokemon,
+  defender: rr.Pokemon,
+  docMove: string,
+  fieldOpts: rr.FieldOptions,
+): MoveRange | null {
+  const moveName = resolveMove(docMove);
+  if (!moveName) {
+    if (!docMove || docMove === "-") return null;
+    return { move: docMove, minPercent: 0, maxPercent: 0, error: "unknown move" };
+  }
+  try {
+    const result = rr.calculate(
+      GEN,
+      attacker,
+      defender,
+      new rr.Move(GEN, moveName),
+      new rr.Field(fieldOpts),
+    );
+    const [min, max] = result.range();
+    const hp = defender.maxHP();
+    return {
+      move: moveName,
+      minPercent: Math.round((min / hp) * 1000) / 10,
+      maxPercent: Math.round((max / hp) * 1000) / 10,
+    };
+  } catch {
+    return { move: moveName, minPercent: 0, maxPercent: 0, error: "calc failed" };
+  }
+}
+
 const EV_KEYS: Record<string, keyof rr.StatsTable> = {
   HP: "hp", ATK: "atk", DEF: "def", SPA: "spa", SPD: "spd", SPE: "spe",
 };

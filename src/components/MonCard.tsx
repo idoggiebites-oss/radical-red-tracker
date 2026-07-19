@@ -6,8 +6,15 @@ import { TypeBadges } from "./TypeBadges";
 import { CalcPanel, type CaughtMon } from "./CalcPanel";
 import { defensiveProfile, formatMult, typeColor } from "../lib/effectiveness";
 
-function MonDefenses({ mon }: { mon: BossMon }) {
-  const profile = defensiveProfile(mon.species, mon.ability);
+/** weak/resist/immune type chips for a species (+ defensive ability) */
+export function SpeciesDefenses({
+  species,
+  ability,
+}: {
+  species: string;
+  ability?: string;
+}) {
+  const profile = defensiveProfile(species, ability);
   const entries = Object.entries(profile);
   if (entries.length === 0) return null;
   const groups: { label: string; test: (m: number) => boolean }[] = [
@@ -108,7 +115,7 @@ export function MonCard({
           <li key={mv}>{mv}</li>
         ))}
       </ul>
-      <MonDefenses mon={mon} />
+      <SpeciesDefenses species={mon.species} ability={mon.ability} />
       {STAT_ORDER.some((s) => mon.baseStats[s]) && (
         <table className="stat-table">
           <thead>

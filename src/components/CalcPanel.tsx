@@ -15,6 +15,7 @@ import {
   calcBaseStats,
   calcMoves,
   computedStats,
+  defaultBossLevel,
   effectiveSpeed,
   fieldFromBattleEffect,
   resolveSpecies,
@@ -46,18 +47,6 @@ const DEFAULT_CFG: PlayerMonConfig = {
   boosts: { ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
   moves: ["", "", "", ""],
 };
-
-/** "Highest Lv -3" / "Player Max Level" style boss levels scale off the
- * player's highest level — at cap play that's the level cap. */
-function defaultBossLevel(level: string, levelCap?: number): number {
-  const n = parseInt(level, 10);
-  if (!Number.isNaN(n)) return n;
-  if (levelCap) {
-    const m = level.match(/-\s*(\d+)/);
-    return levelCap - (m ? parseInt(m[1], 10) : 0);
-  }
-  return 50;
-}
 
 function loadCfg(levelCap?: number): PlayerMonConfig {
   let cfg = DEFAULT_CFG;
