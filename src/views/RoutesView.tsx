@@ -156,6 +156,13 @@ export function RoutesView({
           updateRun={updateRun}
           randomized={randomized}
           statics={staticsMap[loc.id] ?? []}
+          staticsDefaultOpen={
+            showPostgame ||
+            (!!q &&
+              (staticsMap[loc.id] ?? []).some((ls) =>
+                ls.static.species.toLowerCase().includes(q),
+              ))
+          }
           open={open === loc.id}
           toggle={() => setOpen(open === loc.id ? null : loc.id)}
         />
@@ -321,6 +328,7 @@ function RouteRow({
   updateRun,
   randomized,
   statics = [],
+  staticsDefaultOpen = false,
   open,
   toggle,
 }: {
@@ -329,11 +337,18 @@ function RouteRow({
   updateRun: (fn: (run: Run) => Run) => void;
   randomized: boolean;
   statics?: LocatedStatic[];
+  /** expand the statics section without a click (post-game shown / filter hit) */
+  staticsDefaultOpen?: boolean;
   open: boolean;
   toggle: () => void;
 }) {
   const enc = run?.encounters[loc.id];
   const speciesMap = run?.speciesMap ?? {};
+  // statics start collapsed (mostly post-game roamers); a manual toggle wins
+  // over the default, and a tracked static keeps its status visible
+  const [staticsOpen, setStaticsOpen] = useState<boolean | null>(null);
+  const showStatics =
+    staticsOpen ?? (staticsDefaultOpen || statics.some((ls) => run?.encounters[ls.id]));
 
   const setMapping = (original: string, mapped: string) => {
     updateRun((r) => {
@@ -460,20 +475,28 @@ function RouteRow({
             )}
             {statics.length > 0 && (
               <div className="method-table statics-table">
-                <h4>Static / Legendary</h4>
-                <StaticsTable
-                  statics={statics}
-                  run={run}
-                  updateRun={updateRun}
-                  onPickRoute={
-                    run
-                      ? (sp) =>
-                          setEncounter({
-                            species: randomized ? (speciesMap[sp] ?? sp) : sp,
-                          })
-                      : undefined
-                  }
-                />
+                <button
+                  className="statics-toggle"
+                  onClick={() => setStaticsOpen(!showStatics)}
+                >
+                  {showStatics ? "▾" : "▸"} Static / Legendary{" "}
+                  <span className="count">({statics.length})</span>
+                </button>
+                {showStatics && (
+                  <StaticsTable
+                    statics={statics}
+                    run={run}
+                    updateRun={updateRun}
+                    onPickRoute={
+                      run
+                        ? (sp) =>
+                            setEncounter({
+                              species: randomized ? (speciesMap[sp] ?? sp) : sp,
+                            })
+                        : undefined
+                    }
+                  />
+                )}
               </div>
             )}
             {(Object.keys(METHOD_LABELS) as MethodKey[]).map((m) => {

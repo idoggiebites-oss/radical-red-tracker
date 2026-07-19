@@ -532,6 +532,19 @@ tr.pickable:hover td { background: var(--bg3); }
 
 /* ---- static encounters on routes ---- */
 
+.statics-toggle {
+  display: block;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 4px 0 6px;
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.statics-toggle .count { color: var(--muted); font-weight: 400; }
 .statics-table .static-info {
   font-size: 12px;
   max-width: 420px;
