@@ -762,3 +762,51 @@ tr.pickable:hover td { background: var(--bg3); }
 .totals-cell .k { font-size: 10.5px; color: var(--muted); font-weight: 600; }
 .total-val { font-weight: 700; font-size: 14px; }
 .totals-cell select { width: 100%; padding: 1px 2px; font-size: 11.5px; text-align: center; }
+
+/* ---- mobile ---- */
+
+@media (max-width: 640px) {
+  .app { padding: 0 10px 40px; }
+
+  /* ios safari zooms the page when focusing inputs under 16px */
+  input, select { font-size: 16px; }
+
+  .topbar { gap: 8px 12px; padding: 10px 0; }
+  .cap-pill { font-size: 13px; padding: 3px 12px; }
+  .cap-next { display: block; margin-left: 0; }
+  .run-controls { margin-left: 0; width: 100%; }
+  .run-controls select { flex: 1; min-width: 0; }
+
+  .tabs { width: 100%; }
+  .tab { flex: 1; padding: 8px 4px; text-align: center; }
+
+  .toolbar { gap: 8px; }
+  .search { flex-basis: 100%; max-width: none; }
+  .route-stats { margin-left: 0; }
+
+  /* segmented controls clip when they can't fit; wrap them into chips */
+  .segmented { flex-wrap: wrap; gap: 6px; border: none; border-radius: 0; overflow: visible; }
+  .segmented button { border: 1px solid var(--line); border-radius: 999px; }
+  .segmented button.active { border-color: var(--accent2); }
+
+  /* wide tables scroll instead of pushing the page sideways */
+  .ref-table, .raid-drops { display: block; overflow-x: auto; }
+  .statics-table { overflow-x: auto; }
+  .statics-table .static-info { max-width: none; }
+  .static-actions { white-space: normal; }
+
+  .route-head { flex-wrap: wrap; gap: 4px 10px; padding: 10px; }
+  .route-body { padding: 10px; }
+
+  .order-row { flex-wrap: wrap; gap: 4px 10px; }
+  .order-name { min-width: 0; }
+  .order-loc { flex: 1 1 100%; }
+  .boss-head { flex-wrap: wrap; gap: 6px 10px; padding: 10px; }
+  .boss-preview { margin-left: 0; }
+
+  .readiness-head { flex-wrap: wrap; }
+  .matchup-toolbar { flex-wrap: wrap; }
+  .attacker-label { min-width: 0; flex: 1 1 100%; }
+
+  .dialog { width: min(340px, calc(100vw - 24px)); }
+}
