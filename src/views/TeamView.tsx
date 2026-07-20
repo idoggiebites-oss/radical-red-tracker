@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { Boss, BossMode, BossMon, MonBuild, Run } from "../types";
+import type { Boss, BossMode, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { MonCard, SpeciesDefenses } from "../components/MonCard";
@@ -610,7 +610,7 @@ function ReadinessView({
         )}
       </div>
       {boss && party.length > 0 && (
-        <MoveMatchup
+        <MatchupSection
           runId={run.id}
           party={party}
           boss={boss}
@@ -623,9 +623,19 @@ function ReadinessView({
   );
 }
 
-/** one row per move of the chosen party mon; each row previews the damage
- * against every Pokémon of the selected boss as an HP bar */
-function MoveMatchup({
+interface MatchupShared {
+  crit: boolean;
+  setCrit: (fn: (c: boolean) => boolean) => void;
+  myStatus: string;
+  setMyStatus: (s: string) => void;
+  foeStatus: string;
+  setFoeStatus: (s: string) => void;
+}
+
+/** the matchup area below the readiness divider: "You vs them" (your moves
+ * against the boss team) and "Them vs you" (a boss Pokémon's moves against
+ * your party). Status/crit settings carry across the two tabs. */
+function MatchupSection({
   runId,
   party,
   boss,
@@ -640,12 +650,113 @@ function MoveMatchup({
   weather: string;
   terrain: string;
 }) {
+  const dirKey = `rr-tracker.readinessMatchupDir.${runId}`;
+  const [dir, setDirState] = useState<"you" | "them">(() =>
+    localStorage.getItem(dirKey) === "them" ? "them" : "you",
+  );
+  const setDir = (d: "you" | "them") => {
+    setDirState(d);
+    localStorage.setItem(dirKey, d);
+  };
+  const [crit, setCrit] = useState(false);
+  const [myStatus, setMyStatus] = useState("");
+  const [foeStatus, setFoeStatus] = useState("");
+  const shared: MatchupShared = {
+    crit,
+    setCrit,
+    myStatus,
+    setMyStatus,
+    foeStatus,
+    setFoeStatus,
+  };
+  const props = { runId, party, boss, levelCap, weather, terrain, ...shared };
+  return (
+    <div className="matchup">
+      <div className="segmented matchup-dir">
+        <button
+          className={dir === "you" ? "active" : ""}
+          onClick={() => setDir("you")}
+        >
+          You vs them
+        </button>
+        <button
+          className={dir === "them" ? "active" : ""}
+          onClick={() => setDir("them")}
+        >
+          Them vs you
+        </button>
+      </div>
+      {dir === "you" ? <MoveMatchup {...props} /> : <FoeMatchup {...props} />}
+    </div>
+  );
+}
+
+/** the shared status pickers and crit toggle of both matchup tabs */
+function MatchupControls({
+  crit,
+  setCrit,
+  myStatus,
+  setMyStatus,
+  foeStatus,
+  setFoeStatus,
+}: MatchupShared) {
+  return (
+    <>
+      <label className="boss-picker-label status-label">
+        Your status
+        <select value={myStatus} onChange={(e) => setMyStatus(e.target.value)}>
+          {STATUSES.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="boss-picker-label status-label">
+        Their status
+        <select value={foeStatus} onChange={(e) => setFoeStatus(e.target.value)}>
+          {STATUSES.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button
+        className={"st-btn crit-toggle" + (crit ? " active" : "")}
+        title="Calculate every move as a critical hit"
+        onClick={() => setCrit((c) => !c)}
+      >
+        Crit
+      </button>
+    </>
+  );
+}
+
+/** one row per move of the chosen party mon; each row previews the damage
+ * against every Pokémon of the selected boss as an HP bar */
+function MoveMatchup({
+  runId,
+  party,
+  boss,
+  levelCap,
+  weather,
+  terrain,
+  ...shared
+}: {
+  runId: string;
+  party: Entry[];
+  boss: Boss;
+  levelCap?: number;
+  weather: string;
+  terrain: string;
+} & MatchupShared) {
+  const { crit, myStatus, foeStatus } = shared;
   // remember the last attacker per run, like the boss selection
   const storageKey = `rr-tracker.readinessAttacker.${runId}`;
   const [sel, setSel] = useState(
     () => localStorage.getItem(storageKey) ?? "",
   );
-  const [crit, setCrit] = useState(false);
   const select = (v: string) => {
     setSel(v);
     localStorage.setItem(storageKey, v);
@@ -654,8 +765,6 @@ function MoveMatchup({
   const activeId = active?.[0] ?? "";
   const mon = active?.[1];
   const level = levelCap ?? 50;
-  const [myStatus, setMyStatus] = useState("");
-  const [foeStatus, setFoeStatus] = useState("");
   // the grid is an engine calc per move × defender — recompute only when the
   // attacker entry, boss, or field actually change, not on every re-render
   // (entry objects are referentially stable in run state unless edited)
@@ -715,7 +824,7 @@ function MoveMatchup({
   }, [mon, level, levelCap, boss, weather, terrain, crit, myStatus, foeStatus]);
   if (!mon || !grid) return null;
   return (
-    <div className="matchup">
+    <>
       <div className="matchup-toolbar">
         <label className="boss-picker-label attacker-label">
           Attacker
@@ -727,33 +836,7 @@ function MoveMatchup({
             ))}
           </select>
         </label>
-        <label className="boss-picker-label status-label">
-          Your status
-          <select value={myStatus} onChange={(e) => setMyStatus(e.target.value)}>
-            {STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="boss-picker-label status-label">
-          Their status
-          <select value={foeStatus} onChange={(e) => setFoeStatus(e.target.value)}>
-            {STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          className={"st-btn crit-toggle" + (crit ? " active" : "")}
-          title="Calculate every move as a critical hit"
-          onClick={() => setCrit((c) => !c)}
-        >
-          Crit
-        </button>
+        <MatchupControls {...shared} />
         <span className="muted matchup-note">
           your moves vs {boss.title}
           {weather && ` · ${weather}`}
@@ -795,18 +878,182 @@ function MoveMatchup({
               <div className="matchup-move">{move}</div>
               <div className="matchup-targets">
                 {targets.map(({ bm, line }, i) => (
-                  <TargetCard key={i} bm={bm} line={line} />
+                  <TargetCard key={i} species={bm.species} label={bm.species} line={line} />
                 ))}
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-function TargetCard({ bm, line }: { bm: BossMon; line: MoveRange | null }) {
+/** the inverse matrix: one row per move of a chosen boss Pokémon; each row
+ * previews the damage into every member of your party */
+function FoeMatchup({
+  runId,
+  party,
+  boss,
+  levelCap,
+  weather,
+  terrain,
+  ...shared
+}: {
+  runId: string;
+  party: Entry[];
+  boss: Boss;
+  levelCap?: number;
+  weather: string;
+  terrain: string;
+} & MatchupShared) {
+  const { crit, myStatus, foeStatus } = shared;
+  const storageKey = `rr-tracker.readinessFoe.${runId}`;
+  const [sel, setSel] = useState(
+    () => parseInt(localStorage.getItem(storageKey) ?? "0", 10) || 0,
+  );
+  const select = (v: number) => {
+    setSel(v);
+    localStorage.setItem(storageKey, String(v));
+  };
+  const idx = sel >= 0 && sel < boss.pokemon.length ? sel : 0;
+  const bm = boss.pokemon[idx];
+  const level = levelCap ?? 50;
+  const grid = useMemo(() => {
+    if (!bm) return null;
+    const bossLevel = defaultBossLevel(bm.level, levelCap);
+    const attacker = buildBossPokemon(bm, bossLevel, undefined, foeStatus);
+    const fieldOpts = {
+      weather: weather || undefined,
+      terrain: terrain || undefined,
+    };
+    const defenders = party.map(([id, e]) => {
+      const cfg: PlayerMonConfig = {
+        species: e.species,
+        level,
+        nature: e.build?.nature || "Serious",
+        ability: e.build?.ability || abilitiesFor(e.species)[0] || "",
+        item: e.build?.item ?? "",
+        evs: {},
+        status: myStatus,
+        moves: [],
+      };
+      return {
+        id,
+        e,
+        ability: cfg.ability,
+        poke: buildPlayerPokemon(cfg),
+        field: autoField(fieldOpts, [bm.ability, cfg.ability]),
+      };
+    });
+    const autoBits = new Set<string>();
+    for (const a of [bm.ability, ...defenders.map((d) => d.ability)]) {
+      const w = !fieldOpts.weather && weatherFromAbility(a);
+      const t = !fieldOpts.terrain && terrainFromAbility(a);
+      if (w) autoBits.add(`${w} (${a})`);
+      if (t) autoBits.add(`${t} Terrain (${a})`);
+    }
+    return {
+      bossLevel,
+      unknown: !attacker,
+      autoBits: [...autoBits],
+      rows: bm.moves
+        .filter((m) => m.trim() && m !== "-")
+        .map((move) => ({
+          move,
+          targets: defenders.map(({ id, e, poke, field }) => ({
+            id,
+            e,
+            line:
+              attacker && poke
+                ? calcMoveRange(attacker, poke, move, field, crit)
+                : null,
+          })),
+        })),
+    };
+  }, [bm, party, level, levelCap, weather, terrain, crit, myStatus, foeStatus]);
+  if (!bm || !grid) return null;
+  return (
+    <>
+      <div className="matchup-toolbar">
+        <label className="boss-picker-label attacker-label">
+          Attacker
+          <select
+            value={idx}
+            onChange={(e) => select(parseInt(e.target.value, 10))}
+          >
+            {boss.pokemon.map((m, i) => (
+              <option key={i} value={i}>
+                {m.species}
+              </option>
+            ))}
+          </select>
+        </label>
+        <MatchupControls {...shared} />
+        <span className="muted matchup-note">
+          {bm.species}'s moves vs your party
+          {weather && ` · ${weather}`}
+          {terrain && ` · ${terrain} Terrain`}
+          {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
+          {crit && " · crit"}
+        </span>
+      </div>
+      <div className="matchup-body">
+        <div className="matchup-attacker">
+          <Sprite species={bm.species} size={56} />
+          <div className="team-name">{bm.species}</div>
+          <TypeBadges species={bm.species} small />
+          <div className="muted matchup-attacker-meta">
+            Lv {grid.bossLevel} · {bm.nature}
+            {bm.ability && ` · ${bm.ability}`}
+          </div>
+          {bm.item && bm.item !== "-" && (
+            <div className="muted matchup-attacker-meta">
+              <ItemSprite name={bm.item} size={18} /> {bm.item}
+            </div>
+          )}
+          {grid.unknown && (
+            <div className="save-error">The calc doesn't know this species.</div>
+          )}
+        </div>
+        <div className="matchup-rows">
+          {grid.rows.length === 0 && (
+            <p className="muted">No moves listed for this Pokémon.</p>
+          )}
+          {grid.rows.map(({ move, targets }, mi) => (
+            <div key={mi} className="matchup-row">
+              <div className="matchup-move">{move}</div>
+              <div className="matchup-targets">
+                {targets.map(({ id, e, line }) => (
+                  <TargetCard
+                    key={id}
+                    species={e.species}
+                    label={e.nickname || e.species}
+                    line={line}
+                    tone="incoming"
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function TargetCard({
+  species,
+  label,
+  line,
+  tone = "outgoing",
+}: {
+  species: string;
+  label: string;
+  line: MoveRange | null;
+  /** outgoing = a KO is good news (green), incoming = it's your mon (red) */
+  tone?: "outgoing" | "incoming";
+}) {
   const ok = line !== null && !line.error;
   const guard = ok ? line.guard : undefined;
   const ko = ok && !guard && line.minPercent >= 100;
@@ -819,18 +1066,19 @@ function TargetCard({ bm, line }: { bm: BossMon; line: MoveRange | null }) {
     lo = Math.max(lo, 1);
     hi = Math.max(hi, lo);
   }
-  const tone = lo < 25 ? " low" : lo < 55 ? " mid" : "";
+  const barTone = lo < 25 ? " low" : lo < 55 ? " mid" : "";
+  const koClass = tone === "incoming" ? " ko-bad" : " ko";
   return (
     <div className="target-card">
-      <Sprite species={bm.species} size={30} />
+      <Sprite species={species} size={30} />
       <span className="target-info">
-        <span className="target-name">{bm.species}</span>
+        <span className="target-name">{label}</span>
         <span className="hp-bar">
-          <span className={"hp-sure" + tone} style={{ width: `${lo}%` }} />
+          <span className={"hp-sure" + barTone} style={{ width: `${lo}%` }} />
           <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
         </span>
         <span
-          className={"target-dmg" + (ko ? " ko" : maybeKo || guard ? " maybe-ko" : "")}
+          className={"target-dmg" + (ko ? koClass : maybeKo || guard ? " maybe-ko" : "")}
           title={
             guard
               ? `${guard} keeps it at 1 HP through a single otherwise-lethal hit`
