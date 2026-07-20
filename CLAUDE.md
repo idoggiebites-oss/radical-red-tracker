@@ -3,7 +3,11 @@
 Vite + React + TypeScript SPA, no backend — all run state lives in
 `localStorage` (`rr-tracker.v1` plus per-run UI keys like
 `rr-tracker.readinessBoss.<runId>`). Deployed to GitHub Pages via GitHub
-Actions on push to main (vite `base: '/radical-red-tracker/'`).
+Actions on push to main (vite `base: '/radical-red-tracker/'`). It's a PWA
+(vite-plugin-pwa, autoUpdate, sprites runtime-cached): views are
+`React.lazy` chunks so each tab's data/engine loads on demand — keep new
+heavy imports (data JSONs, `rr-damage-calc`) out of `App.tsx`, which fetches
+`bosses.json` dynamically just for the cap pill/modeData.
 
 ## Commands
 

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import encountersJson from "../data/encounters.json";
 import type {
   EncounterSlot,
   EncounterStatus,
@@ -41,12 +42,12 @@ const STATUS_META: { id: EncounterStatus; label: string; icon: string }[] = [
   { id: "skipped", label: "Skipped", icon: "–" },
 ];
 
+const data = encountersJson as unknown as EncountersData;
+
 export function RoutesView({
-  data,
   run,
   updateRun,
 }: {
-  data: EncountersData;
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
 }) {
@@ -56,7 +57,7 @@ export function RoutesView({
 
   const randomized = speciesRandomized(run);
 
-  const staticsMap = useMemo(() => staticsByLocation(data), [data]);
+  const staticsMap = useMemo(() => staticsByLocation(data), []);
   // statics in areas without a route row (Seafoam, Navel Rock, postgame ...)
   const otherStatics = useMemo<LocatedStatic[]>(() => {
     const placed = new Set(
@@ -65,7 +66,7 @@ export function RoutesView({
     return data.statics
       .filter((s) => !placed.has(s))
       .map((s) => ({ id: staticSlotId(s.species), static: s }));
-  }, [data, staticsMap]);
+  }, [staticsMap]);
 
   const q = filter.trim().toLowerCase();
   const locations = data.locations.filter((loc) => {

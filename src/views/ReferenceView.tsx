@@ -1,4 +1,5 @@
 import { useState } from "react";
+import encountersJson from "../data/encounters.json";
 import itemsJson from "../data/items.json";
 import type {
   EncountersData,
@@ -12,6 +13,7 @@ import { ItemSprite } from "../components/ItemSprite";
 import { TypeBadges } from "../components/TypeBadges";
 
 const items = itemsJson as unknown as ItemsData;
+const data = encountersJson as unknown as EncountersData;
 
 type RefTab =
   | "statics"
@@ -34,7 +36,7 @@ const TABS: { id: RefTab; label: string }[] = [
   { id: "items", label: "Items" },
 ];
 
-export function ReferenceView({ data }: { data: EncountersData }) {
+export function ReferenceView() {
   const [tab, setTab] = useState<RefTab>("statics");
   const [filter, setFilter] = useState("");
   const q = filter.trim().toLowerCase();

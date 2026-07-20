@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Boss, BossMode, BossMon, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
@@ -369,18 +369,23 @@ function CurrentStats({
   build?: MonBuild;
   level: number;
 }) {
-  const cfg: PlayerMonConfig = {
-    species,
-    level,
-    nature: build?.nature || "Serious",
-    ability: build?.ability || abilitiesFor(species)[0] || "",
-    item: build?.item ?? "",
-    evs: {},
-    moves: [],
-  };
-  const t = statTotals(cfg, {});
+  // statTotals builds an engine Pokémon — skip it unless this card's inputs
+  // changed (build objects are referentially stable until edited)
+  const computed = useMemo(() => {
+    const cfg: PlayerMonConfig = {
+      species,
+      level,
+      nature: build?.nature || "Serious",
+      ability: build?.ability || abilitiesFor(species)[0] || "",
+      item: build?.item ?? "",
+      evs: {},
+      moves: [],
+    };
+    return { nature: cfg.nature, t: statTotals(cfg, {}) };
+  }, [species, build, level]);
+  const t = computed.t;
   if (!t) return null;
-  const nature = NATURE_EFFECTS[cfg.nature];
+  const nature = NATURE_EFFECTS[computed.nature];
   const cls = (k: string) =>
     t.itemMods[k] || t.abilityMods[k]
       ? "alt-speed"
@@ -661,28 +666,50 @@ function MoveMatchup({
     localStorage.setItem(storageKey, v);
   };
   const active = party.find(([id]) => id === sel) ?? party[0];
-  if (!active) return null;
-  const [activeId, mon] = active;
+  const activeId = active?.[0] ?? "";
+  const mon = active?.[1];
   const level = levelCap ?? 50;
-  const cfg: PlayerMonConfig = {
-    species: mon.species,
-    level,
-    nature: mon.build?.nature || "Serious",
-    ability: mon.build?.ability || abilitiesFor(mon.species)[0] || "",
-    item: mon.build?.item ?? "",
-    evs: {},
-    moves: mon.build?.moves ?? [],
-  };
-  const attacker = buildPlayerPokemon(cfg);
-  const fieldOpts = {
-    weather: weather || undefined,
-    terrain: terrain || undefined,
-  };
-  const moves = (mon.build?.moves ?? []).filter((m) => m.trim());
-  const defenders = boss.pokemon.map((bm) => ({
-    bm,
-    poke: buildBossPokemon(bm, defaultBossLevel(bm.level, levelCap)),
-  }));
+  // the grid is an engine calc per move × defender — recompute only when the
+  // attacker entry, boss, or field actually change, not on every re-render
+  // (entry objects are referentially stable in run state unless edited)
+  const grid = useMemo(() => {
+    if (!mon) return null;
+    const cfg: PlayerMonConfig = {
+      species: mon.species,
+      level,
+      nature: mon.build?.nature || "Serious",
+      ability: mon.build?.ability || abilitiesFor(mon.species)[0] || "",
+      item: mon.build?.item ?? "",
+      evs: {},
+      moves: mon.build?.moves ?? [],
+    };
+    const attacker = buildPlayerPokemon(cfg);
+    const fieldOpts = {
+      weather: weather || undefined,
+      terrain: terrain || undefined,
+    };
+    const defenders = boss.pokemon.map((bm) => ({
+      bm,
+      poke: buildBossPokemon(bm, defaultBossLevel(bm.level, levelCap)),
+    }));
+    return {
+      cfg,
+      unknown: !attacker,
+      rows: (mon.build?.moves ?? [])
+        .filter((m) => m.trim())
+        .map((move) => ({
+          move,
+          targets: defenders.map(({ bm, poke }) => ({
+            bm,
+            line:
+              attacker && poke
+                ? calcMoveRange(attacker, poke, move, fieldOpts)
+                : null,
+          })),
+        })),
+    };
+  }, [mon, level, levelCap, boss, weather, terrain]);
+  if (!mon || !grid) return null;
   return (
     <div className="matchup">
       <div className="matchup-toolbar">
@@ -711,39 +738,31 @@ function MoveMatchup({
           </div>
           <TypeBadges species={mon.species} small />
           <div className="muted matchup-attacker-meta">
-            Lv {level} · {cfg.nature}
-            {cfg.ability && ` · ${cfg.ability}`}
+            Lv {level} · {grid.cfg.nature}
+            {grid.cfg.ability && ` · ${grid.cfg.ability}`}
           </div>
-          {cfg.item && (
+          {grid.cfg.item && (
             <div className="muted matchup-attacker-meta">
-              <ItemSprite name={cfg.item} size={18} /> {cfg.item}
+              <ItemSprite name={grid.cfg.item} size={18} /> {grid.cfg.item}
             </div>
           )}
-          {!attacker && (
+          {grid.unknown && (
             <div className="save-error">The calc doesn't know this species.</div>
           )}
         </div>
         <div className="matchup-rows">
-          {moves.length === 0 && (
+          {grid.rows.length === 0 && (
             <p className="muted">
               No moves set — expand this Pokémon in the party list above and
               fill in its build to preview damage.
             </p>
           )}
-          {moves.map((move, mi) => (
+          {grid.rows.map(({ move, targets }, mi) => (
             <div key={mi} className="matchup-row">
               <div className="matchup-move">{move}</div>
               <div className="matchup-targets">
-                {defenders.map(({ bm, poke }, i) => (
-                  <TargetCard
-                    key={i}
-                    bm={bm}
-                    line={
-                      attacker && poke
-                        ? calcMoveRange(attacker, poke, move, fieldOpts)
-                        : null
-                    }
-                  />
+                {targets.map(({ bm, line }, i) => (
+                  <TargetCard key={i} bm={bm} line={line} />
                 ))}
               </div>
             </div>
@@ -1076,7 +1095,9 @@ function Section({
       </div>
       {items.length === 0 && <p className="muted">{empty}</p>}
       <div className="team-grid">
-        {items.map(([locId, e]) => (
+        {items.map(([locId, e]) => {
+          const bst = bstFor(e.species);
+          return (
           <div key={locId} className="team-card-wrap">
             <div className="team-card">
               <Sprite species={e.species} size={48} />
@@ -1125,12 +1146,12 @@ function Section({
                     +
                   </button>
                 </div>
-                {bstFor(e.species) > 0 && (
+                {bst > 0 && (
                   <div className="bst-line">
                     <span className="ko-label" title="Base stat total">
                       BST
                     </span>
-                    <span className="bst-val">{bstFor(e.species)}</span>
+                    <span className="bst-val">{bst}</span>
                   </div>
                 )}
               </div>
@@ -1174,7 +1195,8 @@ function Section({
             )}
             {extraPanel?.(locId, e)}
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

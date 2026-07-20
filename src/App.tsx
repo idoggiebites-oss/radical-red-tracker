@@ -1,10 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import encountersJson from "./data/encounters.json";
-import bossesJson from "./data/bosses.json";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import type {
   AppState,
   BossesData,
-  EncountersData,
   GameMode,
   Run,
   RunSaveInfo,
@@ -12,14 +9,22 @@ import type {
 import { loadState, newRun, saveState } from "./lib/storage";
 import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
-import { RoutesView } from "./views/RoutesView";
-import { BossesView } from "./views/BossesView";
-import { TeamView } from "./views/TeamView";
-import { ReferenceView } from "./views/ReferenceView";
 import "./app.css";
 
-const encounters = encountersJson as unknown as EncountersData;
-const bosses = bossesJson as unknown as BossesData;
+// each view is its own chunk so the data/engine it imports (bosses.json,
+// items.json, the damage calc) loads only when its tab is opened
+const RoutesView = lazy(() =>
+  import("./views/RoutesView").then((m) => ({ default: m.RoutesView })),
+);
+const BossesView = lazy(() =>
+  import("./views/BossesView").then((m) => ({ default: m.BossesView })),
+);
+const TeamView = lazy(() =>
+  import("./views/TeamView").then((m) => ({ default: m.TeamView })),
+);
+const ReferenceView = lazy(() =>
+  import("./views/ReferenceView").then((m) => ({ default: m.ReferenceView })),
+);
 
 type Tab = "routes" | "bosses" | "team" | "reference";
 
@@ -34,6 +39,14 @@ export default function App() {
   const [state, setState] = useState<AppState>(loadState);
   const [tab, setTab] = useState<Tab>("routes");
   const [creating, setCreating] = useState(false);
+  // bosses.json is the largest data file; fetched as its own chunk so the
+  // main bundle stays small (only the cap pill and two tabs need it)
+  const [bosses, setBosses] = useState<BossesData | null>(null);
+  useEffect(() => {
+    import("./data/bosses.json").then((m) =>
+      setBosses(m.default as unknown as BossesData),
+    );
+  }, []);
 
   useEffect(() => saveState(state), [state]);
 
@@ -47,10 +60,10 @@ export default function App() {
   };
 
   const mode: GameMode = run?.mode ?? "default";
-  const modeData = bosses[mode];
+  const modeData = bosses?.[mode] ?? null;
 
   const currentCap = useMemo(() => {
-    if (!run) return null;
+    if (!run || !modeData) return null;
     const order = modeData.trainerOrder;
     for (let i = 0; i < order.length; i++) {
       if (!run.defeated[i] && !order[i].optional) {
@@ -138,16 +151,16 @@ export default function App() {
             </p>
           </div>
         )}
-        {tab === "routes" && (
-          <RoutesView data={encounters} run={run} updateRun={updateRun} />
-        )}
-        {tab === "bosses" && (
-          <BossesView modeData={modeData} mode={mode} run={run} updateRun={updateRun} />
-        )}
-        {tab === "team" && (
-          <TeamView run={run} updateRun={updateRun} modeData={modeData} />
-        )}
-        {tab === "reference" && <ReferenceView data={encounters} />}
+        <Suspense fallback={<p className="muted">Loading…</p>}>
+          {tab === "routes" && <RoutesView run={run} updateRun={updateRun} />}
+          {tab === "bosses" && modeData && (
+            <BossesView modeData={modeData} mode={mode} run={run} updateRun={updateRun} />
+          )}
+          {tab === "team" && modeData && (
+            <TeamView run={run} updateRun={updateRun} modeData={modeData} />
+          )}
+          {tab === "reference" && <ReferenceView />}
+        </Suspense>
       </main>
 
       <footer className="footer">
