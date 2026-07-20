@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import type {
   AppState,
   BossesData,
@@ -10,6 +10,7 @@ import { loadState, newRun, saveState } from "./lib/storage";
 import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, type BossTarget } from "./lib/bossTarget";
+import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -67,6 +68,42 @@ export default function App() {
   const mode: GameMode = run?.mode ?? "default";
   const modeData = bosses?.[mode] ?? null;
 
+  const importInput = useRef<HTMLInputElement>(null);
+
+  const exportActiveRun = () => {
+    if (!run) return;
+    const blob = new Blob([serializeRun(run)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = runFileName(run);
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const importRun = async (file: File | undefined) => {
+    if (!file) return;
+    const parsed = parseRunFile(await file.text());
+    if (!parsed) {
+      alert("That file isn't a tracker run backup.");
+      return;
+    }
+    const existing = state.runs.find((r) => r.id === parsed.id);
+    if (
+      existing &&
+      !confirm(
+        `"${existing.name}" is already in the tracker — replace it with the backup's version?`,
+      )
+    ) {
+      return;
+    }
+    setState((s) => ({
+      runs: s.runs.some((r) => r.id === parsed.id)
+        ? s.runs.map((r) => (r.id === parsed.id ? parsed : r))
+        : [...s.runs, parsed],
+      activeRunId: parsed.id,
+    }));
+  };
+
   const currentCap = useMemo(() => {
     if (!run || !modeData) return null;
     const order = modeData.trainerOrder;
@@ -115,6 +152,30 @@ export default function App() {
             ))}
           </select>
           <button onClick={() => setCreating(true)}>+ New run</button>
+          {run && (
+            <button
+              title={`Download this run as a ${RUN_FILE_EXT} backup file`}
+              onClick={exportActiveRun}
+            >
+              Export
+            </button>
+          )}
+          <button
+            title={`Load a run from a ${RUN_FILE_EXT} backup file`}
+            onClick={() => importInput.current?.click()}
+          >
+            Import
+          </button>
+          <input
+            ref={importInput}
+            type="file"
+            accept={`${RUN_FILE_EXT},.json,application/json`}
+            hidden
+            onChange={(e) => {
+              importRun(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
           {run && (
             <button
               className="danger"
@@ -201,7 +262,7 @@ function NewRunDialog({
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
-  const [mode, setMode] = useState<GameMode>("hardcore");
+  const [mode, setMode] = useState<GameMode>("default");
   const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
   const [saveError, setSaveError] = useState("");
 

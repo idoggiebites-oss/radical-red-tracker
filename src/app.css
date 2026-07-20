@@ -911,8 +911,9 @@ tr.pickable:hover td { background: var(--bg3); }
   .topbar { gap: 8px 12px; padding: 10px 0; }
   .cap-pill { font-size: 13px; padding: 3px 12px; }
   .cap-next { display: block; margin-left: 0; }
-  .run-controls { margin-left: 0; width: 100%; }
-  .run-controls select { flex: 1; min-width: 0; }
+  .run-controls { margin-left: 0; width: 100%; flex-wrap: wrap; }
+  /* the run picker keeps a readable width and wraps above the buttons */
+  .run-controls select { flex: 1 1 160px; min-width: 0; }
 
   .tabs { width: 100%; }
   .tab { flex: 1; padding: 8px 4px; text-align: center; }
