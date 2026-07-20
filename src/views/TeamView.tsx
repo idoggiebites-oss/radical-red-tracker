@@ -641,6 +641,7 @@ function MoveMatchup({
   const [sel, setSel] = useState(
     () => localStorage.getItem(storageKey) ?? "",
   );
+  const [crit, setCrit] = useState(false);
   const select = (v: string) => {
     setSel(v);
     localStorage.setItem(storageKey, v);
@@ -683,12 +684,12 @@ function MoveMatchup({
             bm,
             line:
               attacker && poke
-                ? calcMoveRange(attacker, poke, move, fieldOpts)
+                ? calcMoveRange(attacker, poke, move, fieldOpts, crit)
                 : null,
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, terrain]);
+  }, [mon, level, levelCap, boss, weather, terrain, crit]);
   if (!mon || !grid) return null;
   return (
     <div className="matchup">
@@ -703,10 +704,18 @@ function MoveMatchup({
             ))}
           </select>
         </label>
+        <button
+          className={"st-btn crit-toggle" + (crit ? " active" : "")}
+          title="Calculate every move as a critical hit"
+          onClick={() => setCrit((c) => !c)}
+        >
+          Crit
+        </button>
         <span className="muted matchup-note">
           your moves vs {boss.title}
           {weather && ` · ${weather}`}
           {terrain && ` · ${terrain} Terrain`}
+          {crit && " · crit"}
         </span>
       </div>
       <div className="matchup-body">

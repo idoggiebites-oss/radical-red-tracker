@@ -103,6 +103,8 @@ export function CalcPanel({
     () => localStorage.getItem(CAUGHT_ONLY_KEY) === "1",
   );
   const [importedFrom, setImportedFrom] = useState("");
+  const [showSpreads, setShowSpreads] = useState(false);
+  const [crit, setCrit] = useState(false);
 
   const update = (patch: Partial<PlayerMonConfig>) => {
     setCfg((c) => {
@@ -173,12 +175,13 @@ export function CalcPanel({
     const boss = buildBossPokemon(mon, bossLevel);
     const player = calcCfg.species ? buildPlayerPokemon(calcCfg) : null;
     if (!boss || !player) return null;
-    const incoming = calcMoves(boss, player, mon.moves, fieldOpts);
+    const incoming = calcMoves(boss, player, mon.moves, fieldOpts, crit);
     const outgoing = calcMoves(
       player,
       boss,
       calcCfg.moves.filter((m) => m.trim()),
       fieldOpts,
+      crit,
     );
     return {
       incoming,
@@ -186,7 +189,7 @@ export function CalcPanel({
       bossSpeed: effectiveSpeed(boss, fieldOpts),
       playerSpeed: effectiveSpeed(player, fieldOpts),
     };
-  }, [mon, bossLevel, calcCfg, fieldOpts]);
+  }, [mon, bossLevel, calcCfg, fieldOpts, crit]);
 
   return (
     <div className="dialog-backdrop" onClick={onClose}>
@@ -200,53 +203,61 @@ export function CalcPanel({
           </p>
         )}
         <div className="calc-grid">
-          <div className="calc-side">
-            <h3>Boss side</h3>
-            <label>
-              Level{" "}
-              <input
-                type="number"
-                min={1}
-                max={100}
-                value={bossLevel}
-                onChange={(e) => setBossLevel(parseInt(e.target.value, 10) || 1)}
-              />
-              {Number.isNaN(parsedLevel) && (
-                <span className="muted"> ({mon.level})</span>
-              )}
-            </label>
-            <div className="muted">
-              {mon.nature} · {mon.ability} · <ItemSprite name={mon.item} size={18} />{" "}
-              {mon.item || "no item"}
-              {mon.speedStat && ` · sheet speed ${mon.speedStat}`}
+          <div className="calc-side boss-strip">
+            <div className="boss-line">
+              <label className="lv-label">
+                Lv{" "}
+                <input
+                  type="number"
+                  min={1}
+                  max={100}
+                  value={bossLevel}
+                  onChange={(e) => setBossLevel(parseInt(e.target.value, 10) || 1)}
+                />
+                {Number.isNaN(parsedLevel) && (
+                  <span className="muted">({mon.level})</span>
+                )}
+              </label>
+              <span className="muted boss-meta">
+                {mon.nature} · {mon.ability} · <ItemSprite name={mon.item} size={18} />{" "}
+                {mon.item || "no item"}
+                {mon.speedStat && ` · sheet speed ${mon.speedStat}`}
+              </span>
+              <span className="field-selects">
+                <label className="field-select">
+                  Weather
+                  <select value={weather} onChange={(e) => setWeather(e.target.value)}>
+                    <option value="">None</option>
+                    {WEATHERS.map((w) => (
+                      <option key={w} value={w}>
+                        {w}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field-select">
+                  Terrain
+                  <select value={terrain} onChange={(e) => setTerrain(e.target.value)}>
+                    <option value="">None</option>
+                    {TERRAINS.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  className={"st-btn crit-toggle" + (crit ? " active" : "")}
+                  title="Calculate every move as a critical hit"
+                  onClick={() => setCrit((c) => !c)}
+                >
+                  Crit
+                </button>
+              </span>
             </div>
             {battleEffect && (
               <div className="muted">Battle effect: {battleEffect.toLowerCase()}</div>
             )}
-            <div className="calc-row">
-              <label className="field-select">
-                Weather
-                <select value={weather} onChange={(e) => setWeather(e.target.value)}>
-                  <option value="">None</option>
-                  {WEATHERS.map((w) => (
-                    <option key={w} value={w}>
-                      {w}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="field-select">
-                Terrain
-                <select value={terrain} onChange={(e) => setTerrain(e.target.value)}>
-                  <option value="">None</option>
-                  {TERRAINS.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
           </div>
 
           <div className="calc-side">
@@ -337,28 +348,43 @@ export function CalcPanel({
             <NatureLine cfg={cfg} />
             <ModifierLine cfg={calcCfg} fieldOpts={fieldOpts} />
             <TotalsWithBoosts cfg={calcCfg} fieldOpts={fieldOpts} update={update} />
-            <div className="calc-row evs">
-              {Object.keys(cfg.ivs ?? {}).map((k) => (
-                <label key={k}>
-                  {k} IV
-                  <input
-                    type="number"
-                    min={0}
-                    max={31}
-                    value={cfg.ivs?.[k] ?? 31}
-                    onChange={(e) =>
-                      update({
-                        ivs: {
-                          ...(cfg.ivs ?? {}),
-                          [k]: Math.max(0, Math.min(31, parseInt(e.target.value, 10) || 0)),
-                        },
-                      })
-                    }
-                  />
-                </label>
-              ))}
+            <div className="calc-row spread-row">
+              <button
+                className="st-btn spread-toggle"
+                onClick={() => setShowSpreads((s) => !s)}
+              >
+                {showSpreads ? "▾" : "▸"} {hardcore ? "IVs" : "IVs / EVs"}
+              </button>
+              {!showSpreads && (
+                <span className="muted spread-summary">
+                  <SpreadSummary cfg={cfg} hardcore={hardcore} />
+                </span>
+              )}
             </div>
-            {!hardcore && (
+            {showSpreads && (
+              <div className="calc-row evs">
+                {Object.keys(cfg.ivs ?? {}).map((k) => (
+                  <label key={k}>
+                    {k} IV
+                    <input
+                      type="number"
+                      min={0}
+                      max={31}
+                      value={cfg.ivs?.[k] ?? 31}
+                      onChange={(e) =>
+                        update({
+                          ivs: {
+                            ...(cfg.ivs ?? {}),
+                            [k]: Math.max(0, Math.min(31, parseInt(e.target.value, 10) || 0)),
+                          },
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+              </div>
+            )}
+            {showSpreads && !hardcore && (
               <div className="calc-row evs">
                 {Object.keys(cfg.evs).map((k) => (
                   <label key={k}>
@@ -437,12 +463,12 @@ export function CalcPanel({
                   : "— speed tie"}
             </div>
             <ResultBlock
-              title={`${mon.species}'s moves vs you`}
+              title={`${mon.species}'s moves vs you${crit ? " · crit" : ""}`}
               lines={results.incoming}
               tone="incoming"
             />
             <ResultBlock
-              title="Your moves vs them"
+              title={`Your moves vs them${crit ? " · crit" : ""}`}
               lines={results.outgoing}
               tone="outgoing"
             />
@@ -458,6 +484,27 @@ export function CalcPanel({
       </div>
     </div>
   );
+}
+
+function SpreadSummary({
+  cfg,
+  hardcore,
+}: {
+  cfg: PlayerMonConfig;
+  hardcore: boolean;
+}) {
+  const ivs = Object.entries(cfg.ivs ?? {})
+    .filter(([, v]) => v !== 31)
+    .map(([k, v]) => `${v} ${k}`);
+  const evs = hardcore
+    ? []
+    : Object.entries(cfg.evs)
+        .filter(([, v]) => v > 0)
+        .map(([k, v]) => `${v} ${k}`);
+  const parts: string[] = [];
+  if (ivs.length > 0) parts.push(`IV ${ivs.join(", ")}`);
+  if (evs.length > 0) parts.push(`EV ${evs.join(", ")}`);
+  return <>{parts.length > 0 ? parts.join(" · ") : "default spread"}</>;
 }
 
 function NatureLine({ cfg }: { cfg: PlayerMonConfig }) {
@@ -575,28 +622,71 @@ function ResultBlock({
   lines: MatchupLine[];
   tone: "incoming" | "outgoing";
 }) {
-  const ohkoClass = tone === "incoming" ? "result-desc ohko" : "result-desc ohko-good";
   return (
     <div className="result-block">
       <h4>{title}</h4>
       {lines.length === 0 && <p className="muted">No damaging moves.</p>}
-      {lines.map((l, i) => (
-        <div key={i} className="result-line">
-          <span className="result-move">{l.move}</span>
-          {l.error ? (
-            <span className="muted">{l.error}</span>
-          ) : (
-            <span
-              className={l.maxPercent >= 100 && !l.guard ? ohkoClass : "result-desc"}
-            >
-              {l.desc}
-              {l.guard && (
-                <span className="guard-note"> — survives at 1 HP ({l.guard})</span>
-              )}
-            </span>
-          )}
-        </div>
-      ))}
+      <div className="result-rows">
+        {lines.map((l, i) => (
+          <ResultRow key={i} line={l} tone={tone} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** matrix-style row: move name, remaining-HP bar, compact damage range */
+function ResultRow({
+  line: l,
+  tone,
+}: {
+  line: MatchupLine;
+  tone: "incoming" | "outgoing";
+}) {
+  const ok = !l.error;
+  const status = ok && l.desc === "status move";
+  const ko = ok && !l.guard && l.minPercent >= 100;
+  const maybeKo = ok && !l.guard && !ko && l.maxPercent >= 100;
+  // remaining HP range: sure = survives even max damage, maybe = roll-dependent;
+  // a Sturdy/Focus Sash holder always keeps at least a 1 HP sliver
+  let lo = ok ? Math.max(0, 100 - l.maxPercent) : 100;
+  let hi = ok ? Math.max(0, 100 - l.minPercent) : 100;
+  if (l.guard) {
+    lo = Math.max(lo, 1);
+    hi = Math.max(hi, lo);
+  }
+  const barTone = lo < 25 ? " low" : lo < 55 ? " mid" : "";
+  // the engine desc's tail is its KO verdict ("guaranteed 2HKO", "43.8% chance to OHKO")
+  const verdict = l.desc.split(" -- ")[1];
+  const dmgClass =
+    "target-dmg" +
+    (ko
+      ? tone === "incoming"
+        ? " ohko"
+        : " ohko-good"
+      : maybeKo || l.guard
+        ? " maybe-ko"
+        : "");
+  return (
+    <div className="result-row" title={l.desc || undefined}>
+      <span className="result-move">{l.move}</span>
+      <span className="result-fill">
+        <span className="hp-bar">
+          <span className={"hp-sure" + barTone} style={{ width: `${lo}%` }} />
+          <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
+        </span>
+        <span className={dmgClass}>
+          {l.error
+            ? l.error
+            : status
+              ? "status move"
+              : ko
+                ? `KO · ${l.minPercent}%+`
+                : l.guard
+                  ? `${l.minPercent}–${l.maxPercent}% · 1 HP (${l.guard})`
+                  : `${l.minPercent}–${l.maxPercent}%${verdict ? ` · ${verdict}` : ""}`}
+        </span>
+      </span>
     </div>
   );
 }

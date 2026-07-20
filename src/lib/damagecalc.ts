@@ -300,6 +300,7 @@ export function computedStats(cfg: PlayerMonConfig): Record<string, number> | nu
 export interface MatchupLine {
   move: string;
   desc: string;
+  minPercent: number;
   maxPercent: number;
   /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
   guard?: string;
@@ -359,6 +360,7 @@ export function calcMoveRange(
   defender: rr.Pokemon,
   docMove: string,
   fieldOpts: rr.FieldOptions,
+  isCrit = false,
 ): MoveRange | null {
   const moveName = resolveMove(docMove);
   if (!moveName) {
@@ -366,7 +368,7 @@ export function calcMoveRange(
     return { move: docMove, minPercent: 0, maxPercent: 0, error: "unknown move" };
   }
   try {
-    const move = new rr.Move(GEN, moveName);
+    const move = new rr.Move(GEN, moveName, { isCrit });
     const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
     const [min, max] = result.range();
     const hp = defender.maxHP();
@@ -469,20 +471,22 @@ export function calcMoves(
   defender: rr.Pokemon,
   moves: string[],
   fieldOpts: rr.FieldOptions,
+  isCrit = false,
 ): MatchupLine[] {
   const lines: MatchupLine[] = [];
   for (const docMove of moves) {
     const moveName = resolveMove(docMove);
     if (!moveName) {
       if (docMove && docMove !== "-")
-        lines.push({ move: docMove, desc: "", maxPercent: 0, error: "unknown move" });
+        lines.push({ move: docMove, desc: "", minPercent: 0, maxPercent: 0, error: "unknown move" });
       continue;
     }
     try {
-      const move = new rr.Move(GEN, moveName);
+      const move = new rr.Move(GEN, moveName, { isCrit });
       const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
-      const [, max] = result.range();
-      const maxPercent = Math.round((max / defender.maxHP()) * 1000) / 10;
+      const [min, max] = result.range();
+      const hp = defender.maxHP();
+      const maxPercent = Math.round((max / hp) * 1000) / 10;
       let desc: string;
       try {
         desc = result.desc();
@@ -493,11 +497,12 @@ export function calcMoves(
       lines.push({
         move: moveName,
         desc,
+        minPercent: Math.round((min / hp) * 1000) / 10,
         maxPercent,
         guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
       });
     } catch {
-      lines.push({ move: moveName, desc: "", maxPercent: 0, error: "calc failed" });
+      lines.push({ move: moveName, desc: "", minPercent: 0, maxPercent: 0, error: "calc failed" });
     }
   }
   return lines.sort((a, b) => b.maxPercent - a.maxPercent);
