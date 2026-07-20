@@ -691,18 +691,21 @@ tr.pickable:hover td { background: var(--bg3); }
   flex: 1;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0,) so long damage text can't steal width from other columns —
+   * keeps every row's bars the same width */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
 @media (max-width: 950px) {
   .matchup-body { flex-direction: column; }
   .matchup-attacker { flex: none; width: 100%; box-sizing: border-box; }
-  .matchup-targets { grid-template-columns: repeat(2, 1fr); }
+  .matchup-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .target-card {
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -891,7 +894,6 @@ tr.pickable:hover td { background: var(--bg3); }
    * horizontal strip instead of a tall full-width column */
   .matchup-row { flex-direction: column; align-items: stretch; gap: 6px; }
   .matchup-move { flex: none; }
-  .matchup-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .matchup-attacker {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
