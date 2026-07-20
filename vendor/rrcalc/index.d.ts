@@ -55,7 +55,7 @@ export interface Result {
 }
 
 export interface Generation {
-  species: { get(id: string): { name: string; baseStats: Required<StatsTable>; nfe?: boolean } | undefined } & Iterable<{ name: string }>;
+  species: { get(id: string): { name: string; baseStats: Required<StatsTable>; nfe?: boolean; baseSpecies?: string; otherFormes?: string[]; types?: string[] } | undefined } & Iterable<{ name: string }>;
   moves: { get(id: string): { name: string } | undefined } & Iterable<{ name: string }>;
   natures: Iterable<{ name: string }>;
 }

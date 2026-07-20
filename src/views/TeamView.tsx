@@ -29,6 +29,7 @@ import {
   calcMoveRange,
   defaultBossLevel,
   fieldFromBattleEffect,
+  formsFor,
   statTotals,
   type MoveRange,
   type PlayerMonConfig,
@@ -994,6 +995,7 @@ function EvolvePanel({
 }) {
   const evos = evolutionsFor(species);
   const pres = preEvolutionsFor(species);
+  const forms = formsFor(species);
   return (
     <div className="evolve-panel">
       {evos.map((ev) => (
@@ -1008,9 +1010,17 @@ function EvolvePanel({
           <span className="muted">{ev.how}</span>
         </button>
       ))}
-      {evos.length === 0 && (
+      {evos.length === 0 && forms.length === 0 && (
         <span className="muted">{species} doesn't evolve further.</span>
       )}
+      {forms.map((f) => (
+        <button key={f} className="evolve-option" onClick={() => onPick(f)}>
+          <Sprite species={f} size={36} />
+          <span className="evolve-name">{f}</span>
+          <TypeBadges species={f} small />
+          <span className="muted">form change</span>
+        </button>
+      ))}
       {pres.length > 0 && (
         <div className="evolve-devolve">
           <span className="muted">Devolve (undo):</span>
@@ -1141,13 +1151,17 @@ function Section({
                 </button>
                 {canEvolve &&
                   (evolutionsFor(e.species).length > 0 ||
-                    preEvolutionsFor(e.species).length > 0) && (
+                    preEvolutionsFor(e.species).length > 0 ||
+                    formsFor(e.species).length > 0) && (
                     <button
                       onClick={() =>
                         setEvolveOpen(evolveOpen === locId ? null : locId)
                       }
                     >
-                      Evolve
+                      {evolutionsFor(e.species).length > 0 ||
+                      preEvolutionsFor(e.species).length > 0
+                        ? "Evolve"
+                        : "Form"}
                     </button>
                   )}
               </div>

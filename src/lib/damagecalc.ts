@@ -3,6 +3,7 @@
 
 import * as rr from "rr-damage-calc";
 import { getFinalSpeed } from "rr-damage-calc/mechanics/util.js";
+import typesJson from "../data/types.json";
 import type { BossMon } from "../types";
 
 export const GEN = 9;
@@ -84,6 +85,58 @@ export function resolveSpecies(docName: string): string | null {
     if (hit) return hit.name;
   }
   return null;
+}
+
+const DOC_SPECIES = Object.keys(
+  (typesJson as { species: Record<string, unknown> }).species,
+);
+
+/** engine name -> the doc-style name the app's data/sprites understand;
+ * built lazily, preferring a doc name identical to the engine's */
+let engineToDoc: Map<string, string> | null = null;
+function docNameFor(engineName: string): string | null {
+  if (!engineToDoc) {
+    engineToDoc = new Map();
+    for (const doc of DOC_SPECIES) {
+      const eng = resolveSpecies(doc);
+      if (!eng) continue;
+      const prev = engineToDoc.get(eng);
+      if (prev === eng) continue;
+      if (doc === eng || !prev) engineToDoc.set(eng, doc);
+    }
+  }
+  return engineToDoc.get(engineName) ?? null;
+}
+
+/** alternate forms reachable from this species (megas, Deoxys modes,
+ * Rotom appliances, ...), as doc-style names the rest of the app resolves.
+ * Only forms present in the RR dex data are returned. */
+export function formsFor(docName: string): string[] {
+  const engine = resolveSpecies(docName);
+  if (!engine) return [];
+  const entry = gen.species.get(rr.toID(engine));
+  if (!entry) return [];
+  const baseName = entry.baseSpecies ?? entry.name;
+  const baseEntry = gen.species.get(rr.toID(baseName)) ?? entry;
+  const family = [baseName, ...(baseEntry.otherFormes ?? [])];
+  const baseStats = JSON.stringify(baseEntry.baseStats);
+  const baseTypes = JSON.stringify(baseEntry.types ?? []);
+  const out: string[] = [];
+  for (const f of family) {
+    const fe = gen.species.get(rr.toID(f));
+    if (!fe) continue;
+    // cosmetic forms (cosplay Pikachu, ...) change neither stats nor typing
+    if (
+      f !== baseName &&
+      JSON.stringify(fe.baseStats) === baseStats &&
+      JSON.stringify(fe.types ?? []) === baseTypes
+    ) {
+      continue;
+    }
+    const doc = docNameFor(f);
+    if (doc && doc !== docName && !out.includes(doc)) out.push(doc);
+  }
+  return out;
 }
 
 export function resolveMove(docMove: string): string | null {
