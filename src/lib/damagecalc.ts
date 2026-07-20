@@ -255,15 +255,20 @@ export interface MatchupLine {
 
 const MOLD_BREAKERS = new Set(["Mold Breaker", "Teravolt", "Turboblaze"]);
 
+/** abilities that add a follow-up strike to single-hit moves (the engine
+ * models their damage); the extra hit finishes a Sturdy/Sash survivor */
+const MULTI_STRIKE_ABILITIES = ["Parental Bond"];
+
 /** "Sturdy" / "Focus Sash" when the defender survives an otherwise-lethal
- * single hit from full HP; multi-hit moves break through, Mold Breaker
- * ignores Sturdy but not the sash */
+ * single hit from full HP; multi-hit moves and multi-strike abilities break
+ * through, Mold Breaker ignores Sturdy but not the sash */
 function ohkoGuard(
   attacker: rr.Pokemon,
   defender: rr.Pokemon,
   move: rr.Move,
 ): string | undefined {
   if ((move.hits ?? 1) > 1) return undefined;
+  if (attacker.hasAbility(...MULTI_STRIKE_ABILITIES)) return undefined;
   if (
     defender.hasAbility("Sturdy") &&
     !MOLD_BREAKERS.has(attacker.ability ?? "")

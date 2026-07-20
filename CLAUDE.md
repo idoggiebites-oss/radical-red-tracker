@@ -54,7 +54,8 @@ using new engine members. Adapter `src/lib/damagecalc.ts`:
 `defaultBossLevel` ("Highest Lv -3" → level cap − 3), `calcMoves` (desc
 lines) and `calcMoveRange` (min/max %), and `ohkoGuard` — the engine does
 NOT model Sturdy/Focus Sash, so we flag "survives at 1 HP" ourselves
-(multi-hit moves break through; Mold Breaker beats Sturdy, not the sash).
+(multi-hit moves and multi-strike abilities like Parental Bond break
+through; Mold Breaker beats Sturdy, not the sash).
 
 ## App structure
 
