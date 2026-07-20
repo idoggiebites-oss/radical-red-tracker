@@ -9,6 +9,7 @@ import type {
 import { loadState, newRun, saveState } from "./lib/storage";
 import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
+import { bossTeamFor, type BossTarget } from "./lib/bossTarget";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -39,6 +40,10 @@ export default function App() {
   const [state, setState] = useState<AppState>(loadState);
   const [tab, setTab] = useState<Tab>("routes");
   const [creating, setCreating] = useState(false);
+  // set when the cap pill is clicked: the boss team to jump to and open
+  const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
+    null,
+  );
   // bosses.json is the largest data file; fetched as its own chunk so the
   // main bundle stays small (only the cap pill and two tabs need it)
   const [bosses, setBosses] = useState<BossesData | null>(null);
@@ -81,10 +86,19 @@ export default function App() {
           <span className="brand-sub">Nuzlocke Tracker</span>
         </div>
         {run && currentCap && (
-          <div className="cap-pill" title={`Next: ${currentCap.entry.name} @ ${currentCap.entry.location}`}>
+          <button
+            className="cap-pill"
+            title={`Next: ${currentCap.entry.name} @ ${currentCap.entry.location} — click to open their team`}
+            onClick={() => {
+              if (!modeData) return;
+              const target = bossTeamFor(modeData, currentCap.index);
+              setTab("bosses");
+              if (target) setBossFocus({ ...target, nonce: Date.now() });
+            }}
+          >
             Level cap <strong>{currentCap.entry.levelCap}</strong>
             <span className="cap-next">next: {currentCap.entry.name}</span>
-          </div>
+          </button>
         )}
         <div className="run-controls">
           <select
@@ -154,7 +168,13 @@ export default function App() {
         <Suspense fallback={<p className="muted">Loading…</p>}>
           {tab === "routes" && <RoutesView run={run} updateRun={updateRun} />}
           {tab === "bosses" && modeData && (
-            <BossesView modeData={modeData} mode={mode} run={run} updateRun={updateRun} />
+            <BossesView
+              modeData={modeData}
+              mode={mode}
+              run={run}
+              updateRun={updateRun}
+              focus={bossFocus}
+            />
           )}
           {tab === "team" && modeData && (
             <TeamView run={run} updateRun={updateRun} modeData={modeData} />

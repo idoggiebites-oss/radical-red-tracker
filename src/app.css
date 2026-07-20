@@ -70,6 +70,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   padding: 4px 14px;
   font-size: 14px;
 }
+.cap-pill:hover { border-color: var(--accent2); background: var(--line); }
 .cap-pill strong { color: var(--accent2); font-size: 16px; margin-left: 4px; }
 .cap-next { margin-left: 10px; color: var(--muted); font-size: 12px; }
 

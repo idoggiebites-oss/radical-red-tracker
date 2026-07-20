@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, GameMode, Run } from "../types";
+import type { BossTarget } from "../lib/bossTarget";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
 import { type CaughtMon } from "../components/CalcPanel";
@@ -13,15 +14,25 @@ export function BossesView({
   mode,
   run,
   updateRun,
+  focus,
 }: {
   modeData: BossMode;
   mode: GameMode;
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
+  /** cap-pill navigation: jump to this boss team and open it */
+  focus?: (BossTarget & { nonce: number }) | null;
 }) {
   const [view, setView] = useState<"order" | "teams">("order");
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState(modeData.categories[0]?.name ?? "");
+
+  useEffect(() => {
+    if (!focus) return;
+    setView("teams");
+    setCategory(focus.category);
+    setFilter("");
+  }, [focus]);
 
   const levelCap = useMemo(() => nextLevelCap(modeData, run), [run, modeData]);
 
@@ -84,6 +95,7 @@ export function BossesView({
           rivalStarter={rivalStarter}
           hardcore={mode === "hardcore"}
           anyAbility={abilitiesRandomized(run)}
+          focus={focus}
         />
       )}
     </div>
@@ -163,6 +175,7 @@ function BossTeams({
   rivalStarter,
   hardcore,
   anyAbility,
+  focus,
 }: {
   modeData: BossMode;
   category: string;
@@ -172,6 +185,7 @@ function BossTeams({
   rivalStarter?: string | null;
   hardcore?: boolean;
   anyAbility?: boolean;
+  focus?: (BossTarget & { nonce: number }) | null;
 }) {
   const q = filter.trim().toLowerCase();
   const cat =
@@ -206,6 +220,12 @@ function BossTeams({
           caught={caught}
           hardcore={hardcore}
           anyAbility={anyAbility}
+          // starter variants share a title — focus only the first one shown
+          focusNonce={
+            focus && b.title === focus.title && bosses.findIndex((x) => x.title === focus.title) === i
+              ? focus.nonce
+              : 0
+          }
         />
       ))}
       {bosses.length === 0 && <p className="muted">No bosses match.</p>}
@@ -219,16 +239,25 @@ function BossCard({
   caught,
   hardcore,
   anyAbility,
+  focusNonce = 0,
 }: {
   boss: Boss;
   levelCap?: number;
   caught?: CaughtMon[];
   hardcore?: boolean;
   anyAbility?: boolean;
+  /** non-zero when cap-pill navigation targets this card: open and scroll to it */
+  focusNonce?: number;
 }) {
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!focusNonce) return;
+    setOpen(true);
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [focusNonce]);
   return (
-    <div className="boss-card">
+    <div className="boss-card" ref={ref}>
       <button className="boss-head" onClick={() => setOpen(!open)}>
         <span className="boss-title">
           {boss.title}
