@@ -96,6 +96,20 @@ const SPECIAL: Record<string, string> = {
   "anycappikachu": "pikachu",
 };
 
+/** species with an official mega — Showdown hosts those sprites; a "-Mega"
+ * on any other species is an RR custom that only the RR dex has. The canon
+ * list is frozen, so this can't rot. */
+const CANON_MEGA = new Set([
+  "venusaur", "charizard", "blastoise", "beedrill", "pidgeot", "alakazam",
+  "slowbro", "gengar", "kangaskhan", "pinsir", "gyarados", "aerodactyl",
+  "mewtwo", "ampharos", "steelix", "scizor", "heracross", "houndoom",
+  "tyranitar", "sceptile", "blaziken", "swampert", "gardevoir", "sableye",
+  "mawile", "aggron", "medicham", "manectric", "sharpedo", "camerupt",
+  "altaria", "banette", "absol", "glalie", "salamence", "metagross",
+  "latias", "latios", "rayquaza", "lopunny", "garchomp", "lucario",
+  "abomasnow", "gallade", "audino", "diancie",
+]);
+
 const SUFFIX: Record<string, string> = {
   a: "alola",
   g: "galar",
@@ -115,17 +129,19 @@ const SUFFIX: Record<string, string> = {
 };
 
 export function spriteUrls(species: string): string[] {
-  const slug = speciesSlug(species);
-  const urls = [
+  const { slug, customForm } = speciesSlug(species);
+  const showdown = [
     `https://play.pokemonshowdown.com/sprites/gen5/${slug}.png`,
     `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`,
   ];
   const id = SPRITE_IDS[species];
-  if (id !== undefined) urls.push(`${RRDEX_SPECIES}/${id}.png`);
-  return urls;
+  const rrdex = id !== undefined ? [`${RRDEX_SPECIES}/${id}.png`] : [];
+  // a form suffix Showdown has no slug for (Sevii forms etc.) is an RR
+  // custom — its dex sprite goes first so we don't fire two doomed 404s
+  return customForm ? [...rrdex, ...showdown] : [...showdown, ...rrdex];
 }
 
-function speciesSlug(species: string): string {
+function speciesSlug(species: string): { slug: string; customForm: boolean } {
   // Showdown filenames drop punctuation and join multi-word names with
   // nothing ("Tapu Koko" -> tapukoko, "Mr. Mime" -> mrmime, Flabébé ->
   // flabebe); dashes only separate forms
@@ -137,6 +153,7 @@ function speciesSlug(species: string): string {
     .replace(/\s+/g, "")
     .replace(/-+/g, "-")
     .replace(/-$/, "");
+  let customForm = false;
   if (SPECIAL[slug]) {
     slug = SPECIAL[slug];
   } else {
@@ -144,8 +161,13 @@ function speciesSlug(species: string): string {
     if (dash > 0) {
       const base = slug.slice(0, dash);
       const suffix = slug.slice(dash + 1);
-      if (SUFFIX[suffix]) slug = `${base}-${SUFFIX[suffix]}`;
+      if (SUFFIX[suffix]) {
+        slug = `${base}-${SUFFIX[suffix]}`;
+        if (suffix.startsWith("mega") && !CANON_MEGA.has(base)) customForm = true;
+      } else {
+        customForm = true;
+      }
     }
   }
-  return slug;
+  return { slug, customForm };
 }
