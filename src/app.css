@@ -712,6 +712,9 @@ tr.pickable:hover td { background: var(--bg3); }
 @media (max-width: 950px) {
   .matchup-body { flex-direction: column; }
   .matchup-attacker { flex: none; width: 100%; box-sizing: border-box; }
+  /* stacked flex children don't stretch (align-items: flex-start), so the
+   * rows box would otherwise shrink to its text width */
+  .matchup-rows { width: 100%; }
   .matchup-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .target-card {
