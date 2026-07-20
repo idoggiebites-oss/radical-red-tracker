@@ -22,6 +22,7 @@ import {
   resolveSpecies,
   stageMult,
   statTotals,
+  STATUSES,
   terrainFromAbility,
   weatherFromAbility,
   type MatchupLine,
@@ -49,6 +50,7 @@ const DEFAULT_CFG: PlayerMonConfig = {
   evs: { HP: 0, ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
   ivs: { HP: 31, ATK: 31, DEF: 31, SPA: 31, SPD: 31, SPE: 31 },
   boosts: { ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0 },
+  status: "",
   moves: ["", "", "", ""],
 };
 
@@ -111,6 +113,7 @@ export function CalcPanel({
   const [crit, setCrit] = useState(false);
   // in-battle stat stages on the boss (setup moves, Speed Boost, Intimidate…)
   const [bossBoosts, setBossBoosts] = useState<Record<string, number>>({});
+  const [bossStatus, setBossStatus] = useState("");
 
   const update = (patch: Partial<PlayerMonConfig>) => {
     setCfg((c) => {
@@ -196,7 +199,7 @@ export function CalcPanel({
 
   const bossUnknown = resolveSpecies(mon.species) === null;
   const results = useMemo(() => {
-    const boss = buildBossPokemon(mon, bossLevel, bossBoosts);
+    const boss = buildBossPokemon(mon, bossLevel, bossBoosts, bossStatus);
     const player = calcCfg.species ? buildPlayerPokemon(calcCfg) : null;
     if (!boss || !player) return null;
     const incoming = calcMoves(boss, player, mon.moves, resolvedField, crit);
@@ -213,7 +216,7 @@ export function CalcPanel({
       bossSpeed: effectiveSpeed(boss, resolvedField),
       playerSpeed: effectiveSpeed(player, resolvedField),
     };
-  }, [mon, bossLevel, bossBoosts, calcCfg, resolvedField, crit]);
+  }, [mon, bossLevel, bossBoosts, bossStatus, calcCfg, resolvedField, crit]);
 
   return (
     <div className="dialog-backdrop" onClick={onClose}>
@@ -270,6 +273,19 @@ export function CalcPanel({
                     ))}
                   </select>
                 </label>
+                <label className="field-select">
+                  Status
+                  <select
+                    value={bossStatus}
+                    onChange={(e) => setBossStatus(e.target.value)}
+                  >
+                    {STATUSES.map((s) => (
+                      <option key={s.value} value={s.value}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <button
                   className={"st-btn crit-toggle" + (crit ? " active" : "")}
                   title="Calculate every move as a critical hit"
@@ -289,6 +305,7 @@ export function CalcPanel({
               mon={mon}
               level={bossLevel}
               boosts={bossBoosts}
+              status={bossStatus}
               fieldOpts={resolvedField}
               setBoost={(k, v) => setBossBoosts((b) => ({ ...b, [k]: v }))}
             />
@@ -370,6 +387,17 @@ export function CalcPanel({
                 value={cfg.item}
                 onChange={(e) => update({ item: e.target.value })}
               />
+              <select
+                title="Status condition"
+                value={cfg.status ?? ""}
+                onChange={(e) => update({ status: e.target.value })}
+              >
+                {STATUSES.map((s) => (
+                  <option key={s.value} value={s.value}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
             </div>
             {playerStats && (
               <div className="muted base-stats-line">
@@ -526,18 +554,20 @@ function BossTotals({
   mon,
   level,
   boosts,
+  status,
   fieldOpts,
   setBoost,
 }: {
   mon: BossMon;
   level: number;
   boosts: Record<string, number>;
+  status?: string;
   fieldOpts: Parameters<typeof statTotals>[1];
   setBoost: (stat: string, stage: number) => void;
 }) {
   const poke = useMemo(
-    () => buildBossPokemon(mon, level, boosts),
-    [mon, level, boosts],
+    () => buildBossPokemon(mon, level, boosts, status),
+    [mon, level, boosts, status],
   );
   if (!poke) return null;
   const raw: Record<string, number> = {

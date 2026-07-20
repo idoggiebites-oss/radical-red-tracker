@@ -218,8 +218,23 @@ export interface PlayerMonConfig {
   ivs?: Record<string, number>;
   /** in-battle stat stages, -6..+6 */
   boosts?: Record<string, number>;
+  /** engine status code ("brn", "par", …), "" = healthy */
+  status?: string;
   moves: string[];
 }
+
+/** status conditions the engine models (burn/frostbite damage halving,
+ * paralysis speed, Hex/Facade/Venoshock power). RR replaces freeze with
+ * frostbite, and the fork's "frz" implements exactly that. */
+export const STATUSES: { value: string; label: string }[] = [
+  { value: "", label: "Healthy" },
+  { value: "brn", label: "Burned" },
+  { value: "par", label: "Paralyzed" },
+  { value: "psn", label: "Poisoned" },
+  { value: "tox", label: "Badly Poisoned" },
+  { value: "slp", label: "Asleep" },
+  { value: "frz", label: "Frostbitten" },
+];
 
 export const BOOST_STATS = ["ATK", "DEF", "SPA", "SPD", "SPE"] as const;
 
@@ -452,6 +467,7 @@ export function buildBossPokemon(
   mon: BossMon,
   level: number,
   boostsIn?: Record<string, number>,
+  status?: string,
 ): rr.Pokemon | null {
   const species = resolveSpecies(mon.species);
   if (!species) return null;
@@ -468,6 +484,7 @@ export function buildBossPokemon(
       item: cleanItem(mon.item),
       evs: bossEvs(mon),
       boosts,
+      status: status || "",
     });
   } catch {
     return null;
@@ -501,6 +518,7 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
       evs,
       ivs,
       boosts,
+      status: cfg.status || "",
     });
   } catch {
     return null;

@@ -652,6 +652,7 @@ tr.pickable:hover td { background: var(--bg3); }
   min-width: 0;
 }
 .boss-picker-label select { width: 100%; min-width: 0; }
+.status-label { flex: 0 1 150px; white-space: nowrap; }
 .readiness-preview {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -945,6 +946,8 @@ tr.pickable:hover td { background: var(--bg3); }
   .readiness-head { flex-wrap: wrap; }
   .matchup-toolbar { flex-wrap: wrap; }
   .attacker-label { min-width: 0; flex: 1 1 100%; }
+  /* the two status pickers share one row under the attacker */
+  .status-label { flex: 1 1 36%; }
 
   /* readiness matchup: move name above its target grid, attacker as a
    * horizontal strip instead of a tall full-width column */

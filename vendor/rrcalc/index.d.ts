@@ -17,6 +17,8 @@ export interface PokemonOptions {
   evs?: StatsTable;
   ivs?: StatsTable;
   boosts?: StatsTable;
+  /** "brn" | "par" | "psn" | "tox" | "slp" | "frz" ("" = healthy) */
+  status?: string;
 }
 
 export class Pokemon {

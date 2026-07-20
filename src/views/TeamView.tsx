@@ -32,6 +32,7 @@ import {
   fieldFromBattleEffect,
   formsFor,
   statTotals,
+  STATUSES,
   terrainFromAbility,
   weatherFromAbility,
   type MoveRange,
@@ -653,6 +654,8 @@ function MoveMatchup({
   const activeId = active?.[0] ?? "";
   const mon = active?.[1];
   const level = levelCap ?? 50;
+  const [myStatus, setMyStatus] = useState("");
+  const [foeStatus, setFoeStatus] = useState("");
   // the grid is an engine calc per move × defender — recompute only when the
   // attacker entry, boss, or field actually change, not on every re-render
   // (entry objects are referentially stable in run state unless edited)
@@ -665,6 +668,7 @@ function MoveMatchup({
       ability: mon.build?.ability || abilitiesFor(mon.species)[0] || "",
       item: mon.build?.item ?? "",
       evs: {},
+      status: myStatus,
       moves: mon.build?.moves ?? [],
     };
     const attacker = buildPlayerPokemon(cfg);
@@ -676,7 +680,12 @@ function MoveMatchup({
     // Pulse, …) applies per matchup unless the pickers above override it
     const defenders = boss.pokemon.map((bm) => ({
       bm,
-      poke: buildBossPokemon(bm, defaultBossLevel(bm.level, levelCap)),
+      poke: buildBossPokemon(
+        bm,
+        defaultBossLevel(bm.level, levelCap),
+        undefined,
+        foeStatus,
+      ),
       field: autoField(fieldOpts, [cfg.ability, bm.ability]),
     }));
     const autoBits = new Set<string>();
@@ -703,7 +712,7 @@ function MoveMatchup({
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, terrain, crit]);
+  }, [mon, level, levelCap, boss, weather, terrain, crit, myStatus, foeStatus]);
   if (!mon || !grid) return null;
   return (
     <div className="matchup">
@@ -714,6 +723,26 @@ function MoveMatchup({
             {party.map(([id, e]) => (
               <option key={id} value={id}>
                 {e.nickname ? `${e.nickname} (${e.species})` : e.species}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="boss-picker-label status-label">
+          Your status
+          <select value={myStatus} onChange={(e) => setMyStatus(e.target.value)}>
+            {STATUSES.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="boss-picker-label status-label">
+          Their status
+          <select value={foeStatus} onChange={(e) => setFoeStatus(e.target.value)}>
+            {STATUSES.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
               </option>
             ))}
           </select>
