@@ -163,6 +163,51 @@ export function fieldFromBattleEffect(effect: string): rr.FieldOptions {
   return out;
 }
 
+/** weather summoned on switch-in, keyed by ability id */
+const WEATHER_ABILITIES: Record<string, string> = {
+  drizzle: "Rain",
+  drought: "Sun",
+  orichalcumpulse: "Sun",
+  sandstream: "Sand",
+  snowwarning: "Snow",
+  primordialsea: "Heavy Rain",
+  desolateland: "Harsh Sunshine",
+  deltastream: "Strong Winds",
+};
+
+/** terrain summoned on switch-in, keyed by ability id */
+const TERRAIN_ABILITIES: Record<string, string> = {
+  electricsurge: "Electric",
+  hadronengine: "Electric",
+  grassysurge: "Grassy",
+  psychicsurge: "Psychic",
+  mistysurge: "Misty",
+};
+
+export function weatherFromAbility(ability?: string): string | undefined {
+  return ability ? WEATHER_ABILITIES[rr.toID(ability)] : undefined;
+}
+
+export function terrainFromAbility(ability?: string): string | undefined {
+  return ability ? TERRAIN_ABILITIES[rr.toID(ability)] : undefined;
+}
+
+/** fill weather/terrain the user left unset from either side's switch-in
+ * ability (Drought, Orichalcum Pulse, Electric Surge, …) so damage that
+ * depends on the summoned field calculates correctly. Earlier abilities in
+ * the list win a slot. */
+export function autoField(
+  fieldOpts: rr.FieldOptions,
+  abilities: (string | undefined)[],
+): rr.FieldOptions {
+  let { weather, terrain } = fieldOpts;
+  for (const a of abilities) {
+    weather = weather || weatherFromAbility(a);
+    terrain = terrain || terrainFromAbility(a);
+  }
+  return { ...fieldOpts, weather, terrain };
+}
+
 export interface PlayerMonConfig {
   species: string;
   level: number;
@@ -178,7 +223,7 @@ export interface PlayerMonConfig {
 
 export const BOOST_STATS = ["ATK", "DEF", "SPA", "SPD", "SPE"] as const;
 
-const stageMult = (n: number) => (n >= 0 ? (2 + n) / 2 : 2 / (2 - n));
+export const stageMult = (n: number) => (n >= 0 ? (2 + n) / 2 : 2 / (2 - n));
 
 /** stat multipliers granted by a held item (display + totals) */
 export function itemStatMods(
@@ -403,9 +448,18 @@ function cleanItem(item: string): string | undefined {
   return item;
 }
 
-export function buildBossPokemon(mon: BossMon, level: number): rr.Pokemon | null {
+export function buildBossPokemon(
+  mon: BossMon,
+  level: number,
+  boostsIn?: Record<string, number>,
+): rr.Pokemon | null {
   const species = resolveSpecies(mon.species);
   if (!species) return null;
+  const boosts: rr.StatsTable = {};
+  for (const [k, v] of Object.entries(boostsIn ?? {})) {
+    const key = EV_KEYS[k];
+    if (key && v !== 0) boosts[key] = Math.max(-6, Math.min(6, v));
+  }
   try {
     return new rr.Pokemon(GEN, species, {
       level,
@@ -413,6 +467,7 @@ export function buildBossPokemon(mon: BossMon, level: number): rr.Pokemon | null
       ability: mon.ability || undefined,
       item: cleanItem(mon.item),
       evs: bossEvs(mon),
+      boosts,
     });
   } catch {
     return null;
@@ -491,8 +546,8 @@ export function calcMoves(
       try {
         desc = result.desc();
       } catch {
-        // desc() throws for pure status moves
-        desc = "status move";
+        // desc() throws when there's no damage: status moves, or immunity
+        desc = move.category === "Status" ? "status move" : "no damage (immune)";
       }
       lines.push({
         move: moveName,

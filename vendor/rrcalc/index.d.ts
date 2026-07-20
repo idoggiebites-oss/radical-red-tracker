@@ -34,6 +34,7 @@ export class Pokemon {
 export class Move {
   constructor(gen: number | Generation, name: string, options?: Record<string, unknown>);
   hits: number;
+  category: "Physical" | "Special" | "Status";
 }
 
 export interface FieldOptions {

@@ -24,6 +24,7 @@ import {
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
+  autoField,
   buildBossPokemon,
   buildPlayerPokemon,
   calcMoveRange,
@@ -31,6 +32,8 @@ import {
   fieldFromBattleEffect,
   formsFor,
   statTotals,
+  terrainFromAbility,
+  weatherFromAbility,
   type MoveRange,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
@@ -669,22 +672,33 @@ function MoveMatchup({
       weather: weather || undefined,
       terrain: terrain || undefined,
     };
+    // weather/terrain summoned by switch-in abilities (Drought, Orichalcum
+    // Pulse, …) applies per matchup unless the pickers above override it
     const defenders = boss.pokemon.map((bm) => ({
       bm,
       poke: buildBossPokemon(bm, defaultBossLevel(bm.level, levelCap)),
+      field: autoField(fieldOpts, [cfg.ability, bm.ability]),
     }));
+    const autoBits = new Set<string>();
+    for (const a of [cfg.ability, ...boss.pokemon.map((bm) => bm.ability)]) {
+      const w = !fieldOpts.weather && weatherFromAbility(a);
+      const t = !fieldOpts.terrain && terrainFromAbility(a);
+      if (w) autoBits.add(`${w} (${a})`);
+      if (t) autoBits.add(`${t} Terrain (${a})`);
+    }
     return {
       cfg,
       unknown: !attacker,
+      autoBits: [...autoBits],
       rows: (mon.build?.moves ?? [])
         .filter((m) => m.trim())
         .map((move) => ({
           move,
-          targets: defenders.map(({ bm, poke }) => ({
+          targets: defenders.map(({ bm, poke, field }) => ({
             bm,
             line:
               attacker && poke
-                ? calcMoveRange(attacker, poke, move, fieldOpts, crit)
+                ? calcMoveRange(attacker, poke, move, field, crit)
                 : null,
           })),
         })),
@@ -715,6 +729,7 @@ function MoveMatchup({
           your moves vs {boss.title}
           {weather && ` · ${weather}`}
           {terrain && ` · ${terrain} Terrain`}
+          {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
           {crit && " · crit"}
         </span>
       </div>

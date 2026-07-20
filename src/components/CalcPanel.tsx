@@ -10,6 +10,7 @@ import {
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
+  autoField,
   buildBossPokemon,
   buildPlayerPokemon,
   calcBaseStats,
@@ -19,7 +20,10 @@ import {
   effectiveSpeed,
   fieldFromBattleEffect,
   resolveSpecies,
+  stageMult,
   statTotals,
+  terrainFromAbility,
+  weatherFromAbility,
   type MatchupLine,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
@@ -105,6 +109,8 @@ export function CalcPanel({
   const [importedFrom, setImportedFrom] = useState("");
   const [showSpreads, setShowSpreads] = useState(false);
   const [crit, setCrit] = useState(false);
+  // in-battle stat stages on the boss (setup moves, Speed Boost, Intimidate…)
+  const [bossBoosts, setBossBoosts] = useState<Record<string, number>>({});
 
   const update = (patch: Partial<PlayerMonConfig>) => {
     setCfg((c) => {
@@ -169,27 +175,45 @@ export function CalcPanel({
     }),
     [weather, terrain],
   );
+  // weather/terrain summoned by either side's switch-in ability (Drought,
+  // Orichalcum Pulse, …) applies unless the selects above override it
+  const resolvedField = useMemo(
+    () => autoField(fieldOpts, [calcCfg.ability, mon.ability]),
+    [fieldOpts, calcCfg.ability, mon.ability],
+  );
+  const autoBits = useMemo(() => {
+    const bits: string[] = [];
+    if (!fieldOpts.weather) {
+      const src = [calcCfg.ability, mon.ability].find((a) => weatherFromAbility(a));
+      if (src) bits.push(`${weatherFromAbility(src)} (${src})`);
+    }
+    if (!fieldOpts.terrain) {
+      const src = [calcCfg.ability, mon.ability].find((a) => terrainFromAbility(a));
+      if (src) bits.push(`${terrainFromAbility(src)} Terrain (${src})`);
+    }
+    return bits;
+  }, [fieldOpts, calcCfg.ability, mon.ability]);
 
   const bossUnknown = resolveSpecies(mon.species) === null;
   const results = useMemo(() => {
-    const boss = buildBossPokemon(mon, bossLevel);
+    const boss = buildBossPokemon(mon, bossLevel, bossBoosts);
     const player = calcCfg.species ? buildPlayerPokemon(calcCfg) : null;
     if (!boss || !player) return null;
-    const incoming = calcMoves(boss, player, mon.moves, fieldOpts, crit);
+    const incoming = calcMoves(boss, player, mon.moves, resolvedField, crit);
     const outgoing = calcMoves(
       player,
       boss,
       calcCfg.moves.filter((m) => m.trim()),
-      fieldOpts,
+      resolvedField,
       crit,
     );
     return {
       incoming,
       outgoing,
-      bossSpeed: effectiveSpeed(boss, fieldOpts),
-      playerSpeed: effectiveSpeed(player, fieldOpts),
+      bossSpeed: effectiveSpeed(boss, resolvedField),
+      playerSpeed: effectiveSpeed(player, resolvedField),
     };
-  }, [mon, bossLevel, calcCfg, fieldOpts, crit]);
+  }, [mon, bossLevel, bossBoosts, calcCfg, resolvedField, crit]);
 
   return (
     <div className="dialog-backdrop" onClick={onClose}>
@@ -258,6 +282,16 @@ export function CalcPanel({
             {battleEffect && (
               <div className="muted">Battle effect: {battleEffect.toLowerCase()}</div>
             )}
+            {autoBits.length > 0 && (
+              <div className="muted">Auto: {autoBits.join(" · ")}</div>
+            )}
+            <BossTotals
+              mon={mon}
+              level={bossLevel}
+              boosts={bossBoosts}
+              fieldOpts={resolvedField}
+              setBoost={(k, v) => setBossBoosts((b) => ({ ...b, [k]: v }))}
+            />
           </div>
 
           <div className="calc-side">
@@ -346,8 +380,8 @@ export function CalcPanel({
               </div>
             )}
             <NatureLine cfg={cfg} />
-            <ModifierLine cfg={calcCfg} fieldOpts={fieldOpts} />
-            <TotalsWithBoosts cfg={calcCfg} fieldOpts={fieldOpts} update={update} />
+            <ModifierLine cfg={calcCfg} fieldOpts={resolvedField} />
+            <TotalsWithBoosts cfg={calcCfg} fieldOpts={resolvedField} update={update} />
             <div className="calc-row spread-row">
               <button
                 className="st-btn spread-toggle"
@@ -482,6 +516,75 @@ export function CalcPanel({
           <button onClick={onClose}>Close</button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** boss stats with in-battle stage selects, mirroring the player's totals
+ * grid — models setup moves and stacking abilities like Speed Boost */
+function BossTotals({
+  mon,
+  level,
+  boosts,
+  fieldOpts,
+  setBoost,
+}: {
+  mon: BossMon;
+  level: number;
+  boosts: Record<string, number>;
+  fieldOpts: Parameters<typeof statTotals>[1];
+  setBoost: (stat: string, stage: number) => void;
+}) {
+  const poke = useMemo(
+    () => buildBossPokemon(mon, level, boosts),
+    [mon, level, boosts],
+  );
+  if (!poke) return null;
+  const raw: Record<string, number> = {
+    HP: poke.stats.hp,
+    ATK: poke.stats.atk,
+    DEF: poke.stats.def,
+    SPA: poke.stats.spa,
+    SPD: poke.stats.spd,
+    SPE: poke.stats.spe,
+  };
+  return (
+    <div className="totals-grid">
+      <div className="totals-cell">
+        <span className="k">HP</span>
+        <span className="total-val">{raw.HP}</span>
+      </div>
+      {BOOST_STATS.map((k) => {
+        const boost = boosts[k] ?? 0;
+        const val =
+          k === "SPE"
+            ? effectiveSpeed(poke, fieldOpts)
+            : Math.floor(raw[k] * stageMult(boost));
+        return (
+          <div key={k} className="totals-cell">
+            <span className="k">{k}</span>
+            <span
+              className={
+                "total-val" +
+                (boost > 0 ? " nature-plus" : boost < 0 ? " nature-minus" : "")
+              }
+            >
+              {val}
+            </span>
+            <select
+              title={`${k} stage`}
+              value={boost}
+              onChange={(e) => setBoost(k, parseInt(e.target.value, 10))}
+            >
+              {Array.from({ length: 13 }, (_, i) => 6 - i).map((n) => (
+                <option key={n} value={n}>
+                  {n > 0 ? `+${n}` : n}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -644,7 +747,8 @@ function ResultRow({
   tone: "incoming" | "outgoing";
 }) {
   const ok = !l.error;
-  const status = ok && l.desc === "status move";
+  // non-numeric outcomes render their label instead of a 0–0% range
+  const status = ok && (l.desc === "status move" || l.desc === "no damage (immune)");
   const ko = ok && !l.guard && l.minPercent >= 100;
   const maybeKo = ok && !l.guard && !ko && l.maxPercent >= 100;
   // remaining HP range: sure = survives even max damage, maybe = roll-dependent;
@@ -679,7 +783,7 @@ function ResultRow({
           {l.error
             ? l.error
             : status
-              ? "status move"
+              ? l.desc
               : ko
                 ? `KO · ${l.minPercent}%+`
                 : l.guard
