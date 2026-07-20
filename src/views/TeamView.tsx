@@ -418,41 +418,19 @@ function CurrentStats({
   );
 }
 
-function PartyStats({ species }: { species: string }) {
-  const stats = statsFor(species);
-  if (Object.keys(stats).length === 0) return null;
-  return (
-    <table className="stat-table">
-      <thead>
-        <tr>
-          <th></th>
-          {STAT_KEYS.map((s) => (
-            <th key={s}>{s}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="k">Base</td>
-          {STAT_KEYS.map((s) => (
-            <td key={s}>{stats[s] ?? "–"}</td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  );
-}
-
-/** party in the boss-preview compact style: rows that expand into base
+/** party in the boss-preview compact style: rows that expand into current
  * stats, defensive profile and the build editor */
 function PartyPreview({
   party,
   setBuild,
   anyAbility,
+  level,
 }: {
   party: Entry[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
   anyAbility?: boolean;
+  /** level cap the current-stats row is computed at */
+  level: number;
 }) {
   const [open, setOpen] = useState<string | null>(null);
   return (
@@ -494,7 +472,7 @@ function PartyPreview({
           </button>
           {open === locId && (
             <div className="party-detail">
-              <PartyStats species={e.species} />
+              <CurrentStats species={e.species} build={e.build} level={level} />
               <SpeciesDefenses
                 species={e.species}
                 ability={e.build?.ability || abilitiesFor(e.species)[0]}
@@ -609,6 +587,7 @@ function ReadinessView({
           party={party}
           setBuild={setBuild}
           anyAbility={abilitiesRandomized(run)}
+          level={levelCap ?? 50}
         />
       </div>
       <div className="readiness-col col-boss">
