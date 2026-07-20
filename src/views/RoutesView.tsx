@@ -13,6 +13,7 @@ import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
 import { speciesRandomized } from "../lib/saveFile";
 import { STARTER_ID } from "../lib/storage";
 import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
+import { groupLocations, type RouteGroup } from "../lib/routeGroups";
 import {
   staticSlotId,
   staticsByLocation,
@@ -24,6 +25,13 @@ const STARTER_LOC: Location = {
   name: "STARTER · OAK'S LAB",
   postgame: false,
   methods: {},
+};
+
+const STARTER_GROUP: RouteGroup = {
+  id: STARTER_ID,
+  name: STARTER_LOC.name,
+  postgame: false,
+  sections: [{ label: null, loc: STARTER_LOC }],
 };
 
 const METHOD_LABELS: Record<MethodKey, string> = {
@@ -68,10 +76,10 @@ export function RoutesView({
       .map((s) => ({ id: staticSlotId(s.species), static: s }));
   }, [staticsMap]);
 
+  const groups = useMemo(() => groupLocations(data.locations), []);
+
   const q = filter.trim().toLowerCase();
-  const locations = data.locations.filter((loc) => {
-    if (!showPostgame && loc.postgame) return false;
-    if (!q) return true;
+  const matchesLoc = (loc: Location) => {
     if (loc.name.toLowerCase().includes(q)) return true;
     if (
       (staticsMap[loc.id] ?? []).some((ls) =>
@@ -91,6 +99,12 @@ export function RoutesView({
     return Object.values(loc.methods).some((slots) =>
       slots?.some((s) => s.species.toLowerCase().includes(q)),
     );
+  };
+  const visibleGroups = groups.filter((g) => {
+    if (!showPostgame && g.postgame) return false;
+    if (!q) return true;
+    if (g.name.toLowerCase().includes(q)) return true;
+    return g.sections.some(({ loc }) => matchesLoc(loc));
   });
   const otherFiltered = q
     ? otherStatics.filter(
@@ -174,7 +188,7 @@ export function RoutesView({
 
       {run && !q && (
         <RouteRow
-          loc={STARTER_LOC}
+          group={STARTER_GROUP}
           run={run}
           updateRun={updateRun}
           randomized={randomized}
@@ -182,25 +196,30 @@ export function RoutesView({
           toggle={() => setOpen(open === STARTER_ID ? null : STARTER_ID)}
         />
       )}
-      {locations.map((loc) => (
-        <RouteRow
-          key={loc.id}
-          loc={loc}
-          run={run}
-          updateRun={updateRun}
-          randomized={randomized}
-          statics={staticsMap[loc.id] ?? []}
-          staticsDefaultOpen={
-            showPostgame ||
-            (!!q &&
-              (staticsMap[loc.id] ?? []).some((ls) =>
-                ls.static.species.toLowerCase().includes(q),
-              ))
-          }
-          open={open === loc.id}
-          toggle={() => setOpen(open === loc.id ? null : loc.id)}
-        />
-      ))}
+      {visibleGroups.map((g) => {
+        const groupStatics = g.sections.flatMap(
+          ({ loc }) => staticsMap[loc.id] ?? [],
+        );
+        return (
+          <RouteRow
+            key={g.id}
+            group={g}
+            run={run}
+            updateRun={updateRun}
+            randomized={randomized}
+            statics={groupStatics}
+            staticsDefaultOpen={
+              showPostgame ||
+              (!!q &&
+                groupStatics.some((ls) =>
+                  ls.static.species.toLowerCase().includes(q),
+                ))
+            }
+            open={open === g.id}
+            toggle={() => setOpen(open === g.id ? null : g.id)}
+          />
+        );
+      })}
       {otherFiltered.length > 0 && (
         <div className="route-row">
           <button
@@ -466,7 +485,7 @@ function RouteStats({ run }: { run: Run }) {
 }
 
 function RouteRow({
-  loc,
+  group,
   run,
   updateRun,
   randomized,
@@ -475,7 +494,7 @@ function RouteRow({
   open,
   toggle,
 }: {
-  loc: Location;
+  group: RouteGroup;
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
   randomized: boolean;
@@ -485,19 +504,24 @@ function RouteRow({
   open: boolean;
   toggle: () => void;
 }) {
-  const enc = run?.encounters[loc.id];
+  // one encounter slot per nuzlocke area: reuse whichever section id the run
+  // already recorded on (pre-merge runs), else the group's canonical id
+  const encId =
+    group.sections.map((s) => s.loc.id).find((id) => run?.encounters[id]) ??
+    group.id;
+  const enc = run?.encounters[encId];
   // statics start collapsed (mostly post-game roamers); a manual toggle wins
   // over the default, and a tracked static keeps its status visible
   const [staticsOpen, setStaticsOpen] = useState<boolean | null>(null);
   const showStatics =
     staticsOpen ?? (staticsDefaultOpen || statics.some((ls) => run?.encounters[ls.id]));
 
-  const seenFor = (species: string) =>
-    run?.seenSpecies?.[`${loc.id}|${species}`];
-  const setSeen = (species: string, seen: string) => {
+  const seenFor = (locId: string, species: string) =>
+    run?.seenSpecies?.[`${locId}|${species}`];
+  const setSeen = (locId: string, species: string, seen: string) => {
     updateRun((r) => {
       const next = { ...(r.seenSpecies ?? {}) };
-      const key = `${loc.id}|${species}`;
+      const key = `${locId}|${species}`;
       if (seen.trim()) {
         next[key] = seen.trim();
       } else {
@@ -511,7 +535,7 @@ function RouteRow({
     updateRun((r) => {
       const next = { ...r.encounters };
       if (patch === null) {
-        delete next[loc.id];
+        delete next[encId];
       } else {
         const defaults: Run["encounters"][string] = {
           species: "",
@@ -519,7 +543,7 @@ function RouteRow({
           status: "caught",
           inParty: false,
         };
-        next[loc.id] = { ...defaults, ...next[loc.id], ...patch };
+        next[encId] = { ...defaults, ...next[encId], ...patch };
       }
       return { ...r, encounters: next };
     });
@@ -529,8 +553,8 @@ function RouteRow({
     <div className={`route-row ${enc ? `st-${enc.status}` : ""}`}>
       <button className="route-head" onClick={toggle}>
         <span className="route-name">
-          {loc.name}
-          {loc.postgame && <span className="badge postgame">post-game</span>}
+          {group.name}
+          {group.postgame && <span className="badge postgame">post-game</span>}
         </span>
         {enc && (
           <span className="route-enc">
@@ -556,14 +580,16 @@ function RouteRow({
                 placeholder="Species caught here…"
                 value={enc?.species ?? ""}
                 onChange={(e) => setEncounter({ species: e.target.value })}
-                list={`species-${loc.id}`}
+                list={`species-${group.id}`}
               />
-              <datalist id={`species-${loc.id}`}>
-                {(loc.id === STARTER_ID || randomized
+              <datalist id={`species-${group.id}`}>
+                {(group.id === STARTER_ID || randomized
                   ? ALL_SPECIES
                   : [...new Set(
-                      Object.values(loc.methods).flatMap(
-                        (slots) => slots?.map((s) => s.species) ?? [],
+                      group.sections.flatMap(({ loc }) =>
+                        Object.values(loc.methods).flatMap(
+                          (slots) => slots?.map((s) => s.species) ?? [],
+                        ),
                       ),
                     )]
                 ).map((s) => (
@@ -595,59 +621,83 @@ function RouteRow({
             </div>
           )}
 
-          <div className="method-tables">
-            {loc.id === STARTER_ID && run && (
-              <div className="method-table starter-table">
-                <h4>Oak's Lab · pick one</h4>
-                <StarterPicker run={run} updateRun={updateRun} />
-                <p className="muted starter-note">
-                  The ball position decides the rival's counterpick (he takes
-                  the one that beats yours), so his team variants on the
-                  Bosses tab filter by position — even with another region's
-                  trio or randomized starters. Randomized? Type what appeared
-                  in a slot before picking it.
-                </p>
-              </div>
-            )}
-            {statics.length > 0 && (
-              <div className="method-table statics-table">
-                <button
-                  className="statics-toggle"
-                  onClick={() => setStaticsOpen(!showStatics)}
-                >
-                  {showStatics ? "▾" : "▸"} Static / Legendary{" "}
-                  <span className="count">({statics.length})</span>
-                </button>
-                {showStatics && (
-                  <StaticsTable
-                    statics={statics}
-                    run={run}
-                    updateRun={updateRun}
-                    onPickRoute={
-                      run ? (sp) => setEncounter({ species: sp }) : undefined
-                    }
-                  />
-                )}
-              </div>
-            )}
-            {(Object.keys(METHOD_LABELS) as MethodKey[]).map((m) => {
-              const slots = loc.methods[m];
-              if (!slots || slots.length === 0) return null;
-              return (
-                <div key={m} className="method-table">
-                  <h4>{METHOD_LABELS[m]}</h4>
-                  <EncounterTable
-                    slots={slots}
-                    seen={randomized ? seenFor : undefined}
-                    onSee={randomized ? setSeen : undefined}
-                    onPick={
-                      run ? (sp) => setEncounter({ species: sp }) : undefined
-                    }
-                  />
+          {(group.id === STARTER_ID || statics.length > 0) && (
+            <div className="method-tables">
+              {group.id === STARTER_ID && run && (
+                <div className="method-table starter-table">
+                  <h4>Oak's Lab · pick one</h4>
+                  <StarterPicker run={run} updateRun={updateRun} />
+                  <p className="muted starter-note">
+                    The ball position decides the rival's counterpick (he takes
+                    the one that beats yours), so his team variants on the
+                    Bosses tab filter by position — even with another region's
+                    trio or randomized starters. Randomized? Type what appeared
+                    in a slot before picking it.
+                  </p>
                 </div>
-              );
-            })}
-          </div>
+              )}
+              {statics.length > 0 && (
+                <div className="method-table statics-table">
+                  <button
+                    className="statics-toggle"
+                    onClick={() => setStaticsOpen(!showStatics)}
+                  >
+                    {showStatics ? "▾" : "▸"} Static / Legendary{" "}
+                    <span className="count">({statics.length})</span>
+                  </button>
+                  {showStatics && (
+                    <StaticsTable
+                      statics={statics}
+                      run={run}
+                      updateRun={updateRun}
+                      onPickRoute={
+                        run ? (sp) => setEncounter({ species: sp }) : undefined
+                      }
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+          {group.sections.map(({ label, loc }) => {
+            const methodKeys = (Object.keys(METHOD_LABELS) as MethodKey[]).filter(
+              (m) => (loc.methods[m]?.length ?? 0) > 0,
+            );
+            if (methodKeys.length === 0) return null;
+            return (
+              <div key={loc.id} className="route-section">
+                {label && (
+                  <h5 className="route-section-label">
+                    {label}
+                    {loc.postgame && !group.postgame && (
+                      <span className="badge postgame">post-game</span>
+                    )}
+                  </h5>
+                )}
+                <div className="method-tables">
+                  {methodKeys.map((m) => (
+                    <div key={m} className="method-table">
+                      <h4>{METHOD_LABELS[m]}</h4>
+                      <EncounterTable
+                        slots={loc.methods[m]!}
+                        seen={
+                          randomized ? (sp) => seenFor(loc.id, sp) : undefined
+                        }
+                        onSee={
+                          randomized
+                            ? (sp, v) => setSeen(loc.id, sp, v)
+                            : undefined
+                        }
+                        onPick={
+                          run ? (sp) => setEncounter({ species: sp }) : undefined
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

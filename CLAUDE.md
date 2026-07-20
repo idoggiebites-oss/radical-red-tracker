@@ -71,7 +71,11 @@ through; Mold Breaker beats Sturdy, not the sash).
   readiness/evolve automatically.
 - `src/views/RoutesView.tsx` — encounter tables per method, starter picker,
   static/legendary capture (`src/lib/statics.ts` matches location names in
-  static info text; unmatched ones live in an "OTHER AREAS" row).
+  static info text; unmatched ones live in an "OTHER AREAS" row). Multi-floor
+  doc locations fold into one nuzlocke area via `src/lib/routeGroups.ts`
+  (floor-suffix pattern + explicit merges like Forest Expansion/Safari
+  zones); the merged row shares ONE encounter slot — whichever member id the
+  run already recorded on, else the first member's id.
 - `src/views/BossesView.tsx` — trainer order/level caps + boss teams.
 - `src/views/TeamView.tsx` — subtabs "Party & Box" (party/box/graveyard, KO
   counters, build editor, Evolve/Devolve via `evolutionsFor`/
