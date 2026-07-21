@@ -660,6 +660,8 @@ function ReadinessView({
 interface MatchupShared {
   crit: boolean;
   setCrit: (fn: (c: boolean) => boolean) => void;
+  doubles: boolean;
+  setDoubles: (fn: (d: boolean) => boolean) => void;
   myStatus: string;
   setMyStatus: (s: string) => void;
   foeStatus: string;
@@ -693,11 +695,16 @@ function MatchupSection({
     localStorage.setItem(dirKey, d);
   };
   const [crit, setCrit] = useState(false);
+  // spread moves deal 0.75x in doubles — default from the boss sheet's own
+  // "DOUBLES" battle-effect tag, editable either way
+  const [doubles, setDoubles] = useState(() => /DOUBLES/i.test(boss.battleEffect));
   const [myStatus, setMyStatus] = useState("");
   const [foeStatus, setFoeStatus] = useState("");
   const shared: MatchupShared = {
     crit,
     setCrit,
+    doubles,
+    setDoubles,
     myStatus,
     setMyStatus,
     foeStatus,
@@ -725,10 +732,12 @@ function MatchupSection({
   );
 }
 
-/** the shared status pickers and crit toggle of both matchup tabs */
+/** the shared status pickers and crit/doubles toggles of both matchup tabs */
 function MatchupControls({
   crit,
   setCrit,
+  doubles,
+  setDoubles,
   myStatus,
   setMyStatus,
   foeStatus,
@@ -763,6 +772,13 @@ function MatchupControls({
       >
         Crit
       </button>
+      <button
+        className={"st-btn crit-toggle" + (doubles ? " active" : "")}
+        title="Double battle — spread moves (Earthquake, Surf, Heat Wave…) deal ×0.75 to each target"
+        onClick={() => setDoubles((d) => !d)}
+      >
+        Doubles
+      </button>
     </>
   );
 }
@@ -785,7 +801,7 @@ function MoveMatchup({
   weather: string;
   terrain: string;
 } & MatchupShared) {
-  const { crit, myStatus, foeStatus } = shared;
+  const { crit, doubles, myStatus, foeStatus } = shared;
   // remember the last attacker per run, like the boss selection
   const storageKey = `rr-tracker.readinessAttacker.${runId}`;
   const [sel, setSel] = useState(
@@ -818,6 +834,7 @@ function MoveMatchup({
     const fieldOpts = {
       weather: weather || undefined,
       terrain: terrain || undefined,
+      gameType: doubles ? "Doubles" : "Singles",
     };
     // weather/terrain summoned by switch-in abilities (Drought, Orichalcum
     // Pulse, …) applies per matchup unless the pickers above override it
@@ -855,7 +872,7 @@ function MoveMatchup({
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, terrain, crit, myStatus, foeStatus]);
+  }, [mon, level, levelCap, boss, weather, terrain, crit, doubles, myStatus, foeStatus]);
   if (!mon || !grid) return null;
   return (
     <>
@@ -876,6 +893,7 @@ function MoveMatchup({
           {weather && ` · ${weather}`}
           {terrain && ` · ${terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
+          {doubles && " · doubles"}
           {crit && " · crit"}
         </span>
       </div>
@@ -941,7 +959,7 @@ function FoeMatchup({
   weather: string;
   terrain: string;
 } & MatchupShared) {
-  const { crit, myStatus, foeStatus } = shared;
+  const { crit, doubles, myStatus, foeStatus } = shared;
   const storageKey = `rr-tracker.readinessFoe.${runId}`;
   const [sel, setSel] = useState(
     () => parseInt(localStorage.getItem(storageKey) ?? "0", 10) || 0,
@@ -960,6 +978,7 @@ function FoeMatchup({
     const fieldOpts = {
       weather: weather || undefined,
       terrain: terrain || undefined,
+      gameType: doubles ? "Doubles" : "Singles",
     };
     const defenders = party.map(([id, e]) => {
       const cfg: PlayerMonConfig = {
@@ -1005,7 +1024,7 @@ function FoeMatchup({
           })),
         })),
     };
-  }, [bm, party, level, levelCap, weather, terrain, crit, myStatus, foeStatus]);
+  }, [bm, party, level, levelCap, weather, terrain, crit, doubles, myStatus, foeStatus]);
   if (!bm || !grid) return null;
   return (
     <>
@@ -1029,6 +1048,7 @@ function FoeMatchup({
           {weather && ` · ${weather}`}
           {terrain && ` · ${terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
+          {doubles && " · doubles"}
           {crit && " · crit"}
         </span>
       </div>

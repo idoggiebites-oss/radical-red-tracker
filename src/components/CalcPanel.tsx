@@ -111,6 +111,9 @@ export function CalcPanel({
   const [importedFrom, setImportedFrom] = useState("");
   const [showSpreads, setShowSpreads] = useState(false);
   const [crit, setCrit] = useState(false);
+  // spread moves (Earthquake, Surf, …) deal 0.75x in doubles — default from
+  // the boss sheet's own "DOUBLES" battle-effect tag, editable either way
+  const [doubles, setDoubles] = useState(() => /DOUBLES/i.test(battleEffect));
   // in-battle stat stages on the boss (setup moves, Speed Boost, Intimidate…)
   const [bossBoosts, setBossBoosts] = useState<Record<string, number>>({});
   const [bossStatus, setBossStatus] = useState("");
@@ -175,8 +178,9 @@ export function CalcPanel({
     () => ({
       weather: weather || undefined,
       terrain: terrain || undefined,
+      gameType: doubles ? "Doubles" : "Singles",
     }),
-    [weather, terrain],
+    [weather, terrain, doubles],
   );
   // weather/terrain summoned by either side's switch-in ability (Drought,
   // Orichalcum Pulse, …) applies unless the selects above override it
@@ -292,6 +296,13 @@ export function CalcPanel({
                   onClick={() => setCrit((c) => !c)}
                 >
                   Crit
+                </button>
+                <button
+                  className={"st-btn crit-toggle" + (doubles ? " active" : "")}
+                  title="Double battle — spread moves (Earthquake, Surf, Heat Wave…) deal ×0.75 to each target"
+                  onClick={() => setDoubles((d) => !d)}
+                >
+                  Doubles
                 </button>
               </span>
             </div>
@@ -525,12 +536,12 @@ export function CalcPanel({
                   : "— speed tie"}
             </div>
             <ResultBlock
-              title={`${mon.species}'s moves vs you${crit ? " · crit" : ""}`}
+              title={`${mon.species}'s moves vs you${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.incoming}
               tone="incoming"
             />
             <ResultBlock
-              title={`Your moves vs them${crit ? " · crit" : ""}`}
+              title={`Your moves vs them${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.outgoing}
               tone="outgoing"
             />

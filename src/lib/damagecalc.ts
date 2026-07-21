@@ -497,9 +497,22 @@ function bossEvs(mon: BossMon): rr.StatsTable {
   return evs;
 }
 
+/** case-insensitive prefix lookup against the engine's own item list */
+function resolveItemName(item: string): string {
+  const hit = ITEM_NAMES.find((n) => n.toLowerCase() === item.toLowerCase());
+  if (hit) return hit;
+  const stripped = item.replace(/\.$/, "");
+  return ITEM_NAMES.find((n) => n.toLowerCase().startsWith(stripped.toLowerCase())) ?? item;
+}
+
+/** the docs abbreviate long item names with a trailing dot ("Weakness
+ * Pol.", "Terrain Exten."/"Terrain Extend.") — an unresolved name reaches
+ * the engine's item table as a miss, and at least one internal check
+ * (Knock Off's mega-stone guard) assumes the lookup always succeeds and
+ * throws on a miss, silently failing every calc against that Pokémon */
 function cleanItem(item: string): string | undefined {
   if (!item || item === "-" || /no item/i.test(item)) return undefined;
-  return item;
+  return item.endsWith(".") ? resolveItemName(item) : item;
 }
 
 export function buildBossPokemon(
