@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Boss, BossMode, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
@@ -54,6 +54,16 @@ type Entry = [string, Run["encounters"][string]];
 const bstFor = (species: string) =>
   Object.values(statsFor(species)).reduce((sum, v) => sum + (v ?? 0), 0);
 
+const collapsedKey = (runId: string) => `rr-tracker.teamCollapsed.${runId}`;
+
+function loadCollapsed(runId: string): Set<string> {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(collapsedKey(runId)) ?? "[]"));
+  } catch {
+    return new Set();
+  }
+}
+
 export function TeamView({
   run,
   updateRun,
@@ -69,6 +79,24 @@ export function TeamView({
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
   const [evolveOpen, setEvolveOpen] = useState<string | null>(null);
   const [notesOpen, setNotesOpen] = useState<string | null>(null);
+  // which sections (Party/Box/Graveyard) are collapsed to a scan-friendly
+  // table, per run — a long playthrough's box/graveyard can get tall
+  const runId = run?.id;
+  const [collapsed, setCollapsed] = useState<Set<string>>(() =>
+    runId ? loadCollapsed(runId) : new Set(),
+  );
+  useEffect(() => {
+    setCollapsed(runId ? loadCollapsed(runId) : new Set());
+  }, [runId]);
+  const toggleCollapsed = (title: string) => {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      if (run) localStorage.setItem(collapsedKey(run.id), JSON.stringify([...next]));
+      return next;
+    });
+  };
 
   if (!run) return <p className="muted">Create or select a run to see your team.</p>;
 
@@ -282,6 +310,8 @@ export function TeamView({
         items={party}
         empty={filteredEmpty("No Pokémon in the party — promote some from the box.")}
         highlightStat={sortStat}
+        collapsed={collapsed.has("Party")}
+        onToggleCollapsed={() => toggleCollapsed("Party")}
         {...sectionShared}
         actions={(id) => (
           <>
@@ -299,6 +329,8 @@ export function TeamView({
           "Nothing in the box yet. Mark route encounters as caught to fill it.",
         )}
         highlightStat={sortStat}
+        collapsed={collapsed.has("Box")}
+        onToggleCollapsed={() => toggleCollapsed("Box")}
         {...sectionShared}
         actions={(id) => (
           <>
@@ -321,6 +353,8 @@ export function TeamView({
         empty={filteredEmpty("No losses yet. Keep it that way.")}
         highlightStat={sortStat}
         canEvolve={false}
+        collapsed={collapsed.has("Graveyard")}
+        onToggleCollapsed={() => toggleCollapsed("Graveyard")}
         {...sectionShared}
         actions={(id) => (
           <>
@@ -1351,29 +1385,7 @@ function EvolvePanel({
 /** Top-level component (not defined inside TeamView's render) so React keeps
  * the subtree mounted across re-renders — otherwise inputs lose focus on
  * every keystroke. */
-function Section({
-  title,
-  items,
-  empty,
-  actions,
-  highlightStat,
-  buildOpen,
-  setBuildOpen,
-  setBuild,
-  addKo,
-  evolveOpen,
-  setEvolveOpen,
-  setSpecies,
-  canEvolve = true,
-  anyAbility,
-  statLevel,
-  extraPanel,
-}: {
-  title: string;
-  items: Entry[];
-  empty: string;
-  actions: (locId: string) => React.ReactNode;
-  highlightStat?: StatKey | "KOS" | "BST" | "";
+interface SectionCommon {
   buildOpen: string | null;
   setBuildOpen: (locId: string | null) => void;
   setBuild: (locId: string, build: MonBuild | undefined) => void;
@@ -1387,19 +1399,152 @@ function Section({
   statLevel: number;
   /** section-specific panel under a card (graveyard: death notes editor) */
   extraPanel?: (locId: string, e: Entry[1]) => React.ReactNode;
-}) {
+}
+
+/** Evolve/Build toggle buttons shared by the full-card and compact layouts */
+function EditButtons({
+  locId,
+  species,
+  build,
+  buildOpen,
+  setBuildOpen,
+  evolveOpen,
+  setEvolveOpen,
+  canEvolve,
+}: {
+  locId: string;
+  species: string;
+  build?: MonBuild;
+} & Pick<
+  SectionCommon,
+  "buildOpen" | "setBuildOpen" | "evolveOpen" | "setEvolveOpen" | "canEvolve"
+>) {
+  return (
+    <>
+      <button onClick={() => setBuildOpen(buildOpen === locId ? null : locId)}>
+        {build ? "Edit build" : "Build"}
+      </button>
+      {canEvolve &&
+        (evolutionsFor(species).length > 0 ||
+          preEvolutionsFor(species).length > 0 ||
+          formsFor(species).length > 0) && (
+          <button onClick={() => setEvolveOpen(evolveOpen === locId ? null : locId)}>
+            {evolutionsFor(species).length > 0 || preEvolutionsFor(species).length > 0
+              ? "Evolve"
+              : "Form"}
+          </button>
+        )}
+    </>
+  );
+}
+
+/** Build editor / evolve panel / extra panel, expanded under a card in
+ * either layout */
+function ItemExtras({
+  locId,
+  e,
+  buildOpen,
+  evolveOpen,
+  setBuild,
+  setSpecies,
+  anyAbility,
+  extraPanel,
+}: {
+  locId: string;
+  e: Entry[1];
+} & Pick<
+  SectionCommon,
+  "buildOpen" | "evolveOpen" | "setBuild" | "setSpecies" | "anyAbility" | "extraPanel"
+>) {
+  return (
+    <>
+      {buildOpen === locId && (
+        <BuildEditor
+          species={e.species}
+          build={e.build ?? EMPTY_BUILD}
+          onChange={(b) => setBuild(locId, b)}
+          onClear={() => setBuild(locId, undefined)}
+          anyAbility={anyAbility}
+        />
+      )}
+      {evolveOpen === locId && (
+        <EvolvePanel species={e.species} onPick={(sp) => setSpecies(locId, sp)} />
+      )}
+      {extraPanel?.(locId, e)}
+    </>
+  );
+}
+
+/** Top-level component (not defined inside TeamView's render) so React keeps
+ * the subtree mounted across re-renders — otherwise inputs lose focus on
+ * every keystroke. */
+function Section({
+  title,
+  items,
+  empty,
+  actions,
+  highlightStat,
+  collapsed = false,
+  onToggleCollapsed,
+  canEvolve = true,
+  ...common
+}: {
+  title: string;
+  items: Entry[];
+  empty: string;
+  actions: (locId: string) => React.ReactNode;
+  highlightStat?: StatKey | "KOS" | "BST" | "";
+  /** minimized to a scan-friendly table instead of full cards (persisted per run) */
+  collapsed?: boolean;
+  onToggleCollapsed?: () => void;
+} & SectionCommon) {
   return (
     <section className="team-section">
-      <div className="team-section-head">
+      <button
+        className="team-section-head"
+        onClick={onToggleCollapsed}
+        disabled={!onToggleCollapsed}
+      >
         <h3>
           {title} <span className="count">({items.length})</span>
         </h3>
-      </div>
+        {onToggleCollapsed && <span className="chev">{collapsed ? "▸" : "▾"}</span>}
+      </button>
       {items.length === 0 && <p className="muted">{empty}</p>}
-      <div className="team-grid">
-        {items.map(([locId, e]) => {
-          const bst = bstFor(e.species);
-          return (
+      {items.length > 0 &&
+        (collapsed ? (
+          <MiniTable items={items} highlightStat={highlightStat} />
+        ) : (
+          <FullGrid
+            items={items}
+            actions={actions}
+            highlightStat={highlightStat}
+            canEvolve={canEvolve}
+            {...common}
+          />
+        ))}
+    </section>
+  );
+}
+
+function FullGrid({
+  items,
+  actions,
+  highlightStat,
+  canEvolve,
+  statLevel,
+  ...common
+}: {
+  items: Entry[];
+  actions: (locId: string) => React.ReactNode;
+  highlightStat?: StatKey | "KOS" | "BST" | "";
+  canEvolve?: boolean;
+} & SectionCommon) {
+  return (
+    <div className="team-grid">
+      {items.map(([locId, e]) => {
+        const bst = bstFor(e.species);
+        return (
           <div key={locId} className="team-card-wrap">
             <div className="team-card">
               <Sprite species={e.species} size={48} />
@@ -1440,11 +1585,11 @@ function Section({
                   <span className="ko-label" title="Enemy Pokémon knocked out by this one">
                     KOs
                   </span>
-                  <button className="ko-btn" onClick={() => addKo(locId, -1)} aria-label="Remove KO">
+                  <button className="ko-btn" onClick={() => common.addKo(locId, -1)} aria-label="Remove KO">
                     −
                   </button>
                   <span className="ko-count">{e.kos ?? 0}</span>
-                  <button className="ko-btn" onClick={() => addKo(locId, 1)} aria-label="Add KO">
+                  <button className="ko-btn" onClick={() => common.addKo(locId, 1)} aria-label="Add KO">
                     +
                   </button>
                 </div>
@@ -1459,51 +1604,81 @@ function Section({
               </div>
               <div className="team-actions">
                 {actions(locId)}
-                <button onClick={() => setBuildOpen(buildOpen === locId ? null : locId)}>
-                  {e.build ? "Edit build" : "Build"}
-                </button>
-                {canEvolve &&
-                  (evolutionsFor(e.species).length > 0 ||
-                    preEvolutionsFor(e.species).length > 0 ||
-                    formsFor(e.species).length > 0) && (
-                    <button
-                      onClick={() =>
-                        setEvolveOpen(evolveOpen === locId ? null : locId)
-                      }
-                    >
-                      {evolutionsFor(e.species).length > 0 ||
-                      preEvolutionsFor(e.species).length > 0
-                        ? "Evolve"
-                        : "Form"}
-                    </button>
-                  )}
+                <EditButtons
+                  locId={locId}
+                  species={e.species}
+                  build={e.build}
+                  buildOpen={common.buildOpen}
+                  setBuildOpen={common.setBuildOpen}
+                  evolveOpen={common.evolveOpen}
+                  setEvolveOpen={common.setEvolveOpen}
+                  canEvolve={canEvolve}
+                />
               </div>
-              <CurrentStats
-                species={e.species}
-                build={e.build}
-                level={statLevel}
-              />
+              <CurrentStats species={e.species} build={e.build} level={statLevel} />
             </div>
-            {buildOpen === locId && (
-              <BuildEditor
-                species={e.species}
-                build={e.build ?? EMPTY_BUILD}
-                onChange={(b) => setBuild(locId, b)}
-                onClear={() => setBuild(locId, undefined)}
-                anyAbility={anyAbility}
-              />
-            )}
-            {evolveOpen === locId && (
-              <EvolvePanel
-                species={e.species}
-                onPick={(sp) => setSpecies(locId, sp)}
-              />
-            )}
-            {extraPanel?.(locId, e)}
+            <ItemExtras locId={locId} e={e} {...common} />
           </div>
-          );
-        })}
-      </div>
-    </section>
+        );
+      })}
+    </div>
+  );
+}
+
+/** rows that minimize to a single line (sprite, name, meta, chevron) — like
+ * the Routes screen's encounter list — and expand on click into the same
+ * details the full card shows inline */
+/** a collapsed section's contents: the same dense, borderless row style as
+ * the Routes screen's encounter tables — for scanning a long box/graveyard
+ * at a glance. Un-collapse the section (click its header) to edit again. */
+function MiniTable({
+  items,
+  highlightStat,
+}: {
+  items: Entry[];
+  highlightStat?: StatKey | "KOS" | "BST" | "";
+}) {
+  return (
+    <div className="method-table team-mini-table">
+      <table>
+        <tbody>
+          {items.map(([locId, e]) => {
+            const bst = bstFor(e.species);
+            return (
+              <tr key={locId}>
+                <td className="cell-sprite">
+                  <Sprite species={e.species} size={32} />
+                </td>
+                <td className="cell-species">
+                  {e.nickname || e.species}
+                  {e.nickname && <span className="muted"> ({e.species})</span>}
+                  {highlightStat &&
+                    highlightStat !== "KOS" &&
+                    highlightStat !== "BST" &&
+                    statsFor(e.species)[highlightStat] !== undefined && (
+                      <span className="stat-pill">
+                        {highlightStat} {statsFor(e.species)[highlightStat]}
+                      </span>
+                    )}
+                </td>
+                <td>
+                  <TypeBadges species={e.species} small />
+                </td>
+                <td className="cell-levels muted">
+                  {e.build &&
+                    [e.build.nature, e.build.ability, e.build.item]
+                      .filter(Boolean)
+                      .join(" · ")}
+                </td>
+                <td className="cell-rarity muted">
+                  {e.kos ?? 0} KO{(e.kos ?? 0) === 1 ? "" : "s"}
+                  {bst > 0 && ` · BST ${bst}`}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
