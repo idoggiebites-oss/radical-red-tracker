@@ -11,6 +11,7 @@ import {
   NATURES,
   NATURE_EFFECTS,
   autoField,
+  bossStatTotals,
   buildBossPokemon,
   buildPlayerPokemon,
   calcBaseStats,
@@ -20,7 +21,6 @@ import {
   effectiveSpeed,
   fieldFromBattleEffect,
   resolveSpecies,
-  stageMult,
   statTotals,
   STATUSES,
   terrainFromAbility,
@@ -565,31 +565,20 @@ function BossTotals({
   fieldOpts: Parameters<typeof statTotals>[1];
   setBoost: (stat: string, stage: number) => void;
 }) {
-  const poke = useMemo(
-    () => buildBossPokemon(mon, level, boosts, status),
-    [mon, level, boosts, status],
+  const totals = useMemo(
+    () => bossStatTotals(mon, level, boosts, fieldOpts, status),
+    [mon, level, boosts, fieldOpts, status],
   );
-  if (!poke) return null;
-  const raw: Record<string, number> = {
-    HP: poke.stats.hp,
-    ATK: poke.stats.atk,
-    DEF: poke.stats.def,
-    SPA: poke.stats.spa,
-    SPD: poke.stats.spd,
-    SPE: poke.stats.spe,
-  };
+  if (!totals) return null;
   return (
     <div className="totals-grid">
       <div className="totals-cell">
         <span className="k">HP</span>
-        <span className="total-val">{raw.HP}</span>
+        <span className="total-val">{totals.HP}</span>
       </div>
       {BOOST_STATS.map((k) => {
         const boost = boosts[k] ?? 0;
-        const val =
-          k === "SPE"
-            ? effectiveSpeed(poke, fieldOpts)
-            : Math.floor(raw[k] * stageMult(boost));
+        const val = totals[k];
         return (
           <div key={k} className="totals-cell">
             <span className="k">{k}</span>

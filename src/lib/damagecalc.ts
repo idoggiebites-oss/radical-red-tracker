@@ -325,6 +325,45 @@ export function statTotals(
   return { itemMods, abilityMods, totals };
 }
 
+/** display stats for a boss mon: nature/EV stats at the given level with
+ * item and ability multipliers, stage boosts and effective speed applied —
+ * the numbers it actually fights with, not the species' base line */
+export function bossStatTotals(
+  mon: BossMon,
+  level: number,
+  boosts?: Record<string, number>,
+  fieldOpts: rr.FieldOptions = {},
+  status?: string,
+): Record<string, number> | null {
+  const poke = buildBossPokemon(mon, level, boosts, status);
+  const speciesName = resolveSpecies(mon.species);
+  if (!poke || !speciesName) return null;
+  const s = poke.stats;
+  const base: Record<string, number> = {
+    HP: s.hp,
+    ATK: s.atk,
+    DEF: s.def,
+    SPA: s.spa,
+    SPD: s.spd,
+    SPE: s.spe,
+  };
+  const nfe = !!gen.species.get(rr.toID(speciesName))?.nfe;
+  const itemMods = itemStatMods(mon.item, speciesName, nfe);
+  const abilityMods = abilityStatMods(mon.ability, mon.item, fieldOpts, base);
+  const totals: Record<string, number> = { HP: base.HP };
+  for (const k of BOOST_STATS) {
+    if (k === "SPE") {
+      totals[k] = effectiveSpeed(poke, fieldOpts);
+      continue;
+    }
+    let v = Math.floor(base[k] * stageMult(boosts?.[k] ?? 0));
+    if (itemMods[k]) v = Math.floor(v * itemMods[k]!);
+    if (abilityMods[k]) v = Math.floor(v * abilityMods[k]!);
+    totals[k] = v;
+  }
+  return totals;
+}
+
 /** stat raised / lowered by each nature (neutral natures omitted) */
 export const NATURE_EFFECTS: Record<string, { plus: string; minus: string }> = {
   Adamant: { plus: "ATK", minus: "SPA" },

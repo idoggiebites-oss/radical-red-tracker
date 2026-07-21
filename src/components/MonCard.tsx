@@ -5,6 +5,7 @@ import { ItemSprite } from "./ItemSprite";
 import { TypeBadges } from "./TypeBadges";
 import { CalcPanel, type CaughtMon } from "./CalcPanel";
 import { defensiveProfile, formatMult, typeColor } from "../lib/effectiveness";
+import { bossStatTotals, defaultBossLevel } from "../lib/damagecalc";
 
 /** weak/resist/immune type chips for a species (+ defensive ability) */
 export function SpeciesDefenses({
@@ -67,6 +68,10 @@ export function MonCard({
   anyAbility?: boolean;
 }) {
   const [calcOpen, setCalcOpen] = useState(false);
+  // the stats it actually fights with (level, nature, EVs, item/ability
+  // multipliers); the sheet's base line only remains for unknown species
+  const statLevel = defaultBossLevel(mon.level, levelCap);
+  const totals = bossStatTotals(mon, statLevel);
   return (
     <div className="mon-card">
       <div className="mon-head">
@@ -124,7 +129,7 @@ export function MonCard({
         ))}
       </ul>
       <SpeciesDefenses species={mon.species} ability={mon.ability} />
-      {STAT_ORDER.some((s) => mon.baseStats[s]) && (
+      {(totals || STAT_ORDER.some((s) => mon.baseStats[s])) && (
         <table className="stat-table">
           <thead>
             <tr>
@@ -136,10 +141,21 @@ export function MonCard({
           </thead>
           <tbody>
             <tr>
-              <td className="k">Base</td>
-              {STAT_ORDER.map((s) => (
-                <td key={s}>{mon.baseStats[s] || "–"}</td>
-              ))}
+              {totals ? (
+                <>
+                  <td className="k">Lv {statLevel}</td>
+                  {STAT_ORDER.map((s) => (
+                    <td key={s}>{totals[s]}</td>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <td className="k">Base</td>
+                  {STAT_ORDER.map((s) => (
+                    <td key={s}>{mon.baseStats[s] || "–"}</td>
+                  ))}
+                </>
+              )}
             </tr>
             {Object.keys(mon.evs).length > 0 && (
               <tr>
