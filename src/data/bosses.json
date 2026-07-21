@@ -2034,7 +2034,7 @@
       "title": "GYM LEADER · BROCK",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Great Tusk",
@@ -2218,7 +2218,7 @@
       "title": "GYM LEADER · MISTY",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Palafin-Hero",
@@ -2397,7 +2397,7 @@
       "title": "GYM LEADER · LT. SURGE",
       "subtitle": "",
       "battleEffect": "PERMANENT ELECTRIC TERRAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Iron Treads",
@@ -2576,7 +2576,7 @@
       "title": "GYM LEADER · ERIKA",
       "subtitle": "",
       "battleEffect": "PERMANENT GRASSY TERRAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Ogerpon-C",
@@ -2849,7 +2849,7 @@
       "title": "ROUTE 25 · LEADER · BUGSY",
       "subtitle": "PRE LT. SURGE",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Lokix",
@@ -2959,7 +2959,7 @@
       "title": "ROUTE 25 · LEADER · BUGSY",
       "subtitle": "POST LT. SURGE",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 44 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kleavor",
@@ -3141,7 +3141,7 @@
       "title": "ROUTE 11 · LEADER · WHITNEY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 34 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Tinkaton",
@@ -3291,7 +3291,7 @@
       "title": "LAVENDER TOWN · LEADER · MORTY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 44 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mimikyu",
@@ -3473,7 +3473,7 @@
       "title": "SAFFRON DOJO · LEADER · CHUCK",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hitmontop",
@@ -3655,7 +3655,7 @@
       "title": "SEAFOAM ISL. · LEADER · PRYCE",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Jynx",
@@ -3834,7 +3834,7 @@
       "title": "CINNABAR LAB · LEADER · JASMINE",
       "subtitle": "TEAM ONE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Steelix",
@@ -4011,7 +4011,7 @@
       "title": "CINNABAR LAB · LEADER · JASMINE",
       "subtitle": "TEAM TWO",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Bronzong",
@@ -4188,7 +4188,7 @@
       "title": "CINNABAR LAB · LEADER · JASMINE",
       "subtitle": "TEAM THREE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Forretress",
@@ -4597,7 +4597,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kirlia",
@@ -4701,7 +4701,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kirlia",
@@ -4805,7 +4805,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kirlia",
@@ -4909,7 +4909,7 @@
       "title": "S.S. ANNE · BRENDAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 34 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Loudred",
@@ -5033,7 +5033,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -5182,7 +5182,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -5331,7 +5331,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -5480,7 +5480,7 @@
       "title": "FUCHSIA CITY · BRENDAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Metagross",
@@ -5844,7 +5844,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -6023,7 +6023,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -6202,7 +6202,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Staraptor",
@@ -6648,7 +6648,7 @@
       "title": "NUGG. BRIDGE · GRUNT",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Growlithe",
@@ -6751,7 +6751,7 @@
       "title": "DIG HOUSE · GRUNT",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 34 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Persian-A",
@@ -6856,7 +6856,7 @@
       "title": "GAME CORNER · GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hypno",
@@ -6977,7 +6977,7 @@
       "title": "ROCKET HIDE. · LEFT GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Weezing-G",
@@ -7098,7 +7098,7 @@
       "title": "ROCKET HIDE. · RIGHT GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Talonflame",
@@ -7965,6 +7965,7 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
@@ -8086,6 +8087,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
@@ -8368,7 +8370,7 @@
       "title": "VIRID. FOREST · LASS  · ANNE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 15 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Stufful",
@@ -8445,7 +8447,7 @@
       "title": "VIRID. FOREST · ACE TRAINER · NELLE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 15 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Charcadet",
@@ -8502,7 +8504,7 @@
       "title": "MT. MOON · SUPER NERD · MIGUEL",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 22 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Thwackey",
@@ -8607,7 +8609,7 @@
       "title": "NUGG. BRIDGE · BUG CATCHER · CALE",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Vivillon",
@@ -8688,7 +8690,7 @@
       "title": "NUGG. BRIDGE · LASS · ALI",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Jigglypuff",
@@ -8769,7 +8771,7 @@
       "title": "NUGG. BRIDGE · YOUNGSTER · TIMMY",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Plusle",
@@ -8850,7 +8852,7 @@
       "title": "NUGG. BRIDGE · LASS · RELI",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Greedent",
@@ -8931,7 +8933,7 @@
       "title": "NUGG. BRIDGE · CAMPER · ETHAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 27 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mabosstiff",
@@ -9012,7 +9014,7 @@
       "title": "S.S. ANNE · LASS · ANN · & · GENTLEMAN · BROOKS",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 34 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dewott",
@@ -9141,7 +9143,7 @@
       "title": "S.S. ANNE · SAILOR · EDMOND · & · SAILOR · TREVOR",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 34 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Lileep",
@@ -9270,7 +9272,7 @@
       "title": "ROUTE 9 · PICNICKER · CAITLIN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 44 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Smeargle",
@@ -9407,7 +9409,7 @@
       "title": "ROUTE 12 · ROCKER · LUCA",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Piloswine",
@@ -9556,7 +9558,7 @@
       "title": "ROUTE 12 · CAMPER · JUSTIN",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Darmanitan-G",
@@ -9647,13 +9649,14 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 12 · FISHERMAN · ANDREW",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Froslass",
@@ -9714,13 +9717,14 @@
         }
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
       "title": "ROUTE 13 · BIRD KEEPER · SEBASTIAN",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Gliscor",
@@ -9843,7 +9847,7 @@
       "title": "ROUTE 13 · PICNICKER · SUSIE",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Shiftry",
@@ -9994,7 +9998,7 @@
       "title": "ROUTE 13 · PICNICKER · ALMA",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Tangrowth",
@@ -10118,7 +10122,7 @@
       "title": "ROUTE 13 · BEAUTY · LOLA · & · BEAUTY · SHEILA",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cherrim",
@@ -10271,7 +10275,7 @@
       "title": "ROUTE 13 · BIRD KEEPER · PERRY",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Rhyperior",
@@ -10392,7 +10396,7 @@
       "title": "ROUTE 13 · BIKER · JARED",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Crustle",
@@ -10515,7 +10519,7 @@
       "title": "ROUTE 13 · BIRD KEEPER · ROBERT",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Exeggutor",
@@ -10640,7 +10644,7 @@
       "title": "ROUTE 16 · BIKER · LAO",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mienshao",
@@ -10727,13 +10731,14 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · CUE BALL · KOJI",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dracozolt",
@@ -10766,13 +10771,15 @@
         }
        }
       ],
+      "chained": true,
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · CUE BALL · LUKE",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dugtrio",
@@ -10831,13 +10838,14 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · BIKER · RUBEN",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Accelgor",
@@ -10960,7 +10968,7 @@
       "title": "ROUTE 16 · CUE BALL · CAMRON",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Swampert",
@@ -11083,7 +11091,7 @@
       "title": "ROUTE 16 · BIKER · HIDEO",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Stunfisk",
@@ -11227,7 +11235,7 @@
       "title": "ROUTE 18 · BIKER · WILLIAM",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Magnezone",
@@ -11348,7 +11356,7 @@
       "title": "ROUTE 18 · BIRD KEEPER · JACOB",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cramorant",
@@ -11471,7 +11479,7 @@
       "title": "ROUTE 18 · DRAGON TAMER · RAMIRO",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pikachu-Surfing",
@@ -11591,7 +11599,7 @@
       "title": "ROUTE 18 · ACE TRAINER · WILTON",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dragapult",
@@ -11714,7 +11722,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · DEREK",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mienshao",
@@ -11865,7 +11873,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · LUCY",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Lycanroc",
@@ -12013,7 +12021,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · ZAC",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Nidoking",
@@ -12162,7 +12170,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · NAOMI",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Maushold",
@@ -12311,7 +12319,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · ROLANDO",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cyclizar",
@@ -12609,7 +12617,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · CAROLINE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Bellossom",
@@ -12760,7 +12768,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · COLBY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Feraligatr",
@@ -12910,7 +12918,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · ALEXA",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Clefable",
@@ -13056,7 +13064,7 @@
       "title": "INDIGO PLAT. · CREATOR · SOUPERCELL",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Gigalith",
@@ -13220,7 +13228,7 @@
       "title": "ROUTE 8 · ACE TRAINER · COLE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Yanmega",
@@ -13396,7 +13404,7 @@
       "title": "SAFFRON CITY · DUMASS · KID",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Swampert",
@@ -13579,7 +13587,7 @@
       "title": "CELADON HOTEL · BEAUTY · SAM",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Luvdisc",
@@ -13667,6 +13675,7 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": [
        {
         "label": "TM117 Brave Bird",
@@ -13678,7 +13687,7 @@
       "title": "CELADON HOTEL · BEAUTY · SHELLY",
       "subtitle": "BACK TO BACK",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dodrio",
@@ -13793,6 +13802,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": [
        {
         "label": "TM117 Brave Bird",
@@ -13804,7 +13814,7 @@
       "title": "ROUTE 15 · ACE TRAINER · HALEY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Magnezone",
@@ -13984,7 +13994,7 @@
       "title": "POWER PLANT · DUMASS · JOJO FAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hoopa-U",
@@ -14163,7 +14173,7 @@
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
       "subtitle": "FIRST BATTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 81 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Azumarill",
@@ -14342,7 +14352,7 @@
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
       "subtitle": "REMATCH",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 81 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cloyster",
@@ -14521,7 +14531,7 @@
       "title": "MANSION F4 · BURGLAR · MAX",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Qwilfish-H",
@@ -14670,7 +14680,7 @@
       "title": "MANSION F4 · BURGLAR · ANSON",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Shiftry",
@@ -16965,6 +16975,7 @@
         }
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
@@ -17143,6 +17154,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
@@ -26543,7 +26555,7 @@
       "title": "GYM LEADER · BROCK",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM + SUPER EFFECTIVE MOVES DEAL 33% LESS TO BROCK",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Iron Boulder",
@@ -26701,7 +26713,7 @@
       "title": "GYM LEADER · MISTY",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN + PALAFIN IS PRE-TRANSFORMED",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Iron Bundle",
@@ -26856,7 +26868,7 @@
       "title": "GYM LEADER · LT. SURGE",
       "subtitle": "",
       "battleEffect": "PERMANENT ELECTRIC TERRAIN & MAGNET RISE",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pawmot",
@@ -27009,7 +27021,7 @@
       "title": "GYM LEADER · ERIKA",
       "subtitle": "",
       "battleEffect": "PERMANENT GRASSY TERRAIN + ERIKA'S GRASS TYPE MOVES DEAL 75% MORE DAMAGE IF-\nRESISTED AND IGNORE IMMUNITIES.",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Meowscarada",
@@ -27174,7 +27186,7 @@
       "title": "PEWTER MUSEUM · LEADER · FALKNER",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Trumbeak",
@@ -27312,7 +27324,7 @@
       "title": "ROUTE 25 · LEADER · BUGSY",
       "subtitle": "PRE LT. SURGE",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kleavor",
@@ -27470,7 +27482,7 @@
       "title": "ROUTE 25 · LEADER · BUGSY",
       "subtitle": "POST LT. SURGE",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 44 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kleavor",
@@ -27628,7 +27640,7 @@
       "title": "ROUTE 11 · LEADER · WHITNEY",
       "subtitle": "",
       "battleEffect": "SWELLOW IS PRE-BURNED",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pyroar",
@@ -27781,7 +27793,7 @@
       "title": "LAVENDER TOWN · LEADER · MORTY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Krookodile",
@@ -27939,7 +27951,7 @@
       "title": "SAFFRON DOJO · LEADER · CHUCK",
       "subtitle": "",
       "battleEffect": "CHUCK'S POKEMON HAVE ENDURE STATUS IF ABOVE 75% OF MAX HP",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Iron Crown",
@@ -28103,7 +28115,7 @@
       "title": "SEAFOAM ISL. · LEADER · PRYCE",
       "subtitle": "TEAM ONE",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Jynx",
@@ -28258,7 +28270,7 @@
       "title": "SEAFOAM ISL. · LEADER · PRYCE",
       "subtitle": "TEAM TWO",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Sandslash-A",
@@ -28415,7 +28427,7 @@
       "title": "SEAFOAM ISL. · LEADER · PRYCE",
       "subtitle": "TEAM THREE",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Jynx",
@@ -28570,7 +28582,7 @@
       "title": "CINNABAR LAB · LEADER · JASMINE",
       "subtitle": "",
       "battleEffect": "JASMINE IS IMMUNE TO FIRE TYPE ATTACKS",
-      "notes": "IF YOU'RE LEVEL 73 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Gliscor",
@@ -28728,7 +28740,7 @@
       "title": "ROUTE 22 #1 · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Snubbull",
@@ -28809,7 +28821,7 @@
       "title": "ROUTE 22 #1 · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Snubbull",
@@ -28890,7 +28902,7 @@
       "title": "ROUTE 22 #1 · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Snubbull",
@@ -28971,7 +28983,7 @@
       "title": "VIRID. FOREST · BRENDAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Meditite",
@@ -29078,7 +29090,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hitmonlee",
@@ -29233,7 +29245,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hitmontop",
@@ -29388,7 +29400,7 @@
       "title": "CERULEAN CITY · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hitmonchan",
@@ -29543,7 +29555,7 @@
       "title": "S.S. ANNE · BRENDAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Crawdaunt",
@@ -29696,7 +29708,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Azelf",
@@ -29849,7 +29861,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Azelf",
@@ -30002,7 +30014,7 @@
       "title": "SILPH CO. · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Azelf",
@@ -30155,7 +30167,7 @@
       "title": "FUCHSIA CITY · BRENDAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Gengar",
@@ -30468,7 +30480,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "PERMANENT RAIN + RIVAL HAS SERENE GRACE EFFECT",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Zapdos",
@@ -30623,7 +30635,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "PERMANENT MAGMA STORM (FIRE TYPES ARE IMMUNE)",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Charizard-MegaY",
@@ -30778,7 +30790,7 @@
       "title": "ROUTE 22 #2 · RIVAL",
       "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "PERMANENT SWAMP (PLAYER'S POKEMON SPEED STAT IS QUARTERED)",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Iron Hands",
@@ -30931,7 +30943,7 @@
       "title": "ROUTE 23 · BRENDAN",
       "subtitle": "",
       "battleEffect": "PERMANENT SWAMP (PLAYER'S POKEMON SPEED STAT IS QUARTERED)",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Tyrantrum",
@@ -31089,7 +31101,7 @@
       "title": "MT. MOON · ARCHER",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 23 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Glimmet",
@@ -31218,7 +31230,7 @@
       "title": "NUGG. BRIDGE · GRUNT",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Arcanine",
@@ -31321,7 +31333,7 @@
       "title": "DIG HOUSE · GRUNT",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Persian-A",
@@ -31426,7 +31438,7 @@
       "title": "GAME CORNER · GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hypno",
@@ -31531,7 +31543,7 @@
       "title": "ROCKET HIDE. · LEFT GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Weezing-G",
@@ -31636,7 +31648,7 @@
       "title": "ROCKET HIDE. · RIGHT GUARD",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Talonflame",
@@ -31749,7 +31761,7 @@
       "title": "ROCKET HIDE. · GIOVANNI",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 47 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Infernape",
@@ -31902,7 +31914,7 @@
       "title": "PKMN TOWER · GRUNT 1",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pelipper",
@@ -32042,7 +32054,7 @@
       "title": "PKMN TOWER · GRUNT 2",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Klefki",
@@ -32171,7 +32183,7 @@
       "title": "PKMN TOWER · GRUNT 3",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 56 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Slurpuff",
@@ -32698,7 +32710,7 @@
       "title": "CERULEA. CAVE · GRUNT 1",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 79 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Glimmora",
@@ -32851,7 +32863,7 @@
       "title": "CERULEA. CAVE · GRUNT 2",
       "subtitle": "",
       "battleEffect": "URSARING IS PRE-BURNED",
-      "notes": "IF YOU'RE LEVEL 79 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Grimmsnarl",
@@ -33008,7 +33020,7 @@
       "title": "CERULEA. CAVE · ARCHER",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 79 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Ninetales",
@@ -33135,13 +33147,14 @@
         }
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "CERULEA. CAVE · ARIANA",
       "subtitle": "BACK TO BACK",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 79 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Wailord",
@@ -33241,6 +33254,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
@@ -33486,7 +33500,7 @@
       "title": "VIRID. FOREST · LASS  · ANNE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Stufful",
@@ -33563,7 +33577,7 @@
       "title": "VIRID. FOREST · ACE TRAINER · NELLE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Charcadet",
@@ -33620,7 +33634,7 @@
       "title": "VIRID. FOREST · BUG CATCHER · SAMMY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 16 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kricketune",
@@ -33701,7 +33715,7 @@
       "title": "ROUTE 3 · LASS  · SALLY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 23 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pikachu-Flying",
@@ -33806,7 +33820,7 @@
       "title": "MT. MOON · SUPER NERD  · MIGUEL",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 23 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Thwackey",
@@ -33935,7 +33949,7 @@
       "title": "NUGG. BRIDGE · BUG CATCHER · CALE",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Vivillon",
@@ -34016,7 +34030,7 @@
       "title": "NUGG. BRIDGE · LASS · ALI",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Jigglypuff",
@@ -34097,7 +34111,7 @@
       "title": "NUGG. BRIDGE · YOUNGSTER · TIMMY",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Plusle",
@@ -34178,7 +34192,7 @@
       "title": "NUGG. BRIDGE · LASS · RELI",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Greedent",
@@ -34259,7 +34273,7 @@
       "title": "NUGG. BRIDGE · CAMPER · ETHAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mabosstiff",
@@ -34342,7 +34356,7 @@
       "title": "ROUTE 6 · CAMPER · JEFF",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Ambipom",
@@ -34471,7 +34485,7 @@
       "title": "S.S. ANNE · LASS · ANN · & · GENTLEMAN · BROOKS",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Samurott",
@@ -34604,7 +34618,7 @@
       "title": "S.S. ANNE · SAILOR · EDMOND · & · SAILOR · TREVOR",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 28 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cradily",
@@ -34757,7 +34771,7 @@
       "title": "VERMILLION GYM · GENTLEMAN · TUCKER",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Alakazam",
@@ -34887,7 +34901,7 @@
       "title": "ROUTE 9 · PICNICKER · ALICIA",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Roserade",
@@ -34994,7 +35008,7 @@
       "title": "ROUTE 9 · PICNICKER · CAITLIN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Smeargle",
@@ -35094,7 +35108,7 @@
       "title": "ROCK TUNNEL · PICNICKER · DANA",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Ribombee",
@@ -35225,7 +35239,7 @@
       "title": "ROUTE 10 · POKE MANIAC · HERMAN",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Ninetales",
@@ -35334,7 +35348,7 @@
       "title": "ROUTE 8 · SUPER NERD · AIDAN",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Armarouge",
@@ -35467,7 +35481,7 @@
       "title": "CELADON GYM · ACE TRAINER · MARY",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 44 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Weavile",
@@ -35574,7 +35588,7 @@
       "title": "PKMN TOWER · CHANNELER · RUTH",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 36 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Pincurchin",
@@ -35740,7 +35754,7 @@
       "title": "ROUTE 12 · ROCKER · LUCA",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Rotom-F",
@@ -35893,7 +35907,7 @@
       "title": "ROUTE 12 · CAMPER · JUSTIN",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Darmanitan-GZ",
@@ -35994,13 +36008,14 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 12 · FISHERMAN · ANDREW",
       "subtitle": "",
       "battleEffect": "PERMANENT SNOW",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Froslass",
@@ -36075,13 +36090,14 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
       "title": "ROUTE 13 · BIRD KEEPER · SEBASTIAN",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Landorus-T",
@@ -36214,7 +36230,7 @@
       "title": "ROUTE 13 · PICNICKER · SUSIE",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Shiftry",
@@ -36347,7 +36363,7 @@
       "title": "ROUTE 13 · PICNICKER · ALMA",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Krookodile",
@@ -36480,7 +36496,7 @@
       "title": "ROUTE 13 · BEAUTY · LOLA · & · BEAUTY · SHEILA",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cherrim",
@@ -36637,7 +36653,7 @@
       "title": "ROUTE 13 · BIRD KEEPER · PERRY",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Rhyperior",
@@ -36766,7 +36782,7 @@
       "title": "ROUTE 13 · BIKER · JARED",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Crustle",
@@ -36897,7 +36913,7 @@
       "title": "ROUTE 13 · BIRD KEEPER · ROBERT",
       "subtitle": "",
       "battleEffect": "PERMANENT SUN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Exeggutor",
@@ -37032,7 +37048,7 @@
       "title": "ROUTE 16 · BIKER · LAO",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mienshao",
@@ -37107,13 +37123,14 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · CUE BALL · KOJI",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Kingler-Mega",
@@ -37166,13 +37183,15 @@
         }
        }
       ],
+      "chained": true,
+      "chainedNext": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · CUE BALL · LUKE",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Zygarde-10",
@@ -37247,13 +37266,14 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {
       "title": "ROUTE 16 · BIKER · RUBEN",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Accelgor",
@@ -37384,7 +37404,7 @@
       "title": "ROUTE 16 · CUE BALL · CAMRON",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Swampert",
@@ -37515,7 +37535,7 @@
       "title": "ROUTE 16 · BIKER · HIDEO",
       "subtitle": "",
       "battleEffect": "PERMANENT SANDSTORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Stunfisk",
@@ -37667,7 +37687,7 @@
       "title": "ROUTE 18 · BIKER · WILLIAM",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Magnezone",
@@ -37796,7 +37816,7 @@
       "title": "ROUTE 18 · BIRD KEEPER · JACOB",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN + CRAMORANT STARTS IN GORGING FORM",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cramorant-Gorg",
@@ -37925,7 +37945,7 @@
       "title": "ROUTE 18 · DRAGON TAMER · RAMIRO",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Regice",
@@ -38054,7 +38074,7 @@
       "title": "ROUTE 18 · ACE TRAINER · WILTON",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dragapult",
@@ -38187,7 +38207,7 @@
       "title": "FUCHSIA GYM · JUGGLER · KAYDEN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Mr. Mime",
@@ -38340,7 +38360,7 @@
       "title": "PKM MANSION · SCIENTIST · TED",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Froslass",
@@ -38497,7 +38517,7 @@
       "title": "MANSION · BURGLAR · LEWIS",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Arcanine",
@@ -38650,7 +38670,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · DEREK",
       "subtitle": "",
       "battleEffect": "PERMANENT DESOLATE LAND",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Zapdos-G",
@@ -38779,7 +38799,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · LUCY",
       "subtitle": "",
       "battleEffect": "PERMANENT DESOLATE LAND",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Lycanroc",
@@ -38908,7 +38928,7 @@
       "title": "CINNABAR GYM · ACE TRAINER · ZAC",
       "subtitle": "",
       "battleEffect": "DOUBLES + PERMANENT DESOLATE LAND",
-      "notes": "IF YOU'RE LEVEL 76 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cinderace",
@@ -39047,7 +39067,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · NAOMI",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Maushold",
@@ -39200,7 +39220,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · ROLANDO",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Cyclizar",
@@ -39353,7 +39373,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · GEORGE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Metagross",
@@ -39508,7 +39528,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · CAROLINE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Lopunny-Mega",
@@ -39663,7 +39683,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · COLBY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Arcanine",
@@ -39816,7 +39836,7 @@
       "title": "VICTORY ROAD · ACE TRAINER · ALEXA",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Clefable",
@@ -39969,7 +39989,7 @@
       "title": "VICTORY ROAD · COOL COUPLE · RAY · & · TYRA",
       "subtitle": "",
       "battleEffect": "DOUBLES",
-      "notes": "IF YOU'RE LEVEL 85 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Scrafty",
@@ -40267,7 +40287,7 @@
       "title": "ROUTE 8 · ACE TRAINER · COLE",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Druddigon",
@@ -40420,7 +40440,7 @@
       "title": "SAFFRON CITY · DUMASS · KID",
       "subtitle": "",
       "battleEffect": "PERMANENT RAIN",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Beartic",
@@ -40582,7 +40602,7 @@
       "title": "CELADON HOTEL · BEAUTY · SAM",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Tapu Koko",
@@ -40685,6 +40705,7 @@
         "altSpeeds": {}
        }
       ],
+      "chainedNext": true,
       "rewards": [
        {
         "label": "TM117 Brave Bird",
@@ -40696,7 +40717,7 @@
       "title": "CELADON HOTEL · BEAUTY · SHELLY",
       "subtitle": "BACK TO BACK",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 59 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Dodrio",
@@ -40795,6 +40816,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": [
        {
         "label": "TM117 Brave Bird",
@@ -40806,7 +40828,7 @@
       "title": "ROUTE 15 · ACE TRAINER · HALEY",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Silvally-Fairy",
@@ -40963,7 +40985,7 @@
       "title": "POWER PLANT · DUMASS · JOJO FAN",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 68 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Hoopa-U",
@@ -41118,7 +41140,7 @@
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
       "subtitle": "",
       "battleEffect": "PERMANENT TAILWIND",
-      "notes": "IF YOU'RE LEVEL 81 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Galvantula",
@@ -41285,7 +41307,7 @@
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
       "subtitle": "",
       "battleEffect": "KETCHUP'S POKEMON WILL ENDURE A HIT IF ABOVE 75% OF MAX HP",
-      "notes": "IF YOU'RE LEVEL 81 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Necrozma",
@@ -41438,7 +41460,7 @@
       "title": "MANSION F4 · BURGLAR · MAX",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Qwilfish-H",
@@ -41567,7 +41589,7 @@
       "title": "MANSION F4 · BURGLAR · ANSON",
       "subtitle": "",
       "battleEffect": "",
-      "notes": "IF YOU'RE LEVEL 82 ->>",
+      "notes": "",
       "pokemon": [
        {
         "species": "Shiftry",
@@ -43580,6 +43602,7 @@
         }
        }
       ],
+      "chainedNext": true,
       "rewards": []
      },
      {
@@ -43735,6 +43758,7 @@
         "altSpeeds": {}
        }
       ],
+      "chained": true,
       "rewards": []
      },
      {

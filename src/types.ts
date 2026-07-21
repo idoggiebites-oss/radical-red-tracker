@@ -93,6 +93,12 @@ export interface Boss {
   notes: string;
   rewards: BossReward[];
   pokemon: BossMon[];
+  /** fought back-to-back with the previous boss in this list (docs' "(!)
+   * BACK TO BACK" annotation — no healing between the fights) */
+  chained?: boolean;
+  /** the NEXT boss in this list is chained to this one — set on the first
+   * fight of a back-to-back pair, mirroring `chained` on the second */
+  chainedNext?: boolean;
 }
 
 export interface BossCategory {

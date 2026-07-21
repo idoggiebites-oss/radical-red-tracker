@@ -1116,8 +1116,20 @@ function BossPreview({
   const [open, setOpen] = useState<number | null>(null);
   return (
     <div className="readiness-preview">
-      {boss.battleEffect && (
-        <div className="battle-effect">⚡ {boss.battleEffect}</div>
+      {(boss.battleEffect || boss.chained || boss.chainedNext) && (
+        <div className="effect-row">
+          {boss.battleEffect && (
+            <span className="battle-effect">⚡ {boss.battleEffect}</span>
+          )}
+          {(boss.chained || boss.chainedNext) && (
+            <span
+              className="chain-badge"
+              title="Fought back-to-back with the previous team — no healing between the fights"
+            >
+              ⛓ back-to-back
+            </span>
+          )}
+        </div>
       )}
       {boss.pokemon.map((m, i) => (
         <div key={i} className={open === i ? "preview-wrap open" : "preview-wrap"}>

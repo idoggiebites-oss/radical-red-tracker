@@ -9,7 +9,7 @@ import type {
 import { loadState, newRun, saveState } from "./lib/storage";
 import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
-import { bossTeamFor, type BossTarget } from "./lib/bossTarget";
+import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
 import "./app.css";
 
@@ -115,6 +115,17 @@ export default function App() {
     return null;
   }, [run, modeData]);
 
+  // trainers fought back-to-back right after the next one (no healing between)
+  const chainNames = useMemo(() => {
+    if (!modeData || !currentCap) return [];
+    const chains = orderChainInfo(modeData);
+    const names: string[] = [];
+    for (let i = currentCap.index + 1; chains.get(i)?.withPrev; i++) {
+      names.push(modeData.trainerOrder[i].name);
+    }
+    return names;
+  }, [modeData, currentCap]);
+
   return (
     <div className="app">
       <header className="topbar">
@@ -125,7 +136,13 @@ export default function App() {
         {run && currentCap && (
           <button
             className="cap-pill"
-            title={`Next: ${currentCap.entry.name} @ ${currentCap.entry.location} — click to open their team`}
+            title={
+              `Next: ${currentCap.entry.name} @ ${currentCap.entry.location}` +
+              (chainNames.length > 0
+                ? ` — back-to-back with ${chainNames.join(", ")}`
+                : "") +
+              " — click to open their team"
+            }
             onClick={() => {
               if (!modeData) return;
               const target = bossTeamFor(modeData, currentCap.index);
@@ -134,7 +151,14 @@ export default function App() {
             }}
           >
             Level cap <strong>{currentCap.entry.levelCap}</strong>
-            <span className="cap-next">next: {currentCap.entry.name}</span>
+            <span className="cap-next">
+              next: {currentCap.entry.name}
+              {chainNames.length > 0 && (
+                <span className="cap-chain" title={`Back-to-back: ${chainNames.join(", ")}`}>
+                  ⛓+{chainNames.length}
+                </span>
+              )}
+            </span>
           </button>
         )}
         <div className="run-controls">

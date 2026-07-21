@@ -1101,21 +1101,36 @@ def is_anchor(rows, r):
 
 def parse_boss_tab(rows, tab):
     bosses = []
+    # "(!) BACK TO BACK" annotation rows sit between blocks and mark the NEXT
+    # boss as fought back-to-back with the previous one (no healing between)
+    chained = False
     for r in range(len(rows)):
         if not cell(rows, r, 2):
+            if any("BACK TO BACK" in (c or "") for c in rows[r]):
+                chained = True
             continue
         if is_anchor(rows, r):
             block = parse_boss_block(rows, r, tab)
             if block:
+                if chained:
+                    block["chained"] = True
+                    # the fight right before this one has no heal after it
+                    # either — flag both ends of the pair, not just the second
+                    if bosses:
+                        bosses[-1]["chainedNext"] = True
                 bosses.append(block)
+            chained = False
         elif bosses:
-            # continuation note like "IF YOU'RE / LEVEL 27 ->>"
+            # continuation note; "IF YOU'RE" / "LEVEL 27 ->>" is split across
+            # two physical rows, so it can only be recognized once joined
             note = cell(rows, r, 2).replace("\n", " ")
             if "CLICK" not in note:
                 bosses[-1]["notes"].append(note)
-    # merge trailing note fragments, drop helper row index
+    # merge trailing note fragments, drop helper row index; "IF YOU'RE LEVEL
+    # NN ->>" just restates the level already shown on the mon — drop it
     for b in bosses:
-        b["notes"] = " ".join(b["notes"]).strip()
+        joined = " ".join(b["notes"]).strip()
+        b["notes"] = "" if re.match(r"IF YOU'RE\s+LEVEL\s+\d+\s*->>?$", joined, re.I) else joined
         del b["row"]
     return bosses
 

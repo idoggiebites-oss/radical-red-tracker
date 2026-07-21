@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, GameMode, Run } from "../types";
-import type { BossTarget } from "../lib/bossTarget";
+import { orderChainInfo, type BossTarget } from "../lib/bossTarget";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
 import { type CaughtMon } from "../components/CalcPanel";
@@ -119,6 +119,7 @@ function TrainerOrder({
     }
     return -1;
   }, [run, order]);
+  const chains = useMemo(() => orderChainInfo(modeData), [modeData]);
 
   return (
     <div className="trainer-order">
@@ -149,6 +150,14 @@ function TrainerOrder({
             <span className="order-name">
               {t.name}
               {t.optional && <span className="badge optional">optional</span>}
+              {chains.get(i) && (
+                <span
+                  className="badge chain"
+                  title="Fought back-to-back with the trainer above and/or below — no break between the fights"
+                >
+                  ⛓ back-to-back
+                </span>
+              )}
             </span>
             <span className="order-loc">{t.location}</span>
             <span className="order-rewards">
@@ -270,8 +279,20 @@ function BossCard({
         </span>
         <span className="chev">{open ? "▾" : "▸"}</span>
       </button>
-      {boss.battleEffect && (
-        <div className="battle-effect">⚡ {boss.battleEffect}</div>
+      {(boss.battleEffect || boss.chained || boss.chainedNext) && (
+        <div className="effect-row">
+          {boss.battleEffect && (
+            <span className="battle-effect">⚡ {boss.battleEffect}</span>
+          )}
+          {(boss.chained || boss.chainedNext) && (
+            <span
+              className="chain-badge"
+              title="Fought back-to-back with the previous team — no healing between the fights"
+            >
+              ⛓ back-to-back
+            </span>
+          )}
+        </div>
       )}
       {boss.rewards.length > 0 && (
         <div className="boss-rewards">

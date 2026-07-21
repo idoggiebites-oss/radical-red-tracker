@@ -161,6 +161,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   letter-spacing: 0.05em;
 }
 .badge.postgame { background: #3a2d4d; color: #c9a6ff; }
+.badge.chain { background: #40331a; color: var(--accent2); }
+.cap-chain { color: var(--accent2); font-weight: 700; margin-left: 4px; }
 .badge.optional { background: #2d3a4d; color: #9cc4ff; }
 .badge.caught { background: #1d3a2c; color: #7fe0ab; }
 .badge.fainted { background: #40261a; color: #ffab7a; }
@@ -234,6 +236,18 @@ tr.pickable:hover td { background: var(--bg3); }
 .boss-subtitle { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
 .boss-preview { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
 .battle-effect { padding: 4px 14px 8px; color: var(--accent2); font-size: 13px; }
+.effect-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 4px 14px 8px; }
+.effect-row .battle-effect { padding: 0; }
+.chain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #40331a;
+  color: var(--accent2);
+  font-size: 12px;
+}
 .boss-notes { padding: 0 14px 8px; color: var(--muted); font-size: 13px; }
 
 .mon-grid {
@@ -659,7 +673,8 @@ tr.pickable:hover td { background: var(--bg3); }
   gap: 8px;
   align-items: start;
 }
-.readiness-preview > .battle-effect { grid-column: 1 / -1; }
+.readiness-preview > .battle-effect,
+.readiness-preview > .effect-row { grid-column: 1 / -1; }
 .preview-wrap.open { grid-column: 1 / -1; }
 .preview-row {
   display: flex;
