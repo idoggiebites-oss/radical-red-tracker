@@ -11,6 +11,7 @@ import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
+import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -106,25 +107,32 @@ export default function App() {
 
   const currentCap = useMemo(() => {
     if (!run || !modeData) return null;
-    const order = modeData.trainerOrder;
-    for (let i = 0; i < order.length; i++) {
-      if (!run.defeated[i] && !order[i].optional) {
-        return { entry: order[i], index: i };
-      }
-    }
-    return null;
+    const i = nextRequiredIndex(modeData.trainerOrder, run);
+    return i < 0 ? null : { entry: modeData.trainerOrder[i], index: i };
   }, [run, modeData]);
+
+  // landed on the post-Sabrina fork with no route picked yet: this isn't a
+  // normal "next fight", it's a decision blocking the tracker's progress
+  const needsRouteChoice = !!(currentCap && currentCap.entry.routeChoice && !run?.sabrinaRoute);
+  const [routePickerOpen, setRoutePickerOpen] = useState(false);
+  const routePromptedKey = run ? `rr-tracker.routePrompted.${run.id}` : "";
+  useEffect(() => {
+    if (needsRouteChoice && routePromptedKey && !localStorage.getItem(routePromptedKey)) {
+      setRoutePickerOpen(true);
+      localStorage.setItem(routePromptedKey, "1");
+    }
+  }, [needsRouteChoice, routePromptedKey]);
 
   // trainers fought back-to-back right after the next one (no healing between)
   const chainNames = useMemo(() => {
-    if (!modeData || !currentCap) return [];
+    if (!modeData || !currentCap || needsRouteChoice) return [];
     const chains = orderChainInfo(modeData);
     const names: string[] = [];
     for (let i = currentCap.index + 1; chains.get(i)?.withPrev; i++) {
       names.push(modeData.trainerOrder[i].name);
     }
     return names;
-  }, [modeData, currentCap]);
+  }, [modeData, currentCap, needsRouteChoice]);
 
   return (
     <div className="app">
@@ -133,7 +141,17 @@ export default function App() {
           <span className="brand-title">Radical Red 4.1</span>
           <span className="brand-sub">Nuzlocke Tracker</span>
         </div>
-        {run && currentCap && (
+        {run && currentCap && needsRouteChoice && (
+          <button
+            className="cap-pill route-pending"
+            title="Route 12-18 forks two ways to Fuchsia City — click to choose which one you're taking"
+            onClick={() => setRoutePickerOpen(true)}
+          >
+            Level cap <strong>{currentCap.entry.levelCap}</strong>
+            <span className="cap-next">choose your route →</span>
+          </button>
+        )}
+        {run && currentCap && !needsRouteChoice && (
           <button
             className="cap-pill"
             title={
@@ -229,6 +247,17 @@ export default function App() {
         />
       )}
 
+      {routePickerOpen && run && (
+        <RouteChoiceDialog
+          current={run.sabrinaRoute}
+          onCancel={() => setRoutePickerOpen(false)}
+          onChoose={(route) => {
+            updateRun((r) => ({ ...r, sabrinaRoute: route }));
+            setRoutePickerOpen(false);
+          }}
+        />
+      )}
+
       <nav className="tabs">
         {TABS.map((t) => (
           <button
@@ -274,6 +303,47 @@ export default function App() {
         <code>python3 scripts/import_data.py --refresh</code> to re-import after doc
         updates.
       </footer>
+    </div>
+  );
+}
+
+function RouteChoiceDialog({
+  current,
+  onChoose,
+  onCancel,
+}: {
+  current?: "east" | "west";
+  onChoose: (route: "east" | "west") => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div className="dialog-backdrop" onClick={onCancel}>
+      <div className="dialog route-dialog" onClick={(e) => e.stopPropagation()}>
+        <h2>Which way to Fuchsia City?</h2>
+        <p className="muted">
+          After Sabrina the road forks — clearing either side gets you to Koga,
+          so only one is required. Pick the one you're actually playing;
+          the other stays on the Trainer order list as optional.
+        </p>
+        <div className="route-options">
+          {ROUTE_CHOICES.map((r) => (
+            <button
+              key={r.value}
+              className={"route-option" + (current === r.value ? " active" : "")}
+              onClick={() => onChoose(r.value)}
+            >
+              <span className="route-option-label">{r.label}</span>
+              <span className="muted">{r.routes}</span>
+              <span className="route-option-weather">{r.weather}</span>
+            </button>
+          ))}
+        </div>
+        <div className="dialog-actions">
+          <button onClick={onCancel}>
+            {current ? "Close" : "Decide later"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

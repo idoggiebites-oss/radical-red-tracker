@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, GameMode, Run } from "../types";
 import { orderChainInfo, type BossTarget } from "../lib/bossTarget";
+import { isEffectivelyOptional, nextRequiredIndex, ROUTE_CHOICES } from "../lib/routeChoice";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
 import { type CaughtMon } from "../components/CalcPanel";
@@ -112,27 +113,33 @@ function TrainerOrder({
   updateRun: (fn: (run: Run) => Run) => void;
 }) {
   const order = modeData.trainerOrder;
-  const nextIdx = useMemo(() => {
-    if (!run) return -1;
-    for (let i = 0; i < order.length; i++) {
-      if (!run.defeated[i] && !order[i].optional) return i;
-    }
-    return -1;
-  }, [run, order]);
+  const nextIdx = useMemo(() => nextRequiredIndex(order, run), [run, order]);
   const chains = useMemo(() => orderChainInfo(modeData), [modeData]);
+  // the fork's first entry, wherever it falls in this mode's order — shown
+  // as an inline choice card right before it, not just a top-bar popup
+  const forkIdx = useMemo(() => order.findIndex((t) => !!t.routeChoice), [order]);
 
   return (
     <div className="trainer-order">
       {order.map((t, i) => {
         const done = !!run?.defeated[i];
+        const optional = isEffectivelyOptional(t, run);
         return (
+          <div key={i} className="order-row-wrap">
+          {run && i === forkIdx && (
+            <RouteForkCard
+              current={run.sabrinaRoute}
+              onChoose={(route) =>
+                updateRun((r) => ({ ...r, sabrinaRoute: route }))
+              }
+            />
+          )}
           <div
-            key={i}
             className={
               "order-row" +
               (done ? " done" : "") +
               (i === nextIdx ? " next" : "") +
-              (t.optional ? " optional" : "")
+              (optional ? " optional" : "")
             }
           >
             {run && (
@@ -149,7 +156,7 @@ function TrainerOrder({
             )}
             <span className="order-name">
               {t.name}
-              {t.optional && <span className="badge optional">optional</span>}
+              {optional && <span className="badge optional">optional</span>}
               {chains.get(i) && (
                 <span
                   className="badge chain"
@@ -169,8 +176,47 @@ function TrainerOrder({
             </span>
             <span className="order-cap">{t.levelCap && `cap ${t.levelCap}`}</span>
           </div>
+          </div>
         );
       })}
+    </div>
+  );
+}
+
+/** inline branch prompt on the Trainer order list itself — the other place
+ * (besides the top-bar popup) a player can pick, or change, their route */
+function RouteForkCard({
+  current,
+  onChoose,
+}: {
+  current?: "east" | "west";
+  onChoose: (route: "east" | "west") => void;
+}) {
+  return (
+    <div className="route-fork-card">
+      <div className="route-fork-head">
+        {current ? (
+          <span>
+            Taking the <strong>{current === "west" ? "West" : "East"}</strong>{" "}
+            route to Fuchsia City
+          </span>
+        ) : (
+          <span>Sabrina's gym forks two ways to Fuchsia City — pick one:</span>
+        )}
+      </div>
+      <div className="route-options">
+        {ROUTE_CHOICES.map((r) => (
+          <button
+            key={r.value}
+            className={"route-option" + (current === r.value ? " active" : "")}
+            onClick={() => onChoose(r.value)}
+          >
+            <span className="route-option-label">{r.label}</span>
+            <span className="muted">{r.routes}</span>
+            <span className="route-option-weather">{r.weather}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

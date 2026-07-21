@@ -1159,6 +1159,17 @@ def parse_trainer_order(rows, tab):
     if pending is not None:
         pending["location"] = ""
         out.append(pending)
+    # after Sabrina the docs list every trainer on both the east (Route
+    # 12/13/14/15, Snow/Sun) and west (Route 16/17/18, Sandstorm/Rain) paths
+    # to Fuchsia in one line, as if both were mandatory — it's actually an
+    # either/or fork, so tag which side each belongs to rather than force
+    # optional; the app resolves which side actually blocks progress once
+    # the player picks one (Run.sabrinaRoute)
+    for t in out:
+        if re.match(r"ROUTE 1[2-5]$", t["location"]):
+            t["routeChoice"] = "east"
+        elif re.match(r"ROUTE 1[6-8]$", t["location"]):
+            t["routeChoice"] = "west"
     return out
 
 

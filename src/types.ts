@@ -112,6 +112,11 @@ export interface TrainerOrderEntry {
   optional: boolean;
   location: string;
   rewards: BossReward[];
+  /** post-Sabrina fork to Fuchsia City: Route 12/13/14/15 (Snow/Sun) is
+   * "east", Route 16/17/18 (Sandstorm/Rain) is "west" — only one side needs
+   * clearing, gated on Run.sabrinaRoute rather than the doc's own optional
+   * markers (which mark individual side fights, not whole branches) */
+  routeChoice?: "east" | "west";
 }
 
 export interface BossMode {
@@ -222,6 +227,9 @@ export interface Run {
   starterPos?: 0 | 1 | 2;
   /** which region's trio the lab offers (display only, default Kanto) */
   starterRegion?: string;
+  /** the post-Sabrina route to Fuchsia City: unset until the player picks
+   * (see TrainerOrderEntry.routeChoice) */
+  sabrinaRoute?: "east" | "west";
 }
 
 export interface AppState {

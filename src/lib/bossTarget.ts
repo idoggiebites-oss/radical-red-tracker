@@ -23,10 +23,13 @@ const norm = (s: string) =>
 
 /** doc names abbreviate ("BIRD KE." for BIRD KEEPER) and typo ("RELLI" vs
  * "RELI"), so tokens match on shared prefix or a single edit; numbers
- * (route numbers) must match exactly so ROUTE 1 can't claim ROUTE 16 */
+ * (route numbers) must match exactly so ROUTE 1 can't claim ROUTE 16, and a
+ * single-letter token ("S" from "S.S. ANNE") is too short to mean anything
+ * as a prefix — it'll spuriously match "SAFARI", "SABRINA", anything */
 function tokMatch(a: string, b: string): boolean {
   if (a === b) return true;
   if (/^\d+$/.test(a) || /^\d+$/.test(b)) return false;
+  if (a.length < 2 || b.length < 2) return false;
   return a.startsWith(b) || b.startsWith(a) || withinOneEdit(a, b);
 }
 
@@ -85,11 +88,14 @@ function buildGroups(modeData: BossMode): Group[] {
 const locScore = (g: Group, locToks: string[]) =>
   locToks.filter((lt) => g.toks.some((gt) => tokMatch(gt, lt))).length;
 
-/** map every trainer-order entry to its boss team group. The order and the
- * category lists both run in game order, so the nth same-named entry at the
- * same location maps to the nth team whose title contains the name's tokens;
- * same-named trainers at different places (the GIOVANNI fights, ARIANA at
- * Silph vs Cerulean Cave) are told apart by their location. */
+/** map every trainer-order entry to its boss team group. Same-named trainers
+ * at different places (the GIOVANNI fights, ARIANA at Silph vs Cerulean
+ * Cave) are told apart by location score, which usually narrows straight to
+ * one team. When it can't — a location the doc never titles a team after,
+ * like the pre-Koga "SAFARI ZONE" Brendan fight, whose real team is titled
+ * "FUCHSIA CITY" — fall back to pure name order: the order and category
+ * lists both run in game order, so the nth same-named entry overall maps to
+ * the nth team whose title holds the name's tokens. */
 function resolveOrder(modeData: BossMode): (Group | null)[] {
   const groups = buildGroups(modeData);
   const seen: Record<string, number> = {};
@@ -112,9 +118,11 @@ function resolveOrder(modeData: BossMode): (Group | null)[] {
       }
     } else if (matches.length > 1 && locToks.length > 0) {
       const best = Math.max(...matches.map((g) => locScore(g, locToks)));
-      matches = matches.filter((g) => locScore(g, locToks) === best);
+      // a real location match narrows to one team regardless of name-order
+      // below; a tie (nobody scores above 0) leaves the full set untouched
+      if (best > 0) matches = matches.filter((g) => locScore(g, locToks) === best);
     }
-    const okey = toks.join(" ") + "@" + locToks.join(" ");
+    const okey = toks.join(" ");
     const occ = (seen[okey] = (seen[okey] ?? -1) + 1);
     return matches[occ] ?? matches[matches.length - 1] ?? null;
   });
