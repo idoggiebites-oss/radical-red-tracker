@@ -139,12 +139,71 @@ export function formsFor(docName: string): string[] {
   return out;
 }
 
+// the docs abbreviate long move names — a trailing dot ("High Horsep.") or
+// a truncated middle word ("Pow-Up Punch", "Double I. Bash") — resolved by
+// prefix-matching every word against the real move list, grouped by word
+// count so "Clang. Soul" can't accidentally match a two-word move that
+// isn't even close (needs the same number of words, in the same order)
+const MOVE_TOKEN_GROUPS: Map<number, { name: string; toks: string[] }[]> = (() => {
+  const groups = new Map<number, { name: string; toks: string[] }[]>();
+  for (const name of MOVE_NAMES) {
+    const toks = name.toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim().split(" ");
+    const list = groups.get(toks.length) ?? [];
+    list.push({ name, toks });
+    groups.set(toks.length, list);
+  }
+  return groups;
+})();
+
+/** one doc abbreviation is genuinely ambiguous by prefix alone (both
+ * "Clangorous Soul" and "Clangorous Soulblaze" start the same way) */
+const MOVE_ALIASES: Record<string, string> = {
+  "clang. soul": "Clangorous Soul", // Kommo-o's signature, not Zacian/Zamazenta's
+};
+
+function withinOneEdit(a: string, b: string): boolean {
+  if (a.length < 4 || b.length < 4) return false;
+  if (Math.abs(a.length - b.length) > 1) return false;
+  const [s, l] = a.length <= b.length ? [a, b] : [b, a];
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < s.length && j < l.length) {
+    if (s[i] === l[j]) {
+      i++;
+      j++;
+      continue;
+    }
+    if (++edits > 1) return false;
+    if (s.length === l.length) i++;
+    j++;
+  }
+  return true;
+}
+
+function resolveAbbrevMove(doc: string): string | null {
+  const alias = MOVE_ALIASES[doc.trim().toLowerCase()];
+  if (alias) return alias;
+  const toks = doc.toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim().split(" ");
+  const candidates = MOVE_TOKEN_GROUPS.get(toks.length) ?? [];
+  const matches = candidates.filter((c) =>
+    toks.every((t, i) => c.toks[i] === t || c.toks[i].startsWith(t)),
+  );
+  if (matches.length === 1) return matches[0].name;
+  if (matches.length > 0) return null; // ambiguous — don't guess
+  // a straight typo ("Eathquake"): fall back to one-edit whole-name distance
+  const joined = toks.join("");
+  const fuzzy = candidates.filter((c) => withinOneEdit(joined, c.toks.join("")));
+  return fuzzy.length === 1 ? fuzzy[0].name : null;
+}
+
 export function resolveMove(docMove: string): string | null {
   let name = docMove.trim();
   if (name === "-" || !name) return null;
   if (/^HP /i.test(name)) name = "Hidden Power " + name.slice(3);
   const hit = gen.moves.get(rr.toID(name));
-  return hit ? hit.name : null;
+  if (hit) return hit.name;
+  return resolveAbbrevMove(name);
 }
 
 /** battle effect text from the boss docs -> calc field settings */
