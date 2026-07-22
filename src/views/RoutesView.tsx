@@ -9,7 +9,7 @@ import type {
   Run,
 } from "../types";
 import { Sprite } from "../components/Sprite";
-import { ALL_SPECIES, TypeBadges } from "../components/TypeBadges";
+import { TypeBadges, WILD_SPECIES } from "../components/TypeBadges";
 import { speciesRandomized } from "../lib/saveFile";
 import { STARTER_ID } from "../lib/storage";
 import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
@@ -180,7 +180,7 @@ export function RoutesView({
       )}
       {randomized && (
         <datalist id="all-species">
-          {ALL_SPECIES.map((s) => (
+          {WILD_SPECIES.map((s) => (
             <option key={s} value={s} />
           ))}
         </datalist>
@@ -466,7 +466,7 @@ function StarterPicker({
         })}
       </div>
       <datalist id="starter-species">
-        {ALL_SPECIES.map((s) => (
+        {WILD_SPECIES.map((s) => (
           <option key={s} value={s} />
         ))}
       </datalist>
@@ -584,7 +584,7 @@ function RouteRow({
               />
               <datalist id={`species-${group.id}`}>
                 {(group.id === STARTER_ID || randomized
-                  ? ALL_SPECIES
+                  ? WILD_SPECIES
                   : [...new Set(
                       group.sections.flatMap(({ loc }) =>
                         Object.values(loc.methods).flatMap(

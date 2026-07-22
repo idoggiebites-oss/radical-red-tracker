@@ -787,7 +787,7 @@
   "Clawitzer": [
    "Water"
   ],
-  "Clawitzer-S": [
+  "Clawitzer-Sevii": [
    "Bug",
    "Dark"
   ],
@@ -1063,10 +1063,6 @@
   "Dodrio": [
    "Normal",
    "Flying"
-  ],
-  "Dodrio-S": [
-   "Fire",
-   "Ground"
   ],
   "Dodrio-Sevii": [
    "Fire",
@@ -2255,10 +2251,6 @@
    "Water",
    "Flying"
   ],
-  "Mantine-S": [
-   "Electric",
-   "Poison"
-  ],
   "Mantine-Sevii": [
    "Electric",
    "Poison"
@@ -2399,10 +2391,6 @@
   ],
   "Milotic": [
    "Water"
-  ],
-  "Milotic-S": [
-   "Fairy",
-   "Ground"
   ],
   "Milotic-Sevii": [
    "Fairy",
@@ -3910,7 +3898,7 @@
   "Ursaring": [
    "Normal"
   ],
-  "Ursaring-S": [
+  "Ursaring-Sevii": [
    "Ghost",
    "Fighting"
   ],
@@ -4209,7 +4197,7 @@
   "Zebstrika": [
    "Electric"
   ],
-  "Zebstrika-S": [
+  "Zebstrika-Sevii": [
    "Ice",
    "Electric"
   ],
@@ -4345,10 +4333,6 @@
   ],
   "Pignite": [
    "Fire",
-   "Fighting"
-  ],
-  "Ursaring-Sevii": [
-   "Ghost",
    "Fighting"
   ],
   "Spidops": [
@@ -4643,10 +4627,6 @@
    "Bug",
    "Flying"
   ],
-  "Clawitzer-Sevii": [
-   "Bug",
-   "Dark"
-  ],
   "Monferno": [
    "Fire",
    "Fighting"
@@ -4689,10 +4669,6 @@
   ],
   "Sudowoodo": [
    "Rock"
-  ],
-  "Zebstrika-Sevii": [
-   "Ice",
-   "Electric"
   ],
   "Dottler": [
    "Bug",
@@ -6098,7 +6074,7 @@
    "SPD": 89,
    "SPE": 72
   },
-  "Clawitzer-S": {
+  "Clawitzer-Sevii": {
    "HP": 81,
    "ATK": 63,
    "DEF": 83,
@@ -6712,14 +6688,6 @@
    "DEF": 70,
    "SPA": 60,
    "SPD": 60,
-   "SPE": 110
-  },
-  "Dodrio-S": {
-   "HP": 65,
-   "ATK": 125,
-   "DEF": 65,
-   "SPA": 40,
-   "SPD": 65,
    "SPE": 110
   },
   "Dodrio-Sevii": {
@@ -9346,14 +9314,6 @@
    "SPD": 140,
    "SPE": 70
   },
-  "Mantine-S": {
-   "HP": 80,
-   "ATK": 30,
-   "DEF": 70,
-   "SPA": 100,
-   "SPD": 120,
-   "SPE": 95
-  },
   "Mantine-Sevii": {
    "HP": 80,
    "ATK": 30,
@@ -9673,14 +9633,6 @@
    "SPA": 100,
    "SPD": 125,
    "SPE": 86
-  },
-  "Milotic-S": {
-   "HP": 95,
-   "ATK": 60,
-   "DEF": 84,
-   "SPA": 105,
-   "SPD": 125,
-   "SPE": 81
   },
   "Milotic-Sevii": {
    "HP": 95,
@@ -13034,7 +12986,7 @@
    "SPD": 75,
    "SPE": 55
   },
-  "Ursaring-S": {
+  "Ursaring-Sevii": {
    "HP": 100,
    "ATK": 110,
    "DEF": 90,
@@ -13690,7 +13642,7 @@
    "SPD": 63,
    "SPE": 116
   },
-  "Zebstrika-S": {
+  "Zebstrika-Sevii": {
    "HP": 75,
    "ATK": 70,
    "DEF": 63,
@@ -13992,14 +13944,6 @@
    "DEF": 55,
    "SPA": 70,
    "SPD": 55,
-   "SPE": 55
-  },
-  "Ursaring-Sevii": {
-   "HP": 100,
-   "ATK": 110,
-   "DEF": 90,
-   "SPA": 55,
-   "SPD": 90,
    "SPE": 55
   },
   "Spidops": {
@@ -14682,14 +14626,6 @@
    "SPD": 102,
    "SPE": 40
   },
-  "Clawitzer-Sevii": {
-   "HP": 81,
-   "ATK": 63,
-   "DEF": 83,
-   "SPA": 110,
-   "SPD": 79,
-   "SPE": 97
-  },
   "Monferno": {
    "HP": 64,
    "ATK": 78,
@@ -14785,14 +14721,6 @@
    "SPA": 30,
    "SPD": 65,
    "SPE": 30
-  },
-  "Zebstrika-Sevii": {
-   "HP": 75,
-   "ATK": 70,
-   "DEF": 63,
-   "SPA": 110,
-   "SPD": 63,
-   "SPE": 116
   },
   "Dottler": {
    "HP": 50,
@@ -15577,7 +15505,7 @@
   "Clawitzer": [
    "Mega Launcher"
   ],
-  "Clawitzer-S": [
+  "Clawitzer-Sevii": [
    "Mega Launcher"
   ],
   "Clefable": [
@@ -15890,11 +15818,6 @@
    "Limber"
   ],
   "Dodrio": [
-   "Rock Head",
-   "Early Bird"
-  ],
-  "Dodrio-S": [
-   "Anger Point",
    "Rock Head",
    "Early Bird"
   ],
@@ -17280,11 +17203,6 @@
    "Swift Swim",
    "Water Absorb"
   ],
-  "Mantine-S": [
-   "Hydration",
-   "Static",
-   "Storm Drain"
-  ],
   "Mantine-Sevii": [
    "Hydration",
    "Static",
@@ -17450,11 +17368,6 @@
   ],
   "Milotic": [
    "Cute Charm",
-   "Marvel Scale",
-   "Competitive"
-  ],
-  "Milotic-S": [
-   "Serene Grace",
    "Marvel Scale",
    "Competitive"
   ],
@@ -19248,7 +19161,7 @@
    "Guts",
    "Quick Feet"
   ],
-  "Ursaring-S": [
+  "Ursaring-Sevii": [
    "Iron Fist",
    "Guts",
    "Quick Feet"
@@ -19582,7 +19495,7 @@
    "Lightning Rod",
    "Sap Sipper"
   ],
-  "Zebstrika-S": [
+  "Zebstrika-Sevii": [
    "Ice Body",
    "Lightning Rod",
    "Illuminate"
@@ -19737,11 +19650,6 @@
   "Pignite": [
    "Thick Fat",
    "Blaze"
-  ],
-  "Ursaring-Sevii": [
-   "Iron Fist",
-   "Guts",
-   "Quick Feet"
   ],
   "Spidops": [
    "Insomnia",
@@ -20120,9 +20028,6 @@
    "Unnerve",
    "Dazzling"
   ],
-  "Clawitzer-Sevii": [
-   "Mega Launcher"
-  ],
   "Monferno": [
    "Iron Fist",
    "Blaze"
@@ -20170,11 +20075,6 @@
   "Sudowoodo": [
    "Sturdy",
    "Rock Head"
-  ],
-  "Zebstrika-Sevii": [
-   "Ice Body",
-   "Lightning Rod",
-   "Illuminate"
   ],
   "Dottler": [
    "Telepathy",
@@ -23473,7 +23373,7 @@
   "Clauncher": 800,
   "Clauncher-Sevii": 1287,
   "Clawitzer": 801,
-  "Clawitzer-S": 1288,
+  "Clawitzer-Sevii": 1288,
   "Clefable": 36,
   "Clefairy": 35,
   "Clobbopus": 1144,
@@ -23550,7 +23450,6 @@
   "Dipplin": 1363,
   "Ditto": 132,
   "Dodrio": 85,
-  "Dodrio-S": 1277,
   "Dodrio-Sevii": 1277,
   "Doduo": 84,
   "Doduo-Sevii": 1276,
@@ -23879,7 +23778,6 @@
   "Manectric-Mega": 898,
   "Mankey": 56,
   "Mantine": 226,
-  "Mantine-S": 1284,
   "Mantine-Sevii": 1284,
   "Mantyke": 511,
   "Mantyke-Sevii": 1283,
@@ -23920,7 +23818,6 @@
   "Mightyena": 287,
   "Milcery": 1160,
   "Milotic": 329,
-  "Milotic-S": 1286,
   "Milotic-Sevii": 1286,
   "Miltank": 241,
   "Mime Jr.": 492,
@@ -24340,7 +24237,7 @@
   "Ursaluna": 1302,
   "Ursaluna-BM": 1356,
   "Ursaring": 217,
-  "Ursaring-S": 1279,
+  "Ursaring-Sevii": 1279,
   "Urshifu-R": 1207,
   "Urshifu-Rapid": 1207,
   "Urshifu-S": 1184,
@@ -24422,7 +24319,7 @@
   "Zapdos-Galar": 1218,
   "Zarude": 1185,
   "Zebstrika": 576,
-  "Zebstrika-S": 1275,
+  "Zebstrika-Sevii": 1275,
   "Zekrom": 697,
   "Zeraora": 1078,
   "Zigzagoon": 288,
@@ -24460,7 +24357,6 @@
   "Toedscruel": 1199,
   "Gurdurr": 586,
   "Pignite": 552,
-  "Ursaring-Sevii": 1279,
   "Spidops": 1315,
   "Wyrdeer": 1270,
   "Aromatisse": 791,
@@ -24546,7 +24442,6 @@
   "Sawsbuck": 743,
   "Quilava": 156,
   "Vespiquen": 469,
-  "Clawitzer-Sevii": 1288,
   "Monferno": 444,
   "Bayleef": 153,
   "Quilladin": 759,
@@ -24559,7 +24454,6 @@
   "Brambleghast": 1352,
   "Steenee": 979,
   "Sudowoodo": 185,
-  "Zebstrika-Sevii": 1275,
   "Dottler": 1117,
   "Orbeetle": 1118,
   "Weepinbell": 70,

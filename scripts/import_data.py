@@ -113,6 +113,24 @@ def resolve_ability(raw: str) -> str:
     return re.sub(r"\s*\([^)]*\)\s*$", "", resolved).strip()
 
 
+# the docs abbreviate a handful of Sevii-form Pokémon with a "-S" suffix
+# where the RR dex's own canonical name uses "-Sevii" for the very same
+# species — normalized at extraction time so every list/lookup only ever
+# sees one identity for them, not two
+SEVII_SUFFIX_FIX = {
+    "Clawitzer-S": "Clawitzer-Sevii",
+    "Dodrio-S": "Dodrio-Sevii",
+    "Mantine-S": "Mantine-Sevii",
+    "Milotic-S": "Milotic-Sevii",
+    "Ursaring-S": "Ursaring-Sevii",
+    "Zebstrika-S": "Zebstrika-Sevii",
+}
+
+
+def normalize_species(name: str) -> str:
+    return SEVII_SUFFIX_FIX.get(name, name)
+
+
 # ---------------------------------------------------------------- encounters
 
 def parse_wide_tables(rows: list[list[str]]):
@@ -132,7 +150,7 @@ def read_slots(rows, header_row, c):
     r = header_row + 1
     while True:
         rarity = cell(rows, r, c)
-        species = cell(rows, r, c + 2)
+        species = normalize_species(cell(rows, r, c + 2))
         if not rarity and not species:
             break
         if species:
@@ -268,7 +286,7 @@ def parse_safari(rows):
 def parse_statics(rows):
     out = []
     for r in range(len(rows)):
-        species = cell(rows, r, 3)
+        species = normalize_species(cell(rows, r, 3))
         info = cell(rows, r, 5)
         if species and species != "POKEMON":
             out.append({"species": species, "info": info})
@@ -283,7 +301,7 @@ def parse_gifts(rows):
         if header and header != "POKEMON" and not cell(rows, r, 3):
             section = header
             continue
-        species = cell(rows, r, 3)
+        species = normalize_species(cell(rows, r, 3))
         if species:
             out.append({
                 "location": section or "?",
@@ -773,6 +791,24 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
         if mon:
             sprite_ids[name] = mon["ID"]
 
+    # the RR dex occasionally lists the same Sevii-form Pokémon under both
+    # the docs' abbreviated "-S" name and its own canonical "-Sevii" key
+    # (Clawitzer-S / Clawitzer-Sevii, ...) — doubles every species picker.
+    # Keep "-Sevii" only; resolve_species_key()/the app's own resolveSpecies()
+    # already map the "-S" doc abbreviation to the "-Sevii" entry, so nothing
+    # downstream needs the "-S" key once evolution targets are repointed.
+    sevii_dupes = [n for n in species_types
+                   if n.endswith("-S") and f"{n[:-2]}-Sevii" in species_types]
+    for dupe in sevii_dupes:
+        canonical = f"{dupe[:-2]}-Sevii"
+        for d in (species_types, species_stats, species_abilities,
+                  species_evolutions, sprite_ids):
+            d.pop(dupe, None)
+        for evos in species_evolutions.values():
+            for evo in evos:
+                if evo["to"] == dupe:
+                    evo["to"] = canonical
+
     print(f"  types resolved for {len(species_types)} species "
           f"({len(species_evolutions)} with evolutions)")
     return {"colors": colors, "matchup": matchup, "species": species_types,
@@ -802,7 +838,7 @@ def parse_raids(rows):
             r += 1
             dens = []
             for c in RAID_SPECIES_COLS:
-                species = cell(rows, r, c)
+                species = normalize_species(cell(rows, r, c))
                 if species:
                     dens.append({"species": species, "drops": [], "_col": c})
             current["dens"] = dens
@@ -1060,7 +1096,7 @@ def parse_boss_block(rows, r, tab):
                 battle_effect = v.split(":", 1)[-1].strip()
     mons = []
     for c in SPECIES_COLS:
-        species = cell(rows, r, c)
+        species = normalize_species(cell(rows, r, c))
         if not species or species in NON_SPECIES or species.startswith("(!)") \
                 or species.endswith(":"):
             continue

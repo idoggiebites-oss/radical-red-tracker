@@ -18,6 +18,11 @@ export function typesFor(species: string): string[] {
 /** every species name known to the RR dex data, for pickers */
 export const ALL_SPECIES: string[] = Object.keys(data.species).sort();
 
+/** ALL_SPECIES minus Mega forms — for pickers where the species was
+ * actually encountered (wild, starter, randomizer sightings): Mega
+ * Evolution never occurs outside battle, so it's never what you catch */
+export const WILD_SPECIES: string[] = ALL_SPECIES.filter((s) => !s.includes("-Mega"));
+
 export function TypeBadges({ species, small }: { species: string; small?: boolean }) {
   const types = typesFor(species);
   if (types.length === 0) return null;
