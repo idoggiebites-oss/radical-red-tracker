@@ -966,6 +966,9 @@ tr.pickable:hover td { background: var(--bg3); }
   max-width: 640px;
 }
 .starter-slot { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* .species-combobox's flex-basis is sized for row layouts (width); in this
+   column flexbox it would otherwise inflate the slot's height instead */
+.starter-slot .species-combobox { flex: none; }
 .slot-label {
   font-size: 11px;
   font-weight: 600;
@@ -986,8 +989,12 @@ tr.pickable:hover td { background: var(--bg3); }
 .starter-slot.active .starter-choice { border-color: var(--accent2); background: var(--bg3); }
 .starter-choice-name { font-weight: 600; }
 .starter-slot input { width: 100%; padding: 3px 8px; font-size: 13px; }
+.starter-choice:disabled { opacity: 0.4; cursor: not-allowed; }
 @media (max-width: 640px) {
-  .starter-slots { grid-template-columns: 1fr; max-width: none; }
+  .starter-slots { grid-template-columns: 1fr; max-width: none; gap: 6px; }
+  .starter-slot { gap: 3px; }
+  .starter-choice { padding: 5px 8px; gap: 4px 6px; }
+  .slot-label { font-size: 10px; }
 }
 
 /* ---- calc totals & field ---- */

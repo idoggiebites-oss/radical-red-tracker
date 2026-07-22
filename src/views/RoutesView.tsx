@@ -407,6 +407,13 @@ function StarterPicker({
 
   const picked = run.encounters[STARTER_ID]?.species ? run.starterPos : undefined;
 
+  // an override is only usable once it names a real wild species — empty is
+  // fine (falls back to the region's trio)
+  const overrideValid = (v: string) => {
+    const q = v.trim().toLowerCase();
+    return q === "" || WILD_SPECIES.some((o) => o.toLowerCase() === q);
+  };
+
   return (
     <div className="starter-picker">
       <label className="starter-region muted">
@@ -424,7 +431,9 @@ function StarterPicker({
       </label>
       <div className="starter-slots">
         {([0, 1, 2] as const).map((pos) => {
-          const shown = overrides[pos].trim() || region.trio[pos];
+          const override = overrides[pos];
+          const overrideInvalid = override.trim() !== "" && !overrideValid(override);
+          const shown = override.trim() && !overrideInvalid ? override.trim() : region.trio[pos];
           return (
             <div
               key={pos}
@@ -433,7 +442,12 @@ function StarterPicker({
               <span className="slot-label">{POSITION_LABELS[pos]}</span>
               <button
                 className="starter-choice"
-                title={`Record the ${POSITION_LABELS[pos].toLowerCase()} ball as your starter`}
+                title={
+                  overrideInvalid
+                    ? "Enter a valid species first"
+                    : `Record the ${POSITION_LABELS[pos].toLowerCase()} ball as your starter`
+                }
+                disabled={overrideInvalid}
                 onClick={() => pick(shown, pos)}
               >
                 <Sprite species={shown} size={40} />
@@ -442,14 +456,16 @@ function StarterPicker({
               </button>
               <SpeciesCombobox
                 placeholder="Randomized? type it…"
-                value={overrides[pos]}
+                value={override}
                 options={WILD_SPECIES}
+                invalid={overrideInvalid}
                 onChange={(v) => {
                   const next = [...overrides];
                   next[pos] = v;
                   setOverrides(next);
-                  // retyping the already-picked slot fixes the record live
-                  if (picked === pos) {
+                  // retyping the already-picked slot fixes the record live,
+                  // but never commit a name that isn't a real species
+                  if (picked === pos && overrideValid(v)) {
                     pick(v.trim() || region.trio[pos], pos);
                   }
                 }}
@@ -581,13 +597,15 @@ function RouteRow({
         <div className="route-body">
           {run && (
             <div className="enc-editor">
-              <SpeciesCombobox
-                placeholder="Species caught here…"
-                value={enc?.species ?? ""}
-                onChange={(v) => setEncounter({ species: v })}
-                options={speciesOptions}
-                invalid={!!enc?.species && !speciesValid}
-              />
+              {group.id !== STARTER_ID && (
+                <SpeciesCombobox
+                  placeholder="Species caught here…"
+                  value={enc?.species ?? ""}
+                  onChange={(v) => setEncounter({ species: v })}
+                  options={speciesOptions}
+                  invalid={!!enc?.species && !speciesValid}
+                />
+              )}
               <input
                 placeholder="Nickname"
                 value={enc?.nickname ?? ""}
