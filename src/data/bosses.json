@@ -1130,7 +1130,7 @@
         "species": "Manectric-Mega",
         "level": "34",
         "nature": "Timid",
-        "ability": "Intimidate (Both)",
+        "ability": "Intimidate",
         "item": "Manectite",
         "moves": [
          "Charge Beam",
@@ -1224,7 +1224,7 @@
         "species": "Venusaur-Mega",
         "level": "44",
         "nature": "Modest",
-        "ability": "Overgrow\nThick Fat",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Giga Drain",
@@ -1462,7 +1462,7 @@
         "species": "Gardevoir-Mega",
         "level": "59",
         "nature": "Quiet",
-        "ability": "Trace\nPixilate",
+        "ability": "Pixilate",
         "item": "Gardevoirite",
         "moves": [
          "Hyper Voice",
@@ -1646,7 +1646,7 @@
         "species": "Toxtricity-Mega",
         "level": "68",
         "nature": "Timid",
-        "ability": "Punk Rock (Both)",
+        "ability": "Punk Rock",
         "item": "Toxtricitite",
         "moves": [
          "Boomburst",
@@ -1830,7 +1830,7 @@
         "species": "Charizard-MegaY",
         "level": "76",
         "nature": "Timid",
-        "ability": "Solar Power\nDrought",
+        "ability": "Drought",
         "item": "Charizardite Y",
         "moves": [
          "Flamethrower",
@@ -2203,7 +2203,7 @@
         "species": "Aerodactyl-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Pressure\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Aerodactylite",
         "moves": [
          "Dragon Dance",
@@ -2331,7 +2331,7 @@
         "species": "Gyarados-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Intimidate\nMold Breaker",
+        "ability": "Mold Breaker",
         "item": "Gyaradosite",
         "moves": [
          "Dragon Dance",
@@ -2538,7 +2538,7 @@
         "species": "Manectric-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Intimidate (Both)",
+        "ability": "Intimidate",
         "item": "Manectite",
         "moves": [
          "Volt Switch",
@@ -2745,7 +2745,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Overgrow\nThick Fat (Mega)",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Giga Drain",
@@ -3014,7 +3014,7 @@
         "species": "Scizor-Mega",
         "level": "Highest Lv -2",
         "nature": "Careful",
-        "ability": "Technician (Both)",
+        "ability": "Technician",
         "item": "Scizorite",
         "moves": [
          "Bullet Punch",
@@ -3430,7 +3430,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Sludge Wave",
@@ -3640,7 +3640,7 @@
         "species": "Gallade-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Steadfast\nSharpness",
+        "ability": "Sharpness",
         "item": "Galladite",
         "moves": [
          "Bulk Up",
@@ -3824,7 +3824,7 @@
         "species": "Glalie-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Ice Body\nRefrigerate",
+        "ability": "Refrigerate",
         "item": "Glalitite",
         "moves": [
          "Fake Out",
@@ -4001,7 +4001,7 @@
         "species": "Aggron-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Rock Head\nFilter",
+        "ability": "Filter",
         "item": "Aggronite",
         "moves": [
          "Heavy Slam",
@@ -4178,7 +4178,7 @@
         "species": "Aggron-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Rock Head\nFilter",
+        "ability": "Filter",
         "item": "Aggronite",
         "moves": [
          "Heavy Slam",
@@ -4355,7 +4355,7 @@
         "species": "Aggron-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Rock Head\nFilter",
+        "ability": "Filter",
         "item": "Aggronite",
         "moves": [
          "Heavy Slam",
@@ -5172,7 +5172,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Torrent\nMega Launcher",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -5321,7 +5321,7 @@
         "species": "Charizard-MegaY",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Blaze\nDrought",
+        "ability": "Drought",
         "item": "Charizardite Y",
         "moves": [
          "Flamethrower",
@@ -5470,7 +5470,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Overgrow\nThick Fat",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Sleep Powder",
@@ -5649,7 +5649,7 @@
         "species": "Sceptile-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -5832,7 +5832,7 @@
         "species": "Blaziken-Mega",
         "level": "73",
         "nature": "Adamant",
-        "ability": "Speed Boost (Both)",
+        "ability": "Speed Boost",
         "item": "Blazikenite",
         "moves": [
          "Swords Dance",
@@ -6013,7 +6013,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Rain Dish\nMega Launcher",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -6192,7 +6192,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -6373,7 +6373,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Overgrow\nThick Fat",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Chloroblast",
@@ -6552,7 +6552,7 @@
         "species": "Sceptile-Mega",
         "level": "82",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -7330,7 +7330,7 @@
         "species": "Kangaskhan-Mega",
         "level": "46",
         "nature": "Jolly",
-        "ability": "Inner Focus\nParental Bond",
+        "ability": "Parental Bond",
         "item": "Kangaskhanite",
         "moves": [
          "Fake Out",
@@ -7479,7 +7479,7 @@
         "species": "Mawile-Mega",
         "level": "55",
         "nature": "Adamant",
-        "ability": "Intimidate\nHuge Power",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Play Rough",
@@ -7563,7 +7563,7 @@
         "species": "Houndoom-Mega",
         "level": "55",
         "nature": "Naive",
-        "ability": "Early Bird\nDark Aura",
+        "ability": "Dark Aura",
         "item": "Houndoominite",
         "moves": [
          "Heat Wave",
@@ -7661,7 +7661,7 @@
         "species": "Sceptile-Mega",
         "level": "55",
         "nature": "Timid",
-        "ability": "Unburden\nTechnician",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Mega Drain",
@@ -7756,7 +7756,7 @@
         "species": "Kangaskhan-Mega",
         "level": "57",
         "nature": "Jolly",
-        "ability": "Scrappy\nParental Bond",
+        "ability": "Parental Bond",
         "item": "Kangaskhanite",
         "moves": [
          "Pow-Up Punch",
@@ -7961,7 +7961,7 @@
         "species": "Houndoom-Mega",
         "level": "79",
         "nature": "Timid",
-        "ability": "Unnerve\nDark Aura",
+        "ability": "Dark Aura",
         "item": "Houndoominite",
         "moves": [
          "Fiery Wrath",
@@ -8083,7 +8083,7 @@
         "species": "Mawile-Mega",
         "level": "79",
         "nature": "Adamant",
-        "ability": "Intimidate\nHuge Power",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Sucker Punch",
@@ -8261,7 +8261,7 @@
         "species": "Mewtwo-MegaY",
         "level": "80",
         "nature": "Timid",
-        "ability": "Unnerve\nInsomnia",
+        "ability": "Insomnia",
         "item": "No Item",
         "moves": [
          "Expand. Force",
@@ -8355,7 +8355,7 @@
         "species": "Salamence-Mega",
         "level": "82",
         "nature": "Hasty",
-        "ability": "Intimidate\nAerilate",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Double-Edge",
@@ -9779,7 +9779,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv -5",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -9988,7 +9988,7 @@
         "species": "Alcremie-Mega",
         "level": "Highest Lv -5",
         "nature": "Bold",
-        "ability": "Sweet Veil\nSelf Sufficient",
+        "ability": "Self Sufficient",
         "item": "Alcremite",
         "moves": [
          "Moonblast",
@@ -10112,7 +10112,7 @@
         "species": "Altaria-Mega",
         "level": "Highest Lv -5",
         "nature": "Bold",
-        "ability": "Natural Cure\nPixilate",
+        "ability": "Pixilate",
         "item": "Altarianite",
         "moves": [
          "Fire Blast",
@@ -10481,7 +10481,7 @@
         "species": "Camerupt-Mega",
         "level": "Highest Lv -5",
         "nature": "Modest",
-        "ability": "Solid Rock\nSheer Force",
+        "ability": "Sheer Force",
         "item": "Cameruptite",
         "moves": [
          "Fire Blast",
@@ -11051,7 +11051,7 @@
         "species": "Scizor-Mega",
         "level": "Highest Lv -5",
         "nature": "Adamant",
-        "ability": "Swarm\nTechnician",
+        "ability": "Technician",
         "item": "Scizorite",
         "moves": [
          "U-Turn",
@@ -11176,7 +11176,7 @@
         "species": "Beedrill-Mega",
         "level": "Highest Lv -5",
         "nature": "Jolly",
-        "ability": "Swarm\nAdaptability",
+        "ability": "Adaptability",
         "item": "Beedrillite",
         "moves": [
          "U-Turn",
@@ -11562,7 +11562,7 @@
         "species": "Lapras-Mega",
         "level": "Highest Lv -4",
         "nature": "Modest",
-        "ability": "Water Absorb\nLiquid Voice",
+        "ability": "Liquid Voice",
         "item": "Laprasite",
         "moves": [
          "Boomburst",
@@ -11682,7 +11682,7 @@
         "species": "Pinsir-Mega",
         "level": "Highest Lv -5",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nAerilate",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "X-Scissor",
@@ -11833,7 +11833,7 @@
         "species": "Centiskorch-Mega",
         "level": "Highest Lv -4",
         "nature": "Adamant",
-        "ability": "Flash Fire\nMountaineer",
+        "ability": "Mountaineer",
         "item": "Centiskite",
         "moves": [
          "Flare Blitz",
@@ -12281,7 +12281,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv -4",
         "nature": "Naive",
-        "ability": "Super Luck\nSharpness",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -12430,7 +12430,7 @@
         "species": "Kingler-Mega",
         "level": "Highest Lv -4",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Kinglerite",
         "moves": [
          "Crabhammer",
@@ -12607,7 +12607,7 @@
         "species": "Pinsir-Mega",
         "level": "84",
         "nature": "Jolly",
-        "ability": "Mold Breaker\nAerilate",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "Quick Attack",
@@ -12758,7 +12758,7 @@
         "species": "Lopunny-Mega",
         "level": "84",
         "nature": "Jolly",
-        "ability": "Cute Charm\nScrappy",
+        "ability": "Scrappy",
         "item": "Lopunnite",
         "moves": [
          "Close Combat",
@@ -12879,7 +12879,7 @@
         "species": "Sharpedo-Mega",
         "level": "84",
         "nature": "Jolly",
-        "ability": "Speed Boost\nStrong Jaw",
+        "ability": "Strong Jaw",
         "item": "Sharpedonite",
         "moves": [
          "Crunch",
@@ -13055,7 +13055,7 @@
         "species": "Audino-Mega",
         "level": "84",
         "nature": "Bold",
-        "ability": "Regenerator (Both)",
+        "ability": "Regenerator",
         "item": "Audinite",
         "moves": [
          "Moonblast",
@@ -13311,7 +13311,7 @@
         "species": "Weezing-G",
         "level": "Highest Lv -2",
         "nature": "Bold",
-        "ability": "Neutralizing Gas\nor Levitate",
+        "ability": "Levitate",
         "item": "Rocky Helmet",
         "moves": [
          "Flamethrower",
@@ -13394,7 +13394,7 @@
         "species": "Centiskorch-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Flash Fire or White Smoke\nMountaineer",
+        "ability": "Mountaineer",
         "item": "Centiskite",
         "moves": [
          "Fire Lash",
@@ -13570,7 +13570,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Torrent\nSwift Swim",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Liquidation",
@@ -13642,7 +13642,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv -2",
         "nature": "Naive",
-        "ability": "Hustle\nDragon's Maw",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Scale Shot",
@@ -13770,7 +13770,7 @@
         "species": "Appletun-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Thick Fat\nContrary",
+        "ability": "Contrary",
         "item": "Applite",
         "moves": [
          "Draco Meteor",
@@ -13899,7 +13899,7 @@
         "species": "Magmortar",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Flame Body\nor Quick Draw",
+        "ability": "Quick Draw",
         "item": "Power Herb",
         "moves": [
          "Meteor Beam",
@@ -13985,7 +13985,7 @@
         "species": "Sandaconda-Mega",
         "level": "Highest Lv -2",
         "nature": "Careful",
-        "ability": "Shed Skin\nAerilate",
+        "ability": "Aerilate",
         "item": "Sandacondite",
         "moves": [
          "Body Slam",
@@ -14163,7 +14163,7 @@
         "species": "Machamp-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Guts\nORAORAORAORA!",
+        "ability": "ORAORAORAORA!",
         "item": "Machampite",
         "moves": [
          "Pow-Up Punch",
@@ -14286,7 +14286,7 @@
         "species": "Aggron-Mega",
         "level": "Highest Lv -2",
         "nature": "Careful",
-        "ability": "Sturdy\nFilter",
+        "ability": "Filter",
         "item": "Aggronite",
         "moves": [
          "Curse",
@@ -14435,7 +14435,7 @@
         "species": "Ampharos-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Static\nThick Fat",
+        "ability": "Thick Fat",
         "item": "Ampharosite",
         "moves": [
          "Parab. Charge",
@@ -14916,7 +14916,7 @@
         "species": "Swampert-Mega",
         "level": "85",
         "nature": "Adamant",
-        "ability": "Torrent\nSwift Swim",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Pow-Up Punch",
@@ -15153,7 +15153,7 @@
         "species": "Abomasnow-Mega",
         "level": "85",
         "nature": "Timid",
-        "ability": "Snow Warning\nSlush Rush",
+        "ability": "Slush Rush",
         "item": "Abomasite",
         "moves": [
          "Blizzard",
@@ -15362,7 +15362,7 @@
         "species": "Lucario-Mega",
         "level": "85",
         "nature": "Timid",
-        "ability": "Inner Focus\nAdaptability",
+        "ability": "Adaptability",
         "item": "Lucarionite",
         "moves": [
          "Nasty Plot",
@@ -15541,7 +15541,7 @@
         "species": "Lucario-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Inner Focus\nAdaptability",
+        "ability": "Adaptability",
         "item": "Lucarionite",
         "moves": [
          "Bullet Punch",
@@ -15718,7 +15718,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Shadow Ball",
@@ -15897,7 +15897,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Shadow Ball",
@@ -16076,7 +16076,7 @@
         "species": "Salamence-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Intimidate\nAerilate",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Dragon Dance",
@@ -16255,7 +16255,7 @@
         "species": "Salamence-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Intimidate\nAerilate",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Dragon Dance",
@@ -16322,7 +16322,7 @@
         "species": "Metagross-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Tough Claws (Both)",
+        "ability": "Tough Claws",
         "item": "Metagrossite",
         "moves": [
          "Bullet Punch",
@@ -16500,7 +16500,7 @@
         "species": "Metagross-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Tough Claws (Both)",
+        "ability": "Tough Claws",
         "item": "Metagrossite",
         "moves": [
          "Bullet Punch",
@@ -16678,7 +16678,7 @@
         "species": "Metagross-Mega",
         "level": "85",
         "nature": "Jolly",
-        "ability": "Tough Claws (Both)",
+        "ability": "Tough Claws",
         "item": "Metagrossite",
         "moves": [
          "Bullet Punch",
@@ -16887,7 +16887,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -17009,7 +17009,7 @@
         "species": "Pidgeot-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Frisk\nNo Guard",
+        "ability": "No Guard",
         "item": "Pidgeotite",
         "moves": [
          "Hurricane",
@@ -17037,7 +17037,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Torrent\nMega Launcher",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -17272,7 +17272,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Ripen\nDragon's Maw",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Dragon Energy",
@@ -17485,7 +17485,7 @@
         "species": "Drednaw-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Shell Armor\nStrong Jaw",
+        "ability": "Strong Jaw",
         "item": "Drednawite",
         "moves": [
          "Jaw Lock",
@@ -17550,7 +17550,7 @@
         "species": "Pidgeot-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Frisk\nNo Guard",
+        "ability": "No Guard",
         "item": "Pidgeotite",
         "moves": [
          "Hurricane",
@@ -17731,7 +17731,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Damp\nSwift Swim",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "High Horsep.",
@@ -17882,7 +17882,7 @@
         "species": "Abomasnow-Mega",
         "level": "Highest Lv",
         "nature": "Quiet",
-        "ability": "Soundproof\nSnow Warning",
+        "ability": "Snow Warning",
         "item": "Abomasnite",
         "moves": [
          "Earth Power",
@@ -17938,7 +17938,7 @@
         "species": "Kyurem-W",
         "level": "Highest Lv",
         "nature": "Quiet",
-        "ability": "Pressure\nTurboblaze",
+        "ability": "Turboblaze",
         "item": "Icium Z",
         "moves": [
          "Blizzard",
@@ -18023,7 +18023,7 @@
         "species": "Heracross-Mega",
         "level": "Highest Lv",
         "nature": "Brave",
-        "ability": "Moxie\nSkill Link",
+        "ability": "Skill Link",
         "item": "Heracronite",
         "moves": [
          "Arm Thrust",
@@ -18116,7 +18116,7 @@
         "species": "Salamence-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Intimidate\nAerilate",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Double-Edge",
@@ -18377,7 +18377,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Rough Skin\nSand Force",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -18498,7 +18498,7 @@
         "species": "Alcremie-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Sweet Veil\nSelf Sufficient",
+        "ability": "Self Sufficient",
         "item": "Alcremite",
         "moves": [
          "Calm Mind",
@@ -18705,7 +18705,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Shadow Ball",
@@ -18798,7 +18798,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Rough Skin\nSand Force",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -18882,7 +18882,7 @@
         "species": "Machamp-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Guts or No Guard\nORAORAORAORA!",
+        "ability": "ORAORAORAORA!",
         "item": "Machampite",
         "moves": [
          "Pow-Up Punch",
@@ -19194,7 +19194,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Overgrow\nThick Fat",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Giga Drain",
@@ -19222,7 +19222,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Torrent\nMega Launcher",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -19250,7 +19250,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -19306,7 +19306,7 @@
         "species": "Mewtwo-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pressure\nSteadfast",
+        "ability": "Steadfast",
         "item": "Mewtwonite X",
         "moves": [
          "Bulk Up",
@@ -19343,7 +19343,7 @@
         "species": "Alakazam-Mega",
         "level": "Highest Lv -1",
         "nature": "Timid",
-        "ability": "Synchronize\nTrace",
+        "ability": "Trace",
         "item": "Alakazite",
         "moves": [
          "Expand. Force",
@@ -19640,7 +19640,7 @@
         "species": "Butterfree-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Compound Eyes (Both)",
+        "ability": "Compound Eyes",
         "item": "Butterfrite",
         "moves": [
          "Bug Buzz",
@@ -19817,7 +19817,7 @@
         "species": "Lapras-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Water Absorb\nLiquid Voice",
+        "ability": "Liquid Voice",
         "item": "Laprasite",
         "moves": [
          "Boomburst",
@@ -19910,7 +19910,7 @@
         "species": "Metagross-Mega",
         "level": "Highest Lv -1",
         "nature": "Jolly",
-        "ability": "Clear Body\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Metagrossite",
         "moves": [
          "Meteor Mash",
@@ -20130,7 +20130,7 @@
         "species": "Medicham-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pure Power (Both)",
+        "ability": "Pure Power",
         "item": "Medichamite",
         "moves": [
          "Close Combat",
@@ -20221,7 +20221,7 @@
         "species": "Gallade-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Steadfast\nSharpness",
+        "ability": "Sharpness",
         "item": "Galladite",
         "moves": [
          "Psycho Cut",
@@ -20400,7 +20400,7 @@
         "species": "Drednaw-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Strong Jaw (Both)",
+        "ability": "Strong Jaw",
         "item": "Drednawite",
         "moves": [
          "Aqua Fang",
@@ -20614,7 +20614,7 @@
         "species": "Slowbro-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Regenerator\nShell Armor",
+        "ability": "Shell Armor",
         "item": "Slowbronite",
         "moves": [
          "Scald",
@@ -20820,7 +20820,7 @@
         "species": "Pinsir-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nAerilate",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "Megahorn",
@@ -20941,7 +20941,7 @@
         "species": "Manectric-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Intimidate (Both)",
+        "ability": "Intimidate",
         "item": "Manectite",
         "moves": [
          "Volt Switch",
@@ -21034,7 +21034,7 @@
         "species": "Altaria-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Natural Cure\nPixilate",
+        "ability": "Pixilate",
         "item": "Altarianite",
         "moves": [
          "Dragon Dance",
@@ -21332,7 +21332,7 @@
         "species": "Mawile-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Hyper Cutter or Intimidate\nHuge Power",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Iron Head",
@@ -21399,7 +21399,7 @@
         "species": "Aerodactyl",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pressure\nor Rock Head",
+        "ability": "Rock Head",
         "item": "Sharp Beak",
         "moves": [
          "Brave Bird",
@@ -21455,7 +21455,7 @@
         "species": "Latias-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Levitate (Both)",
+        "ability": "Levitate",
         "item": "Latiasite",
         "moves": [
          "Thunderbolt",
@@ -21483,7 +21483,7 @@
         "species": "Houndoom-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Flash Fire\nSolar Power",
+        "ability": "Solar Power",
         "item": "Houndoominite",
         "moves": [
          "Fiery Wrath",
@@ -21780,7 +21780,7 @@
         "species": "Sceptile-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -21836,7 +21836,7 @@
         "species": "Blaziken-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Striker\nSpeed Boost",
+        "ability": "Speed Boost",
         "item": "Blazikenite",
         "moves": [
          "Close Combat",
@@ -22046,7 +22046,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Super Luck\nSharpness",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -22325,7 +22325,7 @@
         "species": "Sharpedo-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Speed Boost\nStrong Jaw",
+        "ability": "Strong Jaw",
         "item": "Sharpedonite",
         "moves": [
          "Protect",
@@ -22394,7 +22394,7 @@
         "species": "Centiskorch-MegaS",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "White Smoke\nSand Force",
+        "ability": "Sand Force",
         "item": "Centiskite",
         "moves": [
          "Earthquake",
@@ -22666,7 +22666,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Gluttony\nDragon's Maw",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Draco Meteor",
@@ -22874,7 +22874,7 @@
         "species": "Slowbro-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Regenerator\nShell Armor",
+        "ability": "Shell Armor",
         "item": "Slowbronite",
         "moves": [
          "Iron Defense",
@@ -23267,7 +23267,7 @@
         "species": "Sableye-Mega",
         "level": "Highest Lv",
         "nature": "Calm",
-        "ability": "Prankster\nMagic Bounce",
+        "ability": "Magic Bounce",
         "item": "Sablenite",
         "moves": [
          "Recover",
@@ -23586,7 +23586,7 @@
         "species": "Toxtricity-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Punk Rock (Both)",
+        "ability": "Punk Rock",
         "item": "Toxtricitite",
         "moves": [
          "Boomburst",
@@ -23735,7 +23735,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Super Luck\nSharpness",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -23828,7 +23828,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Sand Veil\nSand Force",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -24251,7 +24251,7 @@
         "species": "Kingler-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nTough Claws",
+        "ability": "Tough Claws",
         "item": "Kinglerite",
         "moves": [
          "Crabhammer",
@@ -25754,7 +25754,7 @@
         "species": "Ampharos-Mega",
         "level": "36",
         "nature": "Modest",
-        "ability": "Plus\nMold Breaker (Mega)",
+        "ability": "Mold Breaker",
         "item": "Ampharosite",
         "moves": [
          "Volt Switch",
@@ -25842,7 +25842,7 @@
         "species": "Sceptile-Mega",
         "level": "44",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -25976,7 +25976,7 @@
         "species": "Camerupt-Mega",
         "level": "59",
         "nature": "Quiet",
-        "ability": "Solid Rock\nSheer Force (Mega)",
+        "ability": "Sheer Force",
         "item": "Cameruptite",
         "moves": [
          "Flamethrower",
@@ -26240,7 +26240,7 @@
         "species": "Toxtricity-Mega",
         "level": "68",
         "nature": "Rash",
-        "ability": "Punk Rock (Both)",
+        "ability": "Punk Rock",
         "item": "Toxtricitite",
         "moves": [
          "Boomburst",
@@ -26402,7 +26402,7 @@
         "species": "Charizard-MegaX",
         "level": "76",
         "nature": "Jolly",
-        "ability": "Solar Power\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -26512,7 +26512,7 @@
         "species": "Necrozma-Ultra",
         "level": "81",
         "nature": "Adamant",
-        "ability": "Prism Armor (Dusk)\nNeuroforce (Ultra)",
+        "ability": "Neuroforce",
         "item": "Ultranecrozium Z",
         "moves": [
          "Dragon Dance",
@@ -26723,7 +26723,7 @@
         "species": "Aerodactyl-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pressure\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Aerodactylite",
         "moves": [
          "Dragon Dance",
@@ -26883,7 +26883,7 @@
         "species": "Gyarados-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Intimidate\nMold Breaker (Mega)",
+        "ability": "Mold Breaker",
         "item": "Gyaradosite",
         "moves": [
          "Dragon Dance",
@@ -27036,7 +27036,7 @@
         "species": "Manectric-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Intimidate (Both)",
+        "ability": "Intimidate",
         "item": "Manectite",
         "moves": [
          "Rising Voltage",
@@ -27191,7 +27191,7 @@
         "species": "Ampharos-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Static\nThick Fat (Mega)",
+        "ability": "Thick Fat",
         "item": "Ampharosite",
         "moves": [
          "Volt Switch",
@@ -27554,7 +27554,7 @@
         "species": "Scizor-Mega",
         "level": "Highest Lv",
         "nature": "Careful",
-        "ability": "Technician (Both)",
+        "ability": "Technician",
         "item": "Scizorite",
         "moves": [
          "Bullet Punch",
@@ -27808,7 +27808,7 @@
         "species": "Altaria-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Natural Cure\nPixilate (Mega)",
+        "ability": "Pixilate",
         "item": "Altarianite",
         "moves": [
          "Calm Mind",
@@ -27961,7 +27961,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag (Mega)",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Sludge Wave",
@@ -28125,7 +28125,7 @@
         "species": "Gallade-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Steadfast\nSharpness (Mega)",
+        "ability": "Sharpness",
         "item": "Galladite",
         "moves": [
          "Bulk Up",
@@ -28285,7 +28285,7 @@
         "species": "Glalie-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Ice Body\nRefrigerate (Mega)",
+        "ability": "Refrigerate",
         "item": "Glalitite",
         "moves": [
          "Fake Out",
@@ -28442,7 +28442,7 @@
         "species": "Glalie-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Ice Body\nRefrigerate (Mega)",
+        "ability": "Refrigerate",
         "item": "Glalitite",
         "moves": [
          "Fake Out",
@@ -28597,7 +28597,7 @@
         "species": "Glalie-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Ice Body\nRefrigerate (Mega)",
+        "ability": "Refrigerate",
         "item": "Glalitite",
         "moves": [
          "Fake Out",
@@ -28750,7 +28750,7 @@
         "species": "Aggron-Mega",
         "level": "Highest Lv",
         "nature": "Careful",
-        "ability": "Sturdy\nFilter (Mega)",
+        "ability": "Filter",
         "item": "Aggronite",
         "moves": [
          "Curse",
@@ -29876,7 +29876,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Torrent\nMega Launcher (Mega)",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -30029,7 +30029,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Solar Power\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -30182,7 +30182,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Overgrow\nThick Fat (Mega)",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Sleep Powder",
@@ -30335,7 +30335,7 @@
         "species": "Sceptile-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Dragon Dance",
@@ -30493,7 +30493,7 @@
         "species": "Blaziken-Mega",
         "level": "73",
         "nature": "Jolly",
-        "ability": "Speed Boost (Both)",
+        "ability": "Speed Boost",
         "item": "Blazikenite",
         "moves": [
          "Swords Dance",
@@ -30650,7 +30650,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Rain Dish\nMega Launcher (Mega)",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -30683,7 +30683,7 @@
         "species": "Charizard-MegaY",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Blaze\nDrought (Mega)",
+        "ability": "Drought",
         "item": "Charizardite Y",
         "moves": [
          "Weather Ball",
@@ -30958,7 +30958,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Overgrow\nThick Fat (Mega)",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Chloroblast",
@@ -31111,7 +31111,7 @@
         "species": "Sceptile-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -31929,7 +31929,7 @@
         "species": "Kangaskhan-Mega",
         "level": "47",
         "nature": "Jolly",
-        "ability": "Inner Focus\nParental Bond (Mega)",
+        "ability": "Parental Bond",
         "item": "Kangaskhanite",
         "moves": [
          "Pow-Up Punch",
@@ -32410,7 +32410,7 @@
         "species": "Mawile-Mega",
         "level": "56",
         "nature": "Adamant",
-        "ability": "Intimidate\nHuge Power (Mega)",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Play Rough",
@@ -32482,7 +32482,7 @@
         "species": "Houndoom-Mega",
         "level": "56",
         "nature": "Naive",
-        "ability": "Early Bird\nDark Aura (Mega)",
+        "ability": "Dark Aura",
         "item": "Houndoominite",
         "moves": [
          "Pursuit",
@@ -32568,7 +32568,7 @@
         "species": "Sceptile-Mega",
         "level": "55",
         "nature": "Timid",
-        "ability": "Unburden\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Mega Drain",
@@ -32725,7 +32725,7 @@
         "species": "Garchomp-Mega",
         "level": "57",
         "nature": "Jolly",
-        "ability": "Sand Veil\nSand Force (Mega)",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -32878,7 +32878,7 @@
         "species": "Garbodor-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Gooey\nParasitic Waste (Mega)",
+        "ability": "Parasitic Waste",
         "item": "Garbodorite",
         "moves": [
          "Poison Jab",
@@ -33033,7 +33033,7 @@
         "species": "Sharpedo-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Speed Boost\nStrong Jaw (Mega)",
+        "ability": "Strong Jaw",
         "item": "Sharpedonite",
         "moves": [
          "Aqua Fang",
@@ -33142,7 +33142,7 @@
         "species": "Houndoom-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Flash Fire\nSolar Power (Mega)",
+        "ability": "Solar Power",
         "item": "Houndoominite",
         "moves": [
          "Dark Hole",
@@ -33275,7 +33275,7 @@
         "species": "Mawile-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Intimidate\nHuge Power (Mega)",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Sucker Punch",
@@ -33429,7 +33429,7 @@
         "species": "Mewtwo-MegaY",
         "level": "80",
         "nature": "Timid",
-        "ability": "Unnerve\nInsomnia (Mega)",
+        "ability": "Insomnia",
         "item": "No Item",
         "moves": [
          "Expand. Force",
@@ -33510,7 +33510,7 @@
         "species": "Salamence-Mega",
         "level": "82",
         "nature": "Naive",
-        "ability": "Intimidate\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Double-Edge",
@@ -35898,7 +35898,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv -2",
         "nature": "Timid",
-        "ability": "Rain Dish\nMega Launcher (Mega)",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -36169,7 +36169,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -36378,7 +36378,7 @@
         "species": "Alcremie-Mega",
         "level": "Highest Lv -2",
         "nature": "Bold",
-        "ability": "Sweet Veil\nSelf Sufficient (Mega)",
+        "ability": "Self Sufficient",
         "item": "Alcremite",
         "moves": [
          "Moonblast",
@@ -36511,7 +36511,7 @@
         "species": "Altaria-Mega",
         "level": "Highest Lv -2",
         "nature": "Bold",
-        "ability": "Natural Cure\nPixilate (Mega)",
+        "ability": "Pixilate",
         "item": "Altarianite",
         "moves": [
          "Fire Blast",
@@ -36880,7 +36880,7 @@
         "species": "Camerupt-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Solid Rock\nSheer Force (Mega)",
+        "ability": "Sheer Force",
         "item": "Cameruptite",
         "moves": [
          "Fire Blast",
@@ -37178,7 +37178,7 @@
         "species": "Kingler-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Kinglerite",
         "moves": [
          "Crabhammer",
@@ -37419,7 +37419,7 @@
         "species": "Lopunny-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Limber\nScrappy (Mega)",
+        "ability": "Scrappy",
         "item": "Lopunnite",
         "moves": [
          "Fake Out",
@@ -37500,7 +37500,7 @@
         "species": "Scizor-Mega",
         "level": "Highest Lv -2",
         "nature": "Adamant",
-        "ability": "Swarm\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Scizorite",
         "moves": [
          "U-Turn",
@@ -37633,7 +37633,7 @@
         "species": "Beedrill-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Swarm\nAdaptability (Mega)",
+        "ability": "Adaptability",
         "item": "Beedrillite",
         "moves": [
          "U-Turn",
@@ -38041,7 +38041,7 @@
         "species": "Lapras-Mega",
         "level": "Highest Lv -2",
         "nature": "Modest",
-        "ability": "Water Absorb\nLiquid Voice (Mega)",
+        "ability": "Liquid Voice",
         "item": "Laprasite",
         "moves": [
          "Boomburst",
@@ -38172,7 +38172,7 @@
         "species": "Pinsir-Mega",
         "level": "Highest Lv -2",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "X-Scissor",
@@ -38456,7 +38456,7 @@
         "species": "Pidgeot-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "No Guard (Both)",
+        "ability": "No Guard",
         "item": "Pidgeotite",
         "moves": [
          "Hurricane",
@@ -38637,7 +38637,7 @@
         "species": "Lopunny-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Limber\nScrappy (Mega)",
+        "ability": "Scrappy",
         "item": "Lopunnite",
         "moves": [
          "U-Turn",
@@ -38814,7 +38814,7 @@
         "species": "Centiskorch-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Flash Fire\nMountaineer (Mega)",
+        "ability": "Mountaineer",
         "item": "Centiskite",
         "moves": [
          "Flare Blitz",
@@ -39002,7 +39002,7 @@
         "species": "Salamence-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Intimidate\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Heat Wave",
@@ -39187,7 +39187,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Super Luck\nSharpness (Mega)",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -39364,7 +39364,7 @@
         "species": "Kingler-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Kinglerite",
         "moves": [
          "Crabhammer",
@@ -39543,7 +39543,7 @@
         "species": "Pinsir-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "Return",
@@ -39576,7 +39576,7 @@
         "species": "Lopunny-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Limber\nScrappy (Mega)",
+        "ability": "Scrappy",
         "item": "Lopunnite",
         "moves": [
          "Fake Out",
@@ -39755,7 +39755,7 @@
         "species": "Diancie-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Clear Body\nMagic Bounce (Mega)",
+        "ability": "Magic Bounce",
         "item": "Diancite",
         "moves": [
          "Moonblast",
@@ -40061,7 +40061,7 @@
         "species": "Copperajah-Mega",
         "level": "Highest Lv",
         "nature": "Brave",
-        "ability": "Heavy Metal\nSheer Force (Mega)",
+        "ability": "Sheer Force",
         "item": "Copperajite",
         "moves": [
          "Double I. Bash",
@@ -40455,7 +40455,7 @@
         "species": "Centiskorch-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Flash Fire\nMountaineer (Mega)",
+        "ability": "Mountaineer",
         "item": "Centiskite",
         "moves": [
          "Coil",
@@ -40610,7 +40610,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Damp\nSwift Swim (Mega)",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Pow-Up Punch",
@@ -40726,7 +40726,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Ripen\nDragon's Maw (Mega)",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Scale Shot",
@@ -40837,7 +40837,7 @@
         "species": "Appletun-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Ripen\nContrary (Mega)",
+        "ability": "Contrary",
         "item": "Applite",
         "moves": [
          "Draco Meteor",
@@ -41000,7 +41000,7 @@
         "species": "Sandaconda-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Shed Skin\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Sandacondite",
         "moves": [
          "Earthquake",
@@ -41155,7 +41155,7 @@
         "species": "Machamp-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Guts\nORAORAORAORA! (Mega)",
+        "ability": "ORAORAORAORA!",
         "item": "Machampite",
         "moves": [
          "Pow-Up Punch",
@@ -41427,7 +41427,7 @@
         "species": "Banette-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Insomnia\nPrankster (Mega)",
+        "ability": "Prankster",
         "item": "Banettite",
         "moves": [
          "Double-Edge",
@@ -41905,7 +41905,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Damp\nSwift Swim (Mega)",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Waterfall",
@@ -42062,7 +42062,7 @@
         "species": "Abomasnow-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Snow Warning\nSlush Rush (Mega)",
+        "ability": "Slush Rush",
         "item": "Abomasite",
         "moves": [
          "Giga Drain",
@@ -42219,7 +42219,7 @@
         "species": "Lucario-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Inner Focus\nAdaptability (Mega)",
+        "ability": "Adaptability",
         "item": "Lucarionite",
         "moves": [
          "Swords Dance",
@@ -42376,7 +42376,7 @@
         "species": "Medicham-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pure Power (Both)",
+        "ability": "Pure Power",
         "item": "Medichamite",
         "moves": [
          "Fake Out",
@@ -42433,7 +42433,7 @@
         "species": "Mewtwo-MegaX",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Pressure\nSteadfast (Mega)",
+        "ability": "Steadfast",
         "item": "Mewtwonite X",
         "moves": [
          "Drain Punch",
@@ -42616,7 +42616,7 @@
         "species": "Mewtwo-MegaX",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Pressure\nSteadfast (Mega)",
+        "ability": "Steadfast",
         "item": "Mewtwonite X",
         "moves": [
          "Drain Punch",
@@ -42843,7 +42843,7 @@
         "species": "Rayquaza-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Air Lock\nDelta Stream (Mega)",
+        "ability": "Delta Stream",
         "item": "Sharp Beak",
         "moves": [
          "Extreme Speed",
@@ -42996,7 +42996,7 @@
         "species": "Rayquaza-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Air Lock\nDelta Stream (Mega)",
+        "ability": "Delta Stream",
         "item": "Sharp Beak",
         "moves": [
          "Extreme Speed",
@@ -43053,7 +43053,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Damp\nSwift Swim (Mega)",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Waterfall",
@@ -43103,7 +43103,7 @@
         "species": "Necrozma-Ultra",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Prism Armor (Wings)\nNeuroforce (Ultra)",
+        "ability": "Neuroforce",
         "item": "Ultranecrozium Z",
         "moves": [
          "Dragon Dance",
@@ -43363,7 +43363,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Damp\nSwift Swim (Mega)",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "Waterfall",
@@ -43549,7 +43549,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -43657,7 +43657,7 @@
         "species": "Pidgeot-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Frisk\nNo Guard (Mega)",
+        "ability": "No Guard",
         "item": "Pidgeotite",
         "moves": [
          "Hurricane",
@@ -43681,7 +43681,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Torrent\nMega Launcher (Mega)",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -43885,7 +43885,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Ripen\nDragon's Maw (Mega)",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Dragon Energy",
@@ -44069,7 +44069,7 @@
         "species": "Drednaw-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Shell Armor\nStrong Jaw (Mega)",
+        "ability": "Strong Jaw",
         "item": "Drednawite",
         "moves": [
          "Jaw Lock",
@@ -44126,7 +44126,7 @@
         "species": "Pidgeot-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Frisk\nNo Guard (Mega)",
+        "ability": "No Guard",
         "item": "Pidgeotite",
         "moves": [
          "Hurricane",
@@ -44303,7 +44303,7 @@
         "species": "Swampert-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Damp\nSwift Swim (Mega)",
+        "ability": "Swift Swim",
         "item": "Swampertite",
         "moves": [
          "High Horsep.",
@@ -44434,7 +44434,7 @@
         "species": "Abomasnow-Mega",
         "level": "Highest Lv",
         "nature": "Quiet",
-        "ability": "Soundproof\nSnow Warning (Mega)",
+        "ability": "Snow Warning",
         "item": "Abomasnite",
         "moves": [
          "Earth Power",
@@ -44482,7 +44482,7 @@
         "species": "Kyurem-W",
         "level": "Highest Lv",
         "nature": "Quiet",
-        "ability": "Pressure\nTurboblaze (White)",
+        "ability": "Turboblaze",
         "item": "Icium Z",
         "moves": [
          "Blizzard",
@@ -44556,7 +44556,7 @@
         "species": "Heracross-Mega",
         "level": "Highest Lv",
         "nature": "Brave",
-        "ability": "Moxie\nSkill Link (Mega)",
+        "ability": "Skill Link",
         "item": "Heracronite",
         "moves": [
          "Arm Thrust",
@@ -44637,7 +44637,7 @@
         "species": "Salamence-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Intimidate\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Double-Edge",
@@ -44862,7 +44862,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Rough Skin\nSand Force (Mega)",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -44967,7 +44967,7 @@
         "species": "Alcremie-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Sweet Veil\nSelf Sufficient (Mega)",
+        "ability": "Self Sufficient",
         "item": "Alcremite",
         "moves": [
          "Calm Mind",
@@ -45146,7 +45146,7 @@
         "species": "Gengar-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Levitate\nShadow Tag (Mega)",
+        "ability": "Shadow Tag",
         "item": "Gengarite",
         "moves": [
          "Shadow Ball",
@@ -45227,7 +45227,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Rough Skin\nSand Force (Mega)",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -45299,7 +45299,7 @@
         "species": "Machamp-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Guts or No Guard\nORAORAORAORA! (Mega)",
+        "ability": "ORAORAORAORA!",
         "item": "Machampite",
         "moves": [
          "Pow-Up Punch",
@@ -45568,7 +45568,7 @@
         "species": "Venusaur-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Overgrow\nThick Fat (Mega)",
+        "ability": "Thick Fat",
         "item": "Venusaurite",
         "moves": [
          "Giga Drain",
@@ -45592,7 +45592,7 @@
         "species": "Blastoise-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Torrent\nMega Launcher (Mega)",
+        "ability": "Mega Launcher",
         "item": "Blastoisinite",
         "moves": [
          "Shell Smash",
@@ -45616,7 +45616,7 @@
         "species": "Charizard-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Blaze\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Charizardite X",
         "moves": [
          "Dragon Dance",
@@ -45664,7 +45664,7 @@
         "species": "Mewtwo-MegaX",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pressure\nSteadfast (Mega)",
+        "ability": "Steadfast",
         "item": "Mewtwonite X",
         "moves": [
          "Bulk Up",
@@ -45697,7 +45697,7 @@
         "species": "Alakazam-Mega",
         "level": "Highest Lv -1",
         "nature": "Timid",
-        "ability": "Synchronize\nTrace (Mega)",
+        "ability": "Trace",
         "item": "Alakazite",
         "moves": [
          "Expand. Force",
@@ -45955,7 +45955,7 @@
         "species": "Butterfree-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Compound Eyes (Both)",
+        "ability": "Compound Eyes",
         "item": "Butterfrite",
         "moves": [
          "Bug Buzz",
@@ -46107,7 +46107,7 @@
         "species": "Lapras-Mega",
         "level": "Highest Lv",
         "nature": "Modest",
-        "ability": "Water Absorb\nLiquid Voice (Mega)",
+        "ability": "Liquid Voice",
         "item": "Laprasite",
         "moves": [
          "Boomburst",
@@ -46188,7 +46188,7 @@
         "species": "Metagross-Mega",
         "level": "Highest Lv -1",
         "nature": "Jolly",
-        "ability": "Clear Body\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Metagrossite",
         "moves": [
          "Meteor Mash",
@@ -46379,7 +46379,7 @@
         "species": "Medicham-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Pure Power (Both)",
+        "ability": "Pure Power",
         "item": "Medichamite",
         "moves": [
          "Close Combat",
@@ -46460,7 +46460,7 @@
         "species": "Gallade-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Steadfast\nSharpness (Mega)",
+        "ability": "Sharpness",
         "item": "Galladite",
         "moves": [
          "Psycho Cut",
@@ -46615,7 +46615,7 @@
         "species": "Drednaw-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Strong Jaw (Both)",
+        "ability": "Strong Jaw",
         "item": "Drednawite",
         "moves": [
          "Aqua Fang",
@@ -46801,7 +46801,7 @@
         "species": "Slowbro-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Regenerator\nShell Armor (Mega)",
+        "ability": "Shell Armor",
         "item": "Slowbronite",
         "moves": [
          "Scald",
@@ -46980,7 +46980,7 @@
         "species": "Pinsir-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Pinsirite",
         "moves": [
          "Megahorn",
@@ -47085,7 +47085,7 @@
         "species": "Manectric-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Intimidate (Both)",
+        "ability": "Intimidate",
         "item": "Manectite",
         "moves": [
          "Volt Switch",
@@ -47166,7 +47166,7 @@
         "species": "Altaria-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Natural Cure\nPixilate (Mega)",
+        "ability": "Pixilate",
         "item": "Altarianite",
         "moves": [
          "Dragon Dance",
@@ -47328,7 +47328,7 @@
         "species": "Lopunny-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Limber\nScrappy (Mega)",
+        "ability": "Scrappy",
         "item": "Lopunnite",
         "moves": [
          "Fake Out",
@@ -47450,7 +47450,7 @@
         "species": "Mawile-Mega",
         "level": "Highest Lv",
         "nature": "Adamant",
-        "ability": "Intimidate\nHuge Power (Mega)",
+        "ability": "Huge Power",
         "item": "Mawilite",
         "moves": [
          "Iron Head",
@@ -47579,7 +47579,7 @@
         "species": "Salamence-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Intimidate\nAerilate (Mega)",
+        "ability": "Aerilate",
         "item": "Salamencite",
         "moves": [
          "Double-Edge",
@@ -47603,7 +47603,7 @@
         "species": "Houndoom-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Flash Fire\nSolar Power (Mega)",
+        "ability": "Solar Power",
         "item": "Houndoominite",
         "moves": [
          "Dark Hole",
@@ -47755,7 +47755,7 @@
         "species": "Snorlax-Mega",
         "level": "Highest Lv",
         "nature": "Impish",
-        "ability": "Thick Fat (Both)",
+        "ability": "Thick Fat",
         "item": "Snorlaxite",
         "moves": [
          "Curse",
@@ -47812,7 +47812,7 @@
         "species": "Sceptile-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Overgrow\nTechnician (Mega)",
+        "ability": "Technician",
         "item": "Sceptilite",
         "moves": [
          "Swords Dance",
@@ -47860,7 +47860,7 @@
         "species": "Blaziken-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Striker\nSpeed Boost (Mega)",
+        "ability": "Speed Boost",
         "item": "Blazikenite",
         "moves": [
          "Close Combat",
@@ -48065,7 +48065,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Super Luck\nSharpness (Mega)",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -48284,7 +48284,7 @@
         "species": "Sharpedo-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Speed Boost\nStrong Jaw (Mega)",
+        "ability": "Strong Jaw",
         "item": "Sharpedonite",
         "moves": [
          "Protect",
@@ -48345,7 +48345,7 @@
         "species": "Centiskorch-MegaS",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "White Smoke\nSand Force (Mega)",
+        "ability": "Sand Force",
         "item": "Centiskite",
         "moves": [
          "Earthquake",
@@ -48581,7 +48581,7 @@
         "species": "Flapple-Mega",
         "level": "Highest Lv",
         "nature": "Naive",
-        "ability": "Gluttony\nDragon's Maw (Mega)",
+        "ability": "Dragon's Maw",
         "item": "Applite",
         "moves": [
          "Draco Meteor",
@@ -48761,7 +48761,7 @@
         "species": "Slowbro-Mega",
         "level": "Highest Lv",
         "nature": "Bold",
-        "ability": "Regenerator\nShell Armor (Mega)",
+        "ability": "Shell Armor",
         "item": "Slowbronite",
         "moves": [
          "Iron Defense",
@@ -49102,7 +49102,7 @@
         "species": "Sableye-Mega",
         "level": "Highest Lv",
         "nature": "Calm",
-        "ability": "Prankster\nMagic Bounce (Mega)",
+        "ability": "Magic Bounce",
         "item": "Sablenite",
         "moves": [
          "Recover",
@@ -49377,7 +49377,7 @@
         "species": "Toxtricity-Mega",
         "level": "Highest Lv",
         "nature": "Timid",
-        "ability": "Punk Rock (Both)",
+        "ability": "Punk Rock",
         "item": "Toxtricitite",
         "moves": [
          "Boomburst",
@@ -49506,7 +49506,7 @@
         "species": "Absol-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Super Luck\nSharpness (Mega)",
+        "ability": "Sharpness",
         "item": "Absolite",
         "moves": [
          "Night Slash",
@@ -49587,7 +49587,7 @@
         "species": "Garchomp-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Sand Veil\nSand Force (Mega)",
+        "ability": "Sand Force",
         "item": "Garchompite",
         "moves": [
          "Swords Dance",
@@ -49956,7 +49956,7 @@
         "species": "Kingler-Mega",
         "level": "Highest Lv",
         "nature": "Jolly",
-        "ability": "Hyper Cutter\nTough Claws (Mega)",
+        "ability": "Tough Claws",
         "item": "Kinglerite",
         "moves": [
          "Crabhammer",

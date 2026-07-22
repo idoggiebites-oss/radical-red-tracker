@@ -95,6 +95,24 @@ def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
+def resolve_ability(raw: str) -> str:
+    """A boss's ability cell sometimes packs two lines into one: the base
+    form's ability(s) on the first line, then the ability that actually
+    applies in battle on the second (a Mega/Ultra/etc form's fixed ability
+    overriding its base form's — e.g. "Overgrow\\nThick Fat" for Mega
+    Venusaur — or, for a handful of non-Mega mons, an otherwise-undetermined
+    "X\\nor Y" pick). The last line, and the last "or"-separated option on
+    it, is always the one that actually applies; a trailing "(Mega)"-style
+    tag is stripped once that value is isolated."""
+    if not raw:
+        return raw
+    lines = [line.strip() for line in raw.split("\n") if line.strip()]
+    last_line = lines[-1] if lines else raw
+    options = [o.strip() for o in re.split(r"(?i)\bor\b", last_line) if o.strip()]
+    resolved = options[-1] if options else last_line
+    return re.sub(r"\s*\([^)]*\)\s*$", "", resolved).strip()
+
+
 # ---------------------------------------------------------------- encounters
 
 def parse_wide_tables(rows: list[list[str]]):
@@ -1076,7 +1094,7 @@ def parse_boss_block(rows, r, tab):
             "species": species,
             "level": level,
             "nature": nature,
-            "ability": cell(rows, ability_row, c),
+            "ability": resolve_ability(cell(rows, ability_row, c)),
             "item": cell(rows, item_row, c),
             "moves": [m for m in (cell(rows, rr, c) for rr in move_rows) if m and m != "-"],
             "baseStats": stats,
