@@ -3,6 +3,7 @@ import type { BossMon, MonBuild } from "../types";
 import { Sprite } from "./Sprite";
 import { ItemSprite } from "./ItemSprite";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
+import { ModifierToggle } from "./ModifierToggle";
 import {
   ABILITY_NAMES,
   BOOST_STATS,
@@ -11,6 +12,7 @@ import {
   NATURES,
   NATURE_EFFECTS,
   autoField,
+  autoFieldNote,
   bossStatTotals,
   buildBossPokemon,
   buildPlayerPokemon,
@@ -23,8 +25,6 @@ import {
   resolveSpecies,
   statTotals,
   STATUSES,
-  terrainFromAbility,
-  weatherFromAbility,
   type MatchupLine,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
@@ -80,7 +80,7 @@ export function CalcPanel({
   battleEffect,
   levelCap,
   caught = [],
-  hardcore = false,
+  noEvs = false,
   anyAbility = false,
   onClose,
 }: {
@@ -88,8 +88,8 @@ export function CalcPanel({
   battleEffect: string;
   levelCap?: number;
   caught?: CaughtMon[];
-  /** hardcore/restricted mode disables player EVs in-game */
-  hardcore?: boolean;
+  /** hardcore/restricted mode or a Minimal Grind start — EVs don't apply */
+  noEvs?: boolean;
   /** ability randomizer active: accept any ability, not just legal ones */
   anyAbility?: boolean;
   onClose: () => void;
@@ -131,6 +131,7 @@ export function CalcPanel({
           next.nature = b.nature || next.nature;
           next.ability = b.ability || next.ability;
           next.item = b.item;
+          next.evs = { ...DEFAULT_CFG.evs, ...b.evs };
           next.moves = [...b.moves, "", "", "", ""].slice(0, 4);
           setImportedFrom(owned.nickname || owned.species);
         } else {
@@ -168,10 +169,10 @@ export function CalcPanel({
 
   const playerAbilities = abilitiesFor(cfg.species);
   const playerStats = cfg.species ? calcBaseStats(cfg.species) : null;
-  // ignore any saved EV spread in hardcore without clearing the stored cfg
+  // ignore any saved EV spread when EVs don't apply, without clearing cfg
   const calcCfg = useMemo(
-    () => (hardcore ? { ...cfg, evs: {} } : cfg),
-    [cfg, hardcore],
+    () => (noEvs ? { ...cfg, evs: {} } : cfg),
+    [cfg, noEvs],
   );
 
   const fieldOpts = useMemo(
@@ -188,18 +189,10 @@ export function CalcPanel({
     () => autoField(fieldOpts, [calcCfg.ability, mon.ability]),
     [fieldOpts, calcCfg.ability, mon.ability],
   );
-  const autoBits = useMemo(() => {
-    const bits: string[] = [];
-    if (!fieldOpts.weather) {
-      const src = [calcCfg.ability, mon.ability].find((a) => weatherFromAbility(a));
-      if (src) bits.push(`${weatherFromAbility(src)} (${src})`);
-    }
-    if (!fieldOpts.terrain) {
-      const src = [calcCfg.ability, mon.ability].find((a) => terrainFromAbility(a));
-      if (src) bits.push(`${terrainFromAbility(src)} Terrain (${src})`);
-    }
-    return bits;
-  }, [fieldOpts, calcCfg.ability, mon.ability]);
+  const autoBits = useMemo(
+    () => autoFieldNote(fieldOpts, [calcCfg.ability, mon.ability]),
+    [fieldOpts, calcCfg.ability, mon.ability],
+  );
 
   const bossUnknown = resolveSpecies(mon.species) === null;
   const results = useMemo(() => {
@@ -290,20 +283,20 @@ export function CalcPanel({
                     ))}
                   </select>
                 </label>
-                <button
-                  className={"st-btn crit-toggle" + (crit ? " active" : "")}
+                <ModifierToggle
+                  active={crit}
                   title="Calculate every move as a critical hit"
                   onClick={() => setCrit((c) => !c)}
                 >
                   Crit
-                </button>
-                <button
-                  className={"st-btn crit-toggle" + (doubles ? " active" : "")}
+                </ModifierToggle>
+                <ModifierToggle
+                  active={doubles}
                   title="Double battle — spread moves (Earthquake, Surf, Heat Wave…) deal ×0.75 to each target"
                   onClick={() => setDoubles((d) => !d)}
                 >
                   Doubles
-                </button>
+                </ModifierToggle>
               </span>
             </div>
             {battleEffect && (
@@ -426,11 +419,11 @@ export function CalcPanel({
                 className="st-btn spread-toggle"
                 onClick={() => setShowSpreads((s) => !s)}
               >
-                {showSpreads ? "▾" : "▸"} {hardcore ? "IVs" : "IVs / EVs"}
+                {showSpreads ? "▾" : "▸"} {noEvs ? "IVs" : "IVs / EVs"}
               </button>
               {!showSpreads && (
                 <span className="muted spread-summary">
-                  <SpreadSummary cfg={cfg} hardcore={hardcore} />
+                  <SpreadSummary cfg={cfg} noEvs={noEvs} />
                 </span>
               )}
             </div>
@@ -457,7 +450,7 @@ export function CalcPanel({
                 ))}
               </div>
             )}
-            {showSpreads && !hardcore && (
+            {showSpreads && !noEvs && (
               <div className="calc-row evs">
                 {Object.keys(cfg.evs).map((k) => (
                   <label key={k}>
@@ -621,15 +614,15 @@ function BossTotals({
 
 function SpreadSummary({
   cfg,
-  hardcore,
+  noEvs,
 }: {
   cfg: PlayerMonConfig;
-  hardcore: boolean;
+  noEvs: boolean;
 }) {
   const ivs = Object.entries(cfg.ivs ?? {})
     .filter(([, v]) => v !== 31)
     .map(([k, v]) => `${v} ${k}`);
-  const evs = hardcore
+  const evs = noEvs
     ? []
     : Object.entries(cfg.evs)
         .filter(([, v]) => v > 0)

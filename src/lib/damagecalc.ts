@@ -208,6 +208,32 @@ export function autoField(
   return { ...fieldOpts, weather, terrain };
 }
 
+/** the "Sun (Drought)" / "Electric Terrain (Electric Surge)" note bits for
+ * whichever weather/terrain came from a switch-in ability rather than a
+ * manual pick — shared by the calc and both readiness matrix tabs, which
+ * each pass every ability in play (both sides) and only need the note text,
+ * not the field itself (that's `autoField`, applied per attacker/defender
+ * pair since different pairs can have different fields) */
+export function autoFieldNote(
+  fieldOpts: rr.FieldOptions,
+  abilities: (string | undefined)[],
+): string[] {
+  const bits = new Set<string>();
+  if (!fieldOpts.weather) {
+    for (const a of abilities) {
+      const w = weatherFromAbility(a);
+      if (w) bits.add(`${w} (${a})`);
+    }
+  }
+  if (!fieldOpts.terrain) {
+    for (const a of abilities) {
+      const t = terrainFromAbility(a);
+      if (t) bits.add(`${t} Terrain (${a})`);
+    }
+  }
+  return [...bits];
+}
+
 export interface PlayerMonConfig {
   species: string;
   level: number;

@@ -169,6 +169,9 @@ export interface MonBuild {
   ability: string;
   item: string;
   moves: string[];
+  /** stat -> EVs invested (HP/ATK/DEF/SPA/SPD/SPE); missing = 0. Optional
+   * so builds saved before this field existed still load fine. */
+  evs?: Record<string, number>;
 }
 
 export interface RouteEncounter {
@@ -227,6 +230,10 @@ export interface Run {
   starterPos?: 0 | 1 | 2;
   /** which region's trio the lab offers (display only, default Kanto) */
   starterRegion?: string;
+  /** the game-start "Minimal Grind" option: EVs don't apply at all, same
+   * as hardcore/restricted mode already implies — hides EV inputs in the
+   * calc and build editor, independent of which game mode this run uses */
+  minimalGrind?: boolean;
   /** the post-Sabrina route to Fuchsia City: unset until the player picks
    * (see TrainerOrderEntry.routeChoice) */
   sabrinaRoute?: "east" | "west";

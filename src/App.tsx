@@ -239,8 +239,8 @@ export default function App() {
       {creating && (
         <NewRunDialog
           onCancel={() => setCreating(false)}
-          onCreate={(name, m, saveInfo) => {
-            const r = newRun(name, m, saveInfo);
+          onCreate={(name, m, saveInfo, minimalGrind) => {
+            const r = newRun(name, m, saveInfo, minimalGrind);
             setState((s) => ({ runs: [...s.runs, r], activeRunId: r.id }));
             setCreating(false);
           }}
@@ -352,15 +352,21 @@ function NewRunDialog({
   onCreate,
   onCancel,
 }: {
-  onCreate: (name: string, mode: GameMode, saveInfo?: RunSaveInfo) => void;
+  onCreate: (
+    name: string,
+    mode: GameMode,
+    saveInfo?: RunSaveInfo,
+    minimalGrind?: boolean,
+  ) => void;
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
   const [mode, setMode] = useState<GameMode>("default");
+  const [minimalGrind, setMinimalGrind] = useState(false);
   const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
   const [saveError, setSaveError] = useState("");
 
-  const create = () => onCreate(name.trim(), mode, saveInfo);
+  const create = () => onCreate(name.trim(), mode, saveInfo, minimalGrind);
 
   const onSaveFile = async (file: File | undefined) => {
     setSaveError("");
@@ -409,6 +415,14 @@ function NewRunDialog({
             <option value="default">Default</option>
             <option value="hardcore">Hardcore / Restricted</option>
           </select>
+        </label>
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            checked={minimalGrind}
+            onChange={(e) => setMinimalGrind(e.target.checked)}
+          />
+          Minimal Grind start (no EVs) — hides EV inputs in the calc and builds
         </label>
         {SAVE_FILE_FEATURE && (
           <label>

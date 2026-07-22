@@ -19,7 +19,12 @@ export function saveState(state: AppState): void {
 /** pseudo location id for the starter Pokémon (not a route encounter) */
 export const STARTER_ID = "starter";
 
-export function newRun(name: string, mode: GameMode, saveInfo?: RunSaveInfo): Run {
+export function newRun(
+  name: string,
+  mode: GameMode,
+  saveInfo?: RunSaveInfo,
+  minimalGrind?: boolean,
+): Run {
   return {
     id: `run-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     name,
@@ -29,5 +34,6 @@ export function newRun(name: string, mode: GameMode, saveInfo?: RunSaveInfo): Ru
     defeated: {},
     saveInfo,
     speciesMap: {},
+    minimalGrind,
   };
 }

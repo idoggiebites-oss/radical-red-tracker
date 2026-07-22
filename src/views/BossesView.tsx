@@ -94,7 +94,7 @@ export function BossesView({
           levelCap={levelCap}
           caught={caught}
           rivalStarter={rivalStarter}
-          hardcore={mode === "hardcore"}
+          noEvs={mode === "hardcore" || !!run?.minimalGrind}
           anyAbility={abilitiesRandomized(run)}
           focus={focus}
         />
@@ -228,7 +228,7 @@ function BossTeams({
   levelCap,
   caught,
   rivalStarter,
-  hardcore,
+  noEvs,
   anyAbility,
   focus,
 }: {
@@ -238,7 +238,7 @@ function BossTeams({
   levelCap?: number;
   caught?: CaughtMon[];
   rivalStarter?: string | null;
-  hardcore?: boolean;
+  noEvs?: boolean;
   anyAbility?: boolean;
   focus?: (BossTarget & { nonce: number }) | null;
 }) {
@@ -273,7 +273,7 @@ function BossTeams({
           boss={b}
           levelCap={levelCap}
           caught={caught}
-          hardcore={hardcore}
+          noEvs={noEvs}
           anyAbility={anyAbility}
           // starter variants share a title — focus only the first one shown
           focusNonce={
@@ -292,14 +292,14 @@ function BossCard({
   boss,
   levelCap,
   caught,
-  hardcore,
+  noEvs,
   anyAbility,
   focusNonce = 0,
 }: {
   boss: Boss;
   levelCap?: number;
   caught?: CaughtMon[];
-  hardcore?: boolean;
+  noEvs?: boolean;
   anyAbility?: boolean;
   /** non-zero when cap-pill navigation targets this card: open and scroll to it */
   focusNonce?: number;
@@ -366,7 +366,7 @@ function BossCard({
                 battleEffect={boss.battleEffect}
                 levelCap={levelCap}
                 caught={caught}
-                hardcore={hardcore}
+                noEvs={noEvs}
                 anyAbility={anyAbility}
               />
             ))}

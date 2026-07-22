@@ -9,6 +9,8 @@ import { isNoItem } from "../lib/itemSprites";
 import { abilitiesRandomized } from "../lib/saveFile";
 import { nextLevelCap } from "../lib/levelCap";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
+import { bossTeamFor } from "../lib/bossTarget";
+import { nextRequiredIndex } from "../lib/routeChoice";
 import {
   ALL_TYPES,
   STAT_KEYS,
@@ -25,6 +27,7 @@ import {
   NATURES,
   NATURE_EFFECTS,
   autoField,
+  autoFieldNote,
   buildBossPokemon,
   buildPlayerPokemon,
   calcMoveRange,
@@ -33,11 +36,10 @@ import {
   formsFor,
   statTotals,
   STATUSES,
-  terrainFromAbility,
-  weatherFromAbility,
   type MoveRange,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
+import { ModifierToggle } from "../components/ModifierToggle";
 
 const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow"];
 
@@ -212,6 +214,7 @@ export function TeamView({
     setEvolveOpen,
     setSpecies,
     anyAbility,
+    noEvs: run.mode === "hardcore" || !!run.minimalGrind,
   };
 
   const toolbar = (
@@ -403,10 +406,13 @@ function CurrentStats({
   species,
   build,
   level,
+  noEvs,
 }: {
   species: string;
   build?: MonBuild;
   level: number;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
 }) {
   // statTotals builds an engine Pokémon — skip it unless this card's inputs
   // changed (build objects are referentially stable until edited)
@@ -417,11 +423,11 @@ function CurrentStats({
       nature: build?.nature || "Serious",
       ability: build?.ability || abilitiesFor(species)[0] || "",
       item: build?.item ?? "",
-      evs: {},
+      evs: noEvs ? {} : (build?.evs ?? {}),
       moves: [],
     };
     return { nature: cfg.nature, t: statTotals(cfg, {}) };
-  }, [species, build, level]);
+  }, [species, build, level, noEvs]);
   const t = computed.t;
   if (!t) return null;
   const nature = NATURE_EFFECTS[computed.nature];
@@ -463,11 +469,14 @@ function PartyPreview({
   party,
   setBuild,
   anyAbility,
+  noEvs,
   level,
 }: {
   party: Entry[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
   anyAbility?: boolean;
+  /** hardcore/restricted run or a Minimal Grind start: hides EV inputs */
+  noEvs?: boolean;
   /** level cap the current-stats row is computed at */
   level: number;
 }) {
@@ -511,7 +520,12 @@ function PartyPreview({
           </button>
           {open === locId && (
             <div className="party-detail">
-              <CurrentStats species={e.species} build={e.build} level={level} />
+              <CurrentStats
+                species={e.species}
+                build={e.build}
+                level={level}
+                noEvs={noEvs}
+              />
               <SpeciesDefenses
                 species={e.species}
                 ability={e.build?.ability || abilitiesFor(e.species)[0]}
@@ -522,6 +536,7 @@ function PartyPreview({
                 onChange={(b) => setBuild(locId, b)}
                 onClear={() => setBuild(locId, undefined)}
                 anyAbility={anyAbility}
+                noEvs={noEvs}
               />
             </div>
           )}
@@ -556,6 +571,29 @@ function ReadinessView({
     localStorage.setItem(storageKey, v);
   };
   const rivalStarter = rivalStarterFor(run);
+  // keep the boss picker following the cap pill's "next required fight"
+  // until the player manually strays — re-syncs whenever that fight
+  // actually advances (a trainer gets checked off), not on every render
+  const nextOrderIdx = useMemo(
+    () => nextRequiredIndex(modeData.trainerOrder, run),
+    [modeData, run],
+  );
+  useEffect(() => {
+    const autoKey = `rr-tracker.readinessBossAutoIdx.${run.id}`;
+    if (localStorage.getItem(autoKey) === String(nextOrderIdx)) return;
+    localStorage.setItem(autoKey, String(nextOrderIdx));
+    if (nextOrderIdx < 0) return;
+    const target = bossTeamFor(modeData, nextOrderIdx);
+    if (!target) return;
+    const cat = modeData.categories.find((c) => c.name === target.category);
+    const i = cat?.bosses.findIndex(
+      (b) => b.title === target.title && bossMatchesStarter(b.subtitle, rivalStarter),
+    );
+    if (i === undefined || i < 0) return;
+    const v = `${target.category}|${i}`;
+    setSelected(v);
+    localStorage.setItem(storageKey, v);
+  }, [nextOrderIdx, modeData, run.id, rivalStarter, storageKey]);
   const levelCap = nextLevelCap(modeData, run);
   const [catName, idxStr] = selected.split("|");
   const boss = modeData.categories
@@ -626,6 +664,7 @@ function ReadinessView({
           party={party}
           setBuild={setBuild}
           anyAbility={abilitiesRandomized(run)}
+          noEvs={run.mode === "hardcore" || !!run.minimalGrind}
           level={levelCap ?? 50}
         />
       </div>
@@ -636,7 +675,7 @@ function ReadinessView({
             boss={boss}
             levelCap={levelCap}
             caught={caught}
-            hardcore={run.mode === "hardcore"}
+            noEvs={run.mode === "hardcore" || !!run.minimalGrind}
             anyAbility={abilitiesRandomized(run)}
           />
         ) : (
@@ -651,6 +690,7 @@ function ReadinessView({
           levelCap={levelCap}
           weather={weather}
           terrain={terrain}
+          noEvs={run.mode === "hardcore" || !!run.minimalGrind}
         />
       )}
     </div>
@@ -678,6 +718,7 @@ function MatchupSection({
   levelCap,
   weather,
   terrain,
+  noEvs,
 }: {
   runId: string;
   party: Entry[];
@@ -685,6 +726,8 @@ function MatchupSection({
   levelCap?: number;
   weather: string;
   terrain: string;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
 }) {
   const dirKey = `rr-tracker.readinessMatchupDir.${runId}`;
   const [dir, setDirState] = useState<"you" | "them">(() =>
@@ -710,7 +753,7 @@ function MatchupSection({
     foeStatus,
     setFoeStatus,
   };
-  const props = { runId, party, boss, levelCap, weather, terrain, ...shared };
+  const props = { runId, party, boss, levelCap, weather, terrain, noEvs, ...shared };
   return (
     <div className="matchup">
       <div className="segmented matchup-dir">
@@ -765,20 +808,20 @@ function MatchupControls({
           ))}
         </select>
       </label>
-      <button
-        className={"st-btn crit-toggle" + (crit ? " active" : "")}
+      <ModifierToggle
+        active={crit}
         title="Calculate every move as a critical hit"
         onClick={() => setCrit((c) => !c)}
       >
         Crit
-      </button>
-      <button
-        className={"st-btn crit-toggle" + (doubles ? " active" : "")}
+      </ModifierToggle>
+      <ModifierToggle
+        active={doubles}
         title="Double battle — spread moves (Earthquake, Surf, Heat Wave…) deal ×0.75 to each target"
         onClick={() => setDoubles((d) => !d)}
       >
         Doubles
-      </button>
+      </ModifierToggle>
     </>
   );
 }
@@ -792,6 +835,7 @@ function MoveMatchup({
   levelCap,
   weather,
   terrain,
+  noEvs,
   ...shared
 }: {
   runId: string;
@@ -800,6 +844,8 @@ function MoveMatchup({
   levelCap?: number;
   weather: string;
   terrain: string;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
 } & MatchupShared) {
   const { crit, doubles, myStatus, foeStatus } = shared;
   // remember the last attacker per run, like the boss selection
@@ -826,7 +872,7 @@ function MoveMatchup({
       nature: mon.build?.nature || "Serious",
       ability: mon.build?.ability || abilitiesFor(mon.species)[0] || "",
       item: mon.build?.item ?? "",
-      evs: {},
+      evs: noEvs ? {} : (mon.build?.evs ?? {}),
       status: myStatus,
       moves: mon.build?.moves ?? [],
     };
@@ -848,17 +894,14 @@ function MoveMatchup({
       ),
       field: autoField(fieldOpts, [cfg.ability, bm.ability]),
     }));
-    const autoBits = new Set<string>();
-    for (const a of [cfg.ability, ...boss.pokemon.map((bm) => bm.ability)]) {
-      const w = !fieldOpts.weather && weatherFromAbility(a);
-      const t = !fieldOpts.terrain && terrainFromAbility(a);
-      if (w) autoBits.add(`${w} (${a})`);
-      if (t) autoBits.add(`${t} Terrain (${a})`);
-    }
+    const autoBits = autoFieldNote(fieldOpts, [
+      cfg.ability,
+      ...boss.pokemon.map((bm) => bm.ability),
+    ]);
     return {
       cfg,
       unknown: !attacker,
-      autoBits: [...autoBits],
+      autoBits,
       rows: (mon.build?.moves ?? [])
         .filter((m) => m.trim())
         .map((move) => ({
@@ -872,7 +915,7 @@ function MoveMatchup({
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, terrain, crit, doubles, myStatus, foeStatus]);
+  }, [mon, level, levelCap, boss, weather, terrain, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!mon || !grid) return null;
   return (
     <>
@@ -950,6 +993,7 @@ function FoeMatchup({
   levelCap,
   weather,
   terrain,
+  noEvs,
   ...shared
 }: {
   runId: string;
@@ -958,6 +1002,8 @@ function FoeMatchup({
   levelCap?: number;
   weather: string;
   terrain: string;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
 } & MatchupShared) {
   const { crit, doubles, myStatus, foeStatus } = shared;
   const storageKey = `rr-tracker.readinessFoe.${runId}`;
@@ -987,7 +1033,7 @@ function FoeMatchup({
         nature: e.build?.nature || "Serious",
         ability: e.build?.ability || abilitiesFor(e.species)[0] || "",
         item: e.build?.item ?? "",
-        evs: {},
+        evs: noEvs ? {} : (e.build?.evs ?? {}),
         status: myStatus,
         moves: [],
       };
@@ -999,17 +1045,14 @@ function FoeMatchup({
         field: autoField(fieldOpts, [bm.ability, cfg.ability]),
       };
     });
-    const autoBits = new Set<string>();
-    for (const a of [bm.ability, ...defenders.map((d) => d.ability)]) {
-      const w = !fieldOpts.weather && weatherFromAbility(a);
-      const t = !fieldOpts.terrain && terrainFromAbility(a);
-      if (w) autoBits.add(`${w} (${a})`);
-      if (t) autoBits.add(`${t} Terrain (${a})`);
-    }
+    const autoBits = autoFieldNote(fieldOpts, [
+      bm.ability,
+      ...defenders.map((d) => d.ability),
+    ]);
     return {
       bossLevel,
       unknown: !attacker,
-      autoBits: [...autoBits],
+      autoBits,
       rows: bm.moves
         .filter((m) => m.trim() && m !== "-")
         .map((move) => ({
@@ -1024,7 +1067,7 @@ function FoeMatchup({
           })),
         })),
     };
-  }, [bm, party, level, levelCap, weather, terrain, crit, doubles, myStatus, foeStatus]);
+  }, [bm, party, level, levelCap, weather, terrain, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!bm || !grid) return null;
   return (
     <>
@@ -1158,13 +1201,13 @@ function BossPreview({
   boss,
   levelCap,
   caught,
-  hardcore,
+  noEvs,
   anyAbility,
 }: {
   boss: Boss;
   levelCap?: number;
   caught: CaughtMon[];
-  hardcore?: boolean;
+  noEvs?: boolean;
   anyAbility?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -1213,7 +1256,7 @@ function BossPreview({
               battleEffect={boss.battleEffect}
               levelCap={levelCap}
               caught={caught}
-              hardcore={hardcore}
+              noEvs={noEvs}
               anyAbility={anyAbility}
             />
           )}
@@ -1229,6 +1272,7 @@ function BuildEditor({
   onChange,
   onClear,
   anyAbility,
+  noEvs,
 }: {
   species: string;
   build: MonBuild;
@@ -1236,6 +1280,8 @@ function BuildEditor({
   onClear: () => void;
   /** ability randomizer active: accept any ability, not just legal ones */
   anyAbility?: boolean;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
 }) {
   const legalAbilities = abilitiesFor(species);
   return (
@@ -1280,6 +1326,34 @@ function BuildEditor({
           onChange={(e) => onChange({ ...build, item: e.target.value })}
         />
       </div>
+      {!noEvs && (
+        <div className="calc-row evs">
+          {STAT_KEYS.map((k) => (
+            <label key={k}>
+              {k} EV
+              <input
+                type="number"
+                min={0}
+                max={252}
+                step={4}
+                value={build.evs?.[k] ?? 0}
+                onChange={(e) =>
+                  onChange({
+                    ...build,
+                    evs: {
+                      ...build.evs,
+                      [k]: Math.max(0, Math.min(252, parseInt(e.target.value, 10) || 0)),
+                    },
+                  })
+                }
+              />
+            </label>
+          ))}
+          <span className="muted ev-total">
+            {STAT_KEYS.reduce((sum, k) => sum + (build.evs?.[k] ?? 0), 0)}/508
+          </span>
+        </div>
+      )}
       <div className="calc-row">
         {build.moves.map((m, i) => (
           <input
@@ -1415,6 +1489,8 @@ interface SectionCommon {
   setSpecies: (locId: string, species: string) => void;
   canEvolve?: boolean;
   anyAbility?: boolean;
+  /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
+  noEvs?: boolean;
   /** level the current-stats row is computed at (the run's level cap) */
   statLevel: number;
   /** section-specific panel under a card (graveyard: death notes editor) */
@@ -1468,13 +1544,20 @@ function ItemExtras({
   setBuild,
   setSpecies,
   anyAbility,
+  noEvs,
   extraPanel,
 }: {
   locId: string;
   e: Entry[1];
 } & Pick<
   SectionCommon,
-  "buildOpen" | "evolveOpen" | "setBuild" | "setSpecies" | "anyAbility" | "extraPanel"
+  | "buildOpen"
+  | "evolveOpen"
+  | "setBuild"
+  | "setSpecies"
+  | "anyAbility"
+  | "noEvs"
+  | "extraPanel"
 >) {
   return (
     <>
@@ -1485,6 +1568,7 @@ function ItemExtras({
           onChange={(b) => setBuild(locId, b)}
           onClear={() => setBuild(locId, undefined)}
           anyAbility={anyAbility}
+          noEvs={noEvs}
         />
       )}
       {evolveOpen === locId && (
@@ -1635,7 +1719,12 @@ function FullGrid({
                   canEvolve={canEvolve}
                 />
               </div>
-              <CurrentStats species={e.species} build={e.build} level={statLevel} />
+              <CurrentStats
+                species={e.species}
+                build={e.build}
+                level={statLevel}
+                noEvs={common.noEvs}
+              />
             </div>
             <ItemExtras locId={locId} e={e} {...common} />
           </div>
