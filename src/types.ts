@@ -87,6 +87,10 @@ export interface CalcTarget {
   mon: BossMon;
   battleEffect: string;
   levelCap?: number;
+  /** the rest of this Pokémon's boss team, so the Calculator page can offer
+   * a quick switcher between teammates without leaving the page */
+  team: BossMon[];
+  teamLabel: string;
 }
 
 export interface BossReward {

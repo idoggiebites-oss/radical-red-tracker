@@ -55,7 +55,14 @@ using new engine members. Adapter `src/lib/damagecalc.ts`:
 lines) and `calcMoveRange` (min/max %), and `ohkoGuard` — the engine does
 NOT model Sturdy/Focus Sash, so we flag "survives at 1 HP" ourselves
 (multi-hit moves and multi-strike abilities like Parental Bond break
-through; Mold Breaker beats Sturdy, not the sash).
+through; Mold Breaker beats Sturdy, not the sash). `SideConditions`/
+`toEngineSide()` cover hazards/screens/Tailwind/Leech Seed per side —
+`effectiveSpeed()`/`statTotals()`/`bossStatTotals()` take an optional `side`
+so Tailwind affects the right Pokémon's Speed. `buildPlayerPokemon`/
+`PlayerMonConfig` are fully generic (not player-specific despite the name)
+— the Calculator page's Opponent side is built from these too, not from
+`buildBossPokemon`/`bossStatTotals`, which now exist only for `MonCard`'s
+own read-only stat-table preview.
 
 ## App structure
 
@@ -76,16 +83,37 @@ through; Mold Breaker beats Sturdy, not the sash).
   (floor-suffix pattern + explicit merges like Forest Expansion/Safari
   zones); the merged row shares ONE encounter slot — whichever member id the
   run already recorded on, else the first member's id.
-- `src/views/BossesView.tsx` — trainer order/level caps + boss teams.
+- `src/views/BossesView.tsx` — trainer order/level caps + boss teams. Each
+  boss Pokémon's "Calc" button calls an `onCalc` prop (threaded down from
+  `App.tsx`) instead of opening a dialog — see Calculator below.
 - `src/views/TeamView.tsx` — subtabs "Party & Box" (party/box/graveyard, KO
   counters, build editor, Evolve/Devolve via `evolutionsFor`/
   `preEvolutionsFor` in `src/lib/effectiveness.ts`; graveyard entries carry
   post-mortem notes + cause tags — `deathTags`/`deathNote` on
-  `RouteEncounter`, editor auto-opens on faint) and "Battle readiness"
+  `RouteEncounter`, editor auto-opens on faint), "Battle readiness"
   (two-column grid areas ph/bh/pc/bc/mu, weather picker seeded from boss
-  battle effect, MoveMatchup HP-bar damage grid).
-- Shared: `src/components/MonCard.tsx` (boss mon card + `SpeciesDefenses`),
-  `CalcPanel.tsx` (full calculator dialog), `src/lib/levelCap.ts`.
+  battle effect, MoveMatchup HP-bar damage grid; its boss-preview `MonCard`s
+  use the same `onCalc` prop as BossesView), and "Calculator"
+  (`src/components/CalculatorPage.tsx` — see below).
+- **Calculator** (`src/components/CalculatorPage.tsx`, Team's third subtab):
+  replaced the old per-boss `CalcPanel` modal. Two symmetric, fully-editable
+  `PlayerMonConfig` sides (You / Opponent) share one `MonConfigCard`. "You"
+  persists to localStorage like before; **Opponent intentionally does not**
+  — clicking any boss's "Calc" button (Bosses tab or Battle Readiness) sets
+  `App.tsx`'s `calcTarget` (mirrors the existing `bossFocus`/cap-pill
+  deep-link pattern: switch tab, set a nonce-stamped target, consuming
+  `useEffect` reacts to it) and always fully re-seeds Opponent from that
+  Pokémon, discarding any prior edits. A "Load this run's next boss" button
+  does the same via `nextRequiredIndex`/`bossTeamFor`. Field conditions
+  (hazards/screens/Tailwind/Leech Seed per side) live in the middle "Field"
+  card along with weather/terrain/crit/doubles, centered; on desktop
+  (`@media (min-width: 901px)`) each side's move-glance `ResultBlock` sits
+  above that side's own card via CSS `grid-template-areas` — the JSX itself
+  keeps cards before results so mobile's plain single-column stacking
+  (no `grid-template-areas` override) is unaffected.
+- Shared: `src/components/MonCard.tsx` (boss mon card + `SpeciesDefenses`;
+  no longer imports the calculator — just a sprite/stat-table/`onCalc`
+  callback), `src/lib/levelCap.ts`.
 - Randomizer: manual 🎲 toggles on the Routes toolbar (`run.randomizer`) —
   species opens the catch box to any species and adds optional per-route
   sighting notes (`run.seenSpecies`, keyed `<locId>|<docSpecies>`; the old

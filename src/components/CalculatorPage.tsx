@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import type { BossMode, BossMon, CalcTarget, CaughtMon, Run } from "../types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, Run } from "../types";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import { ModifierToggle } from "./ModifierToggle";
 import { bossTeamFor } from "../lib/bossTarget";
@@ -93,6 +93,50 @@ function cfgFromBossMon(mon: BossMon, levelCap?: number): PlayerMonConfig {
   };
 }
 
+/** which teammate is loaded as Opponent, remembered across tab switches —
+ * `sourceNonce` ties it to a specific explicit Calc-button click (`null`
+ * means it came from auto-loading the run's next boss instead), so a
+ * revisit can tell "same boss, restore my pick" from "different boss,
+ * start fresh" */
+interface StoredOppSelection {
+  sourceNonce: number | null;
+  teamLabel: string;
+  team: BossMon[];
+  teamIdx: number;
+  levelCap?: number;
+}
+
+const oppSelectionKey = (runId: string) => `rr-tracker.calcOppSelection.${runId}`;
+
+function loadOppSelection(runId: string): StoredOppSelection | null {
+  try {
+    const raw = localStorage.getItem(oppSelectionKey(runId));
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveOppSelection(runId: string, sel: StoredOppSelection) {
+  localStorage.setItem(oppSelectionKey(runId), JSON.stringify(sel));
+}
+
+/** this run's next required boss, the same resolution the Calc-button
+ * deep link and Battle Readiness's auto-select already use */
+function resolveNextBoss(modeData: BossMode, run: Run): { boss: Boss; mon: BossMon } | null {
+  const idx = nextRequiredIndex(modeData.trainerOrder, run);
+  if (idx < 0) return null;
+  const bt = bossTeamFor(modeData, idx);
+  if (!bt) return null;
+  const cat = modeData.categories.find((c) => c.name === bt.category);
+  const rivalStarter = rivalStarterFor(run);
+  const boss = cat?.bosses.find(
+    (b) => b.title === bt.title && bossMatchesStarter(b.subtitle, rivalStarter),
+  );
+  const mon = boss?.pokemon[0];
+  return boss && mon ? { boss, mon } : null;
+}
+
 export function CalculatorPage({
   run,
   modeData,
@@ -100,6 +144,7 @@ export function CalculatorPage({
   noEvs = false,
   anyAbility = false,
   target,
+  onClearTarget,
 }: {
   run: Run;
   modeData: BossMode;
@@ -111,6 +156,9 @@ export function CalculatorPage({
   anyAbility?: boolean;
   /** a boss Pokémon's Calc button was clicked elsewhere: prefill Opponent */
   target?: (CalcTarget & { nonce: number }) | null;
+  /** tells the parent to forget `target` when the Opponent is cleared, so a
+   * revisit auto-loads the next boss instead of re-applying the old one */
+  onClearTarget?: () => void;
 }) {
   const levelCap = nextLevelCap(modeData, run) ?? 50;
   const [you, setYou] = useState<PlayerMonConfig>(() => loadYouCfg(levelCap));
@@ -138,18 +186,100 @@ export function CalculatorPage({
   const [yourSide, setYourSide] = useState<SideConditions>({});
   const [oppSide, setOppSide] = useState<SideConditions>({});
   const [showField, setShowField] = useState(false);
+  // the Opponent's full boss team + which member is loaded, so the "vs"
+  // dropdown can switch teammates without leaving the page
+  const [oppTeam, setOppTeam] = useState<BossMon[]>(() => target?.team ?? []);
+  const [oppTeamLabel, setOppTeamLabel] = useState(() => target?.teamLabel ?? "");
+  const [oppTeamIdx, setOppTeamIdx] = useState(0);
+  const [oppLevelCap, setOppLevelCap] = useState(() => target?.levelCap);
 
-  // a new boss Calc-button click always wins over whatever was there —
-  // the Opponent card is intentionally never persisted
-  useEffect(() => {
-    if (!target) return;
-    setOpp(cfgFromBossMon(target.mon, target.levelCap));
-    const field = fieldFromBattleEffect(target.battleEffect);
+  const applyOpponent = (
+    mon: BossMon,
+    monLevelCap: number | undefined,
+    battleEffect: string,
+    team: BossMon[],
+    teamLabel: string,
+    idx: number,
+  ) => {
+    setOpp(cfgFromBossMon(mon, monLevelCap));
+    const field = fieldFromBattleEffect(battleEffect);
     setWeather(field.weather ?? "");
     setTerrain(field.terrain ?? "");
-    setDoubles(/DOUBLES/i.test(target.battleEffect));
+    setDoubles(/DOUBLES/i.test(battleEffect));
     setOppSide({});
-  }, [target]);
+    setOppTeam(team);
+    setOppTeamLabel(teamLabel);
+    setOppTeamIdx(idx);
+    setOppLevelCap(monLevelCap);
+  };
+
+  // resolve the Opponent exactly once per mount: restore a remembered
+  // teammate pick if we're looking at the same boss as last visit (either
+  // the same explicit Calc-button target, or the same auto-loaded next
+  // boss), otherwise apply fresh — a new explicit click or genuine
+  // progress (a different boss is now "next") always wins over any stale
+  // pick, same as before
+  const resolvedOnMount = useRef(false);
+  useEffect(() => {
+    if (resolvedOnMount.current) return;
+    resolvedOnMount.current = true;
+    const stored = loadOppSelection(run.id);
+
+    if (target) {
+      if (stored && stored.sourceNonce === target.nonce && stored.team.length > 0) {
+        const mon = stored.team[stored.teamIdx] ?? target.mon;
+        applyOpponent(mon, stored.levelCap, target.battleEffect, stored.team, stored.teamLabel, stored.teamIdx);
+      } else {
+        const idx = Math.max(0, target.team.indexOf(target.mon));
+        applyOpponent(target.mon, target.levelCap, target.battleEffect, target.team, target.teamLabel, idx);
+        saveOppSelection(run.id, {
+          sourceNonce: target.nonce,
+          teamLabel: target.teamLabel,
+          team: target.team,
+          teamIdx: idx,
+          levelCap: target.levelCap,
+        });
+      }
+      return;
+    }
+
+    // no explicit target — default to this run's next required boss,
+    // restoring a remembered pick if that's still the same boss
+    const next = resolveNextBoss(modeData, run);
+    if (!next) return;
+    const teamLabel =
+      next.boss.title + (next.boss.subtitle ? ` — ${next.boss.subtitle}` : "");
+    if (stored && stored.sourceNonce === null && stored.teamLabel === teamLabel && stored.team.length > 0) {
+      const mon = stored.team[stored.teamIdx] ?? next.mon;
+      applyOpponent(mon, stored.levelCap, next.boss.battleEffect, stored.team, teamLabel, stored.teamIdx);
+    } else {
+      applyOpponent(next.mon, levelCap, next.boss.battleEffect, next.boss.pokemon, teamLabel, 0);
+      saveOppSelection(run.id, {
+        sourceNonce: null,
+        teamLabel,
+        team: next.boss.pokemon,
+        teamIdx: 0,
+        levelCap,
+      });
+    }
+    // deliberately once-per-mount: `target` doesn't change while this page
+    // stays mounted (it's only ever set by navigating here fresh)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const switchOppTeammate = (idx: number) => {
+    const mon = oppTeam[idx];
+    if (!mon) return;
+    setOpp(cfgFromBossMon(mon, oppLevelCap));
+    setOppTeamIdx(idx);
+    saveOppSelection(run.id, {
+      sourceNonce: target?.nonce ?? null,
+      teamLabel: oppTeamLabel,
+      team: oppTeam,
+      teamIdx: idx,
+      levelCap: oppLevelCap,
+    });
+  };
 
   const updateYou = (patch: Partial<PlayerMonConfig>) => {
     setYou((c) => {
@@ -196,28 +326,13 @@ export function CalculatorPage({
   const resetOpp = () => {
     setOpp(DEFAULT_CFG);
     setOppSide({});
-  };
-
-  // convenience matching the boss-Calc-button prefill, for landing on this
-  // page directly instead of clicking through a boss's own team card
-  const loadNextBoss = () => {
-    const idx = nextRequiredIndex(modeData.trainerOrder, run);
-    if (idx < 0) return;
-    const bt = bossTeamFor(modeData, idx);
-    if (!bt) return;
-    const cat = modeData.categories.find((c) => c.name === bt.category);
-    const rivalStarter = rivalStarterFor(run);
-    const boss = cat?.bosses.find(
-      (b) => b.title === bt.title && bossMatchesStarter(b.subtitle, rivalStarter),
-    );
-    const mon = boss?.pokemon[0];
-    if (!boss || !mon) return;
-    setOpp(cfgFromBossMon(mon, levelCap));
-    const field = fieldFromBattleEffect(boss.battleEffect);
-    setWeather(field.weather ?? "");
-    setTerrain(field.terrain ?? "");
-    setDoubles(/DOUBLES/i.test(boss.battleEffect));
-    setOppSide({});
+    setOppTeam([]);
+    setOppTeamLabel("");
+    setOppTeamIdx(0);
+    localStorage.removeItem(oppSelectionKey(run.id));
+    // forget the explicit target too, so a revisit auto-loads the next
+    // boss instead of re-applying the one this page was opened with
+    onClearTarget?.();
   };
 
   const toggleCaughtOnly = (on: boolean) => {
@@ -374,9 +489,20 @@ export function CalculatorPage({
             anyAbility
             speciesListId="opp-species-calc"
             headExtra={
-              <button className="st-btn" onClick={loadNextBoss}>
-                Load this run's next boss
-              </button>
+              oppTeam.length > 1 ? (
+                <select
+                  className="opp-team-switch"
+                  title={oppTeamLabel}
+                  value={oppTeamIdx}
+                  onChange={(e) => switchOppTeammate(parseInt(e.target.value, 10))}
+                >
+                  {oppTeam.map((m, i) => (
+                    <option key={i} value={i}>
+                      {m.species}
+                    </option>
+                  ))}
+                </select>
+              ) : null
             }
           />
         </div>

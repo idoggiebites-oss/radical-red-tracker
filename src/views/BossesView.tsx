@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Boss, BossMode, BossMon, GameMode, Run } from "../types";
+import type { Boss, BossMode, CalcTarget, GameMode, Run } from "../types";
 import { orderChainInfo, type BossTarget } from "../lib/bossTarget";
 import { isEffectivelyOptional, nextRequiredIndex, ROUTE_CHOICES } from "../lib/routeChoice";
 import { Sprite } from "../components/Sprite";
@@ -23,7 +23,7 @@ export function BossesView({
   /** cap-pill navigation: jump to this boss team and open it */
   focus?: (BossTarget & { nonce: number }) | null;
   /** opens the dedicated Team → Calculator page with a boss Pokémon prefilled */
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   const [view, setView] = useState<"order" | "teams">("order");
   const [filter, setFilter] = useState("");
@@ -110,11 +110,52 @@ function TrainerOrder({
   // as an inline choice card right before it, not just a top-bar popup
   const forkIdx = useMemo(() => order.findIndex((t) => !!t.routeChoice), [order]);
 
+  // completed fights collapse out of the list once there's more than one,
+  // for scrollability on a long playthrough — one stays visible so a
+  // misclick is always a scroll away from undo. Defaults to whatever's
+  // right before the current frontier; tracks whatever was last actually
+  // checked/unchecked this session (required or optional, doesn't matter)
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [pinnedIdx, setPinnedIdx] = useState<number | null>(null);
+  const keepVisibleIdx = pinnedIdx ?? (nextIdx > 0 ? nextIdx - 1 : -1);
+  const isHidden = (i: number) => !!run?.defeated[i] && i !== keepVisibleIdx;
+  const hiddenCount = order.reduce((n, _, i) => n + (isHidden(i) ? 1 : 0), 0);
+
+  const toggleDefeated = (i: number, checked: boolean) => {
+    updateRun((r) => ({ ...r, defeated: { ...r.defeated, [i]: checked } }));
+    setPinnedIdx(i);
+  };
+
+  // keep the highlighted "next" fight centered — undone optional/skipped
+  // trainers above it don't hide like completed ones do, so on a long
+  // playthrough the frontier can otherwise drift below the fold
+  const nextRowRef = useRef<HTMLDivElement>(null);
+  const scrolledOnce = useRef(false);
+  useEffect(() => {
+    nextRowRef.current?.scrollIntoView({
+      behavior: scrolledOnce.current ? "smooth" : "auto",
+      block: "center",
+    });
+    scrolledOnce.current = true;
+  }, [nextIdx]);
+
   return (
     <div className="trainer-order">
+      {hiddenCount > 0 && (
+        <label className="checkbox order-show-completed">
+          <input
+            type="checkbox"
+            checked={showCompleted}
+            onChange={(e) => setShowCompleted(e.target.checked)}
+          />
+          Show completed ({hiddenCount} hidden)
+        </label>
+      )}
       {order.map((t, i) => {
         const done = !!run?.defeated[i];
         const optional = isEffectivelyOptional(t, run);
+        const hidden = !showCompleted && isHidden(i);
+        if (hidden && i !== forkIdx) return null;
         return (
           <div key={i} className="order-row-wrap">
           {run && i === forkIdx && (
@@ -125,7 +166,9 @@ function TrainerOrder({
               }
             />
           )}
+          {!hidden && (
           <div
+            ref={i === nextIdx ? nextRowRef : undefined}
             className={
               "order-row" +
               (done ? " done" : "") +
@@ -137,12 +180,7 @@ function TrainerOrder({
               <input
                 type="checkbox"
                 checked={done}
-                onChange={(e) =>
-                  updateRun((r) => ({
-                    ...r,
-                    defeated: { ...r.defeated, [i]: e.target.checked },
-                  }))
-                }
+                onChange={(e) => toggleDefeated(i, e.target.checked)}
               />
             )}
             <span className="order-name">
@@ -167,6 +205,7 @@ function TrainerOrder({
             </span>
             <span className="order-cap">{t.levelCap && `cap ${t.levelCap}`}</span>
           </div>
+          )}
           </div>
         );
       })}
@@ -227,7 +266,7 @@ function BossTeams({
   levelCap?: number;
   rivalStarter?: string | null;
   focus?: (BossTarget & { nonce: number }) | null;
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   const q = filter.trim().toLowerCase();
   const cat =
@@ -281,7 +320,7 @@ function BossCard({
 }: {
   boss: Boss;
   levelCap?: number;
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
   /** non-zero when cap-pill navigation targets this card: open and scroll to it */
   focusNonce?: number;
 }) {
@@ -346,6 +385,8 @@ function BossCard({
                 mon={m}
                 battleEffect={boss.battleEffect}
                 levelCap={levelCap}
+                team={boss.pokemon}
+                teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
                 onCalc={onCalc}
               />
             ))}

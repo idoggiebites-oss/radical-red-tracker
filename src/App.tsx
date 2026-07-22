@@ -2,7 +2,6 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import type {
   AppState,
   BossesData,
-  BossMon,
   CalcTarget,
   GameMode,
   Run,
@@ -53,10 +52,14 @@ export default function App() {
   const [calcTarget, setCalcTarget] = useState<(CalcTarget & { nonce: number }) | null>(
     null,
   );
-  const openCalc = (mon: BossMon, battleEffect: string, levelCap?: number) => {
+  const openCalc = (target: CalcTarget) => {
     setTab("team");
-    setCalcTarget({ mon, battleEffect, levelCap, nonce: Date.now() });
+    setCalcTarget({ ...target, nonce: Date.now() });
   };
+  // Clearing the Opponent card should forget the explicit boss it was
+  // opened with too, so revisiting the Calculator falls back to auto-
+  // loading the run's next boss instead of re-applying the old target
+  const clearCalcTarget = () => setCalcTarget(null);
   // bosses.json is the largest data file; fetched as its own chunk so the
   // main bundle stays small (only the cap pill and two tabs need it)
   const [bosses, setBosses] = useState<BossesData | null>(null);
@@ -309,6 +312,7 @@ export default function App() {
               modeData={modeData}
               calcTarget={calcTarget}
               onCalc={openCalc}
+              onClearCalcTarget={clearCalcTarget}
             />
           )}
           {tab === "reference" && <ReferenceView />}

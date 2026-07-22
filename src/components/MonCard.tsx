@@ -1,4 +1,4 @@
-import type { BossMon } from "../types";
+import type { BossMon, CalcTarget } from "../types";
 import { Sprite } from "./Sprite";
 import { ItemSprite } from "./ItemSprite";
 import { TypeBadges } from "./TypeBadges";
@@ -52,14 +52,20 @@ export function MonCard({
   mon,
   battleEffect,
   levelCap,
+  team,
+  teamLabel,
   onCalc,
 }: {
   mon: BossMon;
   battleEffect: string;
   levelCap?: number;
+  /** this Pokémon's full boss team + a display label, passed straight
+   * through to onCalc so the Calculator page can offer a team switcher */
+  team?: BossMon[];
+  teamLabel?: string;
   /** opens the dedicated Team → Calculator page with this Pokémon prefilled
    * as the Opponent, instead of a popup */
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   // the stats it actually fights with (level, nature, EVs, item/ability
   // multipliers); the sheet's base line only remains for unknown species
@@ -77,7 +83,15 @@ export function MonCard({
         <button
           className="calc-btn"
           title="Damage calculator"
-          onClick={() => onCalc?.(mon, battleEffect, levelCap)}
+          onClick={() =>
+            onCalc?.({
+              mon,
+              battleEffect,
+              levelCap,
+              team: team ?? [mon],
+              teamLabel: teamLabel ?? mon.species,
+            })
+          }
         >
           Calc
         </button>

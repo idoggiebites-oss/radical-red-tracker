@@ -236,6 +236,7 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- bosses ---- */
 
 .trainer-order { display: flex; flex-direction: column; }
+.order-show-completed { padding: 4px 12px 10px; }
 .order-row {
   display: flex;
   align-items: center;
@@ -659,6 +660,7 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 .calc-side-head { display: flex; align-items: center; gap: 12px; }
 .calc-side-head h3 { margin: 0; flex: 1; font-size: 14px; color: var(--accent2); }
+.opp-team-switch { font-size: 12px; padding: 3px 6px; max-width: 140px; }
 .import-note { font-size: 12px; }
 
 /* ---- static encounters on routes ---- */

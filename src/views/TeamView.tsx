@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, MonBuild, Run } from "../types";
+import type { Boss, BossMode, CalcTarget, CaughtMon, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { MonCard, SpeciesDefenses } from "../components/MonCard";
@@ -72,6 +72,7 @@ export function TeamView({
   modeData,
   calcTarget,
   onCalc,
+  onClearCalcTarget,
 }: {
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
@@ -79,7 +80,10 @@ export function TeamView({
   /** set when a boss Pokémon's Calc button is clicked elsewhere: jump to
    * the Calculator subtab and prefill the Opponent with it */
   calcTarget?: (CalcTarget & { nonce: number }) | null;
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
+  /** the Calculator's Opponent "Clear" button calls this so a revisit falls
+   * back to auto-loading the next boss instead of re-applying the old target */
+  onClearCalcTarget?: () => void;
 }) {
   const [subtab, setSubtab] = useState<"roster" | "readiness" | "calculator">(
     "roster",
@@ -333,6 +337,7 @@ export function TeamView({
           noEvs={run.mode === "hardcore" || !!run.minimalGrind}
           anyAbility={anyAbility}
           target={calcTarget}
+          onClearTarget={onClearCalcTarget}
         />
       )}
       {subtab === "roster" && (
@@ -588,7 +593,7 @@ function ReadinessView({
   modeData: BossMode;
   party: Entry[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   // remember the last viewed boss per run
   const storageKey = `rr-tracker.readinessBoss.${run.id}`;
@@ -1231,7 +1236,7 @@ function BossPreview({
 }: {
   boss: Boss;
   levelCap?: number;
-  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
@@ -1278,6 +1283,8 @@ function BossPreview({
               mon={m}
               battleEffect={boss.battleEffect}
               levelCap={levelCap}
+              team={boss.pokemon}
+              teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
               onCalc={onCalc}
             />
           )}
