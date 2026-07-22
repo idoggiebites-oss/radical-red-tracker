@@ -2,6 +2,8 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import type {
   AppState,
   BossesData,
+  BossMon,
+  CalcTarget,
   GameMode,
   Run,
   RunSaveInfo,
@@ -46,6 +48,15 @@ export default function App() {
   const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
     null,
   );
+  // set when a boss Pokémon's Calc button is clicked: jump to Team →
+  // Calculator with that Pokémon prefilled as the Opponent
+  const [calcTarget, setCalcTarget] = useState<(CalcTarget & { nonce: number }) | null>(
+    null,
+  );
+  const openCalc = (mon: BossMon, battleEffect: string, levelCap?: number) => {
+    setTab("team");
+    setCalcTarget({ mon, battleEffect, levelCap, nonce: Date.now() });
+  };
   // bosses.json is the largest data file; fetched as its own chunk so the
   // main bundle stays small (only the cap pill and two tabs need it)
   const [bosses, setBosses] = useState<BossesData | null>(null);
@@ -288,10 +299,17 @@ export default function App() {
               run={run}
               updateRun={updateRun}
               focus={bossFocus}
+              onCalc={openCalc}
             />
           )}
           {tab === "team" && modeData && (
-            <TeamView run={run} updateRun={updateRun} modeData={modeData} />
+            <TeamView
+              run={run}
+              updateRun={updateRun}
+              modeData={modeData}
+              calcTarget={calcTarget}
+              onCalc={openCalc}
+            />
           )}
           {tab === "reference" && <ReferenceView />}
         </Suspense>

@@ -323,6 +323,33 @@ export const STATUSES: { value: string; label: string }[] = [
 
 export const BOOST_STATS = ["ATK", "DEF", "SPA", "SPD", "SPE"] as const;
 
+/** the field state this app exposes per side — hazards, screens, Leech Seed,
+ * Tailwind. Only affects move damage (via the engine) and Speed (Tailwind);
+ * it does not change the raw stat totals shown in the totals grid. */
+export interface SideConditions {
+  stealthRock?: boolean;
+  /** 0-3 layers */
+  spikes?: number;
+  reflect?: boolean;
+  lightScreen?: boolean;
+  auroraVeil?: boolean;
+  tailwind?: boolean;
+  leechSeed?: boolean;
+}
+
+export function toEngineSide(s?: SideConditions): rr.SideOptions {
+  if (!s) return {};
+  return {
+    isSR: s.stealthRock,
+    spikes: s.spikes,
+    isReflect: s.reflect,
+    isLightScreen: s.lightScreen,
+    isAuroraVeil: s.auroraVeil,
+    isTailwind: s.tailwind,
+    isSeeded: s.leechSeed,
+  };
+}
+
 export const stageMult = (n: number) => (n >= 0 ? (2 + n) / 2 : 2 / (2 - n));
 
 /** stat multipliers granted by a held item (display + totals) */
@@ -387,6 +414,7 @@ export interface StatTotals {
 export function statTotals(
   cfg: PlayerMonConfig,
   fieldOpts: rr.FieldOptions,
+  side?: SideConditions,
 ): StatTotals | null {
   const pokemon = buildPlayerPokemon(cfg);
   const speciesName = resolveSpecies(cfg.species);
@@ -399,7 +427,7 @@ export function statTotals(
   const totals: Record<string, number> = { HP: base.HP };
   for (const k of BOOST_STATS) {
     if (k === "SPE") {
-      totals[k] = effectiveSpeed(pokemon, fieldOpts);
+      totals[k] = effectiveSpeed(pokemon, fieldOpts, side);
       continue;
     }
     let v = Math.floor(base[k] * stageMult(cfg.boosts?.[k] ?? 0));
@@ -419,8 +447,10 @@ export function bossStatTotals(
   boosts?: Record<string, number>,
   fieldOpts: rr.FieldOptions = {},
   status?: string,
+  ivs?: Record<string, number>,
+  side?: SideConditions,
 ): Record<string, number> | null {
-  const poke = buildBossPokemon(mon, level, boosts, status);
+  const poke = buildBossPokemon(mon, level, boosts, status, ivs);
   const speciesName = resolveSpecies(mon.species);
   if (!poke || !speciesName) return null;
   const s = poke.stats;
@@ -438,7 +468,7 @@ export function bossStatTotals(
   const totals: Record<string, number> = { HP: base.HP };
   for (const k of BOOST_STATS) {
     if (k === "SPE") {
-      totals[k] = effectiveSpeed(poke, fieldOpts);
+      totals[k] = effectiveSpeed(poke, fieldOpts, side);
       continue;
     }
     let v = Math.floor(base[k] * stageMult(boosts?.[k] ?? 0));
@@ -605,6 +635,7 @@ export function buildBossPokemon(
   level: number,
   boostsIn?: Record<string, number>,
   status?: string,
+  ivsIn?: Record<string, number>,
 ): rr.Pokemon | null {
   const species = resolveSpecies(mon.species);
   if (!species) return null;
@@ -613,6 +644,13 @@ export function buildBossPokemon(
     const key = EV_KEYS[k];
     if (key && v !== 0) boosts[key] = Math.max(-6, Math.min(6, v));
   }
+  // the docs don't publish boss IVs — the engine already defaults any unset
+  // stat to a flat 31, same as a player mon with no IV spread entered
+  const ivs: rr.StatsTable = {};
+  for (const [k, v] of Object.entries(ivsIn ?? {})) {
+    const key = EV_KEYS[k];
+    if (key) ivs[key] = Math.max(0, Math.min(31, v));
+  }
   try {
     return new rr.Pokemon(GEN, species, {
       level,
@@ -620,6 +658,7 @@ export function buildBossPokemon(
       ability: mon.ability || undefined,
       item: cleanItem(mon.item),
       evs: bossEvs(mon),
+      ivs,
       boosts,
       status: status || "",
     });
@@ -662,15 +701,17 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
   }
 }
 
-/** effective speed with item (Choice Scarf, Iron Ball), ability and field
- * (Swift Swim in rain etc.) applied — Pokemon.stats.spe alone ignores these */
+/** effective speed with item (Choice Scarf, Iron Ball), ability, field
+ * (Swift Swim in rain etc.) and this Pokemon's own side (Tailwind) applied —
+ * Pokemon.stats.spe alone ignores all of these */
 export function effectiveSpeed(
   pokemon: rr.Pokemon,
   fieldOpts: rr.FieldOptions,
+  side?: SideConditions,
 ): number {
   try {
-    const field = new rr.Field(fieldOpts) as rr.Field & { attackerSide: unknown };
-    return getFinalSpeed(gen, pokemon, field, field.attackerSide);
+    const field = new rr.Field(fieldOpts);
+    return getFinalSpeed(gen, pokemon, field, toEngineSide(side));
   } catch {
     return pokemon.stats.spe;
   }

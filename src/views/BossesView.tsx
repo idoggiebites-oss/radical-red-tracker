@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Boss, BossMode, GameMode, Run } from "../types";
+import type { Boss, BossMode, BossMon, GameMode, Run } from "../types";
 import { orderChainInfo, type BossTarget } from "../lib/bossTarget";
 import { isEffectivelyOptional, nextRequiredIndex, ROUTE_CHOICES } from "../lib/routeChoice";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
-import { type CaughtMon } from "../components/CalcPanel";
-import { abilitiesRandomized } from "../lib/saveFile";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import { nextLevelCap } from "../lib/levelCap";
 import { ALL_TYPES, defensiveProfile, typeColor } from "../lib/effectiveness";
@@ -16,6 +14,7 @@ export function BossesView({
   run,
   updateRun,
   focus,
+  onCalc,
 }: {
   modeData: BossMode;
   mode: GameMode;
@@ -23,6 +22,8 @@ export function BossesView({
   updateRun: (fn: (run: Run) => Run) => void;
   /** cap-pill navigation: jump to this boss team and open it */
   focus?: (BossTarget & { nonce: number }) | null;
+  /** opens the dedicated Team → Calculator page with a boss Pokémon prefilled */
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
 }) {
   const [view, setView] = useState<"order" | "teams">("order");
   const [filter, setFilter] = useState("");
@@ -36,14 +37,6 @@ export function BossesView({
   }, [focus]);
 
   const levelCap = useMemo(() => nextLevelCap(modeData, run), [run, modeData]);
-
-  const caught = useMemo<CaughtMon[]>(
-    () =>
-      Object.values(run?.encounters ?? {})
-        .filter((e) => e.species && e.status === "caught")
-        .map((e) => ({ species: e.species, nickname: e.nickname, build: e.build })),
-    [run],
-  );
 
   const rivalStarter = useMemo(() => rivalStarterFor(run), [run]);
 
@@ -92,11 +85,9 @@ export function BossesView({
           category={category}
           filter={filter}
           levelCap={levelCap}
-          caught={caught}
           rivalStarter={rivalStarter}
-          noEvs={mode === "hardcore" || !!run?.minimalGrind}
-          anyAbility={abilitiesRandomized(run)}
           focus={focus}
+          onCalc={onCalc}
         />
       )}
     </div>
@@ -226,21 +217,17 @@ function BossTeams({
   category,
   filter,
   levelCap,
-  caught,
   rivalStarter,
-  noEvs,
-  anyAbility,
   focus,
+  onCalc,
 }: {
   modeData: BossMode;
   category: string;
   filter: string;
   levelCap?: number;
-  caught?: CaughtMon[];
   rivalStarter?: string | null;
-  noEvs?: boolean;
-  anyAbility?: boolean;
   focus?: (BossTarget & { nonce: number }) | null;
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
 }) {
   const q = filter.trim().toLowerCase();
   const cat =
@@ -272,9 +259,7 @@ function BossTeams({
           key={i}
           boss={b}
           levelCap={levelCap}
-          caught={caught}
-          noEvs={noEvs}
-          anyAbility={anyAbility}
+          onCalc={onCalc}
           // starter variants share a title — focus only the first one shown
           focusNonce={
             focus && b.title === focus.title && bosses.findIndex((x) => x.title === focus.title) === i
@@ -291,16 +276,12 @@ function BossTeams({
 function BossCard({
   boss,
   levelCap,
-  caught,
-  noEvs,
-  anyAbility,
+  onCalc,
   focusNonce = 0,
 }: {
   boss: Boss;
   levelCap?: number;
-  caught?: CaughtMon[];
-  noEvs?: boolean;
-  anyAbility?: boolean;
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
   /** non-zero when cap-pill navigation targets this card: open and scroll to it */
   focusNonce?: number;
 }) {
@@ -365,9 +346,7 @@ function BossCard({
                 mon={m}
                 battleEffect={boss.battleEffect}
                 levelCap={levelCap}
-                caught={caught}
-                noEvs={noEvs}
-                anyAbility={anyAbility}
+                onCalc={onCalc}
               />
             ))}
           </div>

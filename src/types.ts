@@ -81,6 +81,14 @@ export interface BossMon {
   altSpeeds: Record<string, string>;
 }
 
+/** a boss Pokémon's Calc button was clicked: jump to the dedicated
+ * Calculator page and prefill the Opponent card with it */
+export interface CalcTarget {
+  mon: BossMon;
+  battleEffect: string;
+  levelCap?: number;
+}
+
 export interface BossReward {
   label: string;
   text: string;
@@ -172,6 +180,13 @@ export interface MonBuild {
   /** stat -> EVs invested (HP/ATK/DEF/SPA/SPD/SPE); missing = 0. Optional
    * so builds saved before this field existed still load fine. */
   evs?: Record<string, number>;
+}
+
+/** a run's caught Pokémon, as the damage calc's species picker sees them */
+export interface CaughtMon {
+  species: string;
+  nickname: string;
+  build?: MonBuild;
 }
 
 export interface RouteEncounter {

@@ -39,10 +39,25 @@ export class Move {
   category: "Physical" | "Special" | "Status";
 }
 
+/** per-side battle state (hazards, screens, Leech Seed, Tailwind, ...) —
+ * only the subset this app surfaces is typed here; the engine's Side class
+ * (vendor/rrcalc/field.js) supports more (Helping Hand, Battery, ...) */
+export interface SideOptions {
+  spikes?: number;
+  isSR?: boolean;
+  isReflect?: boolean;
+  isLightScreen?: boolean;
+  isAuroraVeil?: boolean;
+  isSeeded?: boolean;
+  isTailwind?: boolean;
+}
+
 export interface FieldOptions {
   weather?: string;
   terrain?: string;
   gameType?: string;
+  attackerSide?: SideOptions;
+  defenderSide?: SideOptions;
 }
 
 export class Field {

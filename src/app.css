@@ -554,26 +554,28 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- damage calc ---- */
 
 .calc-btn { margin-left: auto; align-self: flex-start; padding: 2px 9px; font-size: 15px; }
-.calc-dialog { width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; gap: 10px; }
-.calc-dialog h2 { display: flex; align-items: center; gap: 8px; font-size: 18px; }
-.calc-dialog h3 { margin: 0 0 8px; font-size: 14px; color: var(--accent2); }
-.calc-grid { display: flex; flex-direction: column; gap: 10px; }
-/* the boss is one compact strip: level · sheet info · field selects */
-.boss-line { display: flex; align-items: center; gap: 6px 14px; flex-wrap: wrap; }
-.lv-label { flex: 0 0 auto; }
-.calc-dialog .lv-label { flex-direction: row; align-items: center; gap: 6px; }
-.lv-label input { width: 58px; }
-.boss-meta { min-width: 0; }
-.field-selects {
-  display: flex;
-  gap: 6px 12px;
-  margin-left: auto;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  min-width: 0;
+/* the dedicated Calculator page: speed banner, then You / Field / Opponent
+ * side by side */
+.calculator-page { display: flex; flex-direction: column; gap: 10px; }
+.calc-page-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: start; }
+/* desktop: each side's move-glance results sit directly above that side's
+ * card instead of stacking full-width below everything — a full-width HP
+ * bar row reads worse than one scoped to its own column */
+@media (min-width: 901px) {
+  .calc-page-grid {
+    grid-template-areas:
+      "res-you . res-opp"
+      "you field opp";
+  }
+  .col-res-you { grid-area: res-you; }
+  .col-res-opp { grid-area: res-opp; }
+  .col-you-card { grid-area: you; }
+  .col-field-card { grid-area: field; }
+  .col-opp-card { grid-area: opp; }
 }
-.calc-dialog .field-select { flex-direction: row; align-items: center; }
+@media (max-width: 900px) {
+  .calc-page-grid { grid-template-columns: 1fr; }
+}
 .crit-toggle.active { border-color: var(--accent2); color: var(--accent2); background: var(--bg3); }
 .calc-side {
   display: flex;
@@ -596,8 +598,21 @@ tr.pickable:hover td { background: var(--bg3); }
 .spread-row { align-items: baseline; gap: 10px; }
 .spread-toggle { flex: 0 0 auto; }
 .spread-summary { font-size: 12px; min-width: 0; }
-.calc-results { display: flex; flex-direction: column; gap: 10px; }
-.speed-line { font-size: 13.5px; color: var(--accent2); }
+/* who moves first, colored the same as the HP-bar convention so it reads at
+ * a glance instead of requiring the reader to compare two numbers */
+.speed-banner {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px;
+  background: var(--bg);
+}
+.speed-banner .speed-headline { font-size: 13.5px; font-weight: 700; }
+.speed-banner .speed-nums { font-size: 12px; color: var(--muted); }
+.speed-banner.danger { border-color: #e85d4a; background: rgba(232, 93, 74, .1); }
+.speed-banner.danger .speed-headline { color: #ff8a8a; }
+.speed-banner.safe { border-color: #3ecf6f; background: rgba(62, 207, 111, .08); }
+.speed-banner.safe .speed-headline { color: #7fe0ab; }
+.speed-banner.tie { border-color: #e8c13a; background: rgba(232, 193, 58, .08); }
+.speed-banner.tie .speed-headline { color: #e8c13a; }
 .result-block h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
 .result-rows { display: flex; flex-direction: column; gap: 4px; }
 .result-row {
@@ -643,7 +658,7 @@ tr.pickable:hover td { background: var(--bg3); }
   font-size: 12px;
 }
 .calc-side-head { display: flex; align-items: center; gap: 12px; }
-.calc-side-head h3 { margin: 0; flex: 1; }
+.calc-side-head h3 { margin: 0; flex: 1; font-size: 14px; color: var(--accent2); }
 .import-note { font-size: 12px; }
 
 /* ---- static encounters on routes ---- */
@@ -962,6 +977,23 @@ tr.pickable:hover td { background: var(--bg3); }
 .totals-cell .k { font-size: 10.5px; color: var(--muted); font-weight: 600; }
 .total-val { font-weight: 700; font-size: 14px; }
 .totals-cell select { width: 100%; padding: 1px 2px; font-size: 11.5px; text-align: center; }
+
+.field-conditions { gap: 8px; align-items: center; text-align: center; }
+.field-conditions .spread-row { align-self: stretch; justify-content: center; }
+.field-quick-row {
+  display: flex;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.field-quick-row .field-select { flex-direction: row; align-items: center; }
+.auto-bits { font-size: 12px; }
+.side-editor { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.side-editor-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+.side-editor-pills { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.side-spikes { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+.side-spikes select { padding: 2px 4px; }
 
 /* ---- mobile ---- */
 

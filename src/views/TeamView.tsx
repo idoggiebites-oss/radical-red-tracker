@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Boss, BossMode, MonBuild, Run } from "../types";
+import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { MonCard, SpeciesDefenses } from "../components/MonCard";
-import { type CaughtMon } from "../components/CalcPanel";
+import { CalculatorPage } from "../components/CalculatorPage";
 import { TypeBadges, abilitiesFor, typesFor } from "../components/TypeBadges";
 import { isNoItem } from "../lib/itemSprites";
 import { abilitiesRandomized } from "../lib/saveFile";
@@ -70,12 +70,24 @@ export function TeamView({
   run,
   updateRun,
   modeData,
+  calcTarget,
+  onCalc,
 }: {
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
   modeData: BossMode;
+  /** set when a boss Pokémon's Calc button is clicked elsewhere: jump to
+   * the Calculator subtab and prefill the Opponent with it */
+  calcTarget?: (CalcTarget & { nonce: number }) | null;
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
 }) {
-  const [subtab, setSubtab] = useState<"roster" | "readiness">("roster");
+  const [subtab, setSubtab] = useState<"roster" | "readiness" | "calculator">(
+    "roster",
+  );
+  useEffect(() => {
+    if (!calcTarget) return;
+    setSubtab("calculator");
+  }, [calcTarget]);
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "BST" | "">("");
   const [filterType, setFilterType] = useState("");
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
@@ -278,6 +290,12 @@ export function TeamView({
           >
             Battle readiness
           </button>
+          <button
+            className={subtab === "calculator" ? "active" : ""}
+            onClick={() => setSubtab("calculator")}
+          >
+            Calculator
+          </button>
         </div>
         {subtab === "roster" && toolbar}
       </div>
@@ -302,8 +320,19 @@ export function TeamView({
           run={run}
           modeData={modeData}
           party={partyAll}
-          caught={caughtMons}
           setBuild={setBuild}
+          onCalc={onCalc}
+        />
+      )}
+      {subtab === "calculator" && (
+        <CalculatorPage
+          key={run.id}
+          run={run}
+          modeData={modeData}
+          caught={caughtMons}
+          noEvs={run.mode === "hardcore" || !!run.minimalGrind}
+          anyAbility={anyAbility}
+          target={calcTarget}
         />
       )}
       {subtab === "roster" && (
@@ -552,14 +581,14 @@ function ReadinessView({
   run,
   modeData,
   party,
-  caught,
   setBuild,
+  onCalc,
 }: {
   run: Run;
   modeData: BossMode;
   party: Entry[];
-  caught: CaughtMon[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
 }) {
   // remember the last viewed boss per run
   const storageKey = `rr-tracker.readinessBoss.${run.id}`;
@@ -674,9 +703,7 @@ function ReadinessView({
             key={selected}
             boss={boss}
             levelCap={levelCap}
-            caught={caught}
-            noEvs={run.mode === "hardcore" || !!run.minimalGrind}
-            anyAbility={abilitiesRandomized(run)}
+            onCalc={onCalc}
           />
         ) : (
           <p className="muted">Pick a boss team to check your party against.</p>
@@ -1200,15 +1227,11 @@ function TargetCard({
 function BossPreview({
   boss,
   levelCap,
-  caught,
-  noEvs,
-  anyAbility,
+  onCalc,
 }: {
   boss: Boss;
   levelCap?: number;
-  caught: CaughtMon[];
-  noEvs?: boolean;
-  anyAbility?: boolean;
+  onCalc?: (mon: BossMon, battleEffect: string, levelCap?: number) => void;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
@@ -1255,9 +1278,7 @@ function BossPreview({
               mon={m}
               battleEffect={boss.battleEffect}
               levelCap={levelCap}
-              caught={caught}
-              noEvs={noEvs}
-              anyAbility={anyAbility}
+              onCalc={onCalc}
             />
           )}
         </div>
