@@ -135,10 +135,19 @@ export function spriteUrls(species: string): string[] {
     `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`,
   ];
   const id = SPRITE_IDS[species];
+  // the RR dex repo's raw PNGs have no alpha channel — a chroma-key
+  // background bakes in as a solid green/pink box. scripts/clean_rrdex_sprites.py
+  // pre-cleans the RR-custom set (Sevii forms, custom megas) into
+  // public/sprites/custom/<id>.png; that goes first, with the original
+  // (uncleaned) URL kept as a fallback for anything not yet processed
+  const cleaned =
+    customForm && id !== undefined
+      ? [`${import.meta.env.BASE_URL}sprites/custom/${id}.png`]
+      : [];
   const rrdex = id !== undefined ? [`${RRDEX_SPECIES}/${id}.png`] : [];
   // a form suffix Showdown has no slug for (Sevii forms etc.) is an RR
   // custom — its dex sprite goes first so we don't fire two doomed 404s
-  return customForm ? [...rrdex, ...showdown] : [...showdown, ...rrdex];
+  return customForm ? [...cleaned, ...rrdex, ...showdown] : [...showdown, ...rrdex];
 }
 
 function speciesSlug(species: string): { slug: string; customForm: boolean } {

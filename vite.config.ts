@@ -30,11 +30,28 @@ export default defineConfig({
       workbox: {
         // the bosses.json chunk is ~600KB — raise the per-file precache cap
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        // default globPatterns only picks up js/css/html + the manifest's
+        // own icons — add png so nav icons and cleaned custom sprites
+        // (public/sprites/custom, public/icons) precache at install time
+        // instead of only caching lazily after their first successful fetch
+        globPatterns: ['**/*.{js,css,html,ico,svg,png,webmanifest}'],
         runtimeCaching: [
           {
             // sprites (Showdown, RR dex + PokeAPI on githubusercontent)
             urlPattern:
               /^https:\/\/(play\.pokemonshowdown\.com|raw\.githubusercontent\.com)\/.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'sprites',
+              expiration: { maxEntries: 2000, maxAgeSeconds: 60 * 60 * 24 * 90 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // our own cleaned-background sprites (public/sprites/custom) —
+            // not picked up by the default precache globPatterns since
+            // they're not JS/CSS/HTML or a listed manifest icon
+            urlPattern: ({ url }: { url: URL }) => url.pathname.includes('/sprites/custom/'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'sprites',

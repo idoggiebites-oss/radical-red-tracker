@@ -120,6 +120,20 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   font-weight: 600;
 }
 .tab.active { color: var(--text); background: var(--bg3); }
+/* hidden on desktop's horizontal top row; shown for the mobile bottom nav
+   (see @media max-width:640px) where each tab stacks icon-over-label */
+.tab-icon {
+  display: none;
+  width: 22px;
+  height: 22px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
 
 .toolbar {
   display: flex;
@@ -1087,6 +1101,7 @@ tr.pickable:hover td { background: var(--bg3); }
     text-align: center;
     border-radius: 8px;
   }
+  .tab-icon { display: block; margin-bottom: 2px; }
   /* reserve space for the fixed bar (now taller, see .tabs padding above)
      so it never covers the last content — extra buffer beyond the bar's
      own measured height because iOS's momentum-scroll rubber-band can

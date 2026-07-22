@@ -32,11 +32,11 @@ const ReferenceView = lazy(() =>
 
 type Tab = "routes" | "bosses" | "team" | "reference";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "routes", label: "Routes" },
-  { id: "bosses", label: "Bosses" },
-  { id: "team", label: "Team" },
-  { id: "reference", label: "Reference" },
+const TABS: { id: Tab; label: string; icon: string }[] = [
+  { id: "routes", label: "Routes", icon: "nav-routes" },
+  { id: "bosses", label: "Bosses", icon: "nav-bosses" },
+  { id: "team", label: "Team", icon: "nav-team" },
+  { id: "reference", label: "Reference", icon: "nav-reference" },
 ];
 
 export default function App() {
@@ -279,6 +279,13 @@ export default function App() {
             className={tab === t.id ? "tab active" : "tab"}
             onClick={() => setTab(t.id)}
           >
+            <span
+              className="tab-icon"
+              style={{
+                maskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.png)`,
+                WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.png)`,
+              }}
+            />
             {t.label}
           </button>
         ))}
