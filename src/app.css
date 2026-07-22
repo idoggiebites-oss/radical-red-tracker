@@ -1088,8 +1088,11 @@ tr.pickable:hover td { background: var(--bg3); }
     border-radius: 8px;
   }
   /* reserve space for the fixed bar (now taller, see .tabs padding above)
-     so it never covers the last content */
-  .app { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+     so it never covers the last content — extra buffer beyond the bar's
+     own measured height because iOS's momentum-scroll rubber-band can
+     settle a few px past the calculated rest position on a fast flick,
+     briefly exposing content the tight math alone would've cleared */
+  .app { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
   .footer { display: none; }
 
   .toolbar { gap: 8px; }
