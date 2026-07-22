@@ -9,6 +9,7 @@ import type {
   Run,
 } from "../types";
 import { Sprite } from "../components/Sprite";
+import { SpeciesCombobox } from "../components/SpeciesCombobox";
 import { TypeBadges, WILD_SPECIES } from "../components/TypeBadges";
 import { speciesRandomized } from "../lib/saveFile";
 import { STARTER_ID } from "../lib/storage";
@@ -178,14 +179,6 @@ export function RoutesView({
           shows up in its place on that route.
         </div>
       )}
-      {randomized && (
-        <datalist id="all-species">
-          {WILD_SPECIES.map((s) => (
-            <option key={s} value={s} />
-          ))}
-        </datalist>
-      )}
-
       {run && !q && (
         <RouteRow
           group={STARTER_GROUP}
@@ -447,17 +440,17 @@ function StarterPicker({
                 <span className="starter-choice-name">{shown}</span>
                 <TypeBadges species={shown} small />
               </button>
-              <input
+              <SpeciesCombobox
                 placeholder="Randomized? type it…"
-                list="starter-species"
                 value={overrides[pos]}
-                onChange={(e) => {
+                options={WILD_SPECIES}
+                onChange={(v) => {
                   const next = [...overrides];
-                  next[pos] = e.target.value;
+                  next[pos] = v;
                   setOverrides(next);
                   // retyping the already-picked slot fixes the record live
                   if (picked === pos) {
-                    pick(e.target.value.trim() || region.trio[pos], pos);
+                    pick(v.trim() || region.trio[pos], pos);
                   }
                 }}
               />
@@ -465,11 +458,6 @@ function StarterPicker({
           );
         })}
       </div>
-      <datalist id="starter-species">
-        {WILD_SPECIES.map((s) => (
-          <option key={s} value={s} />
-        ))}
-      </datalist>
     </div>
   );
 }
@@ -549,6 +537,23 @@ function RouteRow({
     });
   };
 
+  const speciesOptions =
+    group.id === STARTER_ID || randomized
+      ? WILD_SPECIES
+      : [...new Set(
+          group.sections.flatMap(({ loc }) =>
+            Object.values(loc.methods).flatMap(
+              (slots) => slots?.map((s) => s.species) ?? [],
+            ),
+          ),
+        )];
+  const speciesQuery = (enc?.species ?? "").trim().toLowerCase();
+  // an empty or unrecognized species can't be marked Caught/Fainted — a
+  // route slot that's supposedly caught but names no real Pokémon breaks
+  // the Team tab's counts and every sprite/type lookup downstream
+  const speciesValid =
+    speciesQuery !== "" && speciesOptions.some((o) => o.toLowerCase() === speciesQuery);
+
   return (
     <div className={`route-row ${enc ? `st-${enc.status}` : ""}`}>
       <button className="route-head" onClick={toggle}>
@@ -576,42 +581,34 @@ function RouteRow({
         <div className="route-body">
           {run && (
             <div className="enc-editor">
-              <input
+              <SpeciesCombobox
                 placeholder="Species caught here…"
                 value={enc?.species ?? ""}
-                onChange={(e) => setEncounter({ species: e.target.value })}
-                list={`species-${group.id}`}
+                onChange={(v) => setEncounter({ species: v })}
+                options={speciesOptions}
+                invalid={!!enc?.species && !speciesValid}
               />
-              <datalist id={`species-${group.id}`}>
-                {(group.id === STARTER_ID || randomized
-                  ? WILD_SPECIES
-                  : [...new Set(
-                      group.sections.flatMap(({ loc }) =>
-                        Object.values(loc.methods).flatMap(
-                          (slots) => slots?.map((s) => s.species) ?? [],
-                        ),
-                      ),
-                    )]
-                ).map((s) => (
-                  <option key={s} value={s} />
-                ))}
-              </datalist>
               <input
                 placeholder="Nickname"
                 value={enc?.nickname ?? ""}
                 onChange={(e) => setEncounter({ nickname: e.target.value })}
               />
               <div className="status-buttons">
-                {STATUS_META.map((s) => (
-                  <button
-                    key={s.id}
-                    className={enc?.status === s.id ? `st-btn ${s.id} active` : "st-btn"}
-                    title={s.label}
-                    onClick={() => setEncounter({ status: s.id })}
-                  >
-                    {s.icon} {s.label}
-                  </button>
-                ))}
+                {STATUS_META.map((s) => {
+                  const needsSpecies = s.id === "caught" || s.id === "fainted";
+                  const disabled = needsSpecies && !speciesValid;
+                  return (
+                    <button
+                      key={s.id}
+                      className={enc?.status === s.id ? `st-btn ${s.id} active` : "st-btn"}
+                      title={disabled ? "Enter a valid species first" : s.label}
+                      disabled={disabled}
+                      onClick={() => setEncounter({ status: s.id })}
+                    >
+                      {s.icon} {s.label}
+                    </button>
+                  );
+                })}
                 {enc && (
                   <button className="st-btn clear" onClick={() => setEncounter(null)}>
                     Clear
@@ -717,7 +714,12 @@ function EncounterTable({
   onPick?: (species: string) => void;
 }) {
   const [editing, setEditing] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
   const randomized = onSee !== undefined;
+  const startEditing = (species: string, current: string) => {
+    setEditing(species);
+    setEditValue(current);
+  };
   return (
     <table>
       <tbody>
@@ -740,37 +742,31 @@ function EncounterTable({
               {randomized && (
                 <td className="cell-mapped" onClick={(e) => e.stopPropagation()}>
                   {editing === s.species ? (
-                    <input
+                    <SpeciesCombobox
                       autoFocus
                       className="map-input"
-                      list="all-species"
-                      defaultValue={sighted ?? ""}
+                      value={editValue}
+                      options={WILD_SPECIES}
                       placeholder="Saw here…"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          onSee?.(s.species, e.currentTarget.value);
-                          setEditing(null);
-                        } else if (e.key === "Escape") {
-                          setEditing(null);
-                        }
+                      onChange={(v) => {
+                        setEditValue(v);
+                        onSee?.(s.species, v);
                       }}
-                      onBlur={(e) => {
-                        onSee?.(s.species, e.currentTarget.value);
-                        setEditing(null);
-                      }}
+                      onBlur={() => setEditing(null)}
+                      onEscape={() => setEditing(null)}
                     />
                   ) : sighted ? (
                     <button
                       className="map-value"
                       title="Edit sighting"
-                      onClick={() => setEditing(s.species)}
+                      onClick={() => startEditing(s.species, sighted)}
                     >
                       → <Sprite species={sighted} size={26} /> {sighted}
                     </button>
                   ) : (
                     <button
                       className="map-hint"
-                      onClick={() => setEditing(s.species)}
+                      onClick={() => startEditing(s.species, "")}
                     >
                       → record
                     </button>

@@ -219,7 +219,37 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 }
 
 .enc-editor { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.species-combobox { position: relative; flex: 1 1 200px; min-width: 160px; }
+.species-combobox input { width: 100%; }
+.species-combobox input.invalid { border-color: #e85d4a; }
+.species-combobox-list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.species-combobox-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.species-combobox-list li.active { background: var(--bg3); }
 .status-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.status-buttons .st-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .st-btn.active.caught { background: #1d3a2c; border-color: var(--caught); }
 .st-btn.active.fainted { background: #40261a; border-color: var(--fainted); }
 .st-btn.active.missed, .st-btn.active.skipped { background: var(--bg3); border-color: var(--muted); }
