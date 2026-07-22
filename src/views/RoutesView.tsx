@@ -450,8 +450,10 @@ function StarterPicker({
                 disabled={overrideInvalid}
                 onClick={() => pick(shown, pos)}
               >
-                <Sprite species={shown} size={40} />
-                <span className="starter-choice-name">{shown}</span>
+                <span className="starter-choice-top">
+                  <Sprite species={shown} size={40} />
+                  <span className="starter-choice-name">{shown}</span>
+                </span>
                 <TypeBadges species={shown} small />
               </button>
               <SpeciesCombobox

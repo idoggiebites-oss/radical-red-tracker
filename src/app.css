@@ -978,13 +978,14 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 .starter-choice {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   text-align: left;
   padding: 8px;
   background: var(--bg);
 }
+.starter-choice-top { display: flex; align-items: center; gap: 8px; }
 .starter-slot.active .slot-label { color: var(--accent2); }
 .starter-slot.active .starter-choice { border-color: var(--accent2); background: var(--bg3); }
 .starter-choice-name { font-weight: 600; }
@@ -1037,7 +1038,13 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- mobile ---- */
 
 @media (max-width: 640px) {
-  .app { padding: 0 10px 40px; }
+  /* viewport-fit=cover lets the page draw under the notch/status bar in
+     standalone PWA mode — reserve that space instead of letting the header
+     render underneath it */
+  .app {
+    padding: env(safe-area-inset-top) calc(10px + env(safe-area-inset-right)) 40px
+      calc(10px + env(safe-area-inset-left));
+  }
 
   /* ios safari zooms the page when focusing inputs under 16px */
   input, select, textarea { font-size: 16px; }
@@ -1049,8 +1056,41 @@ tr.pickable:hover td { background: var(--bg3); }
   /* the run picker keeps a readable width and wraps above the buttons */
   .run-controls select { flex: 1 1 160px; min-width: 0; }
 
-  .tabs { width: 100%; }
-  .tab { flex: 1; padding: 8px 4px; text-align: center; }
+  /* bottom nav bar: fixed + thumb-reachable instead of a top row you have
+     to scroll back up for; leaves room to add per-tab icons later without
+     restructuring (label text stays its own element) */
+  .tabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    /* real dead space between buttons — with gap:0 the boundary between the
+       2nd and 3rd tab sits exactly at screen-center, which iOS treats as a
+       gesture zone (e.g. double-tap-to-Siri); a flush edge there means a
+       tap meant for that gesture can land on a button instead */
+    gap: 10px;
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    /* native tab bars keep real cushion above the home indicator, not just
+       the bare safe-area inset — an 8px top pad and 10px below the inset */
+    padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+    z-index: 5;
+  }
+  .tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px;
+    text-align: center;
+    border-radius: 8px;
+  }
+  /* reserve space for the fixed bar (now taller, see .tabs padding above)
+     so it never covers the last content */
+  .app { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+  .footer { display: none; }
 
   .toolbar { gap: 8px; }
   .search { flex-basis: 100%; max-width: none; }
