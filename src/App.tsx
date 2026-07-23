@@ -282,8 +282,8 @@ export default function App() {
             <span
               className="tab-icon"
               style={{
-                maskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.png)`,
-                WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.png)`,
+                maskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
+                WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
               }}
             />
             {t.label}
