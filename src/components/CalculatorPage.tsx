@@ -55,6 +55,17 @@ const DEFAULT_CFG: PlayerMonConfig = {
   moves: ["", "", "", ""],
 };
 
+/** pairs each non-empty move with its slot's pinned hit count (if any),
+ * preserving index alignment with moveHits before the empty slots are
+ * dropped */
+function movesWithHits(
+  cfg: PlayerMonConfig,
+): { name: string; hits?: number; slotIndex: number }[] {
+  return cfg.moves
+    .map((name, i) => ({ name, hits: cfg.moveHits?.[i], slotIndex: i }))
+    .filter((m) => m.name.trim());
+}
+
 function loadYouCfg(levelCap?: number): PlayerMonConfig {
   let cfg = DEFAULT_CFG;
   try {
@@ -416,14 +427,14 @@ export function CalculatorPage({
     const incoming = calcMoves(
       oppPoke,
       youPoke,
-      opp.moves.filter((m) => m.trim()),
+      movesWithHits(opp),
       incomingField,
       crit,
     );
     const outgoing = calcMoves(
       youPoke,
       oppPoke,
-      calcYou.moves.filter((m) => m.trim()),
+      movesWithHits(calcYou),
       outgoingField,
       crit,
     );
@@ -538,6 +549,11 @@ export function CalculatorPage({
               title={`Your moves vs them${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.outgoing}
               tone="outgoing"
+              onSetHits={(i, hits) => {
+                const moveHits = [...(you.moveHits ?? [])];
+                moveHits[i] = hits;
+                updateYou({ moveHits });
+              }}
             />
           </div>
         )}
@@ -547,6 +563,11 @@ export function CalculatorPage({
               title={`${opp.species || "Opponent"}'s moves vs you${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.incoming}
               tone="incoming"
+              onSetHits={(i, hits) => {
+                const moveHits = [...(opp.moveHits ?? [])];
+                moveHits[i] = hits;
+                updateOpp({ moveHits });
+              }}
             />
           </div>
         )}
@@ -1142,10 +1163,12 @@ function ResultBlock({
   title,
   lines,
   tone,
+  onSetHits,
 }: {
   title: string;
   lines: MatchupLine[];
   tone: "incoming" | "outgoing";
+  onSetHits?: (slotIndex: number, hits: number | undefined) => void;
 }) {
   return (
     <div className="result-block">
@@ -1153,7 +1176,7 @@ function ResultBlock({
       {lines.length === 0 && <p className="muted">No damaging moves.</p>}
       <div className="result-rows">
         {lines.map((l, i) => (
-          <ResultRow key={i} line={l} tone={tone} />
+          <ResultRow key={i} line={l} tone={tone} onSetHits={onSetHits} />
         ))}
       </div>
     </div>
@@ -1164,9 +1187,11 @@ function ResultBlock({
 function ResultRow({
   line: l,
   tone,
+  onSetHits,
 }: {
   line: MatchupLine;
   tone: "incoming" | "outgoing";
+  onSetHits?: (slotIndex: number, hits: number | undefined) => void;
 }) {
   const ok = !l.error;
   // non-numeric outcomes render their label instead of a 0–0% range
@@ -1196,6 +1221,35 @@ function ResultRow({
   return (
     <div className="result-row" title={l.desc || undefined}>
       <span className="result-move">{l.move}</span>
+      {l.hitsRange && l.slotIndex !== undefined && onSetHits && (
+        <select
+          className={l.autoNote ? "result-hits auto-detected" : "result-hits"}
+          title={
+            l.autoNote
+              ? `Auto-detected from ${l.autoNote} — pick a different count to override`
+              : "Pin a hit count to check items like Loaded Dice or Skill Link — otherwise shows the full possible range"
+          }
+          value={l.pinnedHits ?? ""}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) =>
+            onSetHits(l.slotIndex!, e.target.value ? parseInt(e.target.value, 10) : undefined)
+          }
+        >
+          <option value="">
+            {l.autoRange
+              ? `${l.autoRange[0] === l.autoRange[1] ? `${l.autoRange[0]}` : `${l.autoRange[0]}-${l.autoRange[1]}`}× (${l.autoNote})`
+              : `${l.hitsRange[0]}-${l.hitsRange[1]}×`}
+          </option>
+          {Array.from(
+            { length: l.hitsRange[1] - l.hitsRange[0] + 1 },
+            (_, k) => l.hitsRange![0] + k,
+          ).map((n) => (
+            <option key={n} value={n}>
+              {n}×
+            </option>
+          ))}
+        </select>
+      )}
       <span className="result-fill">
         <span className="hp-bar">
           <span className={"hp-sure" + barTone} style={{ width: `${lo}%` }} />

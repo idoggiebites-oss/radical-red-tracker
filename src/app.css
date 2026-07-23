@@ -715,6 +715,11 @@ tr.pickable:hover td { background: var(--bg3); }
   padding: 5px 8px;
 }
 .result-move { font-weight: 700; font-size: 12.5px; flex: 0 0 110px; min-width: 0; }
+/* between the move name and the HP bar — a hit-count multiplier, only on
+   genuinely-ambiguous multi-hit moves (Fury Attack, Bullet Seed, …), to
+   check items like Loaded Dice or Skill Link without leaving the results */
+.result-hits { flex: 0 0 auto; font-size: 11px; padding: 2px 4px; color: var(--muted); }
+.result-hits.auto-detected { border-color: var(--accent2); color: var(--accent2); }
 .result-fill { flex: 1; min-width: 0; }
 .result-fill .target-dmg { font-size: 11px; }
 .target-dmg.ohko { color: #ff8a8a; font-weight: 700; }

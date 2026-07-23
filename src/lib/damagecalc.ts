@@ -312,6 +312,10 @@ export interface PlayerMonConfig {
   /** engine status code ("brn", "par", …), "" = healthy */
   status?: string;
   moves: string[];
+  /** per move-slot: a pinned hit count for a multi-hit move (e.g. 4 or 5 to
+   * check Loaded Dice/Skill Link), matched by index to `moves`. undefined
+   * (or a slot with no entry) means "show the full possible range" */
+  moveHits?: (number | undefined)[];
 }
 
 /** status conditions the engine models (burn/frostbite damage halving,
@@ -525,6 +529,22 @@ export interface MatchupLine {
   /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
   guard?: string;
   error?: string;
+  /** present when the move's hit count is genuinely ambiguous (Fury Attack,
+   * Bullet Seed, …) — [min, max] hits selectable for it */
+  hitsRange?: [number, number];
+  /** which move-config slot (0-3) this line came from, for hitsRange's
+   * picker to write back to — absent for calcMoves callers that don't need
+   * a picker (the array position isn't reliable once lines get sorted) */
+  slotIndex?: number;
+  /** the hit count this line was actually calculated at, when the user
+   * pinned one via the picker; undefined means "auto" */
+  pinnedHits?: number;
+  /** what "auto" actually resolved to and why, when it's narrower than the
+   * move's full hitsRange — Skill Link (always max hits) or Loaded Dice
+   * (only ever 4-5 of a 2-5 move) detected off the attacker. Absent when
+   * pinnedHits is set (an explicit pin always wins) or neither applies */
+  autoRange?: [number, number];
+  autoNote?: string;
 }
 
 const MOLD_BREAKERS = new Set(["Mold Breaker", "Teravolt", "Turboblaze"]);
@@ -532,6 +552,40 @@ const MOLD_BREAKERS = new Set(["Mold Breaker", "Teravolt", "Turboblaze"]);
 /** abilities that add a follow-up strike to single-hit moves (the engine
  * models their damage); the extra hit finishes a Sturdy/Sash survivor */
 const MULTI_STRIKE_ABILITIES = ["Parental Bond"];
+
+/** [min, max] hits a move's hit count is genuinely ambiguous over — e.g.
+ * Fury Attack is [2, 5]. null when there's nothing to pick: not a multi-hit
+ * move, or a fixed-count one (Bonemerang, Twineedle, …) the engine always
+ * resolves to the same number regardless of what's passed in. Moves with
+ * multiaccuracy (Triple Kick, Population Bomb, …) can stop early on a miss,
+ * so their range starts at 1 hit even though the doc "multihit" is a single
+ * number (the guaranteed-hits cap, not the count) */
+export function multihitRange(moveName: string): [number, number] | null {
+  const data = gen.moves.get(rr.toID(moveName));
+  const mh = data?.multihit;
+  if (mh === undefined) return null;
+  if (typeof mh === "number") {
+    return data?.multiaccuracy ? [1, mh] : null;
+  }
+  return mh[0] === mh[1] ? null : [mh[0], mh[1]];
+}
+
+/** narrows a multi-hit range for what the attacker's ability/item
+ * guarantees, when neither is overridden by an explicit pin: Skill Link
+ * always maxes out the hit count, Loaded Dice only ever rolls the top two
+ * (a 2-5 move becomes 4-5) */
+function autoHitsNarrowing(
+  attacker: rr.Pokemon,
+  range: [number, number],
+): { range: [number, number]; note?: string } {
+  if (attacker.hasAbility("Skill Link")) {
+    return { range: [range[1], range[1]], note: "Skill Link" };
+  }
+  if (attacker.hasItem("Loaded Dice")) {
+    return { range: [Math.max(range[0], range[1] - 1), range[1]], note: "Loaded Dice" };
+  }
+  return { range };
+}
 
 /** "Sturdy" / "Focus Sash" when the defender survives an otherwise-lethal
  * single hit from full HP; multi-hit moves and multi-strike abilities break
@@ -726,12 +780,12 @@ export function effectiveSpeed(
 export function calcMoves(
   attacker: rr.Pokemon,
   defender: rr.Pokemon,
-  moves: string[],
+  moves: { name: string; hits?: number; slotIndex?: number }[],
   fieldOpts: rr.FieldOptions,
   isCrit = false,
 ): MatchupLine[] {
   const lines: MatchupLine[] = [];
-  for (const docMove of moves) {
+  for (const { name: docMove, hits: pinnedHits, slotIndex } of moves) {
     const moveName = resolveMove(docMove);
     if (!moveName) {
       if (docMove && docMove !== "-")
@@ -739,12 +793,35 @@ export function calcMoves(
       continue;
     }
     try {
-      const move = new rr.Move(GEN, moveName, { isCrit });
+      const range = multihitRange(moveName);
+      // no pinned hit count on a genuinely-ambiguous multi-hit move: show
+      // the true range (fewest hits' low roll to most hits' high roll),
+      // narrowed by Skill Link/Loaded Dice when the attacker has one and
+      // nothing's explicitly pinned — not the engine's own single
+      // silently-guessed hit count
+      let autoRange: [number, number] | undefined;
+      let autoNote: string | undefined;
+      if (range && pinnedHits === undefined) {
+        const auto = autoHitsNarrowing(attacker, range);
+        if (auto.note) {
+          autoRange = auto.range;
+          autoNote = auto.note;
+        }
+      }
+      const runAt = range && pinnedHits === undefined ? (autoRange ?? range) : undefined;
+      const hitsForCalc = pinnedHits ?? runAt?.[1] ?? range?.[1];
+
+      const move = new rr.Move(GEN, moveName, { isCrit, hits: hitsForCalc });
       const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
-      const [min, max] = result.range();
+      let [min, max] = result.range();
+      let desc: string;
+      if (runAt) {
+        const loMove = new rr.Move(GEN, moveName, { isCrit, hits: runAt[0] });
+        const [loMin] = rr.calculate(GEN, attacker, defender, loMove, new rr.Field(fieldOpts)).range();
+        min = loMin;
+      }
       const hp = defender.maxHP();
       const maxPercent = Math.round((max / hp) * 1000) / 10;
-      let desc: string;
       try {
         desc = result.desc();
       } catch {
@@ -757,6 +834,11 @@ export function calcMoves(
         minPercent: Math.round((min / hp) * 1000) / 10,
         maxPercent,
         guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
+        hitsRange: range ?? undefined,
+        slotIndex,
+        pinnedHits,
+        autoRange,
+        autoNote,
       });
     } catch {
       lines.push({ move: moveName, desc: "", minPercent: 0, maxPercent: 0, error: "calc failed" });
