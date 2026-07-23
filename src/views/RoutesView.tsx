@@ -490,6 +490,72 @@ function RouteStats({ run }: { run: Run }) {
   );
 }
 
+function encSpeciesValid(
+  enc: Run["encounters"][string] | undefined,
+  speciesOptions: string[],
+): boolean {
+  const q = (enc?.species ?? "").trim().toLowerCase();
+  return q !== "" && speciesOptions.some((o) => o.toLowerCase() === q);
+}
+
+/** species/nickname/status/Clear for one encounter slot — reused for the
+ * route's main slot and any "additional encounter" (bonus catch) slots */
+function EncounterEditor({
+  enc,
+  speciesOptions,
+  showSpeciesInput,
+  onChange,
+  onClear,
+}: {
+  enc: Run["encounters"][string] | undefined;
+  speciesOptions: string[];
+  showSpeciesInput: boolean;
+  onChange: (patch: Partial<Run["encounters"][string]>) => void;
+  onClear: () => void;
+}) {
+  const speciesValid = encSpeciesValid(enc, speciesOptions);
+  return (
+    <div className="enc-editor">
+      {showSpeciesInput && (
+        <SpeciesCombobox
+          placeholder="Species caught here…"
+          value={enc?.species ?? ""}
+          onChange={(v) => onChange({ species: v })}
+          options={speciesOptions}
+          invalid={!!enc?.species && !speciesValid}
+        />
+      )}
+      <input
+        placeholder="Nickname"
+        value={enc?.nickname ?? ""}
+        onChange={(e) => onChange({ nickname: e.target.value })}
+      />
+      <div className="status-buttons">
+        {STATUS_META.map((s) => {
+          const needsSpecies = s.id === "caught" || s.id === "fainted";
+          const disabled = needsSpecies && !speciesValid;
+          return (
+            <button
+              key={s.id}
+              className={enc?.status === s.id ? `st-btn ${s.id} active` : "st-btn"}
+              title={disabled ? "Enter a valid species first" : s.label}
+              disabled={disabled}
+              onClick={() => onChange({ status: s.id })}
+            >
+              {s.icon} {s.label}
+            </button>
+          );
+        })}
+        {enc && (
+          <button className="st-btn clear" onClick={onClear}>
+            Clear
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function RouteRow({
   group,
   run,
@@ -537,11 +603,14 @@ function RouteRow({
     });
   };
 
-  const setEncounter = (patch: Partial<Run["encounters"][string]> | null) => {
+  const setEncounterAt = (
+    slotId: string,
+    patch: Partial<Run["encounters"][string]> | null,
+  ) => {
     updateRun((r) => {
       const next = { ...r.encounters };
       if (patch === null) {
-        delete next[encId];
+        delete next[slotId];
       } else {
         const defaults: Run["encounters"][string] = {
           species: "",
@@ -549,11 +618,13 @@ function RouteRow({
           status: "caught",
           inParty: false,
         };
-        next[encId] = { ...defaults, ...next[encId], ...patch };
+        next[slotId] = { ...defaults, ...next[slotId], ...patch };
       }
       return { ...r, encounters: next };
     });
   };
+  const setEncounter = (patch: Partial<Run["encounters"][string]> | null) =>
+    setEncounterAt(encId, patch);
 
   const speciesOptions =
     group.id === STARTER_ID || randomized
@@ -565,21 +636,41 @@ function RouteRow({
             ),
           ),
         )];
-  const speciesQuery = (enc?.species ?? "").trim().toLowerCase();
-  // an empty or unrecognized species can't be marked Caught/Fainted — a
-  // route slot that's supposedly caught but names no real Pokémon breaks
-  // the Team tab's counts and every sprite/type lookup downstream
-  const speciesValid =
-    speciesQuery !== "" && speciesOptions.some((o) => o.toLowerCase() === speciesQuery);
-  // once a species is recorded, the wild-encounter tables are just clutter
-  // — hide them until Clear brings the choice back open. Randomized runs
-  // hide them unconditionally: the doc species they list aren't real
-  // "options" once anything can appear (the sighting-log/mapping feature
-  // isn't in active use for now). The starter route is unaffected either
-  // way since it has no wild-encounter methods and uses StarterPicker
-  // instead — its pick determines the rival's team and some boss variants,
-  // so it always stays visible for re-picking
-  const showEncounterTables = !randomized && speciesQuery === "";
+
+  // "additional encounter" (bonus catch) slots: some players allow one more
+  // catch on a route once the main encounter is resolved — same species
+  // picker, its own status/Clear, stacking as many times as the player
+  // clicks the button. Ids chain off the main slot (<encId>-extra-1, -2, …);
+  // the starter route doesn't have wild encounters to bonus-catch from, so
+  // it's excluded entirely
+  const extraSlotIds: string[] = [];
+  if (group.id !== STARTER_ID) {
+    let i = 1;
+    while (run?.encounters[`${encId}-extra-${i}`]) {
+      extraSlotIds.push(`${encId}-extra-${i}`);
+      i++;
+    }
+  }
+  const allSlotIds = [encId, ...extraSlotIds];
+  const lastSlotId = allSlotIds[allSlotIds.length - 1];
+  const lastEnc = run?.encounters[lastSlotId];
+  const lastResolved =
+    encSpeciesValid(lastEnc, speciesOptions) &&
+    (lastEnc?.status === "caught" || lastEnc?.status === "fainted");
+  const nextExtraId = `${encId}-extra-${extraSlotIds.length + 1}`;
+
+  // once the currently-open slot (main, or the latest additional encounter)
+  // has a species recorded, the wild-encounter tables are just clutter —
+  // hide them until Clear brings that slot back open, or "+ Additional
+  // encounter" opens a fresh one. Randomized runs hide them unconditionally:
+  // the doc species they list aren't real "options" once anything can
+  // appear (the sighting-log/mapping feature isn't in active use for now).
+  // The starter route is unaffected either way since it has no
+  // wild-encounter methods and uses StarterPicker instead — its pick
+  // determines the rival's team and some boss variants, so it always stays
+  // visible for re-picking
+  const showEncounterTables =
+    !randomized && (lastEnc?.species ?? "").trim() === "";
 
   return (
     <div className={`route-row ${enc ? `st-${enc.status}` : ""}`}>
@@ -607,44 +698,37 @@ function RouteRow({
       {open && (
         <div className="route-body">
           {run && (
-            <div className="enc-editor">
-              {group.id !== STARTER_ID && (
-                <SpeciesCombobox
-                  placeholder="Species caught here…"
-                  value={enc?.species ?? ""}
-                  onChange={(v) => setEncounter({ species: v })}
-                  options={speciesOptions}
-                  invalid={!!enc?.species && !speciesValid}
+            <EncounterEditor
+              enc={enc}
+              speciesOptions={speciesOptions}
+              showSpeciesInput={group.id !== STARTER_ID}
+              onChange={(patch) => setEncounter(patch)}
+              onClear={() => setEncounter(null)}
+            />
+          )}
+          {run &&
+            extraSlotIds.map((slotId, i) => (
+              <div key={slotId} className="extra-encounter">
+                <h5 className="extra-encounter-label">
+                  Additional encounter {i + 1}
+                </h5>
+                <EncounterEditor
+                  enc={run.encounters[slotId]}
+                  speciesOptions={speciesOptions}
+                  showSpeciesInput
+                  onChange={(patch) => setEncounterAt(slotId, patch)}
+                  onClear={() => setEncounterAt(slotId, null)}
                 />
-              )}
-              <input
-                placeholder="Nickname"
-                value={enc?.nickname ?? ""}
-                onChange={(e) => setEncounter({ nickname: e.target.value })}
-              />
-              <div className="status-buttons">
-                {STATUS_META.map((s) => {
-                  const needsSpecies = s.id === "caught" || s.id === "fainted";
-                  const disabled = needsSpecies && !speciesValid;
-                  return (
-                    <button
-                      key={s.id}
-                      className={enc?.status === s.id ? `st-btn ${s.id} active` : "st-btn"}
-                      title={disabled ? "Enter a valid species first" : s.label}
-                      disabled={disabled}
-                      onClick={() => setEncounter({ status: s.id })}
-                    >
-                      {s.icon} {s.label}
-                    </button>
-                  );
-                })}
-                {enc && (
-                  <button className="st-btn clear" onClick={() => setEncounter(null)}>
-                    Clear
-                  </button>
-                )}
               </div>
-            </div>
+            ))}
+          {run && group.id !== STARTER_ID && lastResolved && (
+            <button
+              className="st-btn add-extra-encounter"
+              title="Some players allow themselves one more catch on a route once the main encounter is resolved"
+              onClick={() => setEncounterAt(nextExtraId, { status: "skipped" })}
+            >
+              + Additional encounter
+            </button>
           )}
 
           {(group.id === STARTER_ID || statics.length > 0) && (
@@ -677,7 +761,7 @@ function RouteRow({
                       run={run}
                       updateRun={updateRun}
                       onPickRoute={
-                        run ? (sp) => setEncounter({ species: sp }) : undefined
+                        run ? (sp) => setEncounterAt(lastSlotId, { species: sp }) : undefined
                       }
                     />
                   )}
@@ -715,7 +799,7 @@ function RouteRow({
                             : undefined
                         }
                         onPick={
-                          run ? (sp) => setEncounter({ species: sp }) : undefined
+                          run ? (sp) => setEncounterAt(lastSlotId, { species: sp }) : undefined
                         }
                       />
                     </div>
