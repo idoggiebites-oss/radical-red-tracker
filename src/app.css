@@ -142,6 +142,44 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   height: 22px;
 }
 
+/* zero-height marker at the top nav's natural position — App.tsx watches
+   it with an IntersectionObserver to know when that nav has scrolled out
+   of view, independent of the nav's own position (see .tabs.floating) */
+.tabs-sentinel { height: 0; }
+
+/* desktop: once the top tab row scrolls out of view, echo it as a fixed
+   bottom bar like mobile always has (mobile's own @media max-width:640px
+   rule below already makes .tabs fixed unconditionally, so this only
+   matters — and only applies — above that breakpoint) */
+@media (min-width: 641px) {
+  .tabs.floating {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+    gap: 10px;
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    padding: 8px 10px;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+  }
+  .tabs.floating .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 1 100px;
+    padding: 6px 4px;
+    border-radius: 8px;
+  }
+  .tabs.floating .tab-icon { display: block; margin-bottom: 2px; }
+  /* reserve room so the floating bar never covers the last bit of content */
+  .app.floating-nav-active { padding-bottom: 76px; }
+}
+
 .toolbar {
   display: flex;
   gap: 12px;

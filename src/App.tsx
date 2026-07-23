@@ -46,6 +46,21 @@ export default function App() {
   // mobile only: run controls (switcher/new/export/import/delete) collapse
   // behind a cog button instead of a full row across the header
   const [runMenuOpen, setRunMenuOpen] = useState(false);
+  // desktop: once the top tab row scrolls out of view, echo it as a fixed
+  // bottom bar (mobile already has one unconditionally, via CSS alone) —
+  // tracked off a sentinel placed right before <nav>, not the nav itself,
+  // so toggling the nav's own position can't feed back into the observer
+  const [showFloatingNav, setShowFloatingNav] = useState(false);
+  const tabsSentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = tabsSentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowFloatingNav(!entry.isIntersecting),
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   // set when the cap pill is clicked: the boss team to jump to and open
   const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
     null,
@@ -152,7 +167,7 @@ export default function App() {
   }, [modeData, currentCap, needsRouteChoice]);
 
   return (
-    <div className="app">
+    <div className={showFloatingNav ? "app floating-nav-active" : "app"}>
       <header className="topbar">
         <div className="brand">
           <span className="brand-title">Radical Red 4.1</span>
@@ -307,7 +322,8 @@ export default function App() {
         />
       )}
 
-      <nav className="tabs">
+      <div ref={tabsSentinelRef} className="tabs-sentinel" />
+      <nav className={showFloatingNav ? "tabs floating" : "tabs"}>
         {TABS.map((t) => (
           <button
             key={t.id}
