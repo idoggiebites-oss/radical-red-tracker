@@ -43,7 +43,7 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'sprites',
-              expiration: { maxEntries: 2000, maxAgeSeconds: 60 * 60 * 24 * 90 },
+              expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 90 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
@@ -55,7 +55,7 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'sprites',
-              expiration: { maxEntries: 2000, maxAgeSeconds: 60 * 60 * 24 * 90 },
+              expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 90 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
