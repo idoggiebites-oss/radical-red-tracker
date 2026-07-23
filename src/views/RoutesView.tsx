@@ -35,6 +35,29 @@ const STARTER_GROUP: RouteGroup = {
   sections: [{ label: null, loc: STARTER_LOC }],
 };
 
+/** named story locations that hand out an egg — any species, unrelated to
+ * the run's species-randomizer toggle — as a bonus encounter opportunity.
+ * Not in the docs' encounter sheets (no grass/water methods), so these are
+ * synthetic route groups the same way the starter row is */
+const EGG_LOCATIONS: { id: string; name: string }[] = [
+  { id: "egg-underground-tunnel", name: "UNDERGROUND TUNNEL" },
+  { id: "egg-rocket-hideout", name: "ROCKET HIDEOUT" },
+  { id: "egg-silph-co", name: "SILPH CO." },
+  { id: "egg-indigo-plateau", name: "INDIGO PLATEAU" },
+];
+const EGG_LOCATION_IDS = new Set(EGG_LOCATIONS.map((e) => e.id));
+const EGG_GROUPS: RouteGroup[] = EGG_LOCATIONS.map((e) => ({
+  id: e.id,
+  name: `${e.name} · EGG`,
+  postgame: false,
+  sections: [
+    {
+      label: null,
+      loc: { id: e.id, name: `${e.name} · EGG`, postgame: false, methods: {} },
+    },
+  ],
+}));
+
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
   grass_night: "Grass / Cave · Night",
@@ -189,6 +212,19 @@ export function RoutesView({
           toggle={() => setOpen(open === STARTER_ID ? null : STARTER_ID)}
         />
       )}
+      {run &&
+        !q &&
+        EGG_GROUPS.map((g) => (
+          <RouteRow
+            key={g.id}
+            group={g}
+            run={run}
+            updateRun={updateRun}
+            randomized={randomized}
+            open={open === g.id}
+            toggle={() => setOpen(open === g.id ? null : g.id)}
+          />
+        ))}
       {visibleGroups.map((g) => {
         const groupStatics = g.sections.flatMap(
           ({ loc }) => staticsMap[loc.id] ?? [],
@@ -627,7 +663,7 @@ function RouteRow({
     setEncounterAt(encId, patch);
 
   const speciesOptions =
-    group.id === STARTER_ID || randomized
+    group.id === STARTER_ID || EGG_LOCATION_IDS.has(group.id) || randomized
       ? WILD_SPECIES
       : [...new Set(
           group.sections.flatMap(({ loc }) =>

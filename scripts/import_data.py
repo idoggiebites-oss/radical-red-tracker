@@ -18,6 +18,7 @@ import io
 import json
 import re
 import sys
+import unicodedata
 import urllib.request
 from pathlib import Path
 
@@ -87,7 +88,18 @@ def fetch_csv(sheet_id: str, gid: int, name: str, refresh: bool) -> list[list[st
 
 def cell(rows: list[list[str]], r: int, c: int) -> str:
     if 0 <= r < len(rows) and 0 <= c < len(rows[r]):
-        return rows[r][c].strip()
+        # the sheet occasionally carries a stray control character in a
+        # cell (copy-paste artifact) — invisible in the sheet UI, but it
+        # breaks exact-match lookups downstream (a "Sandile" raid den once
+        # came through as "\x10Sandile", silently failing sprite/type
+        # lookups). Strip C0/C1 control chars EXCEPT \n/\r/\t, which are
+        # load-bearing — multi-line cells get split on them all over this
+        # file (see resolve_ability(), the boss-name/notes joins, ...).
+        v = "".join(
+            ch for ch in rows[r][c]
+            if ch in "\n\r\t" or unicodedata.category(ch) != "Cc"
+        )
+        return v.strip()
     return ""
 
 
@@ -748,38 +760,62 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
     if unresolved:
         warn(f"types: {len(unresolved)} unresolved species: {unresolved}")
 
-    # follow evolution chains so evolved forms that never appear in the docs
-    # (Ivysaur, Charizard, ...) are still known to the app — types, stats,
-    # abilities, species pickers and the Team tab's Evolve action
+    # follow evolution chains — forward AND backward — so forms that never
+    # appear in the docs directly are still known to the app: evolved forms
+    # (Ivysaur, Charizard, ...) via forward edges, and base/mid forms whose
+    # ONLY doc mention is as a boss/wild encounter of their evolved form
+    # (e.g. Larvitar never appears itself, only Tyranitar does) via
+    # backward edges. Matters for types/stats/abilities, species pickers
+    # (including "any species" egg-location slots), and the Team tab's
+    # Evolve/Devolve action
     mon_by_id = data["species"]
+    pre_evos_by_target_id: dict[int, list] = {}
+    for mon in data["species"].values():
+        for evo in mon.get("evolutions", []):
+            if evo[0] == MEGA_EVO_METHOD:
+                continue
+            pre_evos_by_target_id.setdefault(evo[2], []).append((mon, evo))
+
     species_evolutions: dict[str, list[dict]] = {}
+    seen_evo_edges: set[tuple[str, str]] = set()
+
+    def add_species(name: str, norm: str) -> None:
+        if name not in species_types:
+            species_types[name] = by_norm[norm]
+            species_stats[name] = stats_by_norm[norm]
+            species_abilities[name] = abilities_by_norm[norm]
+            pending.append((name, norm))
+
+    def add_evo_edge(from_name: str, to_name: str, how: str) -> None:
+        if (from_name, to_name) in seen_evo_edges:
+            return
+        seen_evo_edges.add((from_name, to_name))
+        species_evolutions.setdefault(from_name, []).append({"to": to_name, "how": how})
+
     pending = [(name, resolve_species_key(name, by_norm))
                for name in species_types]
+    processed: set[str] = set()
     while pending:
         app_name, norm = pending.pop()
-        if norm is None or app_name in species_evolutions:
+        if norm is None or app_name in processed:
             continue
+        processed.add(app_name)
         mon = mon_by_norm.get(norm)
         if not mon:
             continue
-        evos = []
         for evo in mon.get("evolutions", []):
             if evo[0] == MEGA_EVO_METHOD:
                 continue
             target = mon_by_id.get(evo[2])
             if not target:
                 continue
-            evos.append({"to": target["key"],
-                         "how": evo_description(evo, data, type_names)})
             tname = target["key"]
-            if tname not in species_types:
-                tnorm = norm_species(tname)
-                species_types[tname] = by_norm[tnorm]
-                species_stats[tname] = stats_by_norm[tnorm]
-                species_abilities[tname] = abilities_by_norm[tnorm]
-                pending.append((tname, tnorm))
-        if evos:
-            species_evolutions[app_name] = evos
+            add_species(tname, norm_species(tname))
+            add_evo_edge(app_name, tname, evo_description(evo, data, type_names))
+        for pre_mon, evo in pre_evos_by_target_id.get(mon["ID"], []):
+            pname = pre_mon["key"]
+            add_species(pname, norm_species(pname))
+            add_evo_edge(pname, app_name, evo_description(evo, data, type_names))
 
     # app species name -> dex species ID; the dex repo hosts the sprite for
     # mon N at graphics/species/front/N.png (covers RR customs like Sevii

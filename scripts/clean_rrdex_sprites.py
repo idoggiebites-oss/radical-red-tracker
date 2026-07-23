@@ -47,7 +47,18 @@ CANON_MEGA = {
 }
 
 
+# not Sevii/Mega, but confirmed (curl) to 404 on Showdown under every
+# slug spriteUrls() tries — genuinely only available from the RR dex
+NOT_ON_SHOWDOWN = {
+    "Pikachu-Flying", "Pikachu-Surfing",
+    "Basculin-Blue-Striped", "Centiskorch-MegaS", "Dialga-Primal",
+    "Wishiwashi-S-Sch",
+}
+
+
 def is_custom_form(species: str) -> bool:
+    if species in NOT_ON_SHOWDOWN:
+        return True
     if species.endswith("-Sevii"):
         return True
     if species.endswith("-Mega"):

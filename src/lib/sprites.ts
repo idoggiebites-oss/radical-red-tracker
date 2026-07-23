@@ -138,16 +138,20 @@ export function spriteUrls(species: string): string[] {
   // the RR dex repo's raw PNGs have no alpha channel — a chroma-key
   // background bakes in as a solid green/pink box. scripts/clean_rrdex_sprites.py
   // pre-cleans the RR-custom set (Sevii forms, custom megas) into
-  // public/sprites/custom/<id>.png; that goes first, with the original
-  // (uncleaned) URL kept as a fallback for anything not yet processed
+  // public/sprites/custom/<id>.png; try that first for species we know are
+  // genuinely custom
   const cleaned =
     customForm && id !== undefined
       ? [`${import.meta.env.BASE_URL}sprites/custom/${id}.png`]
       : [];
   const rrdex = id !== undefined ? [`${RRDEX_SPECIES}/${id}.png`] : [];
-  // a form suffix Showdown has no slug for (Sevii forms etc.) is an RR
-  // custom — its dex sprite goes first so we don't fire two doomed 404s
-  return customForm ? [...cleaned, ...rrdex, ...showdown] : [...showdown, ...rrdex];
+  // customForm is a guess (an unrecognized dash suffix), not proof Showdown
+  // doesn't have it — Rotom-Wash and most Pikachu cosmetic forms resolve
+  // fine on Showdown with their slug exactly as typed, dash included, and
+  // only fall through to the uncleaned rrdex (worse: no alpha channel) if
+  // that genuinely 404s. Always try Showdown before rrdex; only a cleaned
+  // local copy (species we've confirmed are custom) jumps the queue
+  return [...cleaned, ...showdown, ...rrdex];
 }
 
 function speciesSlug(species: string): { slug: string; customForm: boolean } {
@@ -174,6 +178,10 @@ function speciesSlug(species: string): { slug: string; customForm: boolean } {
         slug = `${base}-${SUFFIX[suffix]}`;
         if (suffix.startsWith("mega") && !CANON_MEGA.has(base)) customForm = true;
       } else {
+        // unrecognized suffix — often still a real Showdown sprite (Rotom
+        // forms, most Pikachu cosmetics) using the slug exactly as typed;
+        // customForm here just means "not confident it's on Showdown",
+        // not "confirmed custom" — spriteUrls() still tries Showdown first
         customForm = true;
       }
     }
