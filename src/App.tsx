@@ -158,20 +158,6 @@ export default function App() {
           <span className="brand-title">Radical Red 4.1</span>
           <span className="brand-sub">Nuzlocke Tracker</span>
         </div>
-        <button
-          className="settings-cog"
-          title="Run settings"
-          aria-label="Run settings"
-          onClick={() => setRunMenuOpen((o) => !o)}
-        >
-          <span
-            className="icon-mask"
-            style={{
-              maskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
-              WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
-            }}
-          />
-        </button>
         {run && currentCap && needsRouteChoice && (
           <button
             className="cap-pill route-pending"
@@ -210,6 +196,20 @@ export default function App() {
             </span>
           </button>
         )}
+        <button
+          className="settings-cog"
+          title="Run settings"
+          aria-label="Run settings"
+          onClick={() => setRunMenuOpen((o) => !o)}
+        >
+          <span
+            className="icon-mask"
+            style={{
+              maskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
+              WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
+            }}
+          />
+        </button>
         {runMenuOpen && (
           <div className="cog-backdrop" onClick={() => setRunMenuOpen(false)} />
         )}

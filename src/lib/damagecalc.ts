@@ -16,9 +16,13 @@ export const NATURES = [
   "Sassy", "Serious", "Timid",
 ];
 
-/** item and ability name lists from the calc data, for pickers */
-export const ITEM_NAMES: string[] = [...(rr.ITEMS[GEN] ?? [])].sort();
-export const ABILITY_NAMES: string[] = [...(rr.ABILITIES[GEN] ?? [])].sort();
+/** item and ability name lists from the calc data, for pickers. Deduped —
+ * the vendored data has at least one real duplicate (Mountaineer: once in
+ * the inherited base-game list, again in the RR-specific additions), which
+ * broke every <datalist>/<select> built from these with a React duplicate-
+ * key warning */
+export const ITEM_NAMES: string[] = [...new Set(rr.ITEMS[GEN] ?? [])].sort();
+export const ABILITY_NAMES: string[] = [...new Set(rr.ABILITIES[GEN] ?? [])].sort();
 
 /** RR base stats as the engine sees them, keyed by display label */
 export function calcBaseStats(docName: string): Record<string, number> | null {
@@ -70,7 +74,9 @@ const ALIASES: Record<string, string> = {
   "basculin-blue": "Basculin-Blue-Striped",
 };
 
-const SUFFIXES: Record<string, string> = { a: "-Alola", g: "-Galar", h: "-Hisui" };
+// "-P" only ever means Primal in this dataset (Groudon-P/Kyogre-P) — Paldean
+// forms use full names via ALIASES above, so there's no collision
+const SUFFIXES: Record<string, string> = { a: "-Alola", g: "-Galar", h: "-Hisui", p: "-Primal" };
 
 /** docs species name -> calc species name, or null when the calc data
  * doesn't know it (never guess a wrong mon). */

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, Run } from "../types";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
+import { SpeciesCombobox } from "./SpeciesCombobox";
 import { ModifierToggle } from "./ModifierToggle";
 import { bossTeamFor } from "../lib/bossTarget";
 import { nextRequiredIndex } from "../lib/routeChoice";
@@ -437,7 +438,7 @@ export function CalculatorPage({
             setShowSpreads={setShowYouSpreads}
             noEvs={noEvs}
             anyAbility={anyAbility}
-            speciesListId="you-species-calc"
+            speciesOptions={youSpeciesOptions}
             importedFrom={importedFrom}
             headExtra={
               caught.length > 0 ? (
@@ -487,7 +488,7 @@ export function CalculatorPage({
             setShowSpreads={setShowOppSpreads}
             noEvs={false}
             anyAbility
-            speciesListId="opp-species-calc"
+            speciesOptions={ALL_SPECIES}
             headExtra={
               oppTeam.length > 1 ? (
                 <select
@@ -528,16 +529,6 @@ export function CalculatorPage({
       </div>
       {!results && <p className="muted">Enter both Pokémon's species to calculate.</p>}
 
-      <datalist id="you-species-calc">
-        {youSpeciesOptions.map((s) => (
-          <option key={s} value={s} />
-        ))}
-      </datalist>
-      <datalist id="opp-species-calc">
-        {ALL_SPECIES.map((s) => (
-          <option key={s} value={s} />
-        ))}
-      </datalist>
       <datalist id="all-moves-calc">
         {MOVE_NAMES.map((m) => (
           <option key={m} value={m} />
@@ -573,7 +564,7 @@ function MonConfigCard({
   setShowSpreads,
   noEvs,
   anyAbility,
-  speciesListId,
+  speciesOptions,
   importedFrom,
   headExtra,
 }: {
@@ -589,12 +580,13 @@ function MonConfigCard({
   setShowSpreads: (fn: (s: boolean) => boolean) => void;
   noEvs: boolean;
   anyAbility: boolean;
-  speciesListId: string;
+  speciesOptions: string[];
   importedFrom?: string;
   headExtra?: React.ReactNode;
 }) {
   const abilities = abilitiesFor(cfg.species);
   const baseStats = cfg.species ? calcBaseStats(cfg.species) : null;
+  const speciesInvalid = !!cfg.species && resolveSpecies(cfg.species) === null;
   return (
     <div className="calc-side">
       <div className="calc-side-head">
@@ -610,11 +602,12 @@ function MonConfigCard({
         </div>
       )}
       <div className="calc-row">
-        <input
+        <SpeciesCombobox
           placeholder="Species"
-          list={speciesListId}
           value={cfg.species}
-          onChange={(e) => update({ species: e.target.value })}
+          options={speciesOptions}
+          invalid={speciesInvalid}
+          onChange={(v) => update({ species: v })}
         />
         <input
           type="number"

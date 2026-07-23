@@ -1070,12 +1070,17 @@ tr.pickable:hover td { background: var(--bg3); }
   /* ios safari zooms the page when focusing inputs under 16px */
   input, select, textarea { font-size: 16px; }
 
-  .topbar { position: relative; gap: 8px 12px; padding: 10px 0; }
-  /* cap-pill forced onto its own line so it doesn't fight the cog for the
-     brand's row — settings-cog's margin-left:auto keeps the cog pinned to
-     the top-right corner regardless of how wide the brand text is */
-  .cap-pill { flex-basis: 100%; font-size: 13px; padding: 3px 12px; }
-  .cap-next { display: block; margin-left: 0; }
+  .topbar { position: relative; gap: 8px 12px; padding: 10px 0; flex-wrap: nowrap; }
+  /* sits between the brand and the cog (DOM order: brand, cap-pill, cog)
+     — shrinks first so brand/cog never get squeezed off a narrow screen */
+  .cap-pill {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13px;
+    padding: 3px 12px;
+  }
+  .cap-pill strong { white-space: nowrap; }
+  .cap-next { display: block; margin-left: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* run controls (switcher/new/export/import/delete) collapse behind the
      settings cog instead of a full row across the header */

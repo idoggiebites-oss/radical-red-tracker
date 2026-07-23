@@ -571,6 +571,15 @@ function RouteRow({
   // the Team tab's counts and every sprite/type lookup downstream
   const speciesValid =
     speciesQuery !== "" && speciesOptions.some((o) => o.toLowerCase() === speciesQuery);
+  // once a species is recorded, the wild-encounter tables are just clutter
+  // — hide them until Clear brings the choice back open. Randomized runs
+  // hide them unconditionally: the doc species they list aren't real
+  // "options" once anything can appear (the sighting-log/mapping feature
+  // isn't in active use for now). The starter route is unaffected either
+  // way since it has no wild-encounter methods and uses StarterPicker
+  // instead — its pick determines the rival's team and some boss variants,
+  // so it always stays visible for re-picking
+  const showEncounterTables = !randomized && speciesQuery === "";
 
   return (
     <div className={`route-row ${enc ? `st-${enc.status}` : ""}`}>
@@ -676,7 +685,7 @@ function RouteRow({
               )}
             </div>
           )}
-          {group.sections.map(({ label, loc }) => {
+          {showEncounterTables && group.sections.map(({ label, loc }) => {
             const methodKeys = (Object.keys(METHOD_LABELS) as MethodKey[]).filter(
               (m) => (loc.methods[m]?.length ?? 0) > 0,
             );
