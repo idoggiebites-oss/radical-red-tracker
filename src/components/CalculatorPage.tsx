@@ -32,7 +32,11 @@ import {
   type SideConditions,
 } from "../lib/damagecalc";
 
-const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow"];
+// Harsh Sunshine/Heavy Rain: same unblockable, Fire/Water-nullifying effect
+// as Desolate Land/Primordial Sea — some hardcore-mode routes have one of
+// these as a permanent field effect with no ability attached, so they need
+// to be manually selectable too, not just auto-detected from an ability
+const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow", "Harsh Sunshine", "Heavy Rain"];
 const TERRAINS = ["Electric", "Grassy", "Psychic", "Misty"];
 
 const YOU_CFG_KEY = "rr-tracker.calcMon";
@@ -175,6 +179,9 @@ export function CalculatorPage({
   const [doubles, setDoubles] = useState(() =>
     target ? /DOUBLES/i.test(target.battleEffect) : false,
   );
+  const [trickRoom, setTrickRoom] = useState(() =>
+    target ? /TRICK ROOM/i.test(target.battleEffect) : false,
+  );
   const [caughtOnly, setCaughtOnly] = useState(
     () => localStorage.getItem(CAUGHT_ONLY_KEY) === "1",
   );
@@ -207,6 +214,7 @@ export function CalculatorPage({
     setWeather(field.weather ?? "");
     setTerrain(field.terrain ?? "");
     setDoubles(/DOUBLES/i.test(battleEffect));
+    setTrickRoom(/TRICK ROOM/i.test(battleEffect));
     setOppSide({});
     setOppTeam(team);
     setOppTeamLabel(teamLabel);
@@ -315,7 +323,20 @@ export function CalculatorPage({
   };
 
   const updateOpp = (patch: Partial<PlayerMonConfig>) => {
-    setOpp((c) => ({ ...c, ...patch }));
+    setOpp((c) => {
+      const next = { ...c, ...patch };
+      if (patch.species !== undefined) {
+        // default to the new species' first known ability so a species
+        // change doesn't leave the previous mon's ability stuck (e.g. a
+        // weather-setter's auto field never engaging) — anyAbility keeps
+        // this a free-text field, so it's still fully overridable after
+        const legal = abilitiesFor(next.species);
+        if (legal.length > 0 && !legal.includes(next.ability)) {
+          next.ability = legal[0];
+        }
+      }
+      return next;
+    });
   };
 
   const resetYou = () => {
@@ -421,6 +442,7 @@ export function CalculatorPage({
           opponentName={opp.species || "the opponent"}
           opponentSpeed={results.oppSpeed}
           yourSpeed={results.youSpeed}
+          trickRoom={trickRoom}
         />
       )}
 
@@ -465,6 +487,8 @@ export function CalculatorPage({
             setCrit={setCrit}
             doubles={doubles}
             setDoubles={setDoubles}
+            trickRoom={trickRoom}
+            setTrickRoom={setTrickRoom}
             autoBits={autoBits}
             show={showField}
             setShow={setShowField}
@@ -800,6 +824,8 @@ function FieldConditionsPanel({
   setCrit,
   doubles,
   setDoubles,
+  trickRoom,
+  setTrickRoom,
   autoBits,
   show,
   setShow,
@@ -816,6 +842,8 @@ function FieldConditionsPanel({
   setCrit: (fn: (c: boolean) => boolean) => void;
   doubles: boolean;
   setDoubles: (fn: (d: boolean) => boolean) => void;
+  trickRoom: boolean;
+  setTrickRoom: (fn: (t: boolean) => boolean) => void;
   autoBits: string[];
   show: boolean;
   setShow: (fn: (s: boolean) => boolean) => void;
@@ -865,6 +893,13 @@ function FieldConditionsPanel({
           onClick={() => setDoubles((d) => !d)}
         >
           Doubles
+        </ModifierToggle>
+        <ModifierToggle
+          active={trickRoom}
+          title="Trick Room is active — lower Speed moves first instead of higher"
+          onClick={() => setTrickRoom((t) => !t)}
+        >
+          Trick Room
         </ModifierToggle>
       </div>
       {autoBits.length > 0 && (
@@ -1073,13 +1108,17 @@ function SpeedBanner({
   opponentName,
   opponentSpeed,
   yourSpeed,
+  trickRoom,
 }: {
   opponentName: string;
   opponentSpeed: number;
   yourSpeed: number;
+  trickRoom?: boolean;
 }) {
-  const tone =
-    yourSpeed === opponentSpeed ? "tie" : yourSpeed > opponentSpeed ? "safe" : "danger";
+  // Trick Room reverses move order (lower Speed acts first) — it doesn't
+  // change anyone's Speed stat, just who that comparison favors
+  const youFirst = trickRoom ? yourSpeed < opponentSpeed : yourSpeed > opponentSpeed;
+  const tone = yourSpeed === opponentSpeed ? "tie" : youFirst ? "safe" : "danger";
   const headline =
     tone === "tie"
       ? "Speed tie"
@@ -1088,7 +1127,10 @@ function SpeedBanner({
         : `${opponentName} moves first`;
   return (
     <div className={"speed-banner " + tone}>
-      <span className="speed-headline">{headline}</span>
+      <span className="speed-headline">
+        {headline}
+        {trickRoom && tone !== "tie" && <span className="trick-room-note"> (Trick Room)</span>}
+      </span>
       <span className="speed-nums">
         {yourSpeed} vs {opponentSpeed} Speed
       </span>

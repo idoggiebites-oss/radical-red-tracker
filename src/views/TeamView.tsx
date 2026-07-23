@@ -41,7 +41,10 @@ import {
 } from "../lib/damagecalc";
 import { ModifierToggle } from "../components/ModifierToggle";
 
-const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow"];
+// Harsh Sunshine/Heavy Rain: same unblockable, Fire/Water-nullifying effect
+// as Desolate Land/Primordial Sea — some hardcore-mode routes have one of
+// these as a permanent field effect with no ability attached
+const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow", "Harsh Sunshine", "Heavy Rain"];
 
 const EMPTY_BUILD: MonBuild = {
   nature: "Serious",
