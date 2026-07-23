@@ -109,6 +109,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .route-fork-head { font-size: 13.5px; }
 
 .run-controls { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+/* mobile-only cog menu (see @media max-width:640px) — the run controls
+   above stay inline on desktop, so these have no effect there */
+.settings-cog, .cog-backdrop { display: none; }
 
 .tabs { display: flex; gap: 4px; margin: 14px 0; }
 .tab {
@@ -120,12 +123,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   font-weight: 600;
 }
 .tab.active { color: var(--text); background: var(--bg3); }
-/* hidden on desktop's horizontal top row; shown for the mobile bottom nav
-   (see @media max-width:640px) where each tab stacks icon-over-label */
-.tab-icon {
-  display: none;
-  width: 22px;
-  height: 22px;
+/* base for any currentColor-tintable svg icon rendered via mask-image */
+.icon-mask {
+  display: inline-block;
   background-color: currentColor;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
@@ -133,6 +133,13 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   mask-position: center;
   -webkit-mask-size: contain;
   mask-size: contain;
+}
+/* hidden on desktop's horizontal top row; shown for the mobile bottom nav
+   (see @media max-width:640px) where each tab stacks icon-over-label */
+.tab-icon {
+  display: none;
+  width: 22px;
+  height: 22px;
 }
 
 .toolbar {
@@ -1063,12 +1070,53 @@ tr.pickable:hover td { background: var(--bg3); }
   /* ios safari zooms the page when focusing inputs under 16px */
   input, select, textarea { font-size: 16px; }
 
-  .topbar { gap: 8px 12px; padding: 10px 0; }
-  .cap-pill { font-size: 13px; padding: 3px 12px; }
+  .topbar { position: relative; gap: 8px 12px; padding: 10px 0; }
+  /* cap-pill forced onto its own line so it doesn't fight the cog for the
+     brand's row — settings-cog's margin-left:auto keeps the cog pinned to
+     the top-right corner regardless of how wide the brand text is */
+  .cap-pill { flex-basis: 100%; font-size: 13px; padding: 3px 12px; }
   .cap-next { display: block; margin-left: 0; }
-  .run-controls { margin-left: 0; width: 100%; flex-wrap: wrap; }
-  /* the run picker keeps a readable width and wraps above the buttons */
-  .run-controls select { flex: 1 1 160px; min-width: 0; }
+
+  /* run controls (switcher/new/export/import/delete) collapse behind the
+     settings cog instead of a full row across the header */
+  .settings-cog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    margin-left: auto;
+    border-radius: 8px;
+    color: var(--muted);
+  }
+  .settings-cog:hover { color: var(--text); }
+  .settings-cog .icon-mask { width: 20px; height: 20px; }
+  .cog-backdrop { display: block; position: fixed; inset: 0; z-index: 14; }
+  .run-controls {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    width: min(280px, calc(100vw - 20px));
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    z-index: 15;
+  }
+  .run-controls.open { display: flex; }
+
+  /* the top .tabs row used to provide breathing room below the topbar's
+     border via its own margin; now that it's a fixed bottom bar on mobile
+     it no longer occupies that space, so restore it directly on main */
+  main { padding-top: 14px; }
+  .run-controls select { flex: none; width: 100%; }
 
   /* bottom nav bar: fixed + thumb-reachable instead of a top row you have
      to scroll back up for; leaves room to add per-tab icons later without

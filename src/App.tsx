@@ -43,6 +43,9 @@ export default function App() {
   const [state, setState] = useState<AppState>(loadState);
   const [tab, setTab] = useState<Tab>("routes");
   const [creating, setCreating] = useState(false);
+  // mobile only: run controls (switcher/new/export/import/delete) collapse
+  // behind a cog button instead of a full row across the header
+  const [runMenuOpen, setRunMenuOpen] = useState(false);
   // set when the cap pill is clicked: the boss team to jump to and open
   const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
     null,
@@ -155,6 +158,20 @@ export default function App() {
           <span className="brand-title">Radical Red 4.1</span>
           <span className="brand-sub">Nuzlocke Tracker</span>
         </div>
+        <button
+          className="settings-cog"
+          title="Run settings"
+          aria-label="Run settings"
+          onClick={() => setRunMenuOpen((o) => !o)}
+        >
+          <span
+            className="icon-mask"
+            style={{
+              maskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
+              WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/settings-cog.svg)`,
+            }}
+          />
+        </button>
         {run && currentCap && needsRouteChoice && (
           <button
             className="cap-pill route-pending"
@@ -193,12 +210,16 @@ export default function App() {
             </span>
           </button>
         )}
-        <div className="run-controls">
+        {runMenuOpen && (
+          <div className="cog-backdrop" onClick={() => setRunMenuOpen(false)} />
+        )}
+        <div className={runMenuOpen ? "run-controls open" : "run-controls"}>
           <select
             value={state.activeRunId ?? ""}
-            onChange={(e) =>
-              setState((s) => ({ ...s, activeRunId: e.target.value || null }))
-            }
+            onChange={(e) => {
+              setState((s) => ({ ...s, activeRunId: e.target.value || null }));
+              setRunMenuOpen(false);
+            }}
           >
             <option value="">— no run —</option>
             {state.runs.map((r) => (
@@ -207,18 +228,31 @@ export default function App() {
               </option>
             ))}
           </select>
-          <button onClick={() => setCreating(true)}>+ New run</button>
+          <button
+            onClick={() => {
+              setRunMenuOpen(false);
+              setCreating(true);
+            }}
+          >
+            + New run
+          </button>
           {run && (
             <button
               title={`Download this run as a ${RUN_FILE_EXT} backup file`}
-              onClick={exportActiveRun}
+              onClick={() => {
+                setRunMenuOpen(false);
+                exportActiveRun();
+              }}
             >
               Export
             </button>
           )}
           <button
             title={`Load a run from a ${RUN_FILE_EXT} backup file`}
-            onClick={() => importInput.current?.click()}
+            onClick={() => {
+              setRunMenuOpen(false);
+              importInput.current?.click();
+            }}
           >
             Import
           </button>
@@ -236,6 +270,7 @@ export default function App() {
             <button
               className="danger"
               onClick={() => {
+                setRunMenuOpen(false);
                 if (confirm(`Delete run "${run.name}"? This cannot be undone.`)) {
                   setState((s) => ({
                     runs: s.runs.filter((r) => r.id !== run.id),
@@ -280,7 +315,7 @@ export default function App() {
             onClick={() => setTab(t.id)}
           >
             <span
-              className="tab-icon"
+              className="icon-mask tab-icon"
               style={{
                 maskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
                 WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
