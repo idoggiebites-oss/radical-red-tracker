@@ -713,6 +713,15 @@ tr.pickable:hover td { background: var(--bg3); }
 .calc-row.evs input { width: 100%; padding: 3px 6px; }
 .ev-total { flex: 0 0 auto; font-size: 11px; padding-bottom: 4px; }
 .calc-move { flex: 1 1 45% !important; }
+/* lets a matchup start below full HP instead of always assuming it — the
+   bar mirrors the result rows' hp-bar (same fill colors/thresholds via
+   hpTone()) so it reads as the same kind of indicator throughout the page */
+.current-hp-row { align-items: center; font-size: 12.5px; }
+.current-hp-label { color: var(--muted); flex: 0 0 auto; }
+.current-hp-bar { flex: 1 1 50px; min-width: 40px; margin: 0; }
+.current-hp-row input[type=number] { flex: 0 0 52px; padding: 3px 6px; text-align: right; }
+.current-hp-unit { color: var(--muted); flex: 0 0 auto; }
+.current-hp-reset { flex: 0 0 auto; padding: 2px 8px; font-size: 11px; }
 .spread-row { align-items: baseline; gap: 10px; }
 .spread-toggle { flex: 0 0 auto; }
 .spread-summary { font-size: 12px; min-width: 0; }

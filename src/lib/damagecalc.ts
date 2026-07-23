@@ -316,6 +316,10 @@ export interface PlayerMonConfig {
    * check Loaded Dice/Skill Link), matched by index to `moves`. undefined
    * (or a slot with no entry) means "show the full possible range" */
   moveHits?: (number | undefined)[];
+  /** HP this Pokémon starts a matchup at, as a percent of its max HP —
+   * lets a damaged mon's results be checked without editing its actual HP
+   * total. undefined means full HP (100); never stored as literally 100 */
+  currentHpPercent?: number;
 }
 
 /** status conditions the engine models (burn/frostbite damage halving,

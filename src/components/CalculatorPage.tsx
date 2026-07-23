@@ -55,6 +55,13 @@ const DEFAULT_CFG: PlayerMonConfig = {
   moves: ["", "", "", ""],
 };
 
+/** HP-bar fill color class for a remaining/current HP percent — shared by
+ * the result rows' remaining-HP bar and the Current HP indicator so both
+ * read the same way (green/yellow/red at the same thresholds) */
+function hpTone(pct: number): string {
+  return pct < 25 ? " low" : pct < 55 ? " mid" : "";
+}
+
 /** pairs each non-empty move with its slot's pinned hit count (if any),
  * preserving index alignment with moveHits before the empty slots are
  * dropped */
@@ -549,6 +556,7 @@ export function CalculatorPage({
               title={`Your moves vs them${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.outgoing}
               tone="outgoing"
+              targetHpPercent={opp.currentHpPercent ?? 100}
               onSetHits={(i, hits) => {
                 const moveHits = [...(you.moveHits ?? [])];
                 moveHits[i] = hits;
@@ -563,6 +571,7 @@ export function CalculatorPage({
               title={`${opp.species || "Opponent"}'s moves vs you${doubles ? " · doubles" : ""}${crit ? " · crit" : ""}`}
               lines={results.incoming}
               tone="incoming"
+              targetHpPercent={you.currentHpPercent ?? 100}
               onSetHits={(i, hits) => {
                 const moveHits = [...(opp.moveHits ?? [])];
                 moveHits[i] = hits;
@@ -719,6 +728,7 @@ function MonConfigCard({
       <NatureLine cfg={cfg} />
       <ModifierLine cfg={calcCfg} fieldOpts={fieldOpts} />
       <TotalsWithBoosts cfg={calcCfg} fieldOpts={fieldOpts} side={side} update={update} />
+      <CurrentHpRow cfg={calcCfg} fieldOpts={fieldOpts} side={side} update={update} />
       <div className="calc-row spread-row">
         <button
           className="st-btn spread-toggle"
@@ -1122,6 +1132,73 @@ function TotalsWithBoosts({
   );
 }
 
+/** lets a matchup be checked from less than full HP (a mon that's already
+ * taken a hit this turn, entry hazard chip damage, …) instead of only ever
+ * from 100% — feeds ResultRow's KO/remaining-HP math via
+ * PlayerMonConfig.currentHpPercent. Percent and points stay in sync off
+ * this mon's own computed max HP; editing either updates the same field. */
+function CurrentHpRow({
+  cfg,
+  fieldOpts,
+  side,
+  update,
+}: {
+  cfg: PlayerMonConfig;
+  fieldOpts: Parameters<typeof statTotals>[1];
+  side?: SideConditions;
+  update: (patch: Partial<PlayerMonConfig>) => void;
+}) {
+  if (!cfg.species || resolveSpecies(cfg.species) === null) return null;
+  const t = statTotals(cfg, fieldOpts, side);
+  if (!t) return null;
+  const maxHp = t.totals.HP;
+  const percent = cfg.currentHpPercent ?? 100;
+  const points = Math.round((percent / 100) * maxHp);
+  const setPercent = (pct: number) => {
+    const clamped = Math.max(0, Math.min(100, pct));
+    update({ currentHpPercent: clamped === 100 ? undefined : clamped });
+  };
+  const setPoints = (pts: number) => {
+    const clamped = Math.max(0, Math.min(maxHp, pts));
+    setPercent(maxHp > 0 ? Math.round((clamped / maxHp) * 100) : 100);
+  };
+  return (
+    <div className="calc-row current-hp-row">
+      <span className="current-hp-label">Current HP</span>
+      <span className="hp-bar current-hp-bar">
+        <span className={"hp-sure" + hpTone(percent)} style={{ width: `${percent}%` }} />
+      </span>
+      <input
+        type="number"
+        min={0}
+        max={100}
+        title="Current HP, as a percent of max"
+        value={percent}
+        onChange={(e) => setPercent(parseInt(e.target.value, 10) || 0)}
+      />
+      <span className="current-hp-unit">%</span>
+      <input
+        type="number"
+        min={0}
+        max={maxHp}
+        title="Current HP, in points"
+        value={points}
+        onChange={(e) => setPoints(parseInt(e.target.value, 10) || 0)}
+      />
+      <span className="current-hp-unit">/ {maxHp} HP</span>
+      {percent !== 100 && (
+        <button
+          className="st-btn current-hp-reset"
+          title="Reset to full HP"
+          onClick={() => update({ currentHpPercent: undefined })}
+        >
+          Full
+        </button>
+      )}
+    </div>
+  );
+}
+
 /** who moves first, surfaced above the damage rows instead of left for the
  * reader to derive by comparing two numbers — a favorable damage % is
  * meaningless if the opponent outspeeds and KOs first */
@@ -1164,11 +1241,15 @@ function ResultBlock({
   lines,
   tone,
   onSetHits,
+  targetHpPercent,
 }: {
   title: string;
   lines: MatchupLine[];
   tone: "incoming" | "outgoing";
   onSetHits?: (slotIndex: number, hits: number | undefined) => void;
+  /** the defending side's HP going into this matchup, as a % of its max —
+   * from that side's PlayerMonConfig.currentHpPercent */
+  targetHpPercent: number;
 }) {
   return (
     <div className="result-block">
@@ -1176,7 +1257,13 @@ function ResultBlock({
       {lines.length === 0 && <p className="muted">No damaging moves.</p>}
       <div className="result-rows">
         {lines.map((l, i) => (
-          <ResultRow key={i} line={l} tone={tone} onSetHits={onSetHits} />
+          <ResultRow
+            key={i}
+            line={l}
+            tone={tone}
+            onSetHits={onSetHits}
+            targetHpPercent={targetHpPercent}
+          />
         ))}
       </div>
     </div>
@@ -1188,25 +1275,31 @@ function ResultRow({
   line: l,
   tone,
   onSetHits,
+  targetHpPercent,
 }: {
   line: MatchupLine;
   tone: "incoming" | "outgoing";
   onSetHits?: (slotIndex: number, hits: number | undefined) => void;
+  targetHpPercent: number;
 }) {
   const ok = !l.error;
   // non-numeric outcomes render their label instead of a 0–0% range
   const status = ok && (l.desc === "status move" || l.desc === "no damage (immune)");
-  const ko = ok && !l.guard && l.minPercent >= 100;
-  const maybeKo = ok && !l.guard && !ko && l.maxPercent >= 100;
-  // remaining HP range: sure = survives even max damage, maybe = roll-dependent;
-  // a Sturdy/Focus Sash holder always keeps at least a 1 HP sliver
-  let lo = ok ? Math.max(0, 100 - l.maxPercent) : 100;
-  let hi = ok ? Math.max(0, 100 - l.minPercent) : 100;
-  if (l.guard) {
+  // Sturdy/Focus Sash only ever protects a defender that's still at full
+  // HP — ignore the engine's guard note for a matchup starting below it
+  const guard = targetHpPercent >= 100 ? l.guard : undefined;
+  const ko = ok && !guard && l.minPercent >= targetHpPercent;
+  const maybeKo = ok && !guard && !ko && l.maxPercent >= targetHpPercent;
+  // remaining HP range, off the defender's starting HP (not always 100):
+  // sure = survives even max damage, maybe = roll-dependent; a Sturdy/Focus
+  // Sash holder always keeps at least a 1 HP sliver
+  let lo = ok ? Math.max(0, targetHpPercent - l.maxPercent) : targetHpPercent;
+  let hi = ok ? Math.max(0, targetHpPercent - l.minPercent) : targetHpPercent;
+  if (guard) {
     lo = Math.max(lo, 1);
     hi = Math.max(hi, lo);
   }
-  const barTone = lo < 25 ? " low" : lo < 55 ? " mid" : "";
+  const barTone = hpTone(lo);
   // the engine desc's tail is its KO verdict ("guaranteed 2HKO", "43.8% chance to OHKO")
   const verdict = l.desc.split(" -- ")[1];
   const dmgClass =
@@ -1215,7 +1308,7 @@ function ResultRow({
       ? tone === "incoming"
         ? " ohko"
         : " ohko-good"
-      : maybeKo || l.guard
+      : maybeKo || guard
         ? " maybe-ko"
         : "");
   const hasHits = l.hitsRange && l.slotIndex !== undefined && onSetHits;
@@ -1235,8 +1328,8 @@ function ResultRow({
                 ? l.desc
                 : ko
                   ? `KO · ${l.minPercent}%+`
-                  : l.guard
-                    ? `${l.minPercent}–${l.maxPercent}% · 1 HP (${l.guard})`
+                  : guard
+                    ? `${l.minPercent}–${l.maxPercent}% · 1 HP (${guard})`
                     : `${l.minPercent}–${l.maxPercent}%${verdict ? ` · ${verdict}` : ""}`}
           </span>
         </span>
