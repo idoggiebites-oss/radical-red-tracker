@@ -444,6 +444,13 @@ tr.pickable:hover td { background: var(--bg3); }
 
 .ref-table { border-collapse: collapse; width: 100%; }
 .ref-table td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+.cheat-codes-note { margin: 0 0 10px; max-width: 560px; }
+.cheat-code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+  color: var(--accent2);
+  white-space: nowrap;
+}
 .species-columns { display: flex; gap: 30px; flex-wrap: wrap; }
 .species-column h4 { color: var(--accent2); }
 .species-line { padding: 2px 0; }

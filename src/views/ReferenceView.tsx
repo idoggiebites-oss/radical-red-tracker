@@ -23,7 +23,8 @@ type RefTab =
   | "eggs"
   | "raids"
   | "tms"
-  | "items";
+  | "items"
+  | "cheats";
 
 const TABS: { id: RefTab; label: string }[] = [
   { id: "statics", label: "Statics & Legendaries" },
@@ -34,6 +35,18 @@ const TABS: { id: RefTab; label: string }[] = [
   { id: "raids", label: "Raid Dens" },
   { id: "tms", label: "TMs & HMs" },
   { id: "items", label: "Items" },
+  { id: "cheats", label: "Cheat Codes" },
+];
+
+/** in-game NES-console codes (Pallet Town bedroom), player-confirmed
+ * working on 4.1. Case-sensitive as shown. Mystery Gift codes (Ho-Oh,
+ * Calyrex-Ice, …) are left out until confirmed from a reliable source. */
+const CHEAT_CODES: { code: string; effect: string }[] = [
+  { code: "Woyaopp", effect: "Infinite Rare Candies & Pomeg Berries from a Youngster in Viridian City" },
+  { code: "SO2Toxic", effect: "Unlocks free-item care packages throughout the run" },
+  { code: "DexAll", effect: "DexNav immediately shows every possible Pokémon on the current route" },
+  { code: "TeamPreview", effect: "See the opponent's full team at the start of every battle" },
+  { code: "EZCatch", effect: "Every Poké Ball gets a 100% catch rate" },
 ];
 
 export function ReferenceView() {
@@ -146,6 +159,31 @@ export function ReferenceView() {
       {tab === "raids" && <Raids raids={data.raids} q={q} />}
       {tab === "tms" && <TmList q={q} />}
       {tab === "items" && <ItemList q={q} />}
+      {tab === "cheats" && <CheatCodes q={q} />}
+    </div>
+  );
+}
+
+function CheatCodes({ q }: { q: string }) {
+  const rows = CHEAT_CODES.filter(
+    (c) => c.code.toLowerCase().includes(q) || c.effect.toLowerCase().includes(q),
+  );
+  return (
+    <div className="cheat-codes">
+      <p className="muted cheat-codes-note">
+        Talk to the NES console in your bedroom in Pallet Town and enter one
+        of these — codes are case-sensitive, exactly as shown.
+      </p>
+      <table className="ref-table">
+        <tbody>
+          {rows.map((c) => (
+            <tr key={c.code}>
+              <td className="cheat-code">{c.code}</td>
+              <td>{c.effect}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
