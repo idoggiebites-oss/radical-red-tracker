@@ -1218,55 +1218,62 @@ function ResultRow({
       : maybeKo || l.guard
         ? " maybe-ko"
         : "");
+  const hasHits = l.hitsRange && l.slotIndex !== undefined && onSetHits;
   return (
-    <div className="result-row" title={l.desc || undefined}>
-      <span className="result-move">{l.move}</span>
-      {l.hitsRange && l.slotIndex !== undefined && onSetHits && (
-        <select
-          className={l.autoNote ? "result-hits auto-detected" : "result-hits"}
-          title={
-            l.autoNote
-              ? `Auto-detected from ${l.autoNote} — pick a different count to override`
-              : "Pin a hit count to check items like Loaded Dice or Skill Link — otherwise shows the full possible range"
-          }
-          value={l.pinnedHits ?? ""}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) =>
-            onSetHits(l.slotIndex!, e.target.value ? parseInt(e.target.value, 10) : undefined)
-          }
-        >
-          <option value="">
-            {l.autoRange
-              ? `${l.autoRange[0] === l.autoRange[1] ? `${l.autoRange[0]}` : `${l.autoRange[0]}-${l.autoRange[1]}`}× (${l.autoNote})`
-              : `${l.hitsRange[0]}-${l.hitsRange[1]}×`}
-          </option>
-          {Array.from(
-            { length: l.hitsRange[1] - l.hitsRange[0] + 1 },
-            (_, k) => l.hitsRange![0] + k,
-          ).map((n) => (
-            <option key={n} value={n}>
-              {n}×
+    <div className={"result-row-wrap " + tone}>
+      <div className="result-row" title={l.desc || undefined}>
+        <span className="result-move">{l.move}</span>
+        <span className="result-fill">
+          <span className="hp-bar">
+            <span className={"hp-sure" + barTone} style={{ width: `${lo}%` }} />
+            <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
+          </span>
+          <span className={dmgClass}>
+            {l.error
+              ? l.error
+              : status
+                ? l.desc
+                : ko
+                  ? `KO · ${l.minPercent}%+`
+                  : l.guard
+                    ? `${l.minPercent}–${l.maxPercent}% · 1 HP (${l.guard})`
+                    : `${l.minPercent}–${l.maxPercent}%${verdict ? ` · ${verdict}` : ""}`}
+          </span>
+        </span>
+      </div>
+      <div className="result-hits-slot">
+        {hasHits ? (
+          <select
+            className={l.autoNote ? "result-hits auto-detected" : "result-hits"}
+            title={
+              l.autoNote
+                ? `Auto-detected from ${l.autoNote} — pick a different count to override`
+                : "Pin a hit count to check items like Loaded Dice or Skill Link — otherwise shows the full possible range"
+            }
+            value={l.pinnedHits ?? ""}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) =>
+              onSetHits!(l.slotIndex!, e.target.value ? parseInt(e.target.value, 10) : undefined)
+            }
+          >
+            <option value="">
+              {l.autoRange
+                ? `${l.autoRange[0] === l.autoRange[1] ? `${l.autoRange[0]}` : `${l.autoRange[0]}-${l.autoRange[1]}`}× (${l.autoNote})`
+                : `${l.hitsRange![0]}-${l.hitsRange![1]}×`}
             </option>
-          ))}
-        </select>
-      )}
-      <span className="result-fill">
-        <span className="hp-bar">
-          <span className={"hp-sure" + barTone} style={{ width: `${lo}%` }} />
-          <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
-        </span>
-        <span className={dmgClass}>
-          {l.error
-            ? l.error
-            : status
-              ? l.desc
-              : ko
-                ? `KO · ${l.minPercent}%+`
-                : l.guard
-                  ? `${l.minPercent}–${l.maxPercent}% · 1 HP (${l.guard})`
-                  : `${l.minPercent}–${l.maxPercent}%${verdict ? ` · ${verdict}` : ""}`}
-        </span>
-      </span>
+            {Array.from(
+              { length: l.hitsRange![1] - l.hitsRange![0] + 1 },
+              (_, k) => l.hitsRange![0] + k,
+            ).map((n) => (
+              <option key={n} value={n}>
+                {n}×
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className="result-hits-spacer" aria-hidden="true" />
+        )}
+      </div>
     </div>
   );
 }

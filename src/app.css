@@ -673,12 +673,17 @@ tr.pickable:hover td { background: var(--bg3); }
 .calc-page-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: start; }
 /* desktop: each side's move-glance results sit directly above that side's
  * card instead of stacking full-width below everything — a full-width HP
- * bar row reads worse than one scoped to its own column */
+ * bar row reads worse than one scoped to its own column. The field column
+ * is split in half so each result block can bleed halfway across the gap
+ * between it and the Field card — that's where each row's hit-count
+ * dropdown lives (see .result-row-wrap), instead of leaving the whole
+ * field column dead space above the Field card. */
 @media (min-width: 901px) {
   .calc-page-grid {
+    grid-template-columns: 1fr 0.5fr 0.5fr 1fr;
     grid-template-areas:
-      "res-you . res-opp"
-      "you field opp";
+      "res-you res-you res-opp res-opp"
+      "you field field opp";
   }
   .col-res-you { grid-area: res-you; }
   .col-res-opp { grid-area: res-opp; }
@@ -728,23 +733,41 @@ tr.pickable:hover td { background: var(--bg3); }
 .speed-banner.tie .speed-headline { color: #e8c13a; }
 .result-block h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
 .result-rows { display: flex; flex-direction: column; gap: 4px; }
+/* each row pairs the move card with its hit-count dropdown as a sibling,
+ * not nested inside the card, so the card's own internal layout never has
+ * to make room for it. Outgoing (your moves) keeps the dropdown on the
+ * right; incoming (their moves) flips it to the left on desktop, so both
+ * point at the dead space freed up next to the Field card (see
+ * .calc-page-grid). On mobile there's no "middle" to aim for, so it always
+ * sits on the right where there's already room. */
+.result-row-wrap { display: flex; align-items: stretch; gap: 6px; }
+@media (min-width: 901px) {
+  .result-row-wrap.incoming { flex-direction: row-reverse; }
+}
 .result-row {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  min-width: 0;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 5px 8px;
 }
 .result-move { font-weight: 700; font-size: 12.5px; flex: 0 0 110px; min-width: 0; }
-/* between the move name and the HP bar — a hit-count multiplier, only on
-   genuinely-ambiguous multi-hit moves (Fury Attack, Bullet Seed, …), to
-   check items like Loaded Dice or Skill Link without leaving the results */
-.result-hits { flex: 0 0 auto; font-size: 11px; padding: 2px 4px; color: var(--muted); }
-.result-hits.auto-detected { border-color: var(--accent2); color: var(--accent2); }
 .result-fill { flex: 1; min-width: 0; }
 .result-fill .target-dmg { font-size: 11px; }
+/* fixed-width slot, stretched to the row card's full height, so every
+   row-card in a block lines up to the same length whether or not that
+   move actually has a hit-count dropdown */
+.result-hits-slot { flex: 0 0 60px; display: flex; }
+.result-hits-spacer { display: block; width: 100%; }
+/* a hit-count multiplier select, only on genuinely-ambiguous multi-hit
+   moves (Fury Attack, Bullet Seed, …), to check items like Loaded Dice or
+   Skill Link without leaving the results */
+.result-hits { width: 100%; height: 100%; font-size: 11px; padding: 2px 4px; color: var(--muted); }
+.result-hits.auto-detected { border-color: var(--accent2); color: var(--accent2); }
 .target-dmg.ohko { color: #ff8a8a; font-weight: 700; }
 .target-dmg.ohko-good { color: #7fe0ab; font-weight: 700; }
 
