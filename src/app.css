@@ -16,21 +16,31 @@
 
 * { box-sizing: border-box; }
 
-/* Deliberately NOT setting overscroll-behavior-y here. It was once set to
-   `none` on html and body to kill iOS's elastic bounce, on the theory that
-   the bounce was what detached the fixed mobile nav bar from the screen
-   edge. It wasn't — the bar still detaches on scroll with the bounce off.
-   What that rule did cost is pull-to-refresh: iOS ties it to the same
-   overscroll affordance, so `none` removes both, and a home-screen PWA has
-   no address bar or reload button to fall back on. The cog menu's "Check
-   for update" now covers reloading, but that's a backstop, not a licence to
-   re-add this — it bought nothing the first time. */
+/* Kill iOS's elastic overscroll bounce. The bounce drags the fixed mobile
+   nav bar away from the screen edge mid-rubber-band, exposing content
+   behind it; it snaps back, but it's visible every time.
+
+   This rule was here before, got reverted, and is back deliberately —
+   the evidence changed underneath it. Most of what looked like "the nav
+   bar detaches" was really WebKit bug 297779 (visualViewport.offsetTop
+   not resetting to 0 after the keyboard is dismissed, so position:fixed
+   elements are left misplaced), which is an iOS 26.0 platform bug, not
+   ours. With that fixed in 26.x the bounce is the only remaining cause,
+   and suppressing it is the whole fix rather than a guess at one.
+
+   The cost is real: iOS ties pull-to-refresh to the same overscroll
+   affordance, so this removes the gesture too, and a home-screen PWA has
+   no address bar to fall back on. That's affordable only because the cog
+   menu's "Check for update" now covers reloading — don't remove that
+   without reconsidering this. */
+html { overscroll-behavior-y: none; }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font: 15px/1.45 system-ui, "Segoe UI", sans-serif;
+  overscroll-behavior-y: none;
 }
 
 .app { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; }
