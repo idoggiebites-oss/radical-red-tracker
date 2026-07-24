@@ -303,10 +303,10 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   color: var(--accent2);
 }
 .add-extra-encounter { margin-bottom: 12px; border-color: var(--accent2); color: var(--accent2); }
-.species-combobox { position: relative; flex: 1 1 200px; min-width: 160px; }
-.species-combobox input { width: 100%; }
-.species-combobox input.invalid { border-color: #e85d4a; }
-.species-combobox-list {
+.combobox { position: relative; flex: 1 1 200px; min-width: 160px; }
+.combobox input { width: 100%; }
+.combobox input.invalid { border-color: #e85d4a; }
+.combobox-list {
   position: absolute;
   z-index: 20;
   top: calc(100% + 3px);
@@ -322,7 +322,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
-.species-combobox-list li {
+.combobox-list li {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -331,7 +331,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   font-size: 13.5px;
   cursor: pointer;
 }
-.species-combobox-list li.active { background: var(--bg3); }
+.combobox-list li.active { background: var(--bg3); }
 .status-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
 .status-buttons .st-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .st-btn.active.caught { background: #1d3a2c; border-color: var(--caught); }

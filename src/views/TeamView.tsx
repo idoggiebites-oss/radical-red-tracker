@@ -40,6 +40,7 @@ import {
   type PlayerMonConfig,
 } from "../lib/damagecalc";
 import { ModifierToggle } from "../components/ModifierToggle";
+import { Combobox } from "../components/Combobox";
 
 // Harsh Sunshine/Heavy Rain: same unblockable, Fire/Water-nullifying effect
 // as Desolate Land/Primordial Sea — some hardcore-mode routes have one of
@@ -309,16 +310,6 @@ export function TeamView({
       <datalist id="team-items">
         {ITEM_NAMES.map((i) => (
           <option key={i} value={i} />
-        ))}
-      </datalist>
-      <datalist id="team-moves">
-        {MOVE_NAMES.map((m) => (
-          <option key={m} value={m} />
-        ))}
-      </datalist>
-      <datalist id="team-abilities">
-        {ABILITY_NAMES.map((a) => (
-          <option key={a} value={a} />
         ))}
       </datalist>
       {subtab === "readiness" && (
@@ -1343,11 +1334,11 @@ function BuildEditor({
             ))}
           </select>
         ) : (
-          <input
+          <Combobox
             placeholder="Ability"
-            list="team-abilities"
+            options={ABILITY_NAMES}
             value={build.ability}
-            onChange={(e) => onChange({ ...build, ability: e.target.value })}
+            onChange={(ability) => onChange({ ...build, ability })}
           />
         )}
         <input
@@ -1387,15 +1378,15 @@ function BuildEditor({
       )}
       <div className="calc-row">
         {build.moves.map((m, i) => (
-          <input
+          <Combobox
             key={i}
             className="calc-move"
             placeholder={`Move ${i + 1}`}
-            list="team-moves"
+            options={MOVE_NAMES}
             value={m}
-            onChange={(e) => {
+            onChange={(v) => {
               const moves = [...build.moves];
-              moves[i] = e.target.value;
+              moves[i] = v;
               onChange({ ...build, moves });
             }}
           />

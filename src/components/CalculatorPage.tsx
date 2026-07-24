@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, Run } from "../types";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import { SpeciesCombobox } from "./SpeciesCombobox";
+import { Combobox } from "./Combobox";
 import { ModifierToggle } from "./ModifierToggle";
 import { bossTeamFor } from "../lib/bossTarget";
 import { nextRequiredIndex } from "../lib/routeChoice";
@@ -583,19 +584,9 @@ export function CalculatorPage({
       </div>
       {!results && <p className="muted">Enter both Pokémon's species to calculate.</p>}
 
-      <datalist id="all-moves-calc">
-        {MOVE_NAMES.map((m) => (
-          <option key={m} value={m} />
-        ))}
-      </datalist>
       <datalist id="all-items-calc">
         {ITEM_NAMES.map((i) => (
           <option key={i} value={i} />
-        ))}
-      </datalist>
-      <datalist id="all-abilities-calc">
-        {ABILITY_NAMES.map((a) => (
-          <option key={a} value={a} />
         ))}
       </datalist>
     </div>
@@ -692,11 +683,11 @@ function MonConfigCard({
             ))}
           </select>
         ) : (
-          <input
+          <Combobox
             placeholder="Ability"
-            list="all-abilities-calc"
+            options={ABILITY_NAMES}
             value={cfg.ability}
-            onChange={(e) => update({ ability: e.target.value })}
+            onChange={(ability) => update({ ability })}
           />
         )}
         <input
@@ -791,15 +782,15 @@ function MonConfigCard({
       )}
       <div className="calc-row">
         {cfg.moves.map((m, i) => (
-          <input
+          <Combobox
             key={i}
             className="calc-move"
             placeholder={`Move ${i + 1}`}
-            list="all-moves-calc"
+            options={MOVE_NAMES}
             value={m}
-            onChange={(e) => {
+            onChange={(v) => {
               const moves = [...cfg.moves];
-              moves[i] = e.target.value;
+              moves[i] = v;
               update({ moves });
             }}
           />
