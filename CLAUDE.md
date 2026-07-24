@@ -132,3 +132,17 @@ own read-only stat-table preview.
 - Comment style: sparse, lowercase, explain non-obvious constraints only.
 - Data files in `src/data/` are generated — never hand-edit; change the
   importer and re-run it.
+- The mobile nav bar is `position: fixed`, and `overscroll-behavior-y:
+  none` (html + body) kills the iOS elastic bounce that otherwise drags it
+  off the screen edge mid-rubber-band. That also removes pull-to-refresh —
+  the settings-cog "Check for update" (`src/lib/appUpdate.ts`) is the
+  replacement reload path for the installed PWA, which has no address bar.
+  The two are a pair: don't remove either without reconsidering the other.
+- Don't reposition fixed elements from `window.visualViewport` geometry.
+  A long "nav bar detaches on iOS" hunt turned out to be WebKit bug 297779
+  — on iOS 26.0 `visualViewport.offsetTop` doesn't reset to 0 after the
+  keyboard is dismissed, so `position: fixed` elements are left misplaced.
+  Apple fixed it in 26.x; verified gone on 26.5. Five in-app fixes failed
+  because they all read the API the platform bug corrupts. If a viewport
+  bug reproduces only on one OS build, check the user's version and search
+  for a known WebKit bug before writing code.
