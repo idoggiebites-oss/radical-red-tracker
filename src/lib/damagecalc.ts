@@ -278,7 +278,16 @@ export function resolveMove(docMove: string): string | null {
 export function fieldFromBattleEffect(effect: string): rr.FieldOptions {
   const e = effect.toUpperCase();
   const out: rr.FieldOptions = {};
-  if (e.includes("SANDSTORM")) out.weather = "Sand";
+  // the unblockable/weather-immune-ignoring extreme weathers (checked
+  // first — their text doesn't contain "SUN"/"RAIN" as a substring, so
+  // order doesn't matter against the plain-weather checks below, but
+  // being explicit avoids relying on that) — same naming as the ability
+  // versions in WEATHER_ABILITIES (Desolate Land/Primordial Sea/Delta
+  // Stream, RR's Harsh Sunshine/Heavy Rain/Strong Winds)
+  if (e.includes("DESOLATE LAND")) out.weather = "Harsh Sunshine";
+  else if (e.includes("PRIMORDIAL SEA")) out.weather = "Heavy Rain";
+  else if (e.includes("DELTA STREAM")) out.weather = "Strong Winds";
+  else if (e.includes("SANDSTORM")) out.weather = "Sand";
   else if (e.includes("RAIN")) out.weather = "Rain";
   else if (e.includes("SUN")) out.weather = "Sun";
   else if (e.includes("HAIL")) out.weather = "Hail";

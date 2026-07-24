@@ -35,11 +35,21 @@ import {
   type SideConditions,
 } from "../lib/damagecalc";
 
-// Harsh Sunshine/Heavy Rain: same unblockable, Fire/Water-nullifying effect
-// as Desolate Land/Primordial Sea — some hardcore-mode routes have one of
-// these as a permanent field effect with no ability attached, so they need
-// to be manually selectable too, not just auto-detected from an ability
-const WEATHERS = ["Sun", "Rain", "Sand", "Hail", "Snow", "Harsh Sunshine", "Heavy Rain"];
+// Harsh Sunshine/Heavy Rain/Strong Winds: same unblockable/type-nullifying
+// effects as Desolate Land/Primordial Sea/Delta Stream — some hardcore-mode
+// boss fights have one as a permanent field effect with no ability attached
+// (fieldFromBattleEffect auto-detects these from the boss's battle-effect
+// text), so they need to be manually selectable too, not just ability-only
+const WEATHERS = [
+  "Sun",
+  "Rain",
+  "Sand",
+  "Hail",
+  "Snow",
+  "Harsh Sunshine",
+  "Heavy Rain",
+  "Strong Winds",
+];
 const TERRAINS = ["Electric", "Grassy", "Psychic", "Misty"];
 
 const YOU_CFG_KEY = "rr-tracker.calcMon";
