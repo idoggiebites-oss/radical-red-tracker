@@ -1256,18 +1256,19 @@ tr.pickable:hover td { background: var(--bg3); }
        against the *layout* viewport — the two can desync while either is
        animating, which visually detaches the bar from the screen edge and
        exposes content behind it (distinct from the overscroll-bounce case
-       above: this is keyboard-triggered, not scroll-triggered). Hiding
-       the bar during focus fixes the open side; opacity (not display, so
-       it can be delayed) plus a transition-delay on the reveal only fixes
-       the close side — blur fires the instant the keyboard starts
-       dismissing, well before iOS finishes animating the viewport back,
-       so revealing immediately just relocates the same glitch to blur
-       instead of focus. Delaying the reveal gives that animation
-       (~250ms on iOS) time to finish while the bar is still invisible. */
+       above: this is keyboard-triggered, not scroll-triggered). App.tsx
+       tracks this directly off window.visualViewport (a `:has(input:focus,
+       select:focus, ...)` CSS-only version was tried first, but a
+       <select>'s focus state commonly outlives its picker wheel on mobile
+       Safari, so the bar stayed hidden long after the picker was gone —
+       measuring the real viewport instead of DOM focus sidesteps that).
+       Opacity (not display, so it can be delayed) plus a transition-delay
+       on the reveal only, so the bar stays invisible until iOS's dismiss
+       animation (~250ms) has actually finished, not just started. */
     opacity: 1;
     transition: opacity 0.15s ease 280ms;
   }
-  body:has(input:focus, select:focus, textarea:focus) .tabs {
+  .app.keyboard-open .tabs {
     opacity: 0;
     pointer-events: none;
     transition: none;

@@ -61,6 +61,24 @@ export default function App() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+  // hide the mobile bottom nav while the on-screen keyboard or a native
+  // <select> picker wheel is up — position:fixed detaches from the screen
+  // edge while iOS resizes the visual viewport for either, exposing page
+  // content behind it. Tried `:has(input:focus, select:focus, ...)` in
+  // CSS first, but a <select>'s focus state commonly outlives its picker
+  // (mobile Safari doesn't blur it just because the wheel closed), so the
+  // bar stayed hidden long after the picker was gone. Measuring the real
+  // visual viewport directly sidesteps that: it's only ever short while
+  // something is actually covering the screen, regardless of DOM focus.
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => setKeyboardOpen(vv.height < window.innerHeight * 0.85);
+    vv.addEventListener("resize", update);
+    update();
+    return () => vv.removeEventListener("resize", update);
+  }, []);
   // set when the cap pill is clicked: the boss team to jump to and open
   const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
     null,
@@ -166,8 +184,12 @@ export default function App() {
     return names;
   }, [modeData, currentCap, needsRouteChoice]);
 
+  const appClass =
+    "app" +
+    (showFloatingNav ? " floating-nav-active" : "") +
+    (keyboardOpen ? " keyboard-open" : "");
   return (
-    <div className={showFloatingNav ? "app floating-nav-active" : "app"}>
+    <div className={appClass}>
       <header className="topbar">
         <div className="brand">
           <span className="brand-title">Radical Red 4.1</span>
