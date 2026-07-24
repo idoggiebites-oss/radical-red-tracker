@@ -1251,17 +1251,27 @@ tr.pickable:hover td { background: var(--bg3); }
        the bare safe-area inset — an 8px top pad and 10px below the inset */
     padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
     z-index: 5;
+    /* iOS resizes the *visual* viewport when the keyboard (or a native
+       <select> picker wheel) opens, but position:fixed is computed
+       against the *layout* viewport — the two can desync while either is
+       animating, which visually detaches the bar from the screen edge and
+       exposes content behind it (distinct from the overscroll-bounce case
+       above: this is keyboard-triggered, not scroll-triggered). Hiding
+       the bar during focus fixes the open side; opacity (not display, so
+       it can be delayed) plus a transition-delay on the reveal only fixes
+       the close side — blur fires the instant the keyboard starts
+       dismissing, well before iOS finishes animating the viewport back,
+       so revealing immediately just relocates the same glitch to blur
+       instead of focus. Delaying the reveal gives that animation
+       (~250ms on iOS) time to finish while the bar is still invisible. */
+    opacity: 1;
+    transition: opacity 0.15s ease 280ms;
   }
-  /* iOS resizes the *visual* viewport when the keyboard (or a native
-     <select> picker wheel) opens, but position:fixed is computed against
-     the *layout* viewport — the two can desync while it's animating in,
-     which visually detaches the bar from the screen edge and exposes
-     content behind it (distinct from the overscroll-bounce case above:
-     this is keyboard-triggered, not scroll-triggered, so disabling bounce
-     doesn't touch it). Simplest robust fix: don't fight that resize —
-     just hide the bar whenever a form control has focus, same as most
-     native apps already do while typing. */
-  body:has(input:focus, select:focus, textarea:focus) .tabs { display: none; }
+  body:has(input:focus, select:focus, textarea:focus) .tabs {
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+  }
   .tab {
     flex: 1;
     display: flex;
