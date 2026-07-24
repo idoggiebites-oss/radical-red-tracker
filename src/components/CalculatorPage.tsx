@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, Run } from "../types";
+import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, GameMode, Run } from "../types";
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import { SpeciesCombobox } from "./SpeciesCombobox";
 import { Combobox } from "./Combobox";
@@ -16,7 +16,6 @@ import {
   NATURES,
   NATURE_EFFECTS,
   natureLabel,
-  autoField,
   buildPlayerPokemon,
   calcBaseStats,
   calcMoves,
@@ -24,6 +23,7 @@ import {
   defaultBossLevel,
   effectiveSpeed,
   fieldFromBattleEffect,
+  resolveField,
   resolveSpecies,
   statTotals,
   STATUSES,
@@ -67,6 +67,25 @@ const DEFAULT_CFG: PlayerMonConfig = {
   status: "",
   moves: ["", "", "", ""],
 };
+
+/** the auto-fill label for a Weather/Terrain select's blank option — must
+ * mirror resolveField's own precedence exactly (manual > boss field in
+ * Hardcore > ability > boss field in Default), so the label never claims
+ * a source that isn't the one actually in effect */
+function describeAutoField(
+  resolved: string | undefined,
+  bossValue: string | undefined,
+  youAbility: string,
+  oppAbility: string,
+  mode: GameMode,
+  fromAbility: (ability?: string) => string | undefined,
+  suffix = "",
+): string | undefined {
+  if (!resolved) return undefined;
+  if (mode === "hardcore" && bossValue) return `${resolved}${suffix} (boss fight)`;
+  const ability = fromAbility(youAbility) ? youAbility : fromAbility(oppAbility) ? oppAbility : undefined;
+  return ability ? `${resolved}${suffix} (${ability})` : `${resolved}${suffix} (boss fight)`;
+}
 
 /** HP-bar fill color class for a remaining/current HP percent — shared by
  * the result rows' remaining-HP bar and the Current HP indicator so both
@@ -201,11 +220,13 @@ export function CalculatorPage({
   const [opp, setOpp] = useState<PlayerMonConfig>(() =>
     target ? cfgFromBossMon(target.mon, target.levelCap) : DEFAULT_CFG,
   );
-  const [weather, setWeather] = useState(
-    () => (target ? fieldFromBattleEffect(target.battleEffect).weather : undefined) ?? "",
-  );
-  const [terrain, setTerrain] = useState(
-    () => (target ? fieldFromBattleEffect(target.battleEffect).terrain : undefined) ?? "",
+  // manual picks only — the boss's own scripted field (from battleEffect)
+  // is tracked separately in bossField, since whether it can be overridden
+  // by an ability depends on the run's mode (see resolveField)
+  const [weather, setWeather] = useState("");
+  const [terrain, setTerrain] = useState("");
+  const [bossField, setBossField] = useState<ReturnType<typeof fieldFromBattleEffect>>(
+    () => (target ? fieldFromBattleEffect(target.battleEffect) : {}),
   );
   const [doubles, setDoubles] = useState(() =>
     target ? /DOUBLES/i.test(target.battleEffect) : false,
@@ -241,9 +262,10 @@ export function CalculatorPage({
     idx: number,
   ) => {
     setOpp(cfgFromBossMon(mon, monLevelCap));
-    const field = fieldFromBattleEffect(battleEffect);
-    setWeather(field.weather ?? "");
-    setTerrain(field.terrain ?? "");
+    setBossField(fieldFromBattleEffect(battleEffect));
+    // a manual override from a previous boss shouldn't leak into this one
+    setWeather("");
+    setTerrain("");
     setDoubles(/DOUBLES/i.test(battleEffect));
     setTrickRoom(/TRICK ROOM/i.test(battleEffect));
     setOppSide({});
@@ -424,24 +446,33 @@ export function CalculatorPage({
     }),
     [weather, terrain, doubles],
   );
-  // weather/terrain summoned by either side's switch-in ability (Drought,
-  // Orichalcum Pulse, …) applies unless the selects above override it
+  // manual pick > boss's scripted field > switch-in ability, except in
+  // Hardcore where a "PERMANENT" boss field beats an ability too — see
+  // resolveField's own comment for why the precedence differs by mode
   const resolvedField = useMemo(
-    () => autoField(fieldOpts, [calcYou.ability, opp.ability]),
-    [fieldOpts, calcYou.ability, opp.ability],
+    () => resolveField(fieldOpts, bossField, [calcYou.ability, opp.ability], run.mode),
+    [fieldOpts, bossField, calcYou.ability, opp.ability, run.mode],
   );
-  // labels for the Weather/Terrain selects' blank option, so a switch-in
-  // ability's auto-detected field is visible in the control itself
-  // instead of only in the "Auto: …" caption underneath — same pattern as
-  // the multi-hit picker's auto-detected blank-option label
-  const autoWeatherLabel =
-    !weather && resolvedField.weather
-      ? `${resolvedField.weather} (${weatherFromAbility(calcYou.ability) ? calcYou.ability : opp.ability})`
-      : undefined;
-  const autoTerrainLabel =
-    !terrain && resolvedField.terrain
-      ? `${resolvedField.terrain} Terrain (${terrainFromAbility(calcYou.ability) ? calcYou.ability : opp.ability})`
-      : undefined;
+  // labels for the Weather/Terrain selects' blank option, so whichever
+  // source actually filled it in (an ability, or the boss fight's own
+  // field) is visible in the control itself instead of only in a caption
+  // underneath — same pattern as the multi-hit picker's auto-detected
+  // blank-option label. Mirrors resolveField's own precedence exactly so
+  // the label never claims a source that isn't the one actually in effect.
+  const autoWeatherLabel = !weather
+    ? describeAutoField(resolvedField.weather, bossField.weather, calcYou.ability, opp.ability, run.mode, weatherFromAbility)
+    : undefined;
+  const autoTerrainLabel = !terrain
+    ? describeAutoField(
+        resolvedField.terrain,
+        bossField.terrain,
+        calcYou.ability,
+        opp.ability,
+        run.mode,
+        terrainFromAbility,
+        " Terrain",
+      )
+    : undefined;
 
   // each direction needs its own attacker/defender side pairing — screens
   // and Sturdy/Multiscale-relevant hazards only ever apply to the defender

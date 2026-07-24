@@ -4,7 +4,7 @@
 import * as rr from "rr-damage-calc";
 import { getFinalSpeed } from "rr-damage-calc/mechanics/util.js";
 import typesJson from "../data/types.json";
-import type { BossMon } from "../types";
+import type { BossMon, GameMode } from "../types";
 
 export const GEN = 9;
 const gen = rr.Generations.get(GEN);
@@ -342,6 +342,39 @@ export function autoField(
     terrain = terrain || terrainFromAbility(a);
   }
   return { ...fieldOpts, weather, terrain };
+}
+
+/** merges a manual field pick, a boss's scripted battle-effect field
+ * (`fieldFromBattleEffect`), and either side's switch-in ability into the
+ * field actually in effect for a boss matchup — a manual pick always wins,
+ * but the precedence between the boss's field and an ability differs by
+ * mode. In Default, the battle-effect text just describes what the field
+ * starts as — a Pokémon's own weather/terrain ability can still change it
+ * mid-fight, same as any other battle — so it's only a last-resort
+ * fallback after abilities. In Hardcore, RR's "PERMANENT" battle effects
+ * are a genuinely fixed field for the whole fight (confirmed against
+ * Route 16's Cue Ball Koji — "PERMANENT SANDSTORM" — where no held/
+ * switched-in ability is meant to replace it), so it's locked in before
+ * the ability check even runs. */
+export function resolveField(
+  manual: rr.FieldOptions,
+  bossField: rr.FieldOptions,
+  abilities: (string | undefined)[],
+  mode: GameMode,
+): rr.FieldOptions {
+  let weather = manual.weather;
+  let terrain = manual.terrain;
+  if (mode === "hardcore") {
+    weather = weather || bossField.weather;
+    terrain = terrain || bossField.terrain;
+  }
+  for (const a of abilities) {
+    weather = weather || weatherFromAbility(a);
+    terrain = terrain || terrainFromAbility(a);
+  }
+  weather = weather || bossField.weather;
+  terrain = terrain || bossField.terrain;
+  return { ...manual, weather, terrain };
 }
 
 /** the "Sun (Drought)" / "Electric Terrain (Electric Surge)" note bits for

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Boss, BossMode, CalcTarget, CaughtMon, MonBuild, Run } from "../types";
+import type { Boss, BossMode, CalcTarget, CaughtMon, GameMode, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { MonCard, SpeciesDefenses } from "../components/MonCard";
@@ -27,7 +27,6 @@ import {
   NATURES,
   NATURE_EFFECTS,
   natureLabel,
-  autoField,
   autoFieldNote,
   buildBossPokemon,
   buildPlayerPokemon,
@@ -35,6 +34,7 @@ import {
   defaultBossLevel,
   fieldFromBattleEffect,
   formsFor,
+  resolveField,
   statTotals,
   STATUSES,
   type MoveRange,
@@ -648,7 +648,11 @@ function ReadinessView({
   } | null>(null);
   const weather =
     weatherPick?.boss === selected ? weatherPick.value : (bossField.weather ?? "");
-  const terrain = bossField.terrain ?? "";
+  // the manual override alone (not merged with the boss's own field) —
+  // MatchupSection recomputes bossField itself and resolves the two with
+  // the right per-mode precedence, since it can vary move-to-move once
+  // each side's ability is factored in
+  const weatherOverride = weatherPick?.boss === selected ? weatherPick.value : "";
   return (
     <div className="readiness">
       <div className="readiness-head head-party">
@@ -724,8 +728,8 @@ function ReadinessView({
           party={party}
           boss={boss}
           levelCap={levelCap}
-          weather={weather}
-          terrain={terrain}
+          weather={weatherOverride}
+          mode={run.mode}
           noEvs={run.mode === "hardcore" || !!run.minimalGrind}
         />
       )}
@@ -753,18 +757,29 @@ function MatchupSection({
   boss,
   levelCap,
   weather,
-  terrain,
+  mode,
   noEvs,
 }: {
   runId: string;
   party: Entry[];
   boss: Boss;
   levelCap?: number;
+  /** a manual weather override only — the boss's own scripted field comes
+   * from `boss.battleEffect` (via bossField below) and is merged in with
+   * the right precedence per matchup, since it can differ move-to-move
+   * once each side's ability is factored in */
   weather: string;
-  terrain: string;
+  mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
 }) {
+  // the boss's own scripted field (e.g. Cue Ball Koji's "PERMANENT
+  // SANDSTORM") — precedence against a manual pick/either side's ability
+  // is resolved per matchup row, see resolveField
+  const bossField = useMemo(
+    () => fieldFromBattleEffect(boss.battleEffect),
+    [boss.battleEffect],
+  );
   const dirKey = `rr-tracker.readinessMatchupDir.${runId}`;
   const [dir, setDirState] = useState<"you" | "them">(() =>
     localStorage.getItem(dirKey) === "them" ? "them" : "you",
@@ -789,7 +804,7 @@ function MatchupSection({
     foeStatus,
     setFoeStatus,
   };
-  const props = { runId, party, boss, levelCap, weather, terrain, noEvs, ...shared };
+  const props = { runId, party, boss, levelCap, weather, bossField, mode, noEvs, ...shared };
   return (
     <div className="matchup">
       <div className="segmented matchup-dir">
@@ -870,7 +885,8 @@ function MoveMatchup({
   boss,
   levelCap,
   weather,
-  terrain,
+  bossField,
+  mode,
   noEvs,
   ...shared
 }: {
@@ -879,7 +895,8 @@ function MoveMatchup({
   boss: Boss;
   levelCap?: number;
   weather: string;
-  terrain: string;
+  bossField: ReturnType<typeof fieldFromBattleEffect>;
+  mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
 } & MatchupShared) {
@@ -915,11 +932,11 @@ function MoveMatchup({
     const attacker = buildPlayerPokemon(cfg);
     const fieldOpts = {
       weather: weather || undefined,
-      terrain: terrain || undefined,
       gameType: doubles ? "Doubles" : "Singles",
     };
-    // weather/terrain summoned by switch-in abilities (Drought, Orichalcum
-    // Pulse, …) applies per matchup unless the pickers above override it
+    // manual pick > boss's scripted field > switch-in ability, except in
+    // Hardcore where a "PERMANENT" boss field beats an ability too — see
+    // resolveField's own comment for why the precedence differs by mode
     const defenders = boss.pokemon.map((bm) => ({
       bm,
       poke: buildBossPokemon(
@@ -928,7 +945,7 @@ function MoveMatchup({
         undefined,
         foeStatus,
       ),
-      field: autoField(fieldOpts, [cfg.ability, bm.ability]),
+      field: resolveField(fieldOpts, bossField, [cfg.ability, bm.ability], mode),
     }));
     const autoBits = autoFieldNote(fieldOpts, [
       cfg.ability,
@@ -951,7 +968,7 @@ function MoveMatchup({
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, terrain, crit, doubles, myStatus, foeStatus, noEvs]);
+  }, [mon, level, levelCap, boss, weather, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!mon || !grid) return null;
   return (
     <>
@@ -969,8 +986,8 @@ function MoveMatchup({
         <MatchupControls {...shared} />
         <span className="muted matchup-note">
           your moves vs {boss.title}
-          {weather && ` · ${weather}`}
-          {terrain && ` · ${terrain} Terrain`}
+          {(weather || bossField.weather) && ` · ${weather || bossField.weather}`}
+          {bossField.terrain && ` · ${bossField.terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
           {doubles && " · doubles"}
           {crit && " · crit"}
@@ -1028,7 +1045,8 @@ function FoeMatchup({
   boss,
   levelCap,
   weather,
-  terrain,
+  bossField,
+  mode,
   noEvs,
   ...shared
 }: {
@@ -1037,7 +1055,8 @@ function FoeMatchup({
   boss: Boss;
   levelCap?: number;
   weather: string;
-  terrain: string;
+  bossField: ReturnType<typeof fieldFromBattleEffect>;
+  mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
 } & MatchupShared) {
@@ -1059,7 +1078,6 @@ function FoeMatchup({
     const attacker = buildBossPokemon(bm, bossLevel, undefined, foeStatus);
     const fieldOpts = {
       weather: weather || undefined,
-      terrain: terrain || undefined,
       gameType: doubles ? "Doubles" : "Singles",
     };
     const defenders = party.map(([id, e]) => {
@@ -1078,7 +1096,7 @@ function FoeMatchup({
         e,
         ability: cfg.ability,
         poke: buildPlayerPokemon(cfg),
-        field: autoField(fieldOpts, [bm.ability, cfg.ability]),
+        field: resolveField(fieldOpts, bossField, [bm.ability, cfg.ability], mode),
       };
     });
     const autoBits = autoFieldNote(fieldOpts, [
@@ -1103,7 +1121,7 @@ function FoeMatchup({
           })),
         })),
     };
-  }, [bm, party, level, levelCap, weather, terrain, crit, doubles, myStatus, foeStatus, noEvs]);
+  }, [bm, party, level, levelCap, weather, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!bm || !grid) return null;
   return (
     <>
@@ -1124,8 +1142,8 @@ function FoeMatchup({
         <MatchupControls {...shared} />
         <span className="muted matchup-note">
           {bm.species}'s moves vs your party
-          {weather && ` · ${weather}`}
-          {terrain && ` · ${terrain} Terrain`}
+          {(weather || bossField.weather) && ` · ${weather || bossField.weather}`}
+          {bossField.terrain && ` · ${bossField.terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
           {doubles && " · doubles"}
           {crit && " · crit"}
