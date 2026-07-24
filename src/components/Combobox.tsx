@@ -5,6 +5,13 @@ const MAX_SUGGESTIONS = 8;
 // stop scanning once we have plenty of candidates to rank and slice —
 // options lists run 1000+ long, no need to walk all of it every keystroke
 const SCAN_CAP = MAX_SUGGESTIONS * 6;
+// matches .combobox-list's max-height in app.css — used to decide whether
+// there's enough room below the input to open downward as usual
+const LIST_MAX_HEIGHT = 260;
+
+type ListRect =
+  | { left: number; width: number; top: number; bottom?: undefined }
+  | { left: number; width: number; bottom: number; top?: undefined };
 
 /** free-text input with a live-filtered, click/keyboard-selectable
  * suggestion dropdown — keeps the freedom to type anything (a species the
@@ -57,7 +64,7 @@ export function Combobox({
   const [highlight, setHighlight] = useState(0);
   const blurTimer = useRef<number | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [rect, setRect] = useState<{ top: number; left: number; width: number } | null>(null);
+  const [rect, setRect] = useState<ListRect | null>(null);
 
   const query = value.trim().toLowerCase();
   const suggestions = useMemo(() => {
@@ -80,7 +87,18 @@ export function Combobox({
     if (!showList || !wrapRef.current) return;
     const update = () => {
       const r = wrapRef.current!.getBoundingClientRect();
-      setRect({ top: r.bottom + 3, left: r.left, width: r.width });
+      const spaceBelow = window.innerHeight - r.bottom;
+      // open upward when there's not enough room below for the list at
+      // (up to) its max height, but there IS more room above — otherwise
+      // a row near the bottom of the viewport pushes the list off-screen
+      // instead of just off the row (the portal fix escapes the row's own
+      // clipping, but does nothing about the viewport's own edge)
+      const openUpward = spaceBelow < LIST_MAX_HEIGHT && r.top > spaceBelow;
+      setRect(
+        openUpward
+          ? { bottom: window.innerHeight - r.top + 3, left: r.left, width: r.width }
+          : { top: r.bottom + 3, left: r.left, width: r.width },
+      );
     };
     update();
     // the input's on-screen position moves if an ancestor scrolls or the
@@ -143,7 +161,12 @@ export function Combobox({
         createPortal(
           <ul
             className="combobox-list combobox-list-portal"
-            style={{ top: rect.top, left: rect.left, width: rect.width }}
+            style={{
+              top: rect.top,
+              bottom: rect.bottom,
+              left: rect.left,
+              width: rect.width,
+            }}
           >
             {suggestions.map((s, i) => (
               <li
