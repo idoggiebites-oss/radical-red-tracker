@@ -1,4 +1,10 @@
-import { useState } from "react";
+import {
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import encountersJson from "../data/encounters.json";
 import itemsJson from "../data/items.json";
 import type {
@@ -49,10 +55,61 @@ const CHEAT_CODES: { code: string; effect: string }[] = [
   { code: "EZCatch", effect: "Every Poké Ball gets a 100% catch rate" },
 ];
 
+/** Renders a long list a chunk at a time, growing as its sentinel scrolls
+ * into view. Real windowing would need per-row heights the section/table
+ * markup here doesn't hand us cheaply, and capping the *initial* render is
+ * what actually costs on a phone (Items alone is 530 rows). Rows past the
+ * cap aren't in the DOM, so find-in-page can't see them — the Filter box is
+ * the search path. Re-observing on every reveal is deliberate:
+ * IntersectionObserver only reports transitions, so a sentinel still in view
+ * after a chunk lands would otherwise never fire again. The unbounded *top*
+ * rootMargin is load-bearing for the same reason: a list with more content
+ * below it (the Items tab's Mega Stones) can have its sentinel jumped clean
+ * over, and ratio 0 → ratio 0 crosses no threshold, so a plain "800px"
+ * margin never fires again and those rows stay unreachable however far you
+ * scroll. Extending the root upward instead makes "sentinel is at or above
+ * the fold" an intersecting state, which does fire. */
+const ABOVE_FOLD = 1e6; // px of upward root expansion — effectively "any distance"
+function Chunked<T>({
+  items,
+  step,
+  resetKey,
+  children,
+}: {
+  items: T[];
+  step: number;
+  resetKey: string;
+  children: (visible: T[]) => ReactNode;
+}) {
+  const [shown, setShown] = useState(step);
+  const sentinel = useRef<HTMLDivElement>(null);
+  useEffect(() => setShown(step), [resetKey, step]);
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setShown((n) => n + step);
+      },
+      { rootMargin: `${ABOVE_FOLD}px 0px 800px 0px` },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [step, shown, items.length]);
+  const hidden = items.length - shown;
+  return (
+    <>
+      {children(hidden > 0 ? items.slice(0, shown) : items)}
+      {hidden > 0 && <div ref={sentinel} className="chunk-sentinel" aria-hidden />}
+    </>
+  );
+}
+
 export function ReferenceView() {
   const [tab, setTab] = useState<RefTab>("statics");
   const [filter, setFilter] = useState("");
-  const q = filter.trim().toLowerCase();
+  // the input keeps the live value so typing never waits on the list render
+  const q = useDeferredValue(filter).trim().toLowerCase();
 
   return (
     <div className="reference">
@@ -77,24 +134,35 @@ export function ReferenceView() {
       </div>
 
       {tab === "statics" && (
-        <table className="ref-table">
-          <tbody>
-            {data.statics
-              .filter((s) => !q || s.species.toLowerCase().includes(q) || s.info.toLowerCase().includes(q))
-              .map((s, i) => (
-                <tr key={i}>
-                  <td className="cell-sprite">
-                    <Sprite species={s.species} size={36} />
-                  </td>
-                  <td className="cell-species">{s.species}</td>
-                  <td>
-                    <TypeBadges species={s.species} small />
-                  </td>
-                  <td>{s.info}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Chunked
+          items={data.statics.filter(
+            (s) =>
+              !q ||
+              s.species.toLowerCase().includes(q) ||
+              s.info.toLowerCase().includes(q),
+          )}
+          step={40}
+          resetKey={q}
+        >
+          {(rows) => (
+            <table className="ref-table">
+              <tbody>
+                {rows.map((s, i) => (
+                  <tr key={i}>
+                    <td className="cell-sprite">
+                      <Sprite species={s.species} size={36} />
+                    </td>
+                    <td className="cell-species">{s.species}</td>
+                    <td>
+                      <TypeBadges species={s.species} small />
+                    </td>
+                    <td>{s.info}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Chunked>
       )}
 
       {tab === "gifts" && (
@@ -256,42 +324,50 @@ function ItemList({ q }: { q: string }) {
               <h3>
                 {label} <span className="count">({list.length})</span>
               </h3>
-              <table className="ref-table">
-                <tbody>
-                  {list.map((i, idx) => (
-                    <tr key={idx}>
-                      <td className="cell-item-sprite">
-                        <ItemSprite name={i.name} />
-                      </td>
-                      <td className="tm-move">{i.name}</td>
-                      <td>{i.location}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Chunked items={list} step={24} resetKey={q}>
+                {(rows) => (
+                  <table className="ref-table">
+                    <tbody>
+                      {rows.map((i, idx) => (
+                        <tr key={idx}>
+                          <td className="cell-item-sprite">
+                            <ItemSprite name={i.name} />
+                          </td>
+                          <td className="tm-move">{i.name}</td>
+                          <td>{i.location}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </Chunked>
             </section>
           ),
       )}
       <section>
         <h3>Overworld Items</h3>
-        {areas.map((a) => (
-          <div key={a.area} className="item-area">
-            <h4>{a.area}</h4>
-            <table className="ref-table">
-              <tbody>
-                {a.items.map((i, idx) => (
-                  <tr key={idx}>
-                    <td className="cell-item-sprite">
-                      <ItemSprite name={i.name} />
-                    </td>
-                    <td className="tm-move">{i.name}</td>
-                    <td>{i.location}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ))}
+        <Chunked items={areas} step={10} resetKey={q}>
+          {(shownAreas) =>
+            shownAreas.map((a) => (
+              <div key={a.area} className="item-area">
+                <h4>{a.area}</h4>
+                <table className="ref-table">
+                  <tbody>
+                    {a.items.map((i, idx) => (
+                      <tr key={idx}>
+                        <td className="cell-item-sprite">
+                          <ItemSprite name={i.name} />
+                        </td>
+                        <td className="tm-move">{i.name}</td>
+                        <td>{i.location}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))
+          }
+        </Chunked>
         {areas.length === 0 && <p className="muted">No items match.</p>}
       </section>
     </div>
@@ -322,9 +398,11 @@ function Raids({ raids, q }: { raids: EncountersData["raids"]; q: string }) {
           ))}
         </ul>
       )}
-      {locations.map((loc, i) => (
-        <RaidLocationCard key={i} loc={loc} q={q} />
-      ))}
+      <Chunked items={locations} step={10} resetKey={q}>
+        {(shown) =>
+          shown.map((loc, i) => <RaidLocationCard key={i} loc={loc} q={q} />)
+        }
+      </Chunked>
       {locations.length === 0 && <p className="muted">No raid dens match.</p>}
     </div>
   );

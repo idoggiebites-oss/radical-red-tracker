@@ -156,6 +156,10 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
    of view, independent of the nav's own position (see .tabs.floating) */
 .tabs-sentinel { height: 0; }
 
+/* trailing marker under a partially-rendered Reference list — scrolling it
+   into view reveals the next chunk (see Chunked in ReferenceView) */
+.chunk-sentinel { height: 1px; }
+
 /* desktop: once the top tab row scrolls out of view, echo it as a fixed
    bottom bar like mobile always has (mobile's own @media max-width:640px
    rule below already makes .tabs fixed unconditionally, so this only
