@@ -1252,6 +1252,16 @@ tr.pickable:hover td { background: var(--bg3); }
     padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
     z-index: 5;
   }
+  /* iOS resizes the *visual* viewport when the keyboard (or a native
+     <select> picker wheel) opens, but position:fixed is computed against
+     the *layout* viewport — the two can desync while it's animating in,
+     which visually detaches the bar from the screen edge and exposes
+     content behind it (distinct from the overscroll-bounce case above:
+     this is keyboard-triggered, not scroll-triggered, so disabling bounce
+     doesn't touch it). Simplest robust fix: don't fight that resize —
+     just hide the bar whenever a form control has focus, same as most
+     native apps already do while typing. */
+  body:has(input:focus, select:focus, textarea:focus) .tabs { display: none; }
   .tab {
     flex: 1;
     display: flex;
