@@ -15,8 +15,8 @@ import {
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
+  natureLabel,
   autoField,
-  autoFieldNote,
   buildPlayerPokemon,
   calcBaseStats,
   calcMoves,
@@ -27,7 +27,9 @@ import {
   resolveSpecies,
   statTotals,
   STATUSES,
+  terrainFromAbility,
   toEngineSide,
+  weatherFromAbility,
   type MatchupLine,
   type PlayerMonConfig,
   type SideConditions,
@@ -335,6 +337,14 @@ export function CalculatorPage({
             next.ability = legal[0];
           }
         }
+        // stage boosts/status/pinned hits/current HP describe a specific
+        // in-progress matchup, not the Pokémon's build — a new species
+        // shouldn't inherit the last one's +2 Attack or burn (reported by
+        // a playtester: switching species kept the previous mon's boosts)
+        next.boosts = {};
+        next.status = "";
+        next.moveHits = undefined;
+        next.currentHpPercent = undefined;
       }
       localStorage.setItem(YOU_CFG_KEY, JSON.stringify(next));
       return next;
@@ -353,6 +363,12 @@ export function CalculatorPage({
         if (legal.length > 0 && !legal.includes(next.ability)) {
           next.ability = legal[0];
         }
+        // see updateYou — a new species shouldn't inherit the last one's
+        // in-battle state
+        next.boosts = {};
+        next.status = "";
+        next.moveHits = undefined;
+        next.currentHpPercent = undefined;
       }
       return next;
     });
@@ -404,10 +420,18 @@ export function CalculatorPage({
     () => autoField(fieldOpts, [calcYou.ability, opp.ability]),
     [fieldOpts, calcYou.ability, opp.ability],
   );
-  const autoBits = useMemo(
-    () => autoFieldNote(fieldOpts, [calcYou.ability, opp.ability]),
-    [fieldOpts, calcYou.ability, opp.ability],
-  );
+  // labels for the Weather/Terrain selects' blank option, so a switch-in
+  // ability's auto-detected field is visible in the control itself
+  // instead of only in the "Auto: …" caption underneath — same pattern as
+  // the multi-hit picker's auto-detected blank-option label
+  const autoWeatherLabel =
+    !weather && resolvedField.weather
+      ? `${resolvedField.weather} (${weatherFromAbility(calcYou.ability) ? calcYou.ability : opp.ability})`
+      : undefined;
+  const autoTerrainLabel =
+    !terrain && resolvedField.terrain
+      ? `${resolvedField.terrain} Terrain (${terrainFromAbility(calcYou.ability) ? calcYou.ability : opp.ability})`
+      : undefined;
 
   // each direction needs its own attacker/defender side pairing — screens
   // and Sturdy/Multiscale-relevant hazards only ever apply to the defender
@@ -500,15 +524,16 @@ export function CalculatorPage({
           <FieldConditionsPanel
             weather={weather}
             setWeather={setWeather}
+            autoWeatherLabel={autoWeatherLabel}
             terrain={terrain}
             setTerrain={setTerrain}
+            autoTerrainLabel={autoTerrainLabel}
             crit={crit}
             setCrit={setCrit}
             doubles={doubles}
             setDoubles={setDoubles}
             trickRoom={trickRoom}
             setTrickRoom={setTrickRoom}
-            autoBits={autoBits}
             show={showField}
             setShow={setShowField}
             yourSide={yourSide}
@@ -664,7 +689,9 @@ function MonConfigCard({
         />
         <select value={cfg.nature} onChange={(e) => update({ nature: e.target.value })}>
           {NATURES.map((n) => (
-            <option key={n}>{n}</option>
+            <option key={n} value={n}>
+              {natureLabel(n)}
+            </option>
           ))}
         </select>
       </div>
@@ -840,15 +867,16 @@ function sideSummary(s: SideConditions): string {
 function FieldConditionsPanel({
   weather,
   setWeather,
+  autoWeatherLabel,
   terrain,
   setTerrain,
+  autoTerrainLabel,
   crit,
   setCrit,
   doubles,
   setDoubles,
   trickRoom,
   setTrickRoom,
-  autoBits,
   show,
   setShow,
   yourSide,
@@ -858,15 +886,20 @@ function FieldConditionsPanel({
 }: {
   weather: string;
   setWeather: (w: string) => void;
+  /** the switch-in-ability-detected weather's display label ("Sun
+   * (Drought)"), shown in place of "None" so the auto-fill is visible in
+   * the select itself — undefined when nothing's auto-detected or the
+   * user has already picked one explicitly */
+  autoWeatherLabel?: string;
   terrain: string;
   setTerrain: (t: string) => void;
+  autoTerrainLabel?: string;
   crit: boolean;
   setCrit: (fn: (c: boolean) => boolean) => void;
   doubles: boolean;
   setDoubles: (fn: (d: boolean) => boolean) => void;
   trickRoom: boolean;
   setTrickRoom: (fn: (t: boolean) => boolean) => void;
-  autoBits: string[];
   show: boolean;
   setShow: (fn: (s: boolean) => boolean) => void;
   yourSide: SideConditions;
@@ -882,8 +915,12 @@ function FieldConditionsPanel({
       <div className="field-quick-row">
         <label className="field-select">
           Weather
-          <select value={weather} onChange={(e) => setWeather(e.target.value)}>
-            <option value="">None</option>
+          <select
+            className={autoWeatherLabel ? "auto-detected" : undefined}
+            value={weather}
+            onChange={(e) => setWeather(e.target.value)}
+          >
+            <option value="">{autoWeatherLabel ?? "None"}</option>
             {WEATHERS.map((w) => (
               <option key={w} value={w}>
                 {w}
@@ -893,8 +930,12 @@ function FieldConditionsPanel({
         </label>
         <label className="field-select">
           Terrain
-          <select value={terrain} onChange={(e) => setTerrain(e.target.value)}>
-            <option value="">None</option>
+          <select
+            className={autoTerrainLabel ? "auto-detected" : undefined}
+            value={terrain}
+            onChange={(e) => setTerrain(e.target.value)}
+          >
+            <option value="">{autoTerrainLabel ?? "None"}</option>
             {TERRAINS.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -924,9 +965,6 @@ function FieldConditionsPanel({
           Trick Room
         </ModifierToggle>
       </div>
-      {autoBits.length > 0 && (
-        <div className="muted auto-bits">Auto: {autoBits.join(" · ")}</div>
-      )}
       <div className="calc-row spread-row">
         <button className="st-btn spread-toggle" onClick={() => setShow((s) => !s)}>
           {show ? "▾" : "▸"} Hazards &amp; screens

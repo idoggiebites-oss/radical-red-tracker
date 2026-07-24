@@ -1131,6 +1131,9 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- calc totals & field ---- */
 
 .field-select { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 12.5px; }
+/* Weather/Terrain auto-detected from a switch-in ability — same accent
+   treatment as the multi-hit picker's auto-detected state */
+.field-select select.auto-detected { border-color: var(--accent2); color: var(--accent2); }
 .modifier-line { font-size: 12.5px; }
 .totals-grid { display: flex; gap: 6px; }
 .totals-cell {
@@ -1158,7 +1161,6 @@ tr.pickable:hover td { background: var(--bg3); }
   flex-wrap: wrap;
 }
 .field-quick-row .field-select { flex-direction: row; align-items: center; }
-.auto-bits { font-size: 12px; }
 .side-editor { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .side-editor-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
 .side-editor-pills { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }

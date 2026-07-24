@@ -26,6 +26,7 @@ import {
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
+  natureLabel,
   autoField,
   autoFieldNote,
   buildBossPokemon,
@@ -1315,7 +1316,9 @@ function BuildEditor({
           onChange={(e) => onChange({ ...build, nature: e.target.value })}
         >
           {NATURES.map((n) => (
-            <option key={n}>{n}</option>
+            <option key={n} value={n}>
+              {natureLabel(n)}
+            </option>
           ))}
         </select>
         {legalAbilities.length > 0 && !anyAbility ? (

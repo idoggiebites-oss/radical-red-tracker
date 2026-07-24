@@ -579,6 +579,13 @@ export const NATURE_EFFECTS: Record<string, { plus: string; minus: string }> = {
   Timid: { plus: "SPE", minus: "ATK" },
 };
 
+/** nature select option label — "Adamant (+ATK/-SPA)", or just the plain
+ * name for a neutral nature (no entry in NATURE_EFFECTS) */
+export function natureLabel(nature: string): string {
+  const e = NATURE_EFFECTS[nature];
+  return e ? `${nature} (+${e.plus}/−${e.minus})` : nature;
+}
+
 /** actual computed stats (level/nature/EVs/IVs applied), keyed by label */
 export function computedStats(cfg: PlayerMonConfig): Record<string, number> | null {
   const p = buildPlayerPokemon(cfg);
