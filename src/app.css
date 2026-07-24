@@ -319,10 +319,11 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 }
 /* portaled to document.body (see Combobox.tsx) so an ancestor card's
    overflow:hidden — there to clip its own rounded corners — can't clip
-   the dropdown too; top/left/width come from the input's live
-   getBoundingClientRect(), position:fixed keeps it viewport-relative
-   regardless of which scroll container the input actually sits in */
-.combobox-list-portal { position: fixed; z-index: 20; }
+   the dropdown too. position:absolute + document-relative top/left
+   (not position:fixed + viewport-relative) so it can't inherit iOS's
+   fixed-position-vs-keyboard-viewport desync (see Combobox.tsx's comment
+   and app.css's .keyboard-open handling for the same bug on the nav bar) */
+.combobox-list-portal { position: absolute; z-index: 20; }
 .combobox-list li {
   display: flex;
   align-items: center;

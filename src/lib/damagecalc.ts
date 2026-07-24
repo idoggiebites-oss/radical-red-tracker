@@ -72,17 +72,79 @@ const ALIASES: Record<string, string> = {
   "darmanitan-z": "Darmanitan-Zen",
   "darmanitan-gz": "Darmanitan-Galar-Zen",
   "basculin-blue": "Basculin-Blue-Striped",
+  "wormadam-sa": "Wormadam-Sandy",
+  // purely cosmetic doc forms (no stat/type difference at all, so the calc
+  // engine only ever tracks the base species): flavor, cloak, coat, season
+  "alcremie-strbrry": "Alcremie",
+  "burmy-sandy": "Burmy",
+  "burmy-trash": "Burmy",
+  "deerling-autumn": "Deerling",
+  "deerling-summer": "Deerling",
+  "deerling-winter": "Deerling",
+  "shellos-east": "Shellos",
+  "any cap pikachu": "Pikachu",
+  // Incarnate Forme is the engine's unsuffixed default, not a distinct entry
+  "enamorus-i": "Enamorus",
+  "landorus-i": "Landorus",
+  "thundurus-i": "Thundurus",
+  "tornadus-i": "Tornadus",
+  // Squawkabilly Green / Urshifu Single Strike are likewise the default
+  "squawkabilly-g": "Squawkabilly",
+  "urshifu-s": "Urshifu",
+  "urshifu-single": "Urshifu",
+  // forms whose doc abbreviation isn't a single trailing letter, so the
+  // generic SUFFIXES expansion below can't reach them
+  "calyrex-i": "Calyrex-Ice",
+  "calyrex-s": "Calyrex-Shadow",
+  "cramorant-gorg": "Cramorant-Gorging",
+  "enamorus-t": "Enamorus-Therian",
+  "eternatus-max": "Eternatus-Eternamax",
+  "giratina-o": "Giratina-Origin",
+  "gourgeist-su": "Gourgeist-Super",
+  "hoopa-u": "Hoopa-Unbound",
+  "indeedee-m": "Indeedee",
+  "kyurem-b": "Kyurem-Black",
+  "kyurem-w": "Kyurem-White",
+  "landorus-t": "Landorus-Therian",
+  "lycanroc-d": "Lycanroc-Dusk",
+  "magearna-o": "Magearna-Original",
+  "necrozma-dm": "Necrozma-Dusk-Mane",
+  "necrozma-dw": "Necrozma-Dawn-Wings",
+  "ogerpon-c": "Ogerpon-Cornerstone",
+  "ogerpon-h": "Ogerpon-Hearthflame",
+  "ogerpon-w": "Ogerpon-Wellspring",
+  "palkia-o": "Palkia-Origin",
+  "pumpkaboo-la": "Pumpkaboo-Large",
+  "pumpkaboo-sm": "Pumpkaboo-Small",
+  "pumpkaboo-su": "Pumpkaboo-Super",
+  "shaymin-s": "Shaymin-Sky",
+  "squawkabilly-w": "Squawkabilly-White",
+  "thundurus-t": "Thundurus-Therian",
+  "tornadus-t": "Tornadus-Therian",
+  "urshifu-r": "Urshifu-Rapid-Strike",
+  "urshifu-rapid": "Urshifu-Rapid-Strike",
+  "zacian-c": "Zacian-Crowned",
+  "zamazenta-c": "Zamazenta-Crowned",
+  "zygarde-c": "Zygarde-Complete",
 };
 
 // "-P" only ever means Primal in this dataset (Groudon-P/Kyogre-P) — Paldean
 // forms use full names via ALIASES above, so there's no collision
 const SUFFIXES: Record<string, string> = { a: "-Alola", g: "-Galar", h: "-Hisui", p: "-Primal" };
 
+// fold accents before matching — the docs' "Flabébé" uses a precomposed é
+// (NFC) but the vendored calc engine's own species table happens to spell
+// it with a decomposed e+combining-accent (NFD); both reduce to the same
+// plain-ASCII "flabebe" once folded, but compared as raw strings they
+// never match (same idiom as sprites.ts's speciesSlug())
+const foldAccents = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+
 /** docs species name -> calc species name, or null when the calc data
  * doesn't know it (never guess a wrong mon). */
 export function resolveSpecies(docName: string): string | null {
-  const lower = docName.toLowerCase().trim();
-  const candidates = [docName, ALIASES[lower] ?? ""];
+  const folded = foldAccents(docName);
+  const lower = folded.toLowerCase().trim();
+  const candidates = [folded, ALIASES[lower] ?? ""];
   const m = lower.match(/^(.*)-(\w)$/);
   if (m && SUFFIXES[m[2]]) candidates.push(m[1] + SUFFIXES[m[2]]);
   for (const cand of candidates) {

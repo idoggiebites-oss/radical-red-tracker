@@ -13,6 +13,7 @@ import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
 import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
+import { nextLevelCap } from "./lib/levelCap";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -160,6 +161,19 @@ export default function App() {
     const i = nextRequiredIndex(modeData.trainerOrder, run);
     return i < 0 ? null : { entry: modeData.trainerOrder[i], index: i };
   }, [run, modeData]);
+  // the pill's *number* isn't currentCap.entry.levelCap — the docs repeat
+  // the same cap on every trainer between one gym leader and the next
+  // (Misty and the S.S. Anne/Dig House trainers before Lt. Surge all list
+  // "27"), so that field is "the cap you're expected to be under for this
+  // fight", not "the cap this fight raises you to". nextLevelCap() tracks
+  // the highest cap already unlocked by defeated trainers instead, so it
+  // correctly shows 34 right after Misty even though the next required
+  // trainer chronologically (currentCap.entry, used below for the "next:
+  // NAME" label/click-to-jump/chain display) is still a same-cap fight.
+  const capNumber = useMemo(
+    () => (modeData && run ? nextLevelCap(modeData, run) : undefined),
+    [modeData, run],
+  );
 
   // landed on the post-Sabrina fork with no route picked yet: this isn't a
   // normal "next fight", it's a decision blocking the tracker's progress
@@ -201,7 +215,7 @@ export default function App() {
             title="Route 12-18 forks two ways to Fuchsia City — click to choose which one you're taking"
             onClick={() => setRoutePickerOpen(true)}
           >
-            Level cap <strong>{currentCap.entry.levelCap}</strong>
+            Level cap <strong>{capNumber ?? currentCap.entry.levelCap}</strong>
             <span className="cap-next">choose your route →</span>
           </button>
         )}
@@ -222,7 +236,7 @@ export default function App() {
               if (target) setBossFocus({ ...target, nonce: Date.now() });
             }}
           >
-            Level cap <strong>{currentCap.entry.levelCap}</strong>
+            Level cap <strong>{capNumber ?? currentCap.entry.levelCap}</strong>
             <span className="cap-next">
               next: {currentCap.entry.name}
               {chainNames.length > 0 && (

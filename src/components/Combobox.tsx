@@ -5,13 +5,9 @@ const MAX_SUGGESTIONS = 8;
 // stop scanning once we have plenty of candidates to rank and slice —
 // options lists run 1000+ long, no need to walk all of it every keystroke
 const SCAN_CAP = MAX_SUGGESTIONS * 6;
-// matches .combobox-list's max-height in app.css — used to decide whether
-// there's enough room below the input to open downward as usual
+// matches .combobox-list's max-height in app.css — used as the "how tall
+// might this get" guess before the first real measurement lands
 const LIST_MAX_HEIGHT = 260;
-
-type ListRect =
-  | { left: number; width: number; top: number; bottom?: undefined }
-  | { left: number; width: number; bottom: number; top?: undefined };
 
 /** free-text input with a live-filtered, click/keyboard-selectable
  * suggestion dropdown — keeps the freedom to type anything (a species the
@@ -21,13 +17,20 @@ type ListRect =
  * <datalist> looks the same on desktop but iOS Safari barely renders any
  * suggestion UI for it at all — this works identically everywhere.
  *
- * The suggestion list is portaled to document.body and positioned off the
- * input's live screen coordinates (not CSS position:absolute inside the
- * input's own wrapper) — several callers (a randomized route's catch
- * form, an accordion row) sit inside an `overflow: hidden` card that
- * exists to clip rounded corners, which was silently clipping the
- * dropdown too. Fixed positioning relative to the viewport sidesteps any
- * ancestor's overflow/clipping entirely, current and future. */
+ * The suggestion list is portaled to document.body and positioned in
+ * *document* coordinates (getBoundingClientRect() + scrollX/Y), not
+ * viewport-relative position:fixed — two reasons. First, several callers
+ * (a randomized route's catch form, an accordion row) sit inside an
+ * `overflow: hidden` card that exists to clip rounded corners, which was
+ * clipping the dropdown too; portaling to body escapes that regardless of
+ * positioning scheme. Second, and why *this* scheme specifically: iOS
+ * resizes the *visual* viewport for the on-screen keyboard while
+ * position:fixed is computed against the *layout* viewport (the exact
+ * mechanism that made the mobile nav bar detach from the screen edge —
+ * see app.css's keyboard-open handling) — a fixed-position dropdown
+ * inherits that same desync and can render far from its input while
+ * typing. Document-relative absolute positioning never depends on the
+ * viewport at all, so it can't desync from one. */
 export function Combobox({
   value,
   onChange,
@@ -64,7 +67,8 @@ export function Combobox({
   const [highlight, setHighlight] = useState(0);
   const blurTimer = useRef<number | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [rect, setRect] = useState<ListRect | null>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [rect, setRect] = useState<{ top: number; left: number; width: number } | null>(null);
 
   const query = value.trim().toLowerCase();
   const suggestions = useMemo(() => {
@@ -83,33 +87,42 @@ export function Combobox({
 
   const showList = open && suggestions.length > 0;
 
+  // recomputed whenever the list opens, its content changes (the actual
+  // rendered height can change as suggestions narrow down), or the page
+  // scrolls/resizes while it's open. Runs after the DOM commit but before
+  // paint, so listRef's real height (from *this* render's suggestions) is
+  // already measurable — no separate invisible measuring pass needed.
   useLayoutEffect(() => {
     if (!showList || !wrapRef.current) return;
     const update = () => {
       const r = wrapRef.current!.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - r.bottom;
-      // open upward when there's not enough room below for the list at
-      // (up to) its max height, but there IS more room above — otherwise
-      // a row near the bottom of the viewport pushes the list off-screen
-      // instead of just off the row (the portal fix escapes the row's own
-      // clipping, but does nothing about the viewport's own edge)
-      const openUpward = spaceBelow < LIST_MAX_HEIGHT && r.top > spaceBelow;
-      setRect(
-        openUpward
-          ? { bottom: window.innerHeight - r.top + 3, left: r.left, width: r.width }
-          : { top: r.bottom + 3, left: r.left, width: r.width },
-      );
+      const vv = window.visualViewport;
+      // what's actually visible right now — window.innerHeight doesn't
+      // shrink for the keyboard on iOS, visualViewport does
+      const viewportBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
+      const listHeight = listRef.current?.offsetHeight ?? LIST_MAX_HEIGHT;
+      const spaceBelow = viewportBottom - r.bottom;
+      const openUpward = spaceBelow < listHeight && r.top > spaceBelow;
+      const top = openUpward
+        ? r.top + window.scrollY - listHeight - 3
+        : r.bottom + window.scrollY + 3;
+      setRect({ top, left: r.left + window.scrollX, width: r.width });
     };
     update();
-    // the input's on-screen position moves if an ancestor scrolls or the
-    // window resizes while the list is open — keep it glued in place
+    // a nested scrollable ancestor (not just the page itself) moving the
+    // input needs an explicit reposition; plain page scroll already keeps
+    // document-relative coordinates correct with no listener at all
     window.addEventListener("scroll", update, true);
     window.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("scroll", update);
     return () => {
       window.removeEventListener("scroll", update, true);
       window.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("scroll", update);
     };
-  }, [showList]);
+  }, [showList, suggestions]);
 
   const pick = (s: string) => {
     onChange(s);
@@ -157,16 +170,17 @@ export function Combobox({
         }}
       />
       {showList &&
-        rect &&
         createPortal(
           <ul
+            ref={listRef}
             className="combobox-list combobox-list-portal"
-            style={{
-              top: rect.top,
-              bottom: rect.bottom,
-              left: rect.left,
-              width: rect.width,
-            }}
+            // invisible until the first real measurement lands (rect
+            // starts null on first open) so it never flashes at (0,0)
+            style={
+              rect
+                ? { top: rect.top, left: rect.left, width: rect.width }
+                : { top: 0, left: -9999, width: wrapRef.current?.offsetWidth }
+            }
           >
             {suggestions.map((s, i) => (
               <li
