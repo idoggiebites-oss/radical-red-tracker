@@ -1,4 +1,5 @@
-import { type ReactNode, useMemo, useRef, useState } from "react";
+import { type ReactNode, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const MAX_SUGGESTIONS = 8;
 // stop scanning once we have plenty of candidates to rank and slice —
@@ -11,7 +12,15 @@ const SCAN_CAP = MAX_SUGGESTIONS * 6;
  * making it easy to land on a real name and avoid a silent typo. Matching
  * is case-insensitive; prefix matches rank first. Native <input list> +
  * <datalist> looks the same on desktop but iOS Safari barely renders any
- * suggestion UI for it at all — this works identically everywhere. */
+ * suggestion UI for it at all — this works identically everywhere.
+ *
+ * The suggestion list is portaled to document.body and positioned off the
+ * input's live screen coordinates (not CSS position:absolute inside the
+ * input's own wrapper) — several callers (a randomized route's catch
+ * form, an accordion row) sit inside an `overflow: hidden` card that
+ * exists to clip rounded corners, which was silently clipping the
+ * dropdown too. Fixed positioning relative to the viewport sidesteps any
+ * ancestor's overflow/clipping entirely, current and future. */
 export function Combobox({
   value,
   onChange,
@@ -47,6 +56,8 @@ export function Combobox({
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
   const blurTimer = useRef<number | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [rect, setRect] = useState<{ top: number; left: number; width: number } | null>(null);
 
   const query = value.trim().toLowerCase();
   const suggestions = useMemo(() => {
@@ -65,13 +76,30 @@ export function Combobox({
 
   const showList = open && suggestions.length > 0;
 
+  useLayoutEffect(() => {
+    if (!showList || !wrapRef.current) return;
+    const update = () => {
+      const r = wrapRef.current!.getBoundingClientRect();
+      setRect({ top: r.bottom + 3, left: r.left, width: r.width });
+    };
+    update();
+    // the input's on-screen position moves if an ancestor scrolls or the
+    // window resizes while the list is open — keep it glued in place
+    window.addEventListener("scroll", update, true);
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update, true);
+      window.removeEventListener("resize", update);
+    };
+  }, [showList]);
+
   const pick = (s: string) => {
     onChange(s);
     setOpen(false);
   };
 
   return (
-    <div className={"combobox" + (className ? ` ${className}` : "")}>
+    <div className={"combobox" + (className ? ` ${className}` : "")} ref={wrapRef}>
       <input
         className={invalid ? "invalid" : undefined}
         placeholder={placeholder}
@@ -110,26 +138,32 @@ export function Combobox({
           }
         }}
       />
-      {showList && (
-        <ul className="combobox-list">
-          {suggestions.map((s, i) => (
-            <li
-              key={s}
-              className={i === highlight ? "active" : undefined}
-              onMouseEnter={() => setHighlight(i)}
-              onMouseDown={(e) => {
-                // preventDefault keeps focus on the input so the blur
-                // timeout above never fires and closes the list first
-                e.preventDefault();
-                if (blurTimer.current) window.clearTimeout(blurTimer.current);
-                pick(s);
-              }}
-            >
-              {renderOption ? renderOption(s) : s}
-            </li>
-          ))}
-        </ul>
-      )}
+      {showList &&
+        rect &&
+        createPortal(
+          <ul
+            className="combobox-list combobox-list-portal"
+            style={{ top: rect.top, left: rect.left, width: rect.width }}
+          >
+            {suggestions.map((s, i) => (
+              <li
+                key={s}
+                className={i === highlight ? "active" : undefined}
+                onMouseEnter={() => setHighlight(i)}
+                onMouseDown={(e) => {
+                  // preventDefault keeps focus on the input so the blur
+                  // timeout above never fires and closes the list first
+                  e.preventDefault();
+                  if (blurTimer.current) window.clearTimeout(blurTimer.current);
+                  pick(s);
+                }}
+              >
+                {renderOption ? renderOption(s) : s}
+              </li>
+            ))}
+          </ul>,
+          document.body,
+        )}
     </div>
   );
 }

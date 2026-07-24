@@ -307,11 +307,6 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .combobox input { width: 100%; }
 .combobox input.invalid { border-color: #e85d4a; }
 .combobox-list {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 3px);
-  left: 0;
-  right: 0;
   max-height: 260px;
   overflow-y: auto;
   margin: 0;
@@ -322,6 +317,12 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
+/* portaled to document.body (see Combobox.tsx) so an ancestor card's
+   overflow:hidden — there to clip its own rounded corners — can't clip
+   the dropdown too; top/left/width come from the input's live
+   getBoundingClientRect(), position:fixed keeps it viewport-relative
+   regardless of which scroll container the input actually sits in */
+.combobox-list-portal { position: fixed; z-index: 20; }
 .combobox-list li {
   display: flex;
   align-items: center;
