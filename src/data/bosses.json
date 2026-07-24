@@ -806,7 +806,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Geodude-A",
+        "species": "Geodude-Alola",
         "level": "13",
         "nature": "Adamant",
         "ability": "Sturdy",
@@ -1277,7 +1277,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Electrode-H",
+        "species": "Electrode-Hisui",
         "level": "44",
         "nature": "Naive",
         "ability": "Reckless",
@@ -2172,7 +2172,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -2714,7 +2714,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Lilligant-H",
+        "species": "Lilligant-Hisui",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Hustle",
@@ -3371,7 +3371,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Zoroark-H",
+        "species": "Zoroark-Hisui",
         "level": "Highest Lv -2",
         "nature": "Timid",
         "ability": "Illusion",
@@ -6493,7 +6493,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Zapdos-G",
+        "species": "Zapdos-Galar",
         "level": "81",
         "nature": "Jolly",
         "ability": "Defiant",
@@ -6775,7 +6775,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Persian-A",
+        "species": "Persian-Alola",
         "level": "Highest Lv -4",
         "nature": "Timid",
         "ability": "Feline Prowess",
@@ -7001,7 +7001,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Weezing-G",
+        "species": "Weezing-Galar",
         "level": "Highest Lv -4",
         "nature": "Bold",
         "ability": "Neutralizing Gas",
@@ -8552,7 +8552,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Voltorb-H",
+        "species": "Voltorb-Hisui",
         "level": "Highest Lv -5",
         "nature": "Naive",
         "ability": "Reckless",
@@ -9343,7 +9343,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Sneasel-H",
+        "species": "Sneasel-Hisui",
         "level": "Highest Lv -4",
         "nature": "Bashful",
         "ability": "Inner Focus",
@@ -9394,7 +9394,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Marowak-A",
+        "species": "Marowak-Alola",
         "level": "58",
         "nature": "Jolly",
         "ability": "Bone Zone",
@@ -9582,7 +9582,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Darmanitan-G",
+        "species": "Darmanitan-Galar",
         "level": "Highest Lv -5",
         "nature": "Jolly",
         "ability": "Gorilla Tactics",
@@ -9612,7 +9612,7 @@
         }
        },
        {
-        "species": "Sandslash-A",
+        "species": "Sandslash-Alola",
         "level": "Highest Lv -5",
         "nature": "Jolly",
         "ability": "Slush Rush",
@@ -9957,7 +9957,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -5",
         "nature": "Adamant",
         "ability": "Rock Head",
@@ -10724,7 +10724,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Dugtrio-A",
+        "species": "Dugtrio-Alola",
         "level": "Highest Lv -5",
         "nature": "Naive",
         "ability": "Sand Force",
@@ -11587,7 +11587,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Goodra-H",
+        "species": "Goodra-Hisui",
         "level": "Highest Lv -4",
         "nature": "Modest",
         "ability": "Gooey",
@@ -11774,7 +11774,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -5",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -12101,7 +12101,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Braviary-H",
+        "species": "Braviary-Hisui",
         "level": "Highest Lv -4",
         "nature": "Modest",
         "ability": "Tinted Lens",
@@ -12492,7 +12492,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Exeggutor-A",
+        "species": "Exeggutor-Alola",
         "level": "83",
         "nature": "Modest",
         "ability": "Chlorophyll",
@@ -13308,7 +13308,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Weezing-G",
+        "species": "Weezing-Galar",
         "level": "Highest Lv -2",
         "nature": "Bold",
         "ability": "Levitate",
@@ -14555,7 +14555,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Qwilfish-H",
+        "species": "Qwilfish-Hisui",
         "level": "Highest Lv -4",
         "nature": "Jolly",
         "ability": "Intimidate",
@@ -15036,7 +15036,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Ninetales-A",
+        "species": "Ninetales-Alola",
         "level": "85",
         "nature": "Timid",
         "ability": "Snow Warning",
@@ -15575,7 +15575,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Zoroark-H",
+        "species": "Zoroark-Hisui",
         "level": "85",
         "nature": "Timid",
         "ability": "Illusion",
@@ -17424,7 +17424,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Goodra-H",
+        "species": "Goodra-Hisui",
         "level": "Highest Lv",
         "nature": "Bold",
         "ability": "Gooey",
@@ -18523,7 +18523,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Samurott-H",
+        "species": "Samurott-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Sharpness",
@@ -18551,7 +18551,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Decidueye-H",
+        "species": "Decidueye-Hisui",
         "level": "Highest Lv",
         "nature": "Adamant",
         "ability": "Quill Rush",
@@ -19972,7 +19972,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Decidueye-H",
+        "species": "Decidueye-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Quill Rush",
@@ -20639,7 +20639,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Slowbro-G",
+        "species": "Slowbro-Galar",
         "level": "Highest Lv",
         "nature": "Modest",
         "ability": "Regenerator",
@@ -21003,7 +21003,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -21656,7 +21656,7 @@
         }
        },
        {
-        "species": "Zoroark-H",
+        "species": "Zoroark-Hisui",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Illusion",
@@ -21957,7 +21957,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Moltres-G",
+        "species": "Moltres-Galar",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Berserk",
@@ -22266,7 +22266,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Avalugg-H",
+        "species": "Avalugg-Hisui",
         "level": "Highest Lv -2",
         "nature": "Adamant",
         "ability": "Technician",
@@ -22294,7 +22294,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Braviary-H",
+        "species": "Braviary-Hisui",
         "level": "Highest Lv -1",
         "nature": "Modest",
         "ability": "Sheer Force",
@@ -22419,7 +22419,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Goodra-H",
+        "species": "Goodra-Hisui",
         "level": "Highest Lv",
         "nature": "Modest",
         "ability": "Sap Sipper",
@@ -22690,7 +22690,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -23797,7 +23797,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Ninetales-A",
+        "species": "Ninetales-Alola",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Snow Warning",
@@ -23942,7 +23942,7 @@
         }
        },
        {
-        "species": "Zapdos-G",
+        "species": "Zapdos-Galar",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Defiant",
@@ -24064,7 +24064,7 @@
         }
        },
        {
-        "species": "Articuno-G",
+        "species": "Articuno-Galar",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Competitive",
@@ -25651,7 +25651,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Electrode-H",
+        "species": "Electrode-Hisui",
         "level": "36",
         "nature": "Naive",
         "ability": "Reckless",
@@ -25675,7 +25675,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Raichu-A",
+        "species": "Raichu-Alola",
         "level": "36",
         "nature": "Modest",
         "ability": "Surge Surfer",
@@ -25887,7 +25887,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Slowbro-G",
+        "species": "Slowbro-Galar",
         "level": "44",
         "nature": "Bold",
         "ability": "Regenerator",
@@ -27329,7 +27329,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Farfetch'd-G",
+        "species": "Farfetch'd-Galar",
         "level": "Highest Lv -2",
         "nature": "Bashful",
         "ability": "Scrappy",
@@ -28315,7 +28315,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Sandslash-A",
+        "species": "Sandslash-Alola",
         "level": "Highest Lv",
         "nature": "Adamant",
         "ability": "Slush Rush",
@@ -31012,7 +31012,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Marowak-A",
+        "species": "Marowak-Alola",
         "level": "Highest Lv",
         "nature": "Adamant",
         "ability": "Bone Zone",
@@ -31378,7 +31378,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Persian-A",
+        "species": "Persian-Alola",
         "level": "Highest Lv -2",
         "nature": "Timid",
         "ability": "Feline Prowess",
@@ -31588,7 +31588,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Weezing-G",
+        "species": "Weezing-Galar",
         "level": "Highest Lv",
         "nature": "Bold",
         "ability": "Neutralizing Gas",
@@ -31636,7 +31636,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Lilligant-H",
+        "species": "Lilligant-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Hustle",
@@ -32012,7 +32012,7 @@
         }
        },
        {
-        "species": "Ninetales-A",
+        "species": "Ninetales-Alola",
         "level": "Highest Lv -1",
         "nature": "Timid",
         "ability": "Serene Grace",
@@ -32431,7 +32431,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Articuno-G",
+        "species": "Articuno-Galar",
         "level": "55",
         "nature": "Timid",
         "ability": "Competitive",
@@ -33378,7 +33378,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Moltres-G",
+        "species": "Moltres-Galar",
         "level": "80",
         "nature": "Timid",
         "ability": "Berserk",
@@ -33889,7 +33889,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Voltorb-H",
+        "species": "Voltorb-Hisui",
         "level": "Highest Lv -1",
         "nature": "Naive",
         "ability": "Reckless",
@@ -34425,7 +34425,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Mr. Mime-G",
+        "species": "Mr. Mime-Galar",
         "level": "Highest Lv -1",
         "nature": "Timid",
         "ability": "Ice Body",
@@ -35102,7 +35102,7 @@
         }
        },
        {
-        "species": "Sneasel-H",
+        "species": "Sneasel-Hisui",
         "level": "Highest Lv -1",
         "nature": "Bashful",
         "ability": "Inner Focus",
@@ -35445,7 +35445,7 @@
         }
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -35493,7 +35493,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Braviary-H",
+        "species": "Braviary-Hisui",
         "level": "Highest Lv",
         "nature": "Modest",
         "ability": "Sheer Force",
@@ -35764,7 +35764,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Marowak-A",
+        "species": "Marowak-Alola",
         "level": "58",
         "nature": "Jolly",
         "ability": "Bone Zone",
@@ -37141,7 +37141,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Dugtrio-A",
+        "species": "Dugtrio-Alola",
         "level": "Highest Lv -2",
         "nature": "Naive",
         "ability": "Sand Force",
@@ -38429,7 +38429,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Samurott-H",
+        "species": "Samurott-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Sharpness",
@@ -38682,7 +38682,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Articuno-G",
+        "species": "Articuno-Galar",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Competitive",
@@ -38715,7 +38715,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Zapdos-G",
+        "species": "Zapdos-Galar",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Defiant",
@@ -38739,7 +38739,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -39025,7 +39025,7 @@
         }
        },
        {
-        "species": "Braviary-H",
+        "species": "Braviary-Hisui",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Tinted Lens",
@@ -39800,7 +39800,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Muk-A",
+        "species": "Muk-Alola",
         "level": "Highest Lv",
         "nature": "Adamant",
         "ability": "Poison Touch",
@@ -40356,7 +40356,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Moltres-G",
+        "species": "Moltres-Galar",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Berserk",
@@ -41505,7 +41505,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Qwilfish-H",
+        "species": "Qwilfish-Hisui",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Intimidate",
@@ -44016,7 +44016,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Goodra-H",
+        "species": "Goodra-Hisui",
         "level": "Highest Lv",
         "nature": "Bold",
         "ability": "Gooey",
@@ -44988,7 +44988,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Samurott-H",
+        "species": "Samurott-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Sharpness",
@@ -45012,7 +45012,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Decidueye-H",
+        "species": "Decidueye-Hisui",
         "level": "Highest Lv",
         "nature": "Adamant",
         "ability": "Quill Rush",
@@ -46242,7 +46242,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Decidueye-H",
+        "species": "Decidueye-Hisui",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Quill Rush",
@@ -46822,7 +46822,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Slowbro-G",
+        "species": "Slowbro-Galar",
         "level": "Highest Lv",
         "nature": "Modest",
         "ability": "Regenerator",
@@ -47139,7 +47139,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -47704,7 +47704,7 @@
         }
        },
        {
-        "species": "Zoroark-H",
+        "species": "Zoroark-Hisui",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Illusion",
@@ -47988,7 +47988,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Zoroark-H",
+        "species": "Zoroark-Hisui",
         "level": "Highest Lv",
         "nature": "Naive",
         "ability": "Illusion",
@@ -48233,7 +48233,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Avalugg-H",
+        "species": "Avalugg-Hisui",
         "level": "Highest Lv -2",
         "nature": "Adamant",
         "ability": "Technician",
@@ -48257,7 +48257,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Braviary-H",
+        "species": "Braviary-Hisui",
         "level": "Highest Lv -1",
         "nature": "Modest",
         "ability": "Sheer Force",
@@ -48366,7 +48366,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Goodra-H",
+        "species": "Goodra-Hisui",
         "level": "Highest Lv",
         "nature": "Modest",
         "ability": "Sap Sipper",
@@ -48601,7 +48601,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Arcanine-H",
+        "species": "Arcanine-Hisui",
         "level": "Highest Lv -1",
         "nature": "Jolly",
         "ability": "Rock Head",
@@ -49560,7 +49560,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Ninetales-A",
+        "species": "Ninetales-Alola",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Snow Warning",
@@ -49682,7 +49682,7 @@
         }
        },
        {
-        "species": "Zapdos-G",
+        "species": "Zapdos-Galar",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Defiant",
@@ -49789,7 +49789,7 @@
         }
        },
        {
-        "species": "Articuno-G",
+        "species": "Articuno-Galar",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Competitive",

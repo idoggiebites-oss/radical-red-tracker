@@ -627,6 +627,43 @@ def collect_species_names(encounters: dict, bosses: dict):
     return names
 
 
+def rename_species_refs(encounters: dict, bosses: dict, rename: dict[str, str]) -> None:
+    """rewrites every species reference in place using `rename` (a doc
+    sheet's short-form name -> the canonical full-word name used
+    elsewhere) — e.g. the boss sheet says "Arcanine-H", the locations
+    sheet says "Arcanine-Hisui" for the same Pokémon. types.json only
+    keeps the canonical key (see the dupe-pruning above), so anything
+    still holding the short form would silently fail typesFor()/
+    abilitiesFor()'s exact-match lookup. Mirrors collect_species_names()'s
+    own traversal — a new encounter/boss species field added there needs
+    the same treatment added here."""
+    def sub(name: str) -> str:
+        return rename.get(name, name)
+
+    for loc in encounters["locations"]:
+        for slots in loc["methods"].values():
+            for s in slots:
+                s["species"] = sub(s["species"])
+    for s in encounters["statics"]:
+        s["species"] = sub(s["species"])
+    for g in encounters["gifts"]:
+        g["species"] = sub(g["species"])
+    for t in encounters["trades"]:
+        t["give"] = sub(t["give"])
+        t["receive"] = sub(t["receive"])
+    for group_dict in (encounters["fossils"], encounters["eggVendor"]):
+        for key, group in group_dict.items():
+            group_dict[key] = [sub(s) for s in group]
+    for rl in encounters["raids"]["locations"]:
+        for d in rl["dens"]:
+            d["species"] = sub(d["species"])
+    for mode in bosses.values():
+        for cat in mode["categories"]:
+            for boss in cat["bosses"]:
+                for m in boss["pokemon"]:
+                    m["species"] = sub(m["species"])
+
+
 # evolution entries are [method, param, target_species_id, extra]; the method
 # semantics mirror the dex site's top-level 'evolutions' template table
 MEGA_EVO_METHOD = 254  # battle-only forms (mega/primal), not real evolutions
@@ -827,16 +864,30 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
         if mon:
             sprite_ids[name] = mon["ID"]
 
-    # the RR dex occasionally lists the same Sevii-form Pokémon under both
-    # the docs' abbreviated "-S" name and its own canonical "-Sevii" key
-    # (Clawitzer-S / Clawitzer-Sevii, ...) — doubles every species picker.
-    # Keep "-Sevii" only; resolve_species_key()/the app's own resolveSpecies()
-    # already map the "-S" doc abbreviation to the "-Sevii" entry, so nothing
-    # downstream needs the "-S" key once evolution targets are repointed.
-    sevii_dupes = [n for n in species_types
-                   if n.endswith("-S") and f"{n[:-2]}-Sevii" in species_types]
-    for dupe in sevii_dupes:
-        canonical = f"{dupe[:-2]}-Sevii"
+    # different doc sheets spell the same regional/Sevii form differently —
+    # the boss sheet abbreviates it ("Arcanine-H"), the locations sheet
+    # spells it out ("Arcanine-Hisui") — and collect_species_names() just
+    # gathers whatever string each sheet uses, so both end up as separate
+    # species_types entries pointing at the same underlying dex mon,
+    # doubling every species picker. Keep the full-word form only;
+    # resolve_species_key()/the app's own resolveSpecies() already map the
+    # short suffix to it (SUFFIX_EXPANSIONS/SUFFIXES), so nothing
+    # downstream needs the short key once evolution targets AND the raw
+    # encounter/boss data's own species fields are repointed to it (the
+    # rename below — typesFor()/abilitiesFor() do an exact-key lookup with
+    # no alias resolution, so a boss still holding "Arcanine-H" would
+    # otherwise silently lose its type badges/legal abilities). Checked
+    # pairwise (both the short and full names must already exist) rather
+    # than blindly stripping every "-X" species, so an unrelated single-
+    # letter-suffix form can't get merged away by accident.
+    SHORT_FORM_SUFFIXES = {"A": "Alola", "G": "Galar", "H": "Hisui", "S": "Sevii"}
+    dupes = [
+        (n, f"{n[:-2]}-{SHORT_FORM_SUFFIXES[n[-1]]}")
+        for n in species_types
+        if len(n) > 2 and n[-2] == "-" and n[-1] in SHORT_FORM_SUFFIXES
+        and f"{n[:-2]}-{SHORT_FORM_SUFFIXES[n[-1]]}" in species_types
+    ]
+    for dupe, canonical in dupes:
         for d in (species_types, species_stats, species_abilities,
                   species_evolutions, sprite_ids):
             d.pop(dupe, None)
@@ -844,6 +895,7 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
             for evo in evos:
                 if evo["to"] == dupe:
                     evo["to"] = canonical
+    rename_species_refs(encounters, bosses, dict(dupes))
 
     print(f"  types resolved for {len(species_types)} species "
           f"({len(species_evolutions)} with evolutions)")

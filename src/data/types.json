@@ -292,10 +292,6 @@
   "Arcanine": [
    "Fire"
   ],
-  "Arcanine-H": [
-   "Fire",
-   "Rock"
-  ],
   "Arcanine-Hisui": [
    "Fire",
    "Rock"
@@ -354,10 +350,6 @@
    "Ice",
    "Flying"
   ],
-  "Articuno-G": [
-   "Psychic",
-   "Flying"
-  ],
   "Articuno-Galar": [
    "Psychic",
    "Flying"
@@ -371,10 +363,6 @@
   ],
   "Avalugg": [
    "Ice"
-  ],
-  "Avalugg-H": [
-   "Ice",
-   "Rock"
   ],
   "Avalugg-Hisui": [
    "Ice",
@@ -524,10 +512,6 @@
   ],
   "Braviary": [
    "Normal",
-   "Flying"
-  ],
-  "Braviary-H": [
-   "Psychic",
    "Flying"
   ],
   "Braviary-Hisui": [
@@ -930,9 +914,6 @@
   "Darmanitan": [
    "Fire"
   ],
-  "Darmanitan-G": [
-   "Ice"
-  ],
   "Darmanitan-GZ": [
    "Ice",
    "Fire"
@@ -954,10 +935,6 @@
   "Decidueye": [
    "Grass",
    "Ghost"
-  ],
-  "Decidueye-H": [
-   "Grass",
-   "Fighting"
   ],
   "Decidueye-Hisui": [
    "Grass",
@@ -1141,10 +1118,6 @@
   "Dugtrio": [
    "Ground"
   ],
-  "Dugtrio-A": [
-   "Ground",
-   "Steel"
-  ],
   "Dugtrio-Alola": [
    "Ground",
    "Steel"
@@ -1197,10 +1170,6 @@
   ],
   "Electrode": [
    "Electric"
-  ],
-  "Electrode-H": [
-   "Electric",
-   "Grass"
   ],
   "Electrode-Hisui": [
    "Electric",
@@ -1268,10 +1237,6 @@
    "Grass",
    "Psychic"
   ],
-  "Exeggutor-A": [
-   "Grass",
-   "Dragon"
-  ],
   "Exeggutor-Alola": [
    "Grass",
    "Dragon"
@@ -1285,9 +1250,6 @@
   ],
   "Farfetch'd": [
    "Flying",
-   "Fighting"
-  ],
-  "Farfetch'd-G": [
    "Fighting"
   ],
   "Farfetch'd-Galar": [
@@ -1476,10 +1438,6 @@
    "Rock",
    "Ground"
   ],
-  "Geodude-A": [
-   "Rock",
-   "Electric"
-  ],
   "Geodude-Alola": [
    "Rock",
    "Electric"
@@ -1566,10 +1524,6 @@
   ],
   "Goodra": [
    "Dragon"
-  ],
-  "Goodra-H": [
-   "Dragon",
-   "Steel"
   ],
   "Goodra-Hisui": [
    "Dragon",
@@ -2090,10 +2044,6 @@
   "Lilligant": [
    "Grass"
   ],
-  "Lilligant-H": [
-   "Grass",
-   "Fighting"
-  ],
   "Lilligant-Hisui": [
    "Grass",
    "Fighting"
@@ -2276,10 +2226,6 @@
   "Marowak": [
    "Ground"
   ],
-  "Marowak-A": [
-   "Fire",
-   "Ghost"
-  ],
   "Marowak-Alola": [
    "Fire",
    "Ghost"
@@ -2428,10 +2374,6 @@
    "Fire",
    "Flying"
   ],
-  "Moltres-G": [
-   "Dark",
-   "Flying"
-  ],
   "Moltres-Galar": [
    "Dark",
    "Flying"
@@ -2452,10 +2394,6 @@
    "Psychic",
    "Fairy"
   ],
-  "Mr. Mime-G": [
-   "Ice",
-   "Psychic"
-  ],
   "Mr. Mime-Galar": [
    "Ice",
    "Psychic"
@@ -2472,10 +2410,6 @@
   ],
   "Muk": [
    "Poison"
-  ],
-  "Muk-A": [
-   "Poison",
-   "Dark"
   ],
   "Muk-Alola": [
    "Poison",
@@ -2548,10 +2482,6 @@
   ],
   "Ninetales": [
    "Fire"
-  ],
-  "Ninetales-A": [
-   "Ice",
-   "Fairy"
   ],
   "Ninetales-Alola": [
    "Ice",
@@ -2746,9 +2676,6 @@
   "Persian": [
    "Normal"
   ],
-  "Persian-A": [
-   "Dark"
-  ],
   "Persian-Alola": [
    "Dark"
   ],
@@ -2933,10 +2860,6 @@
    "Water",
    "Poison"
   ],
-  "Qwilfish-H": [
-   "Dark",
-   "Poison"
-  ],
   "Qwilfish-Hisui": [
    "Dark",
    "Poison"
@@ -2944,10 +2867,6 @@
   "Raging Bolt": [
    "Electric",
    "Dragon"
-  ],
-  "Raichu-A": [
-   "Electric",
-   "Psychic"
   ],
   "Raikou": [
    "Electric"
@@ -3145,10 +3064,6 @@
    "Water",
    "Steel"
   ],
-  "Samurott-H": [
-   "Water",
-   "Dark"
-  ],
   "Samurott-Hisui": [
    "Water",
    "Dark"
@@ -3173,10 +3088,6 @@
   ],
   "Sandslash": [
    "Ground"
-  ],
-  "Sandslash-A": [
-   "Ice",
-   "Steel"
   ],
   "Sandslash-Alola": [
    "Ice",
@@ -3407,10 +3318,6 @@
    "Water",
    "Psychic"
   ],
-  "Slowbro-G": [
-   "Poison",
-   "Psychic"
-  ],
   "Slowbro-Galar": [
    "Poison",
    "Psychic"
@@ -3450,10 +3357,6 @@
   "Sneasel": [
    "Dark",
    "Ice"
-  ],
-  "Sneasel-H": [
-   "Poison",
-   "Fighting"
   ],
   "Sneasel-Hisui": [
    "Poison",
@@ -3989,10 +3892,6 @@
   "Voltorb": [
    "Electric"
   ],
-  "Voltorb-H": [
-   "Electric",
-   "Grass"
-  ],
   "Voltorb-Hisui": [
    "Electric",
    "Grass"
@@ -4038,10 +3937,6 @@
   ],
   "Weezing": [
    "Poison"
-  ],
-  "Weezing-G": [
-   "Poison",
-   "Fairy"
   ],
   "Weezing-Galar": [
    "Poison",
@@ -4178,10 +4073,6 @@
    "Electric",
    "Flying"
   ],
-  "Zapdos-G": [
-   "Fighting",
-   "Flying"
-  ],
   "Zapdos-Galar": [
    "Fighting",
    "Flying"
@@ -4213,10 +4104,6 @@
   ],
   "Zoroark": [
    "Dark"
-  ],
-  "Zoroark-H": [
-   "Ghost",
-   "Normal"
   ],
   "Zoroark-Hisui": [
    "Ghost",
@@ -5094,14 +4981,6 @@
    "SPD": 80,
    "SPE": 95
   },
-  "Arcanine-H": {
-   "HP": 95,
-   "ATK": 125,
-   "DEF": 80,
-   "SPA": 85,
-   "SPD": 80,
-   "SPE": 90
-  },
   "Arcanine-Hisui": {
    "HP": 95,
    "ATK": 125,
@@ -5230,14 +5109,6 @@
    "SPD": 125,
    "SPE": 100
   },
-  "Articuno-G": {
-   "HP": 90,
-   "ATK": 70,
-   "DEF": 95,
-   "SPA": 125,
-   "SPD": 100,
-   "SPE": 100
-  },
   "Articuno-Galar": {
    "HP": 90,
    "ATK": 70,
@@ -5268,14 +5139,6 @@
    "DEF": 184,
    "SPA": 44,
    "SPD": 46,
-   "SPE": 28
-  },
-  "Avalugg-H": {
-   "HP": 100,
-   "ATK": 132,
-   "DEF": 184,
-   "SPA": 34,
-   "SPD": 36,
    "SPE": 28
   },
   "Avalugg-Hisui": {
@@ -5613,14 +5476,6 @@
    "SPA": 57,
    "SPD": 75,
    "SPE": 80
-  },
-  "Braviary-H": {
-   "HP": 115,
-   "ATK": 58,
-   "DEF": 80,
-   "SPA": 112,
-   "SPD": 80,
-   "SPE": 65
   },
   "Braviary-Hisui": {
    "HP": 115,
@@ -6526,14 +6381,6 @@
    "SPD": 55,
    "SPE": 95
   },
-  "Darmanitan-G": {
-   "HP": 105,
-   "ATK": 140,
-   "DEF": 55,
-   "SPA": 30,
-   "SPD": 55,
-   "SPE": 95
-  },
   "Darmanitan-GZ": {
    "HP": 105,
    "ATK": 160,
@@ -6581,14 +6428,6 @@
    "SPA": 95,
    "SPD": 85,
    "SPE": 100
-  },
-  "Decidueye-H": {
-   "HP": 98,
-   "ATK": 112,
-   "DEF": 85,
-   "SPA": 75,
-   "SPD": 100,
-   "SPE": 70
   },
   "Decidueye-Hisui": {
    "HP": 98,
@@ -6982,14 +6821,6 @@
    "SPD": 70,
    "SPE": 120
   },
-  "Dugtrio-A": {
-   "HP": 35,
-   "ATK": 110,
-   "DEF": 60,
-   "SPA": 50,
-   "SPD": 70,
-   "SPE": 110
-  },
   "Dugtrio-Alola": {
    "HP": 35,
    "ATK": 110,
@@ -7115,14 +6946,6 @@
    "ATK": 55,
    "DEF": 70,
    "SPA": 100,
-   "SPD": 80,
-   "SPE": 150
-  },
-  "Electrode-H": {
-   "HP": 60,
-   "ATK": 55,
-   "DEF": 70,
-   "SPA": 95,
    "SPD": 80,
    "SPE": 150
   },
@@ -7270,14 +7093,6 @@
    "SPD": 75,
    "SPE": 55
   },
-  "Exeggutor-A": {
-   "HP": 95,
-   "ATK": 105,
-   "DEF": 85,
-   "SPA": 125,
-   "SPD": 75,
-   "SPE": 45
-  },
   "Exeggutor-Alola": {
    "HP": 95,
    "ATK": 105,
@@ -7309,14 +7124,6 @@
    "SPA": 58,
    "SPD": 77,
    "SPE": 65
-  },
-  "Farfetch'd-G": {
-   "HP": 52,
-   "ATK": 95,
-   "DEF": 55,
-   "SPA": 58,
-   "SPD": 62,
-   "SPE": 55
   },
   "Farfetch'd-Galar": {
    "HP": 52,
@@ -7734,14 +7541,6 @@
    "SPD": 30,
    "SPE": 20
   },
-  "Geodude-A": {
-   "HP": 40,
-   "ATK": 80,
-   "DEF": 100,
-   "SPA": 30,
-   "SPD": 30,
-   "SPE": 20
-  },
   "Geodude-Alola": {
    "HP": 40,
    "ATK": 80,
@@ -7933,14 +7732,6 @@
    "SPA": 110,
    "SPD": 150,
    "SPE": 80
-  },
-  "Goodra-H": {
-   "HP": 80,
-   "ATK": 100,
-   "DEF": 100,
-   "SPA": 110,
-   "SPD": 150,
-   "SPE": 60
   },
   "Goodra-Hisui": {
    "HP": 80,
@@ -9078,14 +8869,6 @@
    "SPD": 75,
    "SPE": 90
   },
-  "Lilligant-H": {
-   "HP": 70,
-   "ATK": 105,
-   "DEF": 75,
-   "SPA": 50,
-   "SPD": 75,
-   "SPE": 105
-  },
   "Lilligant-Hisui": {
    "HP": 70,
    "ATK": 105,
@@ -9494,14 +9277,6 @@
    "SPD": 80,
    "SPE": 45
   },
-  "Marowak-A": {
-   "HP": 60,
-   "ATK": 80,
-   "DEF": 110,
-   "SPA": 50,
-   "SPD": 80,
-   "SPE": 45
-  },
   "Marowak-Alola": {
    "HP": 60,
    "ATK": 80,
@@ -9838,14 +9613,6 @@
    "SPD": 85,
    "SPE": 90
   },
-  "Moltres-G": {
-   "HP": 90,
-   "ATK": 85,
-   "DEF": 90,
-   "SPA": 100,
-   "SPD": 125,
-   "SPE": 90
-  },
   "Moltres-Galar": {
    "HP": 90,
    "ATK": 85,
@@ -9886,14 +9653,6 @@
    "SPD": 120,
    "SPE": 90
   },
-  "Mr. Mime-G": {
-   "HP": 50,
-   "ATK": 65,
-   "DEF": 65,
-   "SPA": 90,
-   "SPD": 90,
-   "SPE": 100
-  },
   "Mr. Mime-Galar": {
    "HP": 50,
    "ATK": 65,
@@ -9927,14 +9686,6 @@
    "SPE": 40
   },
   "Muk": {
-   "HP": 105,
-   "ATK": 105,
-   "DEF": 75,
-   "SPA": 65,
-   "SPD": 100,
-   "SPE": 50
-  },
-  "Muk-A": {
    "HP": 105,
    "ATK": 105,
    "DEF": 75,
@@ -10101,14 +9852,6 @@
    "SPA": 81,
    "SPD": 100,
    "SPE": 100
-  },
-  "Ninetales-A": {
-   "HP": 73,
-   "ATK": 67,
-   "DEF": 75,
-   "SPA": 81,
-   "SPD": 100,
-   "SPE": 109
   },
   "Ninetales-Alola": {
    "HP": 73,
@@ -10534,14 +10277,6 @@
    "SPD": 65,
    "SPE": 115
   },
-  "Persian-A": {
-   "HP": 65,
-   "ATK": 60,
-   "DEF": 60,
-   "SPA": 55,
-   "SPD": 65,
-   "SPE": 115
-  },
   "Persian-Alola": {
    "HP": 65,
    "ATK": 60,
@@ -10958,14 +10693,6 @@
    "SPD": 55,
    "SPE": 85
   },
-  "Qwilfish-H": {
-   "HP": 65,
-   "ATK": 95,
-   "DEF": 85,
-   "SPA": 55,
-   "SPD": 55,
-   "SPE": 85
-  },
   "Qwilfish-Hisui": {
    "HP": 65,
    "ATK": 95,
@@ -10981,14 +10708,6 @@
    "SPA": 137,
    "SPD": 89,
    "SPE": 75
-  },
-  "Raichu-A": {
-   "HP": 60,
-   "ATK": 85,
-   "DEF": 50,
-   "SPA": 95,
-   "SPD": 85,
-   "SPE": 110
   },
   "Raikou": {
    "HP": 90,
@@ -11422,14 +11141,6 @@
    "SPD": 70,
    "SPE": 90
   },
-  "Samurott-H": {
-   "HP": 95,
-   "ATK": 108,
-   "DEF": 85,
-   "SPA": 95,
-   "SPD": 70,
-   "SPE": 90
-  },
   "Samurott-Hisui": {
    "HP": 95,
    "ATK": 108,
@@ -11479,14 +11190,6 @@
    "SPE": 40
   },
   "Sandslash": {
-   "HP": 75,
-   "ATK": 110,
-   "DEF": 120,
-   "SPA": 25,
-   "SPD": 65,
-   "SPE": 65
-  },
-  "Sandslash-A": {
    "HP": 75,
    "ATK": 110,
    "DEF": 120,
@@ -12014,14 +11717,6 @@
    "SPD": 80,
    "SPE": 30
   },
-  "Slowbro-G": {
-   "HP": 95,
-   "ATK": 75,
-   "DEF": 105,
-   "SPA": 115,
-   "SPD": 70,
-   "SPE": 30
-  },
   "Slowbro-Galar": {
    "HP": 95,
    "ATK": 75,
@@ -12103,14 +11798,6 @@
    "SPE": 65
   },
   "Sneasel": {
-   "HP": 55,
-   "ATK": 95,
-   "DEF": 55,
-   "SPA": 35,
-   "SPD": 75,
-   "SPE": 115
-  },
-  "Sneasel-H": {
    "HP": 55,
    "ATK": 95,
    "DEF": 55,
@@ -13302,14 +12989,6 @@
    "SPD": 55,
    "SPE": 100
   },
-  "Voltorb-H": {
-   "HP": 40,
-   "ATK": 30,
-   "DEF": 50,
-   "SPA": 55,
-   "SPD": 55,
-   "SPE": 100
-  },
   "Voltorb-Hisui": {
    "HP": 40,
    "ATK": 30,
@@ -13407,14 +13086,6 @@
    "SPE": 50
   },
   "Weezing": {
-   "HP": 65,
-   "ATK": 90,
-   "DEF": 120,
-   "SPA": 85,
-   "SPD": 70,
-   "SPE": 60
-  },
-  "Weezing-G": {
    "HP": 65,
    "ATK": 90,
    "DEF": 120,
@@ -13726,14 +13397,6 @@
    "SPD": 90,
    "SPE": 100
   },
-  "Zapdos-G": {
-   "HP": 90,
-   "ATK": 125,
-   "DEF": 90,
-   "SPA": 85,
-   "SPD": 90,
-   "SPE": 100
-  },
   "Zapdos-Galar": {
    "HP": 90,
    "ATK": 125,
@@ -13805,14 +13468,6 @@
    "SPA": 120,
    "SPD": 60,
    "SPE": 105
-  },
-  "Zoroark-H": {
-   "HP": 55,
-   "ATK": 100,
-   "DEF": 60,
-   "SPA": 125,
-   "SPD": 60,
-   "SPE": 110
   },
   "Zoroark-Hisui": {
    "HP": 55,
@@ -15351,11 +15006,6 @@
    "Intimidate",
    "Flash Fire"
   ],
-  "Arcanine-H": [
-   "Rock Head",
-   "Intimidate",
-   "Flash Fire"
-  ],
   "Arcanine-Hisui": [
    "Rock Head",
    "Intimidate",
@@ -15419,9 +15069,6 @@
    "Shield Dust",
    "Pressure"
   ],
-  "Articuno-G": [
-   "Competitive"
-  ],
   "Articuno-Galar": [
    "Competitive"
   ],
@@ -15435,11 +15082,6 @@
    "Sturdy",
    "Solid Rock",
    "Ice Body"
-  ],
-  "Avalugg-H": [
-   "Technician",
-   "Strong Jaw",
-   "Sturdy"
   ],
   "Avalugg-Hisui": [
    "Technician",
@@ -15617,11 +15259,6 @@
   ],
   "Braviary": [
    "Defiant",
-   "Frisk",
-   "Sheer Force"
-  ],
-  "Braviary-H": [
-   "Tinted Lens",
    "Frisk",
    "Sheer Force"
   ],
@@ -16078,10 +15715,6 @@
    "Zen Mode",
    "Sheer Force"
   ],
-  "Darmanitan-G": [
-   "Zen Mode",
-   "Gorilla Tactics"
-  ],
   "Darmanitan-GZ": [
    "Zen Mode"
   ],
@@ -16103,11 +15736,6 @@
   "Decidueye": [
    "Tinted Lens",
    "Overgrow"
-  ],
-  "Decidueye-H": [
-   "Bull Rush",
-   "Overgrow",
-   "Striker"
   ],
   "Decidueye-Hisui": [
    "Bull Rush",
@@ -16322,11 +15950,6 @@
    "Sand Veil",
    "Arena Trap"
   ],
-  "Dugtrio-A": [
-   "Sand Force",
-   "Sand Veil",
-   "Gooey"
-  ],
   "Dugtrio-Alola": [
    "Sand Force",
    "Sand Veil",
@@ -16395,11 +16018,6 @@
   ],
   "Electrode": [
    "Galvanize",
-   "Soundproof",
-   "Static"
-  ],
-  "Electrode-H": [
-   "Reckless",
    "Soundproof",
    "Static"
   ],
@@ -16478,10 +16096,6 @@
    "Harvest",
    "Chlorophyll"
   ],
-  "Exeggutor-A": [
-   "Harvest",
-   "Chlorophyll"
-  ],
   "Exeggutor-Alola": [
    "Harvest",
    "Chlorophyll"
@@ -16499,10 +16113,6 @@
    "Sharpness",
    "Frisk",
    "Inner Focus"
-  ],
-  "Farfetch'd-G": [
-   "Scrappy",
-   "Steadfast"
   ],
   "Farfetch'd-Galar": [
    "Scrappy",
@@ -16706,11 +16316,6 @@
    "Rock Head",
    "Sturdy"
   ],
-  "Geodude-A": [
-   "Galvanize",
-   "Rock Head",
-   "Sturdy"
-  ],
   "Geodude-Alola": [
    "Galvanize",
    "Rock Head",
@@ -16812,11 +16417,6 @@
    "Gooey",
    "Sap Sipper",
    "Hydration"
-  ],
-  "Goodra-H": [
-   "Gooey",
-   "Sap Sipper",
-   "Overcoat"
   ],
   "Goodra-Hisui": [
    "Gooey",
@@ -17412,11 +17012,6 @@
    "Chlorophyll",
    "Own Tempo"
   ],
-  "Lilligant-H": [
-   "Leaf Guard",
-   "Chlorophyll",
-   "Hustle"
-  ],
   "Lilligant-Hisui": [
    "Leaf Guard",
    "Chlorophyll",
@@ -17642,11 +17237,6 @@
    "Rock Head",
    "Battle Armor"
   ],
-  "Marowak-A": [
-   "Bone Zone ",
-   "Rock Head",
-   "Lightning Rod"
-  ],
   "Marowak-Alola": [
    "Bone Zone ",
    "Rock Head",
@@ -17814,9 +17404,6 @@
    "Flame Body",
    "Pressure"
   ],
-  "Moltres-G": [
-   "Berserk"
-  ],
   "Moltres-Galar": [
    "Berserk"
   ],
@@ -17837,11 +17424,6 @@
    "Misty Surge",
    "Soundproof",
    "Solid Rock"
-  ],
-  "Mr. Mime-G": [
-   "Ice Body",
-   "Screen Cleaner",
-   "Insomnia"
   ],
   "Mr. Mime-Galar": [
    "Ice Body",
@@ -17865,11 +17447,6 @@
    "Poison Touch",
    "Regenerator",
    "Sticky Hold"
-  ],
-  "Muk-A": [
-   "Receiver",
-   "Poison Touch",
-   "Gluttony"
   ],
   "Muk-Alola": [
    "Receiver",
@@ -17954,10 +17531,6 @@
   "Ninetales": [
    "Drought",
    "Flash Fire"
-  ],
-  "Ninetales-A": [
-   "Snow Warning",
-   "Serene Grace"
   ],
   "Ninetales-Alola": [
    "Snow Warning",
@@ -18186,11 +17759,6 @@
    "Limber",
    "Technician"
   ],
-  "Persian-A": [
-   "Feline Prowess",
-   "Fur Coat",
-   "Technician"
-  ],
   "Persian-Alola": [
    "Feline Prowess",
    "Fur Coat",
@@ -18414,11 +17982,6 @@
    "Toxic Debris",
    "Swift Swim"
   ],
-  "Qwilfish-H": [
-   "Intimidate",
-   "Poison Touch",
-   "Swift Swim"
-  ],
   "Qwilfish-Hisui": [
    "Intimidate",
    "Poison Touch",
@@ -18426,9 +17989,6 @@
   ],
   "Raging Bolt": [
    "Protosynthesis"
-  ],
-  "Raichu-A": [
-   "Surge Surfer"
   ],
   "Raikou": [
    "Inner Focus",
@@ -18649,11 +18209,6 @@
    "Torrent",
    "Battle Armor"
   ],
-  "Samurott-H": [
-   "Sharpness",
-   "Torrent",
-   "Battle Armor"
-  ],
   "Samurott-Hisui": [
    "Sharpness",
    "Torrent",
@@ -18683,10 +18238,6 @@
   "Sandslash": [
    "Sand Rush",
    "Sand Veil"
-  ],
-  "Sandslash-A": [
-   "Ice Scales",
-   "Slush Rush"
   ],
   "Sandslash-Alola": [
    "Ice Scales",
@@ -18968,11 +18519,6 @@
    "Oblivious",
    "Own Tempo"
   ],
-  "Slowbro-G": [
-   "Regenerator",
-   "Quick Draw",
-   "Own Tempo"
-  ],
   "Slowbro-Galar": [
    "Regenerator",
    "Quick Draw",
@@ -19020,11 +18566,6 @@
   ],
   "Sneasel": [
    "Infiltrator",
-   "Inner Focus",
-   "Frisk"
-  ],
-  "Sneasel-H": [
-   "Poison Touch",
    "Inner Focus",
    "Frisk"
   ],
@@ -19658,11 +19199,6 @@
    "Soundproof",
    "Static"
   ],
-  "Voltorb-H": [
-   "Reckless",
-   "Soundproof",
-   "Static"
-  ],
   "Voltorb-Hisui": [
    "Reckless",
    "Soundproof",
@@ -19718,11 +19254,6 @@
   ],
   "Weezing": [
    "Toxic Debris",
-   "Levitate",
-   "Neutralize Gas"
-  ],
-  "Weezing-G": [
-   "Misty Surge",
    "Levitate",
    "Neutralize Gas"
   ],
@@ -19879,9 +19410,6 @@
    "Static",
    "Pressure"
   ],
-  "Zapdos-G": [
-   "Defiant"
-  ],
   "Zapdos-Galar": [
    "Defiant"
   ],
@@ -19916,9 +19444,6 @@
    "Gluttony"
   ],
   "Zoroark": [
-   "Illusion"
-  ],
-  "Zoroark-H": [
    "Illusion"
   ],
   "Zoroark-Hisui": [
@@ -20690,7 +20215,7 @@
     "how": "at Lv 30"
    },
    {
-    "to": "Zoroark-H",
+    "to": "Zoroark-Hisui",
     "how": "at Lv 30"
    }
   ],
@@ -20892,7 +20417,7 @@
     "how": "at Lv 35 (night)"
    },
    {
-    "to": "Weezing-G",
+    "to": "Weezing-Galar",
     "how": "at Lv 35 (night)"
    },
    {
@@ -20954,7 +20479,7 @@
     "how": "with a Ice Stone"
    },
    {
-    "to": "Ninetales-A",
+    "to": "Ninetales-Alola",
     "how": "with a Ice Stone"
    }
   ],
@@ -20975,12 +20500,6 @@
     "to": "Electrode-Hisui",
     "how": "with a Leaf Stone"
    },
-   {
-    "to": "Electrode-H",
-    "how": "with a Leaf Stone"
-   }
-  ],
-  "Voltorb-H": [
    {
     "to": "Electrode-Hisui",
     "how": "with a Leaf Stone"
@@ -21692,12 +21211,6 @@
     "how": "at Lv 47"
    }
   ],
-  "Sneasel-H": [
-   {
-    "to": "Sneasler",
-    "how": "at Lv 47"
-   }
-  ],
   "Smoochum": [
    {
     "to": "Jynx",
@@ -21732,7 +21245,7 @@
     "how": "with a King's Rock"
    },
    {
-    "to": "Slowbro-G",
+    "to": "Slowbro-Galar",
     "how": "at Lv 37"
    }
   ],
@@ -21752,7 +21265,7 @@
     "how": "at Lv 50 in overworld rain"
    },
    {
-    "to": "Goodra-H",
+    "to": "Goodra-Hisui",
     "how": "at Lv 50 in overworld rain"
    }
   ],
@@ -22042,7 +21555,7 @@
     "how": "with a Ice Stone"
    },
    {
-    "to": "Sandslash-A",
+    "to": "Sandslash-Alola",
     "how": "with a Ice Stone"
    }
   ],
@@ -22070,7 +21583,7 @@
     "how": "at Lv 36 (night)"
    },
    {
-    "to": "Samurott-H",
+    "to": "Samurott-Hisui",
     "how": "at Lv 36 (night)"
    },
    {
@@ -22106,7 +21619,7 @@
     "how": "at Lv 36 (day)"
    },
    {
-    "to": "Braviary-H",
+    "to": "Braviary-Hisui",
     "how": "at Lv 36 (night)"
    }
   ],
@@ -22244,7 +21757,7 @@
   ],
   "Pikachu": [
    {
-    "to": "Raichu-A",
+    "to": "Raichu-Alola",
     "how": "with a Shiny Stone"
    },
    {
@@ -22257,12 +21770,6 @@
    }
   ],
   "Qwilfish-Hisui": [
-   {
-    "to": "Overqwil",
-    "how": "at Lv 36"
-   }
-  ],
-  "Qwilfish-H": [
    {
     "to": "Overqwil",
     "how": "at Lv 36"
@@ -22470,7 +21977,7 @@
     "how": "with a Leaf Stone"
    },
    {
-    "to": "Lilligant-H",
+    "to": "Lilligant-Hisui",
     "how": "with a Leaf Stone"
    }
   ],
@@ -22480,7 +21987,7 @@
     "how": "at Lv 28"
    },
    {
-    "to": "Persian-A",
+    "to": "Persian-Alola",
     "how": "at Lv 28"
    }
   ],
@@ -22656,7 +22163,7 @@
     "how": "at Lv 40"
    },
    {
-    "to": "Muk-A",
+    "to": "Muk-Alola",
     "how": "at Lv 40"
    }
   ],
@@ -22684,18 +22191,12 @@
     "how": "with a Ice Stone"
    },
    {
-    "to": "Mr. Mime-G",
+    "to": "Mr. Mime-Galar",
     "how": "with a Ice Stone"
    },
    {
     "to": "Mr. Mime",
     "how": "on level up knowing Mimic"
-   }
-  ],
-  "Mr. Mime-G": [
-   {
-    "to": "Mr. Rime",
-    "how": "at Lv 42"
    }
   ],
   "Morgrem": [
@@ -22804,7 +22305,7 @@
     "how": "at Lv 28 (night)"
    },
    {
-    "to": "Marowak-A",
+    "to": "Marowak-Alola",
     "how": "at Lv 28 (night)"
    },
    {
@@ -23228,7 +22729,7 @@
     "how": "with a Fire Stone"
    },
    {
-    "to": "Arcanine-H",
+    "to": "Arcanine-Hisui",
     "how": "with a Fire Stone"
    }
   ],
@@ -23346,12 +22847,6 @@
     "how": "at Lv 45"
    }
   ],
-  "Geodude-A": [
-   {
-    "to": "Graveler-Alola",
-    "how": "at Lv 23"
-   }
-  ],
   "Gabite": [
    {
     "to": "Garchomp",
@@ -23430,19 +22925,13 @@
     "how": "at Lv 30"
    }
   ],
-  "Farfetch'd-G": [
-   {
-    "to": "Sirfetch’d",
-    "how": "at Lv 30"
-   }
-  ],
   "Exeggcute": [
    {
     "to": "Exeggutor-Alola",
     "how": "with a Sun Stone"
    },
    {
-    "to": "Exeggutor-A",
+    "to": "Exeggutor-Alola",
     "how": "with a Sun Stone"
    },
    {
@@ -23526,7 +23015,7 @@
     "how": "at Lv 22"
    },
    {
-    "to": "Dugtrio-A",
+    "to": "Dugtrio-Alola",
     "how": "at Lv 22"
    }
   ],
@@ -23634,7 +23123,7 @@
     "how": "at Lv 36 (day)"
    },
    {
-    "to": "Decidueye-H",
+    "to": "Decidueye-Hisui",
     "how": "at Lv 36 (day)"
    },
    {
@@ -23654,7 +23143,7 @@
     "how": "with a Ice Stone"
    },
    {
-    "to": "Darmanitan-G",
+    "to": "Darmanitan-Galar",
     "how": "with a Ice Stone"
    }
   ],
@@ -23902,7 +23391,7 @@
     "how": "at Lv 36"
    },
    {
-    "to": "Avalugg-H",
+    "to": "Avalugg-Hisui",
     "how": "with a Ice Stone"
    }
   ],
@@ -24068,7 +23557,6 @@
   "Araquanid": 969,
   "Arbok": 24,
   "Arcanine": 59,
-  "Arcanine-H": 1272,
   "Arcanine-Hisui": 1272,
   "Arceus": 546,
   "Arceus-Bug": 725,
@@ -24085,12 +23573,10 @@
   "Aron": 382,
   "Arrokuda": 1138,
   "Articuno": 144,
-  "Articuno-G": 1217,
   "Articuno-Galar": 1217,
   "Audino": 584,
   "Audino-Mega": 917,
   "Avalugg": 821,
-  "Avalugg-H": 1309,
   "Avalugg-Hisui": 1309,
   "Axew": 663,
   "Azelf": 535,
@@ -24133,7 +23619,6 @@
   "Bounsweet": 978,
   "Bramblin": 1351,
   "Braviary": 681,
-  "Braviary-H": 1269,
   "Braviary-Hisui": 1269,
   "Breloom": 307,
   "Brionne": 946,
@@ -24247,14 +23732,12 @@
   "Cyndaquil": 155,
   "Darkrai": 544,
   "Darmanitan": 608,
-  "Darmanitan-G": 1226,
   "Darmanitan-GZ": 1227,
   "Darmanitan-Galar": 1226,
   "Darmanitan-Z": 737,
   "Dartrix": 940,
   "Darumaka": 607,
   "Decidueye": 941,
-  "Decidueye-H": 1301,
   "Decidueye-Hisui": 1301,
   "Dedenne": 810,
   "Deerling": 740,
@@ -24304,7 +23787,6 @@
   "Ducklett": 633,
   "Dudunsparce": 1100,
   "Dugtrio": 51,
-  "Dugtrio-A": 1028,
   "Dugtrio-Alola": 1028,
   "Dunsparce": 206,
   "Duraludon": 1176,
@@ -24321,7 +23803,6 @@
   "Electivire": 519,
   "Electrike": 337,
   "Electrode": 101,
-  "Electrode-H": 1296,
   "Electrode-Hisui": 1296,
   "Elekid": 239,
   "Elgyem": 658,
@@ -24340,12 +23821,10 @@
   "Excadrill": 583,
   "Exeggcute": 102,
   "Exeggutor": 103,
-  "Exeggutor-A": 1037,
   "Exeggutor-Alola": 1037,
   "Exploud": 372,
   "Falinks": 1162,
   "Farfetch'd": 83,
-  "Farfetch'd-G": 1213,
   "Farfetch'd-Galar": 1213,
   "Farigiraf": 868,
   "Fearow": 22,
@@ -24398,7 +23877,6 @@
   "Gengar": 94,
   "Gengar-Mega": 877,
   "Geodude": 74,
-  "Geodude-A": 1031,
   "Geodude-Alola": 1031,
   "Gholdengo": 852,
   "Gigalith": 579,
@@ -24423,7 +23901,6 @@
   "Golisopod": 985,
   "Golurk": 676,
   "Goodra": 814,
-  "Goodra-H": 1298,
   "Goodra-Hisui": 1298,
   "Gorebyss": 375,
   "Gossifleur": 1121,
@@ -24566,7 +24043,6 @@
   "Liepard": 563,
   "Lileep": 388,
   "Lilligant": 602,
-  "Lilligant-H": 1303,
   "Lilligant-Hisui": 1303,
   "Lillipup": 559,
   "Litleo": 775,
@@ -24618,7 +24094,6 @@
   "Mareep": 179,
   "Marill": 183,
   "Marowak": 105,
-  "Marowak-A": 1039,
   "Marowak-Alola": 1039,
   "Marshadow": 1019,
   "Maschiff": 1349,
@@ -24661,19 +24136,16 @@
   "Misdreavus": 200,
   "Mismagius": 482,
   "Moltres": 146,
-  "Moltres-G": 1219,
   "Moltres-Galar": 1219,
   "Morelull": 972,
   "Morgrem": 1152,
   "Morpeko": 1169,
   "Mr. Mime": 122,
-  "Mr. Mime-G": 1216,
   "Mr. Mime-Galar": 1216,
   "Mr. Rime": 1158,
   "Mudbray": 966,
   "Mudkip": 283,
   "Muk": 89,
-  "Muk-A": 1035,
   "Muk-Alola": 1035,
   "Munchlax": 499,
   "Munkidori": 1365,
@@ -24694,7 +24166,6 @@
   "Nihilego": 1010,
   "Nincada": 301,
   "Ninetales": 38,
-  "Ninetales-A": 1026,
   "Ninetales-Alola": 1026,
   "Noctowl": 164,
   "Noibat": 822,
@@ -24748,7 +24219,6 @@
   "Pelipper": 310,
   "Perrserker": 1155,
   "Persian": 53,
-  "Persian-A": 1030,
   "Persian-Alola": 1030,
   "Petilil": 601,
   "Phanpy": 231,
@@ -24801,10 +24271,8 @@
   "Quaquaval": 929,
   "Quaxly": 927,
   "Qwilfish": 211,
-  "Qwilfish-H": 1307,
   "Qwilfish-Hisui": 1307,
   "Raging Bolt": 1367,
-  "Raichu-A": 1022,
   "Raikou": 243,
   "Ralts": 392,
   "Rampardos": 462,
@@ -24859,7 +24327,6 @@
   "Salandit": 974,
   "Salazzle": 975,
   "Samurott": 556,
-  "Samurott-H": 1300,
   "Samurott-Hisui": 1300,
   "Sandaconda": 1136,
   "Sandaconda-Mega": 1253,
@@ -24867,7 +24334,6 @@
   "Sandshrew": 27,
   "Sandshrew-Alola": 1023,
   "Sandslash": 28,
-  "Sandslash-A": 1024,
   "Sandslash-Alola": 1024,
   "Sandy Shocks": 1244,
   "Sandygast": 986,
@@ -24933,7 +24399,6 @@
   "Sliggoo-Hisui": 1297,
   "Slither Wing": 1255,
   "Slowbro": 80,
-  "Slowbro-G": 1212,
   "Slowbro-Galar": 1212,
   "Slowbro-Mega": 876,
   "Slowking": 199,
@@ -24945,7 +24410,6 @@
   "Smoliv": 1324,
   "Smoochum": 238,
   "Sneasel": 215,
-  "Sneasel-H": 1304,
   "Sneasel-Hisui": 1304,
   "Sneasler": 1305,
   "Snivy": 548,
@@ -25094,7 +24558,6 @@
   "Volcanion": 830,
   "Volcarona": 690,
   "Voltorb": 100,
-  "Voltorb-H": 1295,
   "Voltorb-Hisui": 1295,
   "Vullaby": 682,
   "Vulpix": 37,
@@ -25108,7 +24571,6 @@
   "Weavile": 514,
   "Weedle": 13,
   "Weezing": 110,
-  "Weezing-G": 1215,
   "Weezing-Galar": 1215,
   "Whimsicott": 600,
   "Whirlipede": 597,
@@ -25147,7 +24609,6 @@
   "Zamazenta-C": 1205,
   "Zangoose": 380,
   "Zapdos": 145,
-  "Zapdos-G": 1218,
   "Zapdos-Galar": 1218,
   "Zarude": 1185,
   "Zebstrika": 576,
@@ -25157,7 +24618,6 @@
   "Zigzagoon": 288,
   "Zigzagoon-Galar": 1222,
   "Zoroark": 624,
-  "Zoroark-H": 1281,
   "Zoroark-Hisui": 1281,
   "Zorua": 623,
   "Zorua-Hisui": 1280,
