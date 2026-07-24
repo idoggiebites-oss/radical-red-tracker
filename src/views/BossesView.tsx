@@ -106,6 +106,37 @@ function TrainerOrder({
   const order = modeData.trainerOrder;
   const nextIdx = useMemo(() => nextRequiredIndex(order, run), [run, order]);
   const chains = useMemo(() => orderChainInfo(modeData), [modeData]);
+  // the cap pill's own number (see levelCap.ts: the highest cap already
+  // unlocked by defeated trainers, not just the next row's own listed
+  // value — several rows in a row can repeat the same number). Every row
+  // from the current frontier onward is a fight you're allowed to take
+  // AT this cap even though its own doc entry might list a lower one
+  // (e.g. Grunt right after Misty still says "27" even though Misty
+  // already unlocked 34) — showing the raw per-row number there read as
+  // contradicting the pill sitting right above it. Rows already behind
+  // you keep their own historical value; that's a real record of what
+  // that specific fight required, not something "current" applies to.
+  const capNow = useMemo(() => nextLevelCap(modeData, run), [modeData, run]);
+  // per-row displayed cap from the frontier onward: capNow ratcheted
+  // forward as later REQUIRED rows introduce a genuinely higher one —
+  // NOT a flat floor, or an optional side fight further down the list
+  // (e.g. Chuck) would show a *lower* number than required rows already
+  // passed above it just because its own raw cap happens to be smaller.
+  // Optional rows ride along on whatever's already been reached instead
+  // of raising it themselves, same as nextLevelCap()'s own unlocked-cap
+  // logic ignores them.
+  const displayCaps = useMemo(() => {
+    const caps: string[] = order.map((t) => t.levelCap);
+    let running = capNow ?? 0;
+    for (let i = 0; i < order.length; i++) {
+      if (nextIdx < 0 || i < nextIdx) continue;
+      const raw = parseInt(order[i].levelCap, 10);
+      if (Number.isNaN(raw)) continue;
+      if (!isEffectivelyOptional(order[i], run)) running = Math.max(running, raw);
+      caps[i] = String(Math.max(raw, running));
+    }
+    return caps;
+  }, [order, nextIdx, capNow, run]);
   // the fork's first entry, wherever it falls in this mode's order — shown
   // as an inline choice card right before it, not just a top-bar popup
   const forkIdx = useMemo(() => order.findIndex((t) => !!t.routeChoice), [order]);
@@ -156,6 +187,7 @@ function TrainerOrder({
         const optional = isEffectivelyOptional(t, run);
         const hidden = !showCompleted && isHidden(i);
         if (hidden && i !== forkIdx) return null;
+        const displayCap = displayCaps[i];
         return (
           <div key={i} className="order-row-wrap">
           {run && i === forkIdx && (
@@ -203,7 +235,7 @@ function TrainerOrder({
                 </span>
               ))}
             </span>
-            <span className="order-cap">{t.levelCap && `cap ${t.levelCap}`}</span>
+            <span className="order-cap">{t.levelCap && `cap ${displayCap}`}</span>
           </div>
           )}
           </div>
