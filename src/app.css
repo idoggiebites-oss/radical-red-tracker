@@ -16,20 +16,21 @@
 
 * { box-sizing: border-box; }
 
-html { overscroll-behavior-y: none; }
+/* Deliberately NOT setting overscroll-behavior-y here. It was once set to
+   `none` on html and body to kill iOS's elastic bounce, on the theory that
+   the bounce was what detached the fixed mobile nav bar from the screen
+   edge. It wasn't — the bar still detaches on scroll with the bounce off.
+   What that rule did cost is pull-to-refresh: iOS ties it to the same
+   overscroll affordance, so `none` removes both, and a home-screen PWA has
+   no address bar or reload button to fall back on. The cog menu's "Check
+   for update" now covers reloading, but that's a backstop, not a licence to
+   re-add this — it bought nothing the first time. */
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font: 15px/1.45 system-ui, "Segoe UI", sans-serif;
-  /* iOS's elastic overscroll bounce briefly stretches the page past its
-     real bottom edge; since the mobile nav bar is position:fixed (pinned
-     to the viewport, not the document), the bounce visually detaches it
-     from the screen edge and exposes page content behind it. Disabling
-     the bounce removes the effect at its source rather than trying to
-     out-pad it. */
-  overscroll-behavior-y: none;
 }
 
 .app { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; }
@@ -1263,8 +1264,10 @@ tr.pickable:hover td { background: var(--bg3); }
        <select> picker wheel) opens, but position:fixed is computed
        against the *layout* viewport — the two can desync while either is
        animating, which visually detaches the bar from the screen edge and
-       exposes content behind it (distinct from the overscroll-bounce case
-       above: this is keyboard-triggered, not scroll-triggered). App.tsx
+       exposes content behind it. This is the keyboard-triggered case only;
+       the bar is also reported detaching on plain scroll in the installed
+       PWA, which nothing here addresses and which disabling the elastic
+       bounce did NOT fix (see the note by body). App.tsx
        tracks this directly off window.visualViewport (a `:has(input:focus,
        select:focus, ...)` CSS-only version was tried first, but a
        <select>'s focus state commonly outlives its picker wheel on mobile
@@ -1292,13 +1295,13 @@ tr.pickable:hover td { background: var(--bg3); }
   }
   .tab-icon { display: block; margin-bottom: 2px; }
   /* reserve space for the fixed bar (now taller, see .tabs padding above)
-     so it never covers the last content. This used to lean on iOS's
-     momentum-scroll rubber-band overshoot for extra clearance, but with
-     the bounce now disabled (see body's overscroll-behavior-y) there's no
-     more overshoot to rely on — the reserved space alone has to clear the
-     bar with real room to spare, or the last row ends up unreachable
-     (reported: the calculator's last result row was flush against the bar
-     with no way to scroll further to confirm it wasn't cut off) */
+     so it never covers the last content. Sized to clear the bar on its own
+     with real room to spare — it briefly leaned on iOS's momentum-scroll
+     rubber-band overshoot for the last few px, which broke the moment the
+     bounce was disabled and left the calculator's last result row flush
+     against the bar with no way to scroll to it. The bounce is back now
+     (see the note by body), but don't shrink this back down: the overshoot
+     is a side effect to stay clear of, not clearance to budget against. */
   .app { padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
   .footer { display: none; }
 
