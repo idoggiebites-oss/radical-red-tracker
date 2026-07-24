@@ -8,6 +8,7 @@ import type {
   RunSaveInfo,
 } from "./types";
 import { loadState, newRun, saveState } from "./lib/storage";
+import { checkForUpdate } from "./lib/appUpdate";
 import { readSaveFile } from "./lib/saveFile";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
@@ -121,6 +122,22 @@ export default function App() {
   const modeData = bosses?.[mode] ?? null;
 
   const importInput = useRef<HTMLInputElement>(null);
+
+  // installed to the home screen there's no address bar to reload from, so
+  // the cog is the only way to pull a new deploy (see lib/appUpdate.ts)
+  const [updateState, setUpdateState] = useState<
+    "idle" | "checking" | "current" | "updating"
+  >("idle");
+  const runUpdateCheck = async () => {
+    setUpdateState("checking");
+    if (await checkForUpdate()) {
+      setUpdateState("updating");
+      location.reload();
+    } else {
+      setUpdateState("current");
+      setTimeout(() => setUpdateState("idle"), 2500);
+    }
+  };
 
   const exportActiveRun = () => {
     if (!run) return;
@@ -317,6 +334,21 @@ export default function App() {
               e.target.value = "";
             }}
           />
+          {/* stays open while it runs — the result is the whole point */}
+          <button
+            className="update-check"
+            title="Fetch the newest version of the tracker and reload"
+            disabled={updateState === "checking" || updateState === "updating"}
+            onClick={runUpdateCheck}
+          >
+            {updateState === "checking"
+              ? "Checking…"
+              : updateState === "updating"
+                ? "Updating…"
+                : updateState === "current"
+                  ? "Up to date ✓"
+                  : "⟳ Check for update"}
+          </button>
           {run && (
             <button
               className="danger"
