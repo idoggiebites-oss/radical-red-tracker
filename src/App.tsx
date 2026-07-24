@@ -73,13 +73,36 @@ export default function App() {
   // visual viewport directly sidesteps that: it's only ever short while
   // something is actually covering the screen, regardless of DOM focus.
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const tabsRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
-    const update = () => setKeyboardOpen(vv.height < window.innerHeight * 0.85);
+    const update = () => {
+      setKeyboardOpen(vv.height < window.innerHeight * 0.85);
+      // Hiding alone isn't enough. position:fixed resolves against the
+      // *layout* viewport, so with the keyboard up the bar sits at the
+      // bottom of a viewport that's partly behind the keyboard — and the
+      // 0.85 test above is a heuristic that a short keypad or a mid-
+      // animation state can slip past, leaving it stranded on screen.
+      // Pin it to where the visual viewport actually ends instead, so a
+      // missed hide is merely a visible bar, not a detached one.
+      const el = tabsRef.current;
+      if (!el) return;
+      const below = window.innerHeight - (vv.height + vv.offsetTop);
+      // desktop and the no-keyboard case land on 0 and clear the transform
+      el.style.transform = below > 0 ? `translateY(${-below}px)` : "";
+    };
+    // resize fires when the keyboard opens/closes; scroll fires when iOS
+    // *pans* the visual viewport to reveal a focused input, which the
+    // original listener missed entirely — that pan is the state where the
+    // bar most visibly comes away from the screen edge
     vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
     update();
-    return () => vv.removeEventListener("resize", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
   }, []);
   // set when the cap pill is clicked: the boss team to jump to and open
   const [bossFocus, setBossFocus] = useState<(BossTarget & { nonce: number }) | null>(
@@ -391,7 +414,7 @@ export default function App() {
       )}
 
       <div ref={tabsSentinelRef} className="tabs-sentinel" />
-      <nav className={showFloatingNav ? "tabs floating" : "tabs"}>
+      <nav ref={tabsRef} className={showFloatingNav ? "tabs floating" : "tabs"}>
         {TABS.map((t) => (
           <button
             key={t.id}
