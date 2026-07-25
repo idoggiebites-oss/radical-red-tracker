@@ -41,17 +41,6 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "reference", label: "Reference", icon: "nav-reference" },
 ];
 
-/** how long ago this run was last written to a .rrnuz file. Shown by the
- * Export button because a file is the only copy that survives Safari
- * evicting script-writable storage after ~a week unused. */
-function backupAge(at: number | undefined): string {
-  if (!at) return "never backed up";
-  const days = Math.floor((Date.now() - at) / 86_400_000);
-  if (days <= 0) return "backed up today";
-  if (days === 1) return "backed up yesterday";
-  return `backed up ${days} days ago`;
-}
-
 export default function App() {
   const [state, setState] = useState<AppState>(loadState);
   const [tab, setTab] = useState<Tab>("routes");
@@ -164,12 +153,8 @@ export default function App() {
 
   const exportActiveRun = async () => {
     if (!run) return;
-    // stamp before serializing, so the file records when the backup was
-    // actually taken instead of inheriting the clock of whatever session
-    // later re-imports it
-    const stamped = { ...run, lastExportedAt: Date.now() };
-    const name = runFileName(stamped);
-    const blob = new Blob([serializeRun(stamped)], { type: "application/json" });
+    const name = runFileName(run);
+    const blob = new Blob([serializeRun(run)], { type: "application/json" });
 
     // an installed iOS app has no useful download UI — the share sheet is
     // how a file actually reaches Files/iCloud/Messages there, which is the
@@ -181,12 +166,10 @@ export default function App() {
           files: [new File([blob], name, { type: blob.type })],
           title: name,
         });
-        updateRun((r) => ({ ...r, lastExportedAt: stamped.lastExportedAt }));
         return;
       } catch (err) {
-        // dismissing the sheet is a cancel, not a failure: don't force a
-        // download they didn't ask for, and don't record a backup that
-        // never actually happened
+        // dismissing the sheet is a cancel, not a failure — don't fall
+        // through to a download they didn't ask for
         if ((err as Error)?.name === "AbortError") return;
         // anything else (iOS has been flaky sharing files) falls through
       }
@@ -197,7 +180,6 @@ export default function App() {
     a.download = name;
     a.click();
     URL.revokeObjectURL(a.href);
-    updateRun((r) => ({ ...r, lastExportedAt: stamped.lastExportedAt }));
   };
 
   const importRun = async (file: File | undefined) => {
@@ -358,21 +340,16 @@ export default function App() {
           {run && (
             <button
               title={
-                (canShareFiles
+                canShareFiles
                   ? `Send this run as a ${RUN_FILE_EXT} file to Files, Messages, Mail…`
-                  : `Download this run as a ${RUN_FILE_EXT} backup file`) +
-                ` — ${backupAge(run.lastExportedAt)}`
+                  : `Download this run as a ${RUN_FILE_EXT} backup file`
               }
               onClick={() => {
                 setRunMenuOpen(false);
                 exportActiveRun();
               }}
             >
-              {canShareFiles ? "Share backup" : "Export"}
-              {/* the eviction risk is a mobile-PWA problem, so the line
-                  shows in the cog dropdown; desktop gets it on hover via
-                  the title above rather than a two-line header button */}
-              <span className="backup-age">{backupAge(run.lastExportedAt)}</span>
+              Export
             </button>
           )}
           <button
@@ -388,14 +365,13 @@ export default function App() {
             ref={importInput}
             type="file"
             /* iOS resolves these to UTIs off the file's last extension, so
-               only the `.json` entries actually do anything there — which
-               is exactly why backups are named `.rrnuz.json` (see
-               RUN_FILE_EXT). That keeps the picker on documents instead of
-               offering the photo library. The bare `.rrnuz` entry is for
-               desktop, where it costs nothing and still matches backups
-               exported before the rename; iOS just ignores it.
-               parseRunFile remains the real guard either way. */
-            accept={`${RUN_FILE_EXT},.rrnuz,.json,application/json`}
+               a custom extension would grey out our own backups (see
+               RUN_FILE_EXT). Listing json keeps the picker on documents
+               rather than offering the photo library. The .rrnuz entries
+               are legacy — briefly-used names that still open on desktop;
+               iOS ignores the bare one for want of a UTI. parseRunFile
+               remains the real guard either way. */
+            accept=".json,application/json,.rrnuz.json,.rrnuz"
             hidden
             onChange={(e) => {
               importRun(e.target.files?.[0]);
