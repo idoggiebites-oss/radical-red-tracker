@@ -96,7 +96,20 @@ const locScore = (g: Group, locToks: string[]) =>
  * "FUCHSIA CITY" — fall back to pure name order: the order and category
  * lists both run in game order, so the nth same-named entry overall maps to
  * the nth team whose title holds the name's tokens. */
+// pure function of modeData, which is a module-loaded JSON object that
+// never changes identity — but it's fuzzy token matching over the whole
+// order, and callers run it per render, so keep the result
+const resolved = new WeakMap<BossMode, (Group | null)[]>();
+
 function resolveOrder(modeData: BossMode): (Group | null)[] {
+  const cached = resolved.get(modeData);
+  if (cached) return cached;
+  const out = resolveOrderUncached(modeData);
+  resolved.set(modeData, out);
+  return out;
+}
+
+function resolveOrderUncached(modeData: BossMode): (Group | null)[] {
   const groups = buildGroups(modeData);
   const seen: Record<string, number> = {};
   return modeData.trainerOrder.map((t) => {
@@ -132,6 +145,26 @@ function resolveOrder(modeData: BossMode): (Group | null)[] {
 export function bossTeamFor(modeData: BossMode, index: number): BossTarget | null {
   const g = resolveOrder(modeData)[index];
   return g ? { category: g.category, title: g.title } : null;
+}
+
+/** trainer-order indices that award a badge — the Kanto gym leaders.
+ *
+ * The docs' levelCap column can't tell you which fight raises the cap: it
+ * repeats one number across a whole stretch of trainers (everything from
+ * the Cerulean rival through the S.S. Anne fights reads "27"). The badge
+ * is what actually raises it, so only these entries should.
+ *
+ * Deliberately Kanto-only. RR sprinkles the Johto leaders in as extra
+ * fights that award no badge, and that distinction is load-bearing:
+ * Falkner sits immediately before Brock at the same cap, so counting him
+ * would raise the cap a fight early — the same off-by-one this exists to
+ * fix. Gym rematches live in their own category and are excluded too. */
+export function badgeOrderIndices(modeData: BossMode): Set<number> {
+  const out = new Set<number>();
+  resolveOrder(modeData).forEach((g, i) => {
+    if (g?.category === "Kanto Leaders") out.add(i);
+  });
+  return out;
 }
 
 /** back-to-back chains per trainer-order index (absent = a normal fight).
