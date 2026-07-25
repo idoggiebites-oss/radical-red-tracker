@@ -256,6 +256,13 @@ export interface Run {
   /** the post-Sabrina route to Fuchsia City: unset until the player picks
    * (see TrainerOrderEntry.routeChoice) */
   sabrinaRoute?: "east" | "west";
+  /** when this run was last exported to a .rrnuz file. Stamped into the
+   * file itself before serializing, so a re-imported backup reports when it
+   * was actually taken rather than inheriting the current session's clock.
+   * Drives the "last backed up" line in the run menu — iOS evicts all
+   * script-writable storage after ~7 days unused, and a file is the only
+   * copy that survives it. */
+  lastExportedAt?: number;
 }
 
 export interface AppState {

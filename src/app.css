@@ -233,6 +233,23 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .footer code { background: var(--bg3); padding: 1px 6px; border-radius: 4px; }
 
 .empty-state { padding: 30px 0; color: var(--muted); }
+.empty-recover {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  max-width: 60ch;
+}
+.empty-recover code {
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--bg2);
+}
+
+/* hidden on desktop — the Export button's title carries it there instead,
+   so the header row stays one line high (see App.tsx) */
+.backup-age { display: none; }
 .muted { color: var(--muted); }
 
 /* ---- sprites ---- */
@@ -1248,6 +1265,15 @@ tr.pickable:hover td { background: var(--bg3); }
      it no longer occupies that space, so restore it directly on main */
   main { padding-top: 14px; }
   .run-controls select { flex: none; width: 100%; }
+  /* the cog dropdown is a column, so the Export button has room for a
+     second line: how long since this run was written to a file */
+  .backup-age {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--muted);
+  }
 
   /* bottom nav bar: fixed + thumb-reachable instead of a top row you have
      to scroll back up for; leaves room to add per-tab icons later without

@@ -41,6 +41,17 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "reference", label: "Reference", icon: "nav-reference" },
 ];
 
+/** how long ago this run was last written to a .rrnuz file. Shown by the
+ * Export button because a file is the only copy that survives Safari
+ * evicting script-writable storage after ~a week unused. */
+function backupAge(at: number | undefined): string {
+  if (!at) return "never backed up";
+  const days = Math.floor((Date.now() - at) / 86_400_000);
+  if (days <= 0) return "backed up today";
+  if (days === 1) return "backed up yesterday";
+  return `backed up ${days} days ago`;
+}
+
 export default function App() {
   const [state, setState] = useState<AppState>(loadState);
   const [tab, setTab] = useState<Tab>("routes");
@@ -123,6 +134,18 @@ export default function App() {
 
   const importInput = useRef<HTMLInputElement>(null);
 
+  // probed with a real File because canShare({files}) is the only reliable
+  // signal — `"share" in navigator` is true on platforms that still refuse
+  // file payloads, and the label shouldn't promise a sheet that won't open
+  const canShareFiles = useMemo(() => {
+    try {
+      const probe = new File([""], `probe${RUN_FILE_EXT}`, { type: "application/json" });
+      return !!navigator.canShare?.({ files: [probe] });
+    } catch {
+      return false;
+    }
+  }, []);
+
   // installed to the home screen there's no address bar to reload from, so
   // the cog is the only way to pull a new deploy (see lib/appUpdate.ts)
   const [updateState, setUpdateState] = useState<
@@ -139,14 +162,42 @@ export default function App() {
     }
   };
 
-  const exportActiveRun = () => {
+  const exportActiveRun = async () => {
     if (!run) return;
-    const blob = new Blob([serializeRun(run)], { type: "application/json" });
+    // stamp before serializing, so the file records when the backup was
+    // actually taken instead of inheriting the clock of whatever session
+    // later re-imports it
+    const stamped = { ...run, lastExportedAt: Date.now() };
+    const name = runFileName(stamped);
+    const blob = new Blob([serializeRun(stamped)], { type: "application/json" });
+
+    // an installed iOS app has no useful download UI — the share sheet is
+    // how a file actually reaches Files/iCloud/Messages there, which is the
+    // whole point given Safari can evict local storage. Anywhere without
+    // file sharing (desktop) still gets a plain download.
+    if (canShareFiles) {
+      try {
+        await navigator.share({
+          files: [new File([blob], name, { type: blob.type })],
+          title: name,
+        });
+        updateRun((r) => ({ ...r, lastExportedAt: stamped.lastExportedAt }));
+        return;
+      } catch (err) {
+        // dismissing the sheet is a cancel, not a failure: don't force a
+        // download they didn't ask for, and don't record a backup that
+        // never actually happened
+        if ((err as Error)?.name === "AbortError") return;
+        // anything else (iOS has been flaky sharing files) falls through
+      }
+    }
+
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = runFileName(run);
+    a.download = name;
     a.click();
     URL.revokeObjectURL(a.href);
+    updateRun((r) => ({ ...r, lastExportedAt: stamped.lastExportedAt }));
   };
 
   const importRun = async (file: File | undefined) => {
@@ -306,13 +357,22 @@ export default function App() {
           </button>
           {run && (
             <button
-              title={`Download this run as a ${RUN_FILE_EXT} backup file`}
+              title={
+                (canShareFiles
+                  ? `Send this run as a ${RUN_FILE_EXT} file to Files, Messages, Mail…`
+                  : `Download this run as a ${RUN_FILE_EXT} backup file`) +
+                ` — ${backupAge(run.lastExportedAt)}`
+              }
               onClick={() => {
                 setRunMenuOpen(false);
                 exportActiveRun();
               }}
             >
-              Export
+              {canShareFiles ? "Share backup" : "Export"}
+              {/* the eviction risk is a mobile-PWA problem, so the line
+                  shows in the cog dropdown; desktop gets it on hover via
+                  the title above rather than a two-line header button */}
+              <span className="backup-age">{backupAge(run.lastExportedAt)}</span>
             </button>
           )}
           <button
@@ -416,6 +476,14 @@ export default function App() {
             <p>
               Create a run to start tracking your Nuzlocke, or browse the docs data
               with the tabs above.
+            </p>
+            {/* storage eviction wipes everything, so there's no way to detect
+                that a run used to be here — this has to read sensibly both
+                to a first-time visitor and to someone who just lost a run */}
+            <p className="empty-recover">
+              Had a run here before? Safari clears a web app's saved data after
+              about a week without opening it. Import your most recent{" "}
+              <code>{RUN_FILE_EXT}</code> backup from the ⚙ menu to restore it.
             </p>
           </div>
         )}
