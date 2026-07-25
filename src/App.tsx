@@ -387,7 +387,13 @@ export default function App() {
           <input
             ref={importInput}
             type="file"
-            accept={`${RUN_FILE_EXT},.json,application/json`}
+            /* deliberately unfiltered. iOS resolves `accept` entries to
+               UTIs, and .rrnuz maps to nothing Apple knows, so listing it
+               did the opposite of the intent: the picker honoured only the
+               .json part and greyed out every actual backup. Nothing can
+               register the extension from a web app, so the filter has to
+               go — parseRunFile already rejects anything that isn't a run
+               and importRun alerts, which is the real guard anyway. */
             hidden
             onChange={(e) => {
               importRun(e.target.files?.[0]);
