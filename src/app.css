@@ -610,6 +610,17 @@ tr.pickable:hover td { background: var(--bg3); }
 .team-mini-table { width: 100%; }
 .team-mini-table table { width: 100%; }
 .team-mini-table .cell-species { font-weight: 600; }
+
+/* rows in a collapsed section open their own card in place */
+.mini-row { cursor: pointer; }
+.mini-row:hover { background: var(--bg2); }
+.mini-row.open { background: var(--bg2); }
+.mini-row .cell-chev { width: 1em; color: var(--muted); padding-right: 6px; }
+/* the card is a grid child in a normal section; dropped into a table cell
+   it has to shed the mini-table's dense padding and its nowrap, or the
+   card's own rows run off the side instead of wrapping */
+.mini-row-card > td { padding: 4px 0 12px; white-space: normal; }
+.mini-row-card .team-card-wrap { max-width: 420px; }
 .box-toolbar { display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap; }
 .box-toolbar label {
   display: flex;
@@ -1343,6 +1354,12 @@ tr.pickable:hover td { background: var(--bg3); }
   .team-mini-table { overflow-x: auto; }
   .team-mini-table table { width: max-content; min-width: 100%; }
   .team-mini-table td { white-space: nowrap; }
+  /* an expanded card must not be sized by the max-content table around it,
+     or it stretches to the widest row and you'd scroll sideways to reach
+     its buttons. Size it to the viewport and pin it left so it stays put
+     while the list rows scroll. */
+  .mini-row-card > td { position: sticky; left: 0; }
+  .mini-row-card .team-card-wrap { width: calc(100vw - 40px); max-width: 420px; }
   .statics-table { overflow-x: auto; }
   .statics-table .static-info { max-width: none; }
   .static-actions { white-space: normal; }

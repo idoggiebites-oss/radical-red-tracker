@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import type { Boss, BossMode, CalcTarget, CaughtMon, GameMode, MonBuild, Run } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
@@ -1669,7 +1669,13 @@ function Section({
       {items.length === 0 && <p className="muted">{empty}</p>}
       {items.length > 0 &&
         (collapsed ? (
-          <MiniTable items={items} highlightStat={highlightStat} />
+          <MiniTable
+            items={items}
+            highlightStat={highlightStat}
+            actions={actions}
+            canEvolve={canEvolve}
+            {...common}
+          />
         ) : (
           <FullGrid
             items={items}
@@ -1683,26 +1689,38 @@ function Section({
   );
 }
 
-function FullGrid({
-  items,
+function FullGrid({ items, ...card }: { items: Entry[] } & CardProps) {
+  return (
+    <div className="team-grid">
+      {items.map(([locId, e]) => (
+        <TeamCard key={locId} locId={locId} e={e} {...card} />
+      ))}
+    </div>
+  );
+}
+
+type CardProps = {
+  actions: (locId: string) => React.ReactNode;
+  highlightStat?: StatKey | "KOS" | "BST" | "";
+  canEvolve?: boolean;
+} & SectionCommon;
+
+/** one Pokémon's full card. Extracted so an expanded row inside a collapsed
+ * section renders the identical thing the open section does — same editors,
+ * same KO counter, same stats — rather than a lookalike that drifts. */
+function TeamCard({
+  locId,
+  e,
   actions,
   highlightStat,
   canEvolve,
   statLevel,
   ...common
-}: {
-  items: Entry[];
-  actions: (locId: string) => React.ReactNode;
-  highlightStat?: StatKey | "KOS" | "BST" | "";
-  canEvolve?: boolean;
-} & SectionCommon) {
+}: { locId: string; e: Entry[1] } & CardProps) {
+  const bst = bstFor(e.species);
   return (
-    <div className="team-grid">
-      {items.map(([locId, e]) => {
-        const bst = bstFor(e.species);
-        return (
-          <div key={locId} className="team-card-wrap">
-            <div className="team-card">
+    <div className="team-card-wrap">
+      <div className="team-card">
               <Sprite species={e.species} size={48} />
               <div className="team-info">
                 <div className="team-name">
@@ -1777,36 +1795,56 @@ function FullGrid({
                 level={statLevel}
                 noEvs={common.noEvs}
               />
-            </div>
-            <ItemExtras locId={locId} e={e} {...common} />
-          </div>
-        );
-      })}
+      </div>
+      <ItemExtras locId={locId} e={e} {...common} />
     </div>
   );
 }
 
-/** rows that minimize to a single line (sprite, name, meta, chevron) — like
- * the Routes screen's encounter list — and expand on click into the same
- * details the full card shows inline */
 /** a collapsed section's contents: the same dense, borderless row style as
- * the Routes screen's encounter tables — for scanning a long box/graveyard
- * at a glance. Un-collapse the section (click its header) to edit again. */
+ * the Routes screen's encounter tables, for scanning a long box or
+ * graveyard at a glance. Clicking a row expands that one Pokémon into its
+ * full card in place, so you can edit a single mon without giving up the
+ * list. Which rows are open is deliberately not persisted — un-collapsing
+ * the section is the way back to a clean slate. */
 function MiniTable({
   items,
   highlightStat,
-}: {
-  items: Entry[];
-  highlightStat?: StatKey | "KOS" | "BST" | "";
-}) {
+  ...card
+}: { items: Entry[] } & CardProps) {
+  const [open, setOpen] = useState<Set<string>>(() => new Set());
+  const toggle = (locId: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(locId)) next.add(locId);
+      return next;
+    });
   return (
     <div className="method-table team-mini-table">
       <table>
         <tbody>
           {items.map(([locId, e]) => {
             const bst = bstFor(e.species);
+            const isOpen = open.has(locId);
             return (
-              <tr key={locId}>
+              <Fragment key={locId}>
+              <tr
+                className={isOpen ? "mini-row open" : "mini-row"}
+                role="button"
+                tabIndex={0}
+                aria-expanded={isOpen}
+                onClick={() => toggle(locId)}
+                onKeyDown={(ev) => {
+                  if (ev.key === "Enter" || ev.key === " ") {
+                    ev.preventDefault();
+                    toggle(locId);
+                  }
+                }}
+              >
+                {/* leading, not trailing: these rows are nowrap and scroll
+                    horizontally on a phone, so a chevron on the right edge
+                    would sit off-screen and the rows would look inert */}
+                <td className="cell-chev">{isOpen ? "▾" : "▸"}</td>
                 <td className="cell-sprite">
                   <Sprite species={e.species} size={32} />
                 </td>
@@ -1836,6 +1874,21 @@ function MiniTable({
                   {bst > 0 && ` · BST ${bst}`}
                 </td>
               </tr>
+              {isOpen && (
+                <tr className="mini-row-card">
+                  {/* the card lives in its own row, so clicks on the
+                      editors inside it can't bubble back to the toggle */}
+                  <td colSpan={6}>
+                    <TeamCard
+                      locId={locId}
+                      e={e}
+                      highlightStat={highlightStat}
+                      {...card}
+                    />
+                  </td>
+                </tr>
+              )}
+              </Fragment>
             );
           })}
         </tbody>
