@@ -715,19 +715,26 @@ function RouteRow({
           {group.name}
           {group.postgame && <span className="badge postgame">post-game</span>}
         </span>
-        {enc && (
-          <span className="route-enc">
-            <Sprite species={enc.species} size={28} />
-            <span>
-              {enc.nickname
-                ? `${enc.nickname}${enc.species ? ` (${enc.species})` : ""}`
-                : enc.species || "—"}
+        {/* every recorded slot, not just the main one — a bonus catch is a
+            real catch and belongs in the summary, or the row reads empty
+            while the route actually holds a Pokémon */}
+        {allSlotIds.map((slotId) => {
+          const slotEnc = run?.encounters[slotId];
+          if (!slotEnc) return null;
+          return (
+            <span key={slotId} className="route-enc">
+              <Sprite species={slotEnc.species} size={28} />
+              <span>
+                {slotEnc.nickname
+                  ? `${slotEnc.nickname}${slotEnc.species ? ` (${slotEnc.species})` : ""}`
+                  : slotEnc.species || "—"}
+              </span>
+              <span className={`badge ${slotEnc.status}`}>
+                {STATUS_META.find((s) => s.id === slotEnc.status)?.label}
+              </span>
             </span>
-            <span className={`badge ${enc.status}`}>
-              {STATUS_META.find((s) => s.id === enc.status)?.label}
-            </span>
-          </span>
-        )}
+          );
+        })}
         <span className="chev">{open ? "▾" : "▸"}</span>
       </button>
 
