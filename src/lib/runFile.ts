@@ -1,8 +1,14 @@
 import type { GameMode, Run } from "../types";
 
-/** Run backup files: plain JSON inside, but with our own extension so they
- * read as tracker saves (and the import picker can filter on them). */
-export const RUN_FILE_EXT = ".rrnuz";
+/** Run backup files: plain JSON inside, kept recognisable as tracker saves.
+ *
+ * The trailing `.json` is load-bearing, not decoration. iOS resolves an
+ * `<input accept>` list to UTIs off the *last* path extension; a bare
+ * `.rrnuz` maps to nothing Apple knows, so the picker greyed out every
+ * backup and offered only real .json files. Ending in `.json` gives the
+ * file a UTI iOS understands, which is what lets the import filter be
+ * narrow enough to keep photos out while still showing backups. */
+export const RUN_FILE_EXT = ".rrnuz.json";
 
 const FORMAT = "rr-tracker-run";
 

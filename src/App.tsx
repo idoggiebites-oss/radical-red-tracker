@@ -387,13 +387,15 @@ export default function App() {
           <input
             ref={importInput}
             type="file"
-            /* deliberately unfiltered. iOS resolves `accept` entries to
-               UTIs, and .rrnuz maps to nothing Apple knows, so listing it
-               did the opposite of the intent: the picker honoured only the
-               .json part and greyed out every actual backup. Nothing can
-               register the extension from a web app, so the filter has to
-               go — parseRunFile already rejects anything that isn't a run
-               and importRun alerts, which is the real guard anyway. */
+            /* iOS resolves these to UTIs off the file's last extension, so
+               only the `.json` entries actually do anything there — which
+               is exactly why backups are named `.rrnuz.json` (see
+               RUN_FILE_EXT). That keeps the picker on documents instead of
+               offering the photo library. The bare `.rrnuz` entry is for
+               desktop, where it costs nothing and still matches backups
+               exported before the rename; iOS just ignores it.
+               parseRunFile remains the real guard either way. */
+            accept={`${RUN_FILE_EXT},.rrnuz,.json,application/json`}
             hidden
             onChange={(e) => {
               importRun(e.target.files?.[0]);
