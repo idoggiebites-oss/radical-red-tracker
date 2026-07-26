@@ -398,6 +398,48 @@ tr.pickable:hover td { background: var(--bg3); }
 .order-loc { color: var(--muted); flex: 1; }
 .order-cap { color: var(--accent2); font-weight: 600; }
 
+/* the whole row is the disclosure control; the checkbox stops propagation
+   so ticking a fight off doesn't also expand it */
+.order-row.expandable { cursor: pointer; }
+.order-row.expandable:hover { background: var(--bg2); }
+.order-row.open { background: var(--bg2); }
+/* purely visual now — a nested button would double-fire against the row */
+.order-expand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.order-preview { display: flex; align-items: center; gap: 2px; }
+/* the team, inline under the row that names it */
+.order-team {
+  padding: 10px 12px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg2);
+}
+
+/* postgame + side fights the trainer order never schedules */
+.off-path { margin-top: 22px; }
+.off-path-head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--line);
+  padding: 14px 12px 8px;
+  text-align: left;
+}
+.off-path-head h3 { margin: 0; flex: 1; }
+.off-path-cat h4 {
+  margin: 14px 0 6px;
+  color: var(--accent2);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .boss-card {
   border: 1px solid var(--line);
   border-radius: 8px;

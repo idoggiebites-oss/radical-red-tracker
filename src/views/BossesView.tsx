@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { Boss, BossMode, CalcTarget, GameMode, Run } from "../types";
-import { orderChainInfo, type BossTarget } from "../lib/bossTarget";
+import { bossTeamFor, orderChainInfo, type BossTarget } from "../lib/bossTarget";
 import { isEffectivelyOptional, nextRequiredIndex, ROUTE_CHOICES } from "../lib/routeChoice";
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
@@ -25,70 +25,93 @@ export function BossesView({
   /** opens the dedicated Team → Calculator page with a boss Pokémon prefilled */
   onCalc?: (target: CalcTarget) => void;
 }) {
-  const [view, setView] = useState<"order" | "teams">("order");
   const [filter, setFilter] = useState("");
-  const [category, setCategory] = useState(modeData.categories[0]?.name ?? "");
-
-  useEffect(() => {
-    if (!focus) return;
-    setView("teams");
-    setCategory(focus.category);
-    setFilter("");
-  }, [focus]);
+  const [showOffPath, setShowOffPath] = useState(false);
 
   const levelCap = useMemo(() => nextLevelCap(modeData, run), [run, modeData]);
-
   const rivalStarter = useMemo(() => rivalStarterFor(run), [run]);
+
+  // teams the trainer order never names — almost entirely Postgame, plus a
+  // couple of Team Rocket fights. The order list is the spine of this view,
+  // so these would be unreachable without a home of their own.
+  const offPath = useMemo(() => {
+    const named = new Set<string>();
+    modeData.trainerOrder.forEach((_, i) => {
+      const bt = bossTeamFor(modeData, i);
+      if (bt) named.add(`${bt.category}|${bt.title}`);
+    });
+    return modeData.categories
+      .map((c) => ({
+        name: c.name,
+        bosses: c.bosses.filter(
+          (b) =>
+            !named.has(`${c.name}|${b.title}`) &&
+            bossMatchesStarter(b.subtitle, rivalStarter),
+        ),
+      }))
+      .filter((c) => c.bosses.length > 0);
+  }, [modeData, rivalStarter]);
+  const offPathCount = offPath.reduce((n, c) => n + c.bosses.length, 0);
+
+  // a cap-pill jump always targets a fight on the progression path; if it
+  // ever names an off-path team, open that section so it isn't hidden
+  useEffect(() => {
+    if (!focus) return;
+    if (offPath.some((c) => c.name === focus.category)) setShowOffPath(true);
+  }, [focus, offPath]);
 
   return (
     <div className="bosses">
       <div className="toolbar">
-        <div className="segmented">
-          <button
-            className={view === "order" ? "active" : ""}
-            onClick={() => setView("order")}
-          >
-            Trainer order &amp; level caps
-          </button>
-          <button
-            className={view === "teams" ? "active" : ""}
-            onClick={() => setView("teams")}
-          >
-            Boss teams
-          </button>
-        </div>
         <span className="mode-badge">{mode === "hardcore" ? "Hardcore" : "Default"} mode</span>
-        {view === "teams" && (
-          <>
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-              {modeData.categories.map((c) => (
-                <option key={c.name} value={c.name}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-            <input
-              className="search"
-              placeholder="Filter bosses or Pokémon…"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            />
-          </>
-        )}
+        <input
+          className="search"
+          placeholder="Filter trainers, bosses or Pokémon…"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
       </div>
 
-      {view === "order" ? (
-        <TrainerOrder modeData={modeData} run={run} updateRun={updateRun} />
-      ) : (
-        <BossTeams
-          modeData={modeData}
-          category={category}
-          filter={filter}
-          levelCap={levelCap}
-          rivalStarter={rivalStarter}
-          focus={focus}
-          onCalc={onCalc}
-        />
+      <TrainerOrder
+        modeData={modeData}
+        run={run}
+        updateRun={updateRun}
+        levelCap={levelCap}
+        rivalStarter={rivalStarter}
+        filter={filter}
+        focus={focus}
+        onCalc={onCalc}
+      />
+
+      {offPathCount > 0 && (
+        <div className="off-path">
+          <button className="off-path-head" onClick={() => setShowOffPath(!showOffPath)}>
+            <h3>
+              Not on the progression path{" "}
+              <span className="count">({offPathCount})</span>
+            </h3>
+            <span className="chev">{showOffPath ? "▾" : "▸"}</span>
+          </button>
+          {showOffPath && (
+            <>
+              <p className="muted">
+                Postgame and side fights the trainer order doesn't schedule.
+              </p>
+              {offPath.map((c) => (
+                <div key={c.name} className="off-path-cat">
+                  <h4>{c.name}</h4>
+                  <BossTeams
+                    bosses={c.bosses}
+                    filter={filter}
+                    levelCap={levelCap}
+                    focus={focus}
+                    onCalc={onCalc}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       )}
     </div>
   );
@@ -98,12 +121,55 @@ function TrainerOrder({
   modeData,
   run,
   updateRun,
+  levelCap,
+  rivalStarter,
+  filter,
+  focus,
+  onCalc,
 }: {
   modeData: BossMode;
   run: Run | null;
   updateRun: (fn: (run: Run) => Run) => void;
+  levelCap?: number;
+  rivalStarter?: string | null;
+  filter: string;
+  focus?: (BossTarget & { nonce: number }) | null;
+  onCalc?: (target: CalcTarget) => void;
 }) {
   const order = modeData.trainerOrder;
+  // every order entry resolves to a team (verified across both modes), so a
+  // row can always expand into the fight it names — which is the whole point
+  // of folding the old "Boss teams" tab into this list
+  const teams = useMemo(
+    () =>
+      order.map((_, i) => {
+        const bt = bossTeamFor(modeData, i);
+        if (!bt) return null;
+        const cat = modeData.categories.find((c) => c.name === bt.category);
+        const boss = cat?.bosses.find(
+          (b) => b.title === bt.title && bossMatchesStarter(b.subtitle, rivalStarter ?? null),
+        );
+        return boss ? { boss, category: bt.category } : null;
+      }),
+    [modeData, order, rivalStarter],
+  );
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  // cap-pill navigation names a team, not an order index — find the row that
+  // resolves to it, then open and scroll to it
+  useEffect(() => {
+    if (!focus) return;
+    const i = teams.findIndex(
+      (x) => x && x.category === focus.category && x.boss.title === focus.title,
+    );
+    if (i >= 0) setOpenIdx(i);
+  }, [focus, teams]);
+  const openRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (openIdx !== null && focus) {
+      openRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [openIdx, focus]);
+  const q = filter.trim().toLowerCase();
   const nextIdx = useMemo(() => nextRequiredIndex(order, run), [run, order]);
   const chains = useMemo(() => orderChainInfo(modeData), [modeData]);
   // the cap pill's own number (see levelCap.ts: the highest cap already
@@ -188,6 +254,22 @@ function TrainerOrder({
         const hidden = !showCompleted && isHidden(i);
         if (hidden && i !== forkIdx) return null;
         const displayCap = displayCaps[i];
+        const team = teams[i];
+        const expanded = openIdx === i;
+        // filter across both halves of the merged row: the trainer as the
+        // order list named them, and the team the boss list named
+        if (
+          q &&
+          !(
+            t.name.toLowerCase().includes(q) ||
+            (t.location ?? "").toLowerCase().includes(q) ||
+            (team?.boss.title ?? "").toLowerCase().includes(q) ||
+            (team?.boss.subtitle ?? "").toLowerCase().includes(q) ||
+            team?.boss.pokemon.some((m) => m.species.toLowerCase().includes(q))
+          )
+        ) {
+          return null;
+        }
         return (
           <div key={i} className="order-row-wrap">
           {run && i === forkIdx && (
@@ -205,13 +287,35 @@ function TrainerOrder({
               "order-row" +
               (done ? " done" : "") +
               (i === nextIdx ? " next" : "") +
-              (optional ? " optional" : "")
+              (optional ? " optional" : "") +
+              (team ? " expandable" : "") +
+              (expanded ? " open" : "")
             }
+            {...(team
+              ? {
+                  role: "button" as const,
+                  tabIndex: 0,
+                  "aria-expanded": expanded,
+                  onClick: () => setOpenIdx(expanded ? null : i),
+                  // Space/Enter on the row toggles it, but the checkbox is a
+                  // focusable child that owns those keys itself — ignore the
+                  // event when it came from a form control
+                  onKeyDown: (e: KeyboardEvent) => {
+                    if ((e.target as HTMLElement).closest("input,label")) return;
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setOpenIdx(expanded ? null : i);
+                    }
+                  },
+                }
+              : {})}
           >
             {run && (
               <input
                 type="checkbox"
                 checked={done}
+                // the row toggles the team; checking a fight off must not
+                onClick={(e) => e.stopPropagation()}
                 onChange={(e) => toggleDefeated(i, e.target.checked)}
               />
             )}
@@ -236,7 +340,35 @@ function TrainerOrder({
               ))}
             </span>
             <span className="order-cap">{t.levelCap && `cap ${displayCap}`}</span>
+            {/* the checkbox is its own control, so the disclosure is a
+                separate button rather than the whole row — otherwise
+                checking a fight off would also expand it */}
+            {team && (
+              <span className="order-expand">
+                <span className="order-preview">
+                  {team.boss.pokemon.map((m, k) => (
+                    <Sprite key={k} species={m.species} size={26} />
+                  ))}
+                </span>
+                <span className="chev">{expanded ? "▾" : "▸"}</span>
+              </span>
+            )}
           </div>
+          )}
+          {!hidden && expanded && team && (
+            <div className="order-team" ref={openRef}>
+              {(team.boss.battleEffect || team.boss.chained || team.boss.chainedNext) && (
+                <div className="effect-row">
+                  {team.boss.battleEffect && (
+                    <span className="battle-effect">⚡ {team.boss.battleEffect}</span>
+                  )}
+                  {(team.boss.chained || team.boss.chainedNext) && (
+                    <span className="chain-badge">⛓ back-to-back</span>
+                  )}
+                </div>
+              )}
+              <BossTeamBody boss={team.boss} levelCap={levelCap} onCalc={onCalc} />
+            </div>
           )}
           </div>
         );
@@ -283,33 +415,23 @@ function RouteForkCard({
   );
 }
 
+/** a plain list of boss cards — now only used for the off-path teams, since
+ * everything on the progression path is rendered inline by its order row */
 function BossTeams({
-  modeData,
-  category,
+  bosses,
   filter,
   levelCap,
-  rivalStarter,
   focus,
   onCalc,
 }: {
-  modeData: BossMode;
-  category: string;
+  bosses: Boss[];
   filter: string;
   levelCap?: number;
-  rivalStarter?: string | null;
   focus?: (BossTarget & { nonce: number }) | null;
   onCalc?: (target: CalcTarget) => void;
 }) {
   const q = filter.trim().toLowerCase();
-  const cat =
-    modeData.categories.find((c) => c.name === category) ??
-    modeData.categories[0];
-  if (!cat) return null;
-  const starterFiltered = cat.bosses.filter((b) =>
-    bossMatchesStarter(b.subtitle, rivalStarter ?? null),
-  );
-  const hiddenVariants = cat.bosses.length - starterFiltered.length;
-  const bosses = starterFiltered.filter((b) => {
+  const shown = bosses.filter((b) => {
     if (!q) return true;
     return (
       b.title.toLowerCase().includes(q) ||
@@ -317,29 +439,23 @@ function BossTeams({
       b.pokemon.some((m) => m.species.toLowerCase().includes(q))
     );
   });
+  if (shown.length === 0) return null;
   return (
     <div className="boss-list">
-      {hiddenVariants > 0 && (
-        <p className="muted starter-filter-note">
-          Hiding {hiddenVariants} rival team{hiddenVariants > 1 ? "s" : ""} for
-          other starters (rival has {rivalStarter} in this run).
-        </p>
-      )}
-      {bosses.map((b, i) => (
+      {shown.map((b, i) => (
         <BossCard
           key={i}
           boss={b}
           levelCap={levelCap}
           onCalc={onCalc}
-          // starter variants share a title — focus only the first one shown
           focusNonce={
-            focus && b.title === focus.title && bosses.findIndex((x) => x.title === focus.title) === i
+            focus && b.title === focus.title &&
+            shown.findIndex((x) => x.title === focus.title) === i
               ? focus.nonce
               : 0
           }
         />
       ))}
-      {bosses.length === 0 && <p className="muted">No bosses match.</p>}
     </div>
   );
 }
@@ -401,31 +517,47 @@ function BossCard({
           ))}
         </div>
       )}
-      {open && (
-        <>
-          {boss.rewards.map((r) => (
-            <div key={r.label} className="boss-notes">
-              🎁 {r.label} — {r.text}
-            </div>
-          ))}
-          {boss.notes && <div className="boss-notes">{boss.notes}</div>}
-          <TeamWeaknesses boss={boss} />
-          <div className="mon-grid">
-            {boss.pokemon.map((m, i) => (
-              <MonCard
-                key={i}
-                mon={m}
-                battleEffect={boss.battleEffect}
-                levelCap={levelCap}
-                team={boss.pokemon}
-                teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
-                onCalc={onCalc}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      {open && <BossTeamBody boss={boss} levelCap={levelCap} onCalc={onCalc} />}
     </div>
+  );
+}
+
+/** a boss team's expanded detail — reward text, notes, type weaknesses and
+ * the Pokémon cards with their Calc buttons. Shared so a progression row and
+ * a standalone card show exactly the same thing rather than two lookalikes
+ * that drift apart. */
+function BossTeamBody({
+  boss,
+  levelCap,
+  onCalc,
+}: {
+  boss: Boss;
+  levelCap?: number;
+  onCalc?: (target: CalcTarget) => void;
+}) {
+  return (
+    <>
+      {boss.rewards.map((r) => (
+        <div key={r.label} className="boss-notes">
+          🎁 {r.label} — {r.text}
+        </div>
+      ))}
+      {boss.notes && <div className="boss-notes">{boss.notes}</div>}
+      <TeamWeaknesses boss={boss} />
+      <div className="mon-grid">
+        {boss.pokemon.map((m, i) => (
+          <MonCard
+            key={i}
+            mon={m}
+            battleEffect={boss.battleEffect}
+            levelCap={levelCap}
+            team={boss.pokemon}
+            teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
+            onCalc={onCalc}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 
