@@ -917,6 +917,17 @@ tr.pickable:hover td { background: var(--bg3); }
    Desktop browsers let selects shrink, so this never reproduces there.
    The minmax(0,1fr) below constrains the track; this constrains the item. */
 .readiness > * { min-width: 0; }
+/* ...and min-width:0 alone isn't enough. WebKit still counts a <select>'s
+   longest option toward its ancestors' min-content width even when the
+   select itself is told it may shrink, so the page ends up wider than the
+   screen with nothing visible out there — a phantom width that makes iOS
+   scroll sideways and, because the layout genuinely is wider, stop
+   snapping back after a pinch-zoom-out. `clip` (not `hidden`) contains it
+   without creating a scroll container, so sticky positioning and the
+   page's own scrolling are untouched. Safe here because everything on this
+   screen is laid out to fit one column on mobile — nothing is meant to
+   extend sideways. Native select popups aren't clipped by this. */
+.readiness { overflow-x: clip; }
 @media (max-width: 950px) {
   .readiness {
     /* minmax(0,) so the boss select's long options can't stretch the column */
