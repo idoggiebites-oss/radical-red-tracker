@@ -897,6 +897,94 @@ def build_types(encounters: dict, bosses: dict, data: dict) -> dict:
                     evo["to"] = canonical
     rename_species_refs(encounters, bosses, dict(dupes))
 
+    # The pairwise rule above only catches the four regional suffixes. The
+    # docs spell plenty of *other* forms more than one way for the same
+    # Pokémon — the boss sheet abbreviates ("Urshifu-R"), the locations
+    # sheet half-expands ("Urshifu-Rapid"), the dex spells it out
+    # ("Urshifu-Rapid-Strike") — and each spelling became its own species
+    # picker entry. Collapse names that share a dex ID when one is provably
+    # just another way of writing the other:
+    #   * punctuation-only variants  (Farfetch'd-Galar / Farfetch’d-Galar)
+    #   * an abbreviation of another's form suffix  (Ogerpon-C / -Cornerstone)
+    # Sharing a dex ID is necessary but NOT sufficient on its own: Deerling's
+    # seasons, Burmy's cloaks and Pumpkaboo's sizes all share one ID too, and
+    # those are genuinely different Pokémon to a player recording a catch even
+    # though RR gives them identical stats. They're deliberately left alone.
+    def _key(name: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", name.lower().replace("’", "'"))
+
+    by_dex: dict[int, list[str]] = {}
+    for name, dex in sprite_ids.items():
+        by_dex.setdefault(dex, []).append(name)
+
+    spelling_dupes: dict[str, str] = {}
+    for names in by_dex.values():
+        if len(names) < 2:
+            continue
+        # punctuation-only: keep the plain-ASCII spelling
+        seen: dict[str, str] = {}
+        for n in sorted(names, key=lambda s: (sum(ch > "~" for ch in s), s)):
+            k = _key(n)
+            if k in seen:
+                spelling_dupes[n] = seen[k]
+            else:
+                seen[k] = n
+        # abbreviation -> the longest expansion of the same form suffix. A
+        # bare name has no suffix and is skipped: "" prefixes everything, so
+        # it would swallow Gourgeist into Gourgeist-Su.
+        for a in names:
+            base_a, _, suf_a = a.partition("-")
+            if not suf_a or a in spelling_dupes:
+                continue
+            best = None
+            for b in names:
+                base_b, _, suf_b = b.partition("-")
+                if b == a or base_b != base_a or not suf_b:
+                    continue
+                ka, kb = _key(suf_a), _key(suf_b)
+                if kb.startswith(ka) and len(kb) > len(ka):
+                    if best is None or len(_key(best.partition("-")[2])) < len(kb):
+                        best = b
+            if best:
+                spelling_dupes[a] = best
+
+    # forms whose "base" name already means that exact form, so the suffixed
+    # spelling is a second entry for the same thing. Explicit rather than
+    # inferred: only a human knows that single-strike IS plain Urshifu while
+    # Gourgeist-Super genuinely isn't plain Gourgeist.
+    BARE_FORM_ALIASES = {
+        "Urshifu-Single": "Urshifu",
+        "Aegislash-Shield": "Aegislash",
+        "Alcremie-Strbrry": "Alcremie",
+    }
+    for dupe, canonical in BARE_FORM_ALIASES.items():
+        if dupe in sprite_ids and canonical in sprite_ids:
+            spelling_dupes[dupe] = canonical
+
+    # follow chains (Urshifu-S -> Urshifu-Single -> Urshifu) to a final name
+    def _canonical(name: str) -> str:
+        seen_names = {name}
+        while name in spelling_dupes:
+            name = spelling_dupes[name]
+            if name in seen_names:  # defensive: never loop on bad data
+                break
+            seen_names.add(name)
+        return name
+
+    spelling_dupes = {d: _canonical(d) for d in spelling_dupes}
+    for dupe, canonical in spelling_dupes.items():
+        for d in (species_types, species_stats, species_abilities,
+                  species_evolutions, sprite_ids):
+            d.pop(dupe, None)
+        for evos in species_evolutions.values():
+            for evo in evos:
+                if evo["to"] == dupe:
+                    evo["to"] = canonical
+    rename_species_refs(encounters, bosses, spelling_dupes)
+    if spelling_dupes:
+        print(f"  merged {len(spelling_dupes)} alternate spellings: "
+              + ", ".join(f"{d}->{c}" for d, c in sorted(spelling_dupes.items())))
+
     print(f"  types resolved for {len(species_types)} species "
           f"({len(species_evolutions)} with evolutions)")
     return {"colors": colors, "matchup": matchup, "species": species_types,

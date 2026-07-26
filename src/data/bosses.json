@@ -1799,7 +1799,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-H",
+        "species": "Ogerpon-Hearthflame",
         "level": "76",
         "nature": "Jolly",
         "ability": "Mold Breaker",
@@ -2479,7 +2479,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Rotom-W",
+        "species": "Rotom-Wash",
         "level": "Highest Lv -2",
         "nature": "Timid",
         "ability": "Levitate",
@@ -2600,7 +2600,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Ogerpon-C",
+        "species": "Ogerpon-Cornerstone",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Sturdy",
@@ -14074,7 +14074,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-C",
+        "species": "Ogerpon-Cornerstone",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Sturdy",
@@ -14311,7 +14311,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -14339,7 +14339,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -14488,7 +14488,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -14518,7 +14518,7 @@
         }
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -14885,7 +14885,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-W",
+        "species": "Ogerpon-Wellspring",
         "level": "85",
         "nature": "Jolly",
         "ability": "Water Absorb",
@@ -15094,7 +15094,7 @@
         }
        },
        {
-        "species": "Rotom-W",
+        "species": "Rotom-Wash",
         "level": "85",
         "nature": "Timid",
         "ability": "Levitate",
@@ -15122,7 +15122,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Calyrex-I",
+        "species": "Calyrex-Ice",
         "level": "85",
         "nature": "Adamant",
         "ability": "As One",
@@ -15245,7 +15245,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "85",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -15424,7 +15424,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "85",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -17595,7 +17595,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Shaymin-S",
+        "species": "Shaymin-Sky",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Serene Grace",
@@ -17700,7 +17700,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Magearna-O",
+        "species": "Magearna-Original",
         "level": "Highest Lv",
         "nature": "Calm",
         "ability": "Soul-Heart",
@@ -17814,7 +17814,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Palkia-O",
+        "species": "Palkia-Origin",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Pressure",
@@ -17842,7 +17842,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Shaymin-S",
+        "species": "Shaymin-Sky",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Serene Grace",
@@ -17907,7 +17907,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Calyrex-I",
+        "species": "Calyrex-Ice",
         "level": "Highest Lv",
         "nature": "Brave",
         "ability": "As One",
@@ -18674,7 +18674,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -19935,7 +19935,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Lycanroc-D",
+        "species": "Lycanroc-Dusk",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Tough Claws",
@@ -25627,7 +25627,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Rotom-F",
+        "species": "Rotom-Frost",
         "level": "35",
         "nature": "Timid",
         "ability": "Levitate",
@@ -25789,7 +25789,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Ogerpon-C",
+        "species": "Ogerpon-Cornerstone",
         "level": "44",
         "nature": "Jolly",
         "ability": "Sturdy",
@@ -30284,7 +30284,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -31660,7 +31660,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Rotom-F",
+        "species": "Rotom-Frost",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Levitate",
@@ -31771,7 +31771,7 @@
         }
        },
        {
-        "species": "Rotom-W",
+        "species": "Rotom-Wash",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Levitate",
@@ -35799,7 +35799,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Rotom-F",
+        "species": "Rotom-Frost",
         "level": "Highest Lv -2",
         "nature": "Timid",
         "ability": "Levitate",
@@ -36746,7 +36746,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-H",
+        "species": "Ogerpon-Hearthflame",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Mold Breaker",
@@ -37654,7 +37654,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Rotom-H",
+        "species": "Rotom-Heat",
         "level": "Highest Lv -2",
         "nature": "Timid",
         "ability": "Levitate",
@@ -37885,7 +37885,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-W",
+        "species": "Ogerpon-Wellspring",
         "level": "Highest Lv -2",
         "nature": "Jolly",
         "ability": "Water Absorb",
@@ -41078,7 +41078,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Ogerpon-C",
+        "species": "Ogerpon-Cornerstone",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Sturdy",
@@ -41289,7 +41289,7 @@
         }
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -41316,7 +41316,7 @@
         }
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -41448,7 +41448,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-R",
+        "species": "Urshifu-Rapid-Strike",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -41472,7 +41472,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -41878,7 +41878,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Palkia-O",
+        "species": "Palkia-Origin",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Pressure",
@@ -42249,7 +42249,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -42530,7 +42530,7 @@
         }
        },
        {
-        "species": "Calyrex-S",
+        "species": "Calyrex-Shadow",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "As One",
@@ -42687,7 +42687,7 @@
         }
        },
        {
-        "species": "Calyrex-S",
+        "species": "Calyrex-Shadow",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "As One",
@@ -44171,7 +44171,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Shaymin-S",
+        "species": "Shaymin-Sky",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Serene Grace",
@@ -44276,7 +44276,7 @@
       "notes": "",
       "pokemon": [
        {
-        "species": "Magearna-O",
+        "species": "Magearna-Original",
         "level": "Highest Lv",
         "nature": "Calm",
         "ability": "Soul-Heart",
@@ -44374,7 +44374,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Palkia-O",
+        "species": "Palkia-Origin",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Pressure",
@@ -44398,7 +44398,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Shaymin-S",
+        "species": "Shaymin-Sky",
         "level": "Highest Lv",
         "nature": "Timid",
         "ability": "Serene Grace",
@@ -44455,7 +44455,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Calyrex-I",
+        "species": "Calyrex-Ice",
         "level": "Highest Lv",
         "nature": "Brave",
         "ability": "As One",
@@ -45119,7 +45119,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Urshifu-S",
+        "species": "Urshifu",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Unseen Fist",
@@ -46209,7 +46209,7 @@
         "altSpeeds": {}
        },
        {
-        "species": "Lycanroc-D",
+        "species": "Lycanroc-Dusk",
         "level": "Highest Lv",
         "nature": "Jolly",
         "ability": "Tough Claws",

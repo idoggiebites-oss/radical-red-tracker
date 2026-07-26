@@ -230,9 +230,6 @@
   "Alcremie-Mega": [
    "Fairy"
   ],
-  "Alcremie-Strbrry": [
-   "Fairy"
-  ],
   "Alomomola": [
    "Water"
   ],
@@ -411,9 +408,6 @@
   "Basculin": [
    "Water"
   ],
-  "Basculin-Blue": [
-   "Water"
-  ],
   "Baxcalibur": [
    "Dragon",
    "Ice"
@@ -590,17 +584,9 @@
    "Psychic",
    "Grass"
   ],
-  "Calyrex-I": [
-   "Psychic",
-   "Ice"
-  ],
   "Calyrex-Ice": [
    "Psychic",
    "Ice"
-  ],
-  "Calyrex-S": [
-   "Psychic",
-   "Ghost"
   ],
   "Calyrex-Shadow": [
    "Psychic",
@@ -2115,9 +2101,6 @@
   "Lycanroc": [
    "Rock"
   ],
-  "Lycanroc-D": [
-   "Rock"
-  ],
   "Mabosstiff": [
    "Dark"
   ],
@@ -2138,10 +2121,6 @@
    "Rock"
   ],
   "Magearna": [
-   "Steel",
-   "Fairy"
-  ],
-  "Magearna-O": [
    "Steel",
    "Fairy"
   ],
@@ -2531,25 +2510,13 @@
   "Ogerpon": [
    "Grass"
   ],
-  "Ogerpon-C": [
-   "Grass",
-   "Rock"
-  ],
   "Ogerpon-Cornerstone": [
    "Grass",
    "Rock"
   ],
-  "Ogerpon-H": [
-   "Grass",
-   "Fire"
-  ],
   "Ogerpon-Hearthflame": [
    "Grass",
    "Fire"
-  ],
-  "Ogerpon-W": [
-   "Grass",
-   "Water"
   ],
   "Ogerpon-Wellspring": [
    "Grass",
@@ -2606,10 +2573,6 @@
    "Water"
   ],
   "Palkia": [
-   "Water",
-   "Dragon"
-  ],
-  "Palkia-O": [
    "Water",
    "Dragon"
   ],
@@ -2992,10 +2955,6 @@
    "Electric",
    "Ghost"
   ],
-  "Rotom-F": [
-   "Electric",
-   "Ice"
-  ],
   "Rotom-Fan": [
    "Electric",
    "Flying"
@@ -3004,10 +2963,6 @@
    "Electric",
    "Ice"
   ],
-  "Rotom-H": [
-   "Electric",
-   "Fire"
-  ],
   "Rotom-Heat": [
    "Electric",
    "Fire"
@@ -3015,10 +2970,6 @@
   "Rotom-Mow": [
    "Electric",
    "Grass"
-  ],
-  "Rotom-W": [
-   "Electric",
-   "Water"
   ],
   "Rotom-Wash": [
    "Electric",
@@ -3185,10 +3136,6 @@
   ],
   "Shaymin": [
    "Grass"
-  ],
-  "Shaymin-S": [
-   "Grass",
-   "Flying"
   ],
   "Shaymin-Sky": [
    "Grass",
@@ -3801,22 +3748,6 @@
    "Ghost",
    "Fighting"
   ],
-  "Urshifu-R": [
-   "Fighting",
-   "Water"
-  ],
-  "Urshifu-Rapid": [
-   "Fighting",
-   "Water"
-  ],
-  "Urshifu-S": [
-   "Fighting",
-   "Dark"
-  ],
-  "Urshifu-Single": [
-   "Fighting",
-   "Dark"
-  ],
   "Uxie": [
    "Psychic"
   ],
@@ -4310,12 +4241,6 @@
   "Crocalor": [
    "Fire"
   ],
-  "Farfetch’d-Galar": [
-   "Fighting"
-  ],
-  "Sirfetch’d": [
-   "Fighting"
-  ],
   "Grafaiai": [
    "Poison",
    "Normal"
@@ -4715,10 +4640,6 @@
    "Steel",
    "Ghost"
   ],
-  "Aegislash-Shield": [
-   "Steel",
-   "Ghost"
-  ],
   "Honedge": [
    "Steel",
    "Ghost"
@@ -4844,14 +4765,6 @@
    "SPA": 140,
    "SPD": 131,
    "SPE": 84
-  },
-  "Alcremie-Strbrry": {
-   "HP": 65,
-   "ATK": 60,
-   "DEF": 75,
-   "SPA": 110,
-   "SPD": 121,
-   "SPE": 64
   },
   "Alomomola": {
    "HP": 165,
@@ -5238,14 +5151,6 @@
    "SPE": 78
   },
   "Basculin": {
-   "HP": 70,
-   "ATK": 92,
-   "DEF": 65,
-   "SPA": 80,
-   "SPD": 55,
-   "SPE": 98
-  },
-  "Basculin-Blue": {
    "HP": 70,
    "ATK": 92,
    "DEF": 65,
@@ -5645,14 +5550,6 @@
    "SPD": 80,
    "SPE": 80
   },
-  "Calyrex-I": {
-   "HP": 100,
-   "ATK": 165,
-   "DEF": 150,
-   "SPA": 85,
-   "SPD": 130,
-   "SPE": 50
-  },
   "Calyrex-Ice": {
    "HP": 100,
    "ATK": 165,
@@ -5660,14 +5557,6 @@
    "SPA": 85,
    "SPD": 130,
    "SPE": 50
-  },
-  "Calyrex-S": {
-   "HP": 100,
-   "ATK": 85,
-   "DEF": 80,
-   "SPA": 165,
-   "SPD": 100,
-   "SPE": 150
   },
   "Calyrex-Shadow": {
    "HP": 100,
@@ -9021,14 +8910,6 @@
    "SPD": 65,
    "SPE": 112
   },
-  "Lycanroc-D": {
-   "HP": 75,
-   "ATK": 117,
-   "DEF": 65,
-   "SPA": 55,
-   "SPD": 65,
-   "SPE": 110
-  },
   "Mabosstiff": {
    "HP": 80,
    "ATK": 120,
@@ -9078,14 +8959,6 @@
    "SPE": 30
   },
   "Magearna": {
-   "HP": 80,
-   "ATK": 95,
-   "DEF": 115,
-   "SPA": 130,
-   "SPD": 115,
-   "SPE": 65
-  },
-  "Magearna-O": {
    "HP": 80,
    "ATK": 95,
    "DEF": 115,
@@ -9957,14 +9830,6 @@
    "SPD": 96,
    "SPE": 110
   },
-  "Ogerpon-C": {
-   "HP": 80,
-   "ATK": 120,
-   "DEF": 84,
-   "SPA": 60,
-   "SPD": 96,
-   "SPE": 110
-  },
   "Ogerpon-Cornerstone": {
    "HP": 80,
    "ATK": 120,
@@ -9973,23 +9838,7 @@
    "SPD": 96,
    "SPE": 110
   },
-  "Ogerpon-H": {
-   "HP": 80,
-   "ATK": 120,
-   "DEF": 84,
-   "SPA": 60,
-   "SPD": 96,
-   "SPE": 110
-  },
   "Ogerpon-Hearthflame": {
-   "HP": 80,
-   "ATK": 120,
-   "DEF": 84,
-   "SPA": 60,
-   "SPD": 96,
-   "SPE": 110
-  },
-  "Ogerpon-W": {
    "HP": 80,
    "ATK": 120,
    "DEF": 84,
@@ -10124,14 +9973,6 @@
    "SPA": 150,
    "SPD": 120,
    "SPE": 100
-  },
-  "Palkia-O": {
-   "HP": 90,
-   "ATK": 100,
-   "DEF": 100,
-   "SPA": 150,
-   "SPD": 120,
-   "SPE": 120
   },
   "Palkia-Origin": {
    "HP": 90,
@@ -10997,14 +10838,6 @@
    "SPD": 77,
    "SPE": 91
   },
-  "Rotom-F": {
-   "HP": 50,
-   "ATK": 65,
-   "DEF": 107,
-   "SPA": 105,
-   "SPD": 107,
-   "SPE": 86
-  },
   "Rotom-Fan": {
    "HP": 50,
    "ATK": 65,
@@ -11021,14 +10854,6 @@
    "SPD": 107,
    "SPE": 86
   },
-  "Rotom-H": {
-   "HP": 50,
-   "ATK": 65,
-   "DEF": 107,
-   "SPA": 105,
-   "SPD": 107,
-   "SPE": 86
-  },
   "Rotom-Heat": {
    "HP": 50,
    "ATK": 65,
@@ -11038,14 +10863,6 @@
    "SPE": 86
   },
   "Rotom-Mow": {
-   "HP": 50,
-   "ATK": 65,
-   "DEF": 107,
-   "SPA": 105,
-   "SPD": 107,
-   "SPE": 86
-  },
-  "Rotom-W": {
    "HP": 50,
    "ATK": 65,
    "DEF": 107,
@@ -11412,14 +11229,6 @@
    "SPA": 100,
    "SPD": 100,
    "SPE": 100
-  },
-  "Shaymin-S": {
-   "HP": 100,
-   "ATK": 103,
-   "DEF": 75,
-   "SPA": 120,
-   "SPD": 75,
-   "SPE": 127
   },
   "Shaymin-Sky": {
    "HP": 100,
@@ -12797,38 +12606,6 @@
    "SPD": 90,
    "SPE": 55
   },
-  "Urshifu-R": {
-   "HP": 100,
-   "ATK": 130,
-   "DEF": 100,
-   "SPA": 63,
-   "SPD": 60,
-   "SPE": 97
-  },
-  "Urshifu-Rapid": {
-   "HP": 100,
-   "ATK": 130,
-   "DEF": 100,
-   "SPA": 63,
-   "SPD": 60,
-   "SPE": 97
-  },
-  "Urshifu-S": {
-   "HP": 100,
-   "ATK": 130,
-   "DEF": 100,
-   "SPA": 63,
-   "SPD": 60,
-   "SPE": 97
-  },
-  "Urshifu-Single": {
-   "HP": 100,
-   "ATK": 130,
-   "DEF": 100,
-   "SPA": 63,
-   "SPD": 60,
-   "SPE": 97
-  },
   "Uxie": {
    "HP": 75,
    "ATK": 75,
@@ -13933,22 +13710,6 @@
    "SPD": 58,
    "SPE": 49
   },
-  "Farfetch’d-Galar": {
-   "HP": 52,
-   "ATK": 95,
-   "DEF": 55,
-   "SPA": 58,
-   "SPD": 62,
-   "SPE": 55
-  },
-  "Sirfetch’d": {
-   "HP": 82,
-   "ATK": 135,
-   "DEF": 95,
-   "SPA": 68,
-   "SPD": 82,
-   "SPE": 65
-  },
   "Grafaiai": {
    "HP": 63,
    "ATK": 95,
@@ -14853,14 +14614,6 @@
    "SPD": 49,
    "SPE": 35
   },
-  "Aegislash-Shield": {
-   "HP": 60,
-   "ATK": 50,
-   "DEF": 140,
-   "SPA": 50,
-   "SPD": 140,
-   "SPE": 60
-  },
   "Honedge": {
    "HP": 45,
    "ATK": 80,
@@ -14932,10 +14685,6 @@
   ],
   "Alcremie-Mega": [
    "Self Sufficient"
-  ],
-  "Alcremie-Strbrry": [
-   "Aroma Veil",
-   "Sweet Veil"
   ],
   "Alomomola": [
    "Regenerator",
@@ -15138,11 +14887,6 @@
   "Basculin": [
    "Mold Breaker",
    "Reckless",
-   "Adaptability"
-  ],
-  "Basculin-Blue": [
-   "Mold Breaker",
-   "Rock Head",
    "Adaptability"
   ],
   "Baxcalibur": [
@@ -15352,13 +15096,7 @@
   "Calyrex": [
    "Unnerve"
   ],
-  "Calyrex-I": [
-   "As One"
-  ],
   "Calyrex-Ice": [
-   "As One"
-  ],
-  "Calyrex-S": [
    "As One"
   ],
   "Calyrex-Shadow": [
@@ -17093,9 +16831,6 @@
    "Inner Focus",
    "Sand Rush"
   ],
-  "Lycanroc-D": [
-   "Tough Claws"
-  ],
   "Mabosstiff": [
    "Stakeout",
    "Intimidate",
@@ -17125,9 +16860,6 @@
    "Flame Body"
   ],
   "Magearna": [
-   "Soul-Heart"
-  ],
-  "Magearna-O": [
    "Soul-Heart"
   ],
   "Magearna-Original": [
@@ -17591,20 +17323,11 @@
   "Ogerpon": [
    "Defiant"
   ],
-  "Ogerpon-C": [
-   "Sturdy"
-  ],
   "Ogerpon-Cornerstone": [
    "Sturdy"
   ],
-  "Ogerpon-H": [
-   "Mold Breaker"
-  ],
   "Ogerpon-Hearthflame": [
    "Mold Breaker"
-  ],
-  "Ogerpon-W": [
-   "Water Absorb"
   ],
   "Ogerpon-Wellspring": [
    "Water Absorb"
@@ -17670,10 +17393,6 @@
    "Zero To Hero"
   ],
   "Palkia": [
-   "Telepathy",
-   "Pressure"
-  ],
-  "Palkia-O": [
    "Telepathy",
    "Pressure"
   ],
@@ -18145,25 +17864,16 @@
   "Rotom": [
    "Levitate"
   ],
-  "Rotom-F": [
-   "Levitate"
-  ],
   "Rotom-Fan": [
    "Motor Drive"
   ],
   "Rotom-Frost": [
    "Levitate"
   ],
-  "Rotom-H": [
-   "Levitate"
-  ],
   "Rotom-Heat": [
    "Levitate"
   ],
   "Rotom-Mow": [
-   "Levitate"
-  ],
-  "Rotom-W": [
    "Levitate"
   ],
   "Rotom-Wash": [
@@ -18355,9 +18065,6 @@
   ],
   "Shaymin": [
    "Natural Cure"
-  ],
-  "Shaymin-S": [
-   "Serene Grace"
   ],
   "Shaymin-Sky": [
    "Serene Grace"
@@ -19106,18 +18813,6 @@
    "Guts",
    "Quick Feet"
   ],
-  "Urshifu-R": [
-   "Unseen Fist"
-  ],
-  "Urshifu-Rapid": [
-   "Unseen Fist"
-  ],
-  "Urshifu-S": [
-   "Unseen Fist"
-  ],
-  "Urshifu-Single": [
-   "Unseen Fist"
-  ],
   "Uxie": [
    "Levitate"
   ],
@@ -19688,14 +19383,6 @@
    "Unaware",
    "Blaze"
   ],
-  "Farfetch’d-Galar": [
-   "Scrappy",
-   "Steadfast"
-  ],
-  "Sirfetch’d": [
-   "Scrappy",
-   "Sharpness"
-  ],
   "Grafaiai": [
    "Prankster",
    "Unburden",
@@ -20195,9 +19882,6 @@
   "Doublade": [
    "Sharpness"
   ],
-  "Aegislash-Shield": [
-   "Stance Change"
-  ],
   "Honedge": [
    "Sharpness"
   ]
@@ -20629,19 +20313,19 @@
   ],
   "Kubfu": [
    {
-    "to": "Urshifu-Single",
+    "to": "Urshifu",
     "how": "with a Dusk Stone"
    },
    {
-    "to": "Urshifu-S",
+    "to": "Urshifu",
     "how": "with a Dusk Stone"
    },
    {
-    "to": "Urshifu-Rapid",
+    "to": "Urshifu-Rapid-Strike",
     "how": "with a Water Stone"
    },
    {
-    "to": "Urshifu-R",
+    "to": "Urshifu-Rapid-Strike",
     "how": "with a Water Stone"
    },
    {
@@ -21345,16 +21029,6 @@
     "how": "at Lv 28"
    }
   ],
-  "Farfetch’d-Galar": [
-   {
-    "to": "Sirfetch'd",
-    "how": "at Lv 30"
-   },
-   {
-    "to": "Sirfetch’d",
-    "how": "at Lv 30"
-   }
-  ],
   "Sinistea": [
    {
     "to": "Polteageist",
@@ -21679,7 +21353,7 @@
     "how": "at Lv 25 (night)"
    },
    {
-    "to": "Lycanroc-D",
+    "to": "Lycanroc-Dusk",
     "how": "at Lv 25 (dusk)"
    }
   ],
@@ -22247,7 +21921,7 @@
     "how": "with a Shiny Stone"
    },
    {
-    "to": "Alcremie-Strbrry",
+    "to": "Alcremie",
     "how": "with a Shiny Stone"
    }
   ],
@@ -22921,7 +22595,7 @@
   ],
   "Farfetch'd-Galar": [
    {
-    "to": "Sirfetch’d",
+    "to": "Sirfetch'd",
     "how": "at Lv 30"
    }
   ],
@@ -23407,16 +23081,6 @@
     "how": "at Lv 35"
    }
   ],
-  "Basculin-Blue": [
-   {
-    "to": "Basculegion",
-    "how": "at Lv 44 (male)"
-   },
-   {
-    "to": "Basculegion-F",
-    "how": "at Lv 44 (female)"
-   }
-  ],
   "Basculin": [
    {
     "to": "Basculegion",
@@ -23513,7 +23177,7 @@
     "how": "with a Dusk Stone"
    },
    {
-    "to": "Aegislash-Shield",
+    "to": "Aegislash",
     "how": "with a Dusk Stone"
    }
   ],
@@ -23540,7 +23204,6 @@
   "Alakazam": 65,
   "Alakazam-Mega": 875,
   "Alcremie-Mega": 1259,
-  "Alcremie-Strbrry": 1161,
   "Alomomola": 647,
   "Altaria": 359,
   "Altaria-Mega": 901,
@@ -23590,7 +23253,6 @@
   "Basculegion": 1268,
   "Basculegion-F": 1306,
   "Basculin": 603,
-  "Basculin-Blue": 736,
   "Baxcalibur": 1197,
   "Beartic": 667,
   "Beedrill-Mega": 873,
@@ -23640,9 +23302,7 @@
   "Cacnea": 344,
   "Cacturne": 345,
   "Calyrex": 1187,
-  "Calyrex-I": 1264,
   "Calyrex-Ice": 1264,
-  "Calyrex-S": 1265,
   "Calyrex-Shadow": 1265,
   "Camerupt-Mega": 900,
   "Capsakid": 1327,
@@ -24062,7 +23722,6 @@
   "Lurantis": 971,
   "Luvdisc": 325,
   "Lycanroc": 962,
-  "Lycanroc-D": 1082,
   "Mabosstiff": 1350,
   "Machamp": 68,
   "Machamp-Mega": 1236,
@@ -24070,7 +23729,6 @@
   "Magby": 240,
   "Magcargo": 219,
   "Magearna": 1073,
-  "Magearna-O": 1073,
   "Magearna-Original": 1073,
   "Magikarp": 129,
   "Magmar": 126,
@@ -24179,11 +23837,8 @@
   "Octillery": 224,
   "Oddish": 43,
   "Ogerpon": 1357,
-  "Ogerpon-C": 1360,
   "Ogerpon-Cornerstone": 1360,
-  "Ogerpon-H": 1359,
   "Ogerpon-Hearthflame": 1359,
-  "Ogerpon-W": 1358,
   "Ogerpon-Wellspring": 1358,
   "Oinkologne-F": 849,
   "Okidogi": 1366,
@@ -24200,7 +23855,6 @@
   "Palafin": 864,
   "Palafin-Hero": 865,
   "Palkia": 537,
-  "Palkia-O": 1311,
   "Palkia-Origin": 1311,
   "Palossand": 987,
   "Pancham": 782,
@@ -24309,13 +23963,10 @@
   "Roselia": 363,
   "Roserade": 460,
   "Rotom": 532,
-  "Rotom-F": 715,
   "Rotom-Fan": 716,
   "Rotom-Frost": 715,
-  "Rotom-H": 713,
   "Rotom-Heat": 713,
   "Rotom-Mow": 717,
-  "Rotom-W": 714,
   "Rotom-Wash": 714,
   "Rowlet": 939,
   "Rufflet": 680,
@@ -24361,7 +24012,6 @@
   "Sharpedo": 331,
   "Sharpedo-Mega": 899,
   "Shaymin": 545,
-  "Shaymin-S": 719,
   "Shaymin-Sky": 719,
   "Shedinja": 303,
   "Shellder": 90,
@@ -24534,10 +24184,6 @@
   "Ursaluna-BM": 1356,
   "Ursaring": 217,
   "Ursaring-Sevii": 1279,
-  "Urshifu-R": 1207,
-  "Urshifu-Rapid": 1207,
-  "Urshifu-S": 1184,
-  "Urshifu-Single": 1184,
   "Uxie": 533,
   "Vanillite": 635,
   "Vanilluxe": 637,
@@ -24676,8 +24322,6 @@
   "Delcatty": 316,
   "Gogoat": 781,
   "Crocalor": 925,
-  "Farfetch’d-Galar": 1213,
-  "Sirfetch’d": 1157,
   "Grafaiai": 1346,
   "Luxio": 457,
   "Luxray": 458,
@@ -24791,7 +24435,6 @@
   "Aurorus": 807,
   "Kadabra": 64,
   "Doublade": 788,
-  "Aegislash-Shield": 789,
   "Honedge": 787
  }
 }

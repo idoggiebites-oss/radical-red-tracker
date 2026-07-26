@@ -484,7 +484,7 @@
       "levels": "53-55"
      },
      {
-      "species": "Basculin-Blue",
+      "species": "Basculin-Blue-Striped",
       "rarity": "15%",
       "levels": "53-55"
      },
@@ -3067,7 +3067,7 @@
       "levels": "53-55"
      },
      {
-      "species": "Basculin-Blue",
+      "species": "Basculin-Blue-Striped",
       "rarity": "15%",
       "levels": "53-55"
      },
@@ -5720,7 +5720,7 @@
       "levels": "56-58"
      },
      {
-      "species": "Basculin-Blue",
+      "species": "Basculin-Blue-Striped",
       "rarity": "5%",
       "levels": "56-58"
      },
@@ -5773,7 +5773,7 @@
       "levels": "53-55"
      },
      {
-      "species": "Basculin-Blue",
+      "species": "Basculin-Blue-Striped",
       "rarity": "40%",
       "levels": "53-55"
      },
@@ -8049,7 +8049,7 @@
       "levels": "83-85"
      },
      {
-      "species": "Alcremie-Strbrry",
+      "species": "Alcremie",
       "rarity": "20%",
       "levels": "83-85"
      },
@@ -8081,7 +8081,7 @@
       "levels": "83-85"
      },
      {
-      "species": "Alcremie-Strbrry",
+      "species": "Alcremie",
       "rarity": "20%",
       "levels": "83-85"
      },
@@ -9740,11 +9740,11 @@
    "info": "Lv. 30 - Cerulean Cave 2F, from Ketchup after Team Rocket leaves and defeating the former. Another Kubfu can be \nobtained after defeating Ketchup a second time, at least a day after the first battle."
   },
   {
-   "species": "Urshifu-Single",
+   "species": "Urshifu",
    "info": "Evolve Kubfu (Use Dusk Stone)"
   },
   {
-   "species": "Urshifu-Rapid",
+   "species": "Urshifu-Rapid-Strike",
    "info": "Evolve Kubfu (Use Water Stone)"
   },
   {
