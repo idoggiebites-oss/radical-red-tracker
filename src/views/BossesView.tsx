@@ -218,23 +218,48 @@ function TrainerOrder({
   const isHidden = (i: number) => !!run?.defeated[i] && i !== keepVisibleIdx;
   const hiddenCount = order.reduce((n, _, i) => n + (isHidden(i) ? 1 : 0), 0);
 
+  // ticking off the fight you're currently looking at should carry you to
+  // the next one, not leave a finished team open behind you. The new
+  // frontier isn't known until the run state has updated, so flag the
+  // intent here and act on it once nextIdx recomputes (below).
+  const [followNext, setFollowNext] = useState(false);
   const toggleDefeated = (i: number, checked: boolean) => {
     updateRun((r) => ({ ...r, defeated: { ...r.defeated, [i]: checked } }));
     setPinnedIdx(i);
+    if (checked && openIdx === i) setFollowNext(true);
   };
+  useEffect(() => {
+    if (!followNext) return;
+    // cleared unconditionally: checking off an *optional* fight doesn't move
+    // the frontier, and a flag left set would expand a row later out of
+    // nowhere, long after the click that set it
+    setFollowNext(false);
+    setOpenIdx(nextIdx >= 0 ? nextIdx : null);
+  }, [followNext, nextIdx]);
 
   // keep the highlighted "next" fight centered — undone optional/skipped
   // trainers above it don't hide like completed ones do, so on a long
   // playthrough the frontier can otherwise drift below the fold
   const nextRowRef = useRef<HTMLDivElement>(null);
   const scrolledOnce = useRef(false);
+  const pendingScroll = useRef(false);
   useEffect(() => {
+    pendingScroll.current = true;
+  }, [nextIdx]);
+  useEffect(() => {
+    if (!pendingScroll.current) return;
+    // an auto-advance is still queued: the finished team hasn't collapsed and
+    // the new one hasn't opened yet, so scrolling now measures a layout that
+    // is about to shift out from under it and lands past the row. Wait for
+    // the commit where openIdx has actually been applied.
+    if (followNext) return;
+    pendingScroll.current = false;
     nextRowRef.current?.scrollIntoView({
       behavior: scrolledOnce.current ? "smooth" : "auto",
       block: "center",
     });
     scrolledOnce.current = true;
-  }, [nextIdx]);
+  }, [nextIdx, openIdx, followNext]);
 
   return (
     <div className="trainer-order">
