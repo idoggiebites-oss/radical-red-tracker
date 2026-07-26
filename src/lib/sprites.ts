@@ -144,6 +144,14 @@ export function spriteUrls(species: string): string[] {
     customForm && id !== undefined
       ? [`${import.meta.env.BASE_URL}sprites/custom/${id}.png`]
       : [];
+  // full local mirror (scripts/fetch_sprites.mjs) — resolved through this
+  // very chain at build time, so it's whatever the network would have
+  // served, just already here. Sits behind `cleaned` because those are
+  // hand-alpha-fixed and strictly better than what upstream serves.
+  const mirrored =
+    id !== undefined
+      ? [`${import.meta.env.BASE_URL}sprites/species/${id}.png`]
+      : [];
   const rrdex = id !== undefined ? [`${RRDEX_SPECIES}/${id}.png`] : [];
   // customForm is a guess (an unrecognized dash suffix), not proof Showdown
   // doesn't have it — Rotom-Wash and most Pikachu cosmetic forms resolve
@@ -151,7 +159,7 @@ export function spriteUrls(species: string): string[] {
   // only fall through to the uncleaned rrdex (worse: no alpha channel) if
   // that genuinely 404s. Always try Showdown before rrdex; only a cleaned
   // local copy (species we've confirmed are custom) jumps the queue
-  return [...cleaned, ...showdown, ...rrdex];
+  return [...cleaned, ...mirrored, ...showdown, ...rrdex];
 }
 
 function speciesSlug(species: string): { slug: string; customForm: boolean } {

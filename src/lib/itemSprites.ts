@@ -115,6 +115,16 @@ export function itemSpriteUrls(name: string): string[] {
     .replace(/[’'.]/g, "")
     .trim()
     .replace(/[ _]+/g, "-");
+  // mirrored copy for items the dex has no id for (mega stones the docs
+  // spell differently, RR-custom key items) — those have no
+  // sprites/items/<id>.png to fall into, so they'd otherwise be the last
+  // things still fetched from the network. Keyed by slug for the same
+  // reason: there's no id to key on. Only plain slugs; the docs produce a
+  // few like "helix-fossil-/-dome-fossil" that aren't valid filenames and
+  // 404 everywhere anyway.
+  if (slug && /^[a-z0-9-]+$/.test(slug)) {
+    urls.push(`${import.meta.env.BASE_URL}sprites/items-name/${slug}.png`);
+  }
   if (slug) urls.push(`${POKEAPI_ITEMS}/${slug}.png`);
   if (id !== null) urls.push(`${RRDEX_ITEMS}/${id}.png`);
   return urls;

@@ -31,16 +31,25 @@ export default defineConfig({
         // the bosses.json chunk is ~600KB — raise the per-file precache cap
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         // default globPatterns only picks up js/css/html + the manifest's
-        // own icons — add png so nav icons and cleaned custom sprites
-        // (public/sprites/custom, public/icons) precache at install time
-        // instead of only caching lazily after their first successful fetch
+        // own icons — add png so the nav icons precache at install time
         globPatterns: ['**/*.{js,css,html,ico,svg,png,webmanifest}'],
+        // ...but NOT the sprite mirror. It's ~1800 files, and precaching
+        // means the service worker must fetch every one of them before it
+        // installs — turning a fast first load into a stall, to prefetch
+        // art for 1200 species the player will never catch. They're served
+        // from our own origin and cached on first view instead (below).
+        globIgnores: ['**/sprites/**'],
         runtimeCaching: [
           {
-            // sprites (Showdown, RR dex + PokeAPI on githubusercontent)
-            urlPattern:
-              /^https:\/\/(play\.pokemonshowdown\.com|raw\.githubusercontent\.com)\/.*/,
-            handler: 'CacheFirst',
+            // our own mirrored sprites (public/sprites/{species,items,custom}).
+            // StaleWhileRevalidate, not CacheFirst: these live in public/ so
+            // their filenames never change between deploys, and a re-cleaned
+            // sprite would otherwise be invisible to anyone who had already
+            // cached the old one — for up to the 90 days below. Serving from
+            // cache and refreshing in the background keeps it instant while
+            // still letting a fix actually land.
+            urlPattern: ({ url }: { url: URL }) => url.pathname.includes('/sprites/'),
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'sprites',
               expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 90 },
@@ -48,10 +57,12 @@ export default defineConfig({
             },
           },
           {
-            // our own cleaned-background sprites (public/sprites/custom) —
-            // not picked up by the default precache globPatterns since
-            // they're not JS/CSS/HTML or a listed manifest icon
-            urlPattern: ({ url }: { url: URL }) => url.pathname.includes('/sprites/custom/'),
+            // kept as a safety net: anything the mirror missed still
+            // resolves upstream exactly as it used to (Showdown, RR dex,
+            // PokeAPI), so a gap degrades to the old behaviour rather than
+            // to a broken image
+            urlPattern:
+              /^https:\/\/(play\.pokemonshowdown\.com|raw\.githubusercontent\.com)\/.*/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'sprites',

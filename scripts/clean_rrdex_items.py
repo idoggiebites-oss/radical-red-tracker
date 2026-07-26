@@ -38,6 +38,11 @@ ITEM_IDS = [
     590, 593, 594, 597, 598, 599, 600, 601, 602, 604, 605, 606, 607, 608,
     610, 611, 613, 614, 615, 621, 622, 623, 625, 641, 725, 728, 729, 730,
     731, 732, 733, 734, 735, 737, 738, 739, 740, 742, 743, 744, 745, 747,
+    # found by scripts/fetch_sprites.mjs when it mirrored every sprite
+    # locally: these fell through to the RR dex (PokeAPI has no copy) and
+    # so arrived with the chroma-key background baked in — sweets, apples,
+    # pots, several Z-crystals and a batch of gen8/9 held items
+    225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 583, 585, 589, 591, 592, 595, 596, 603, 612, 616, 617, 618, 710, 716, 722, 723, 724, 726, 727, 746, 748,
     # TM/HM ground-pickup icons (tm01-tm120, hm01-hm08) actually used by
     # some overworld location's item list
     289, 290, 291, 292, 293, 295, 296, 297, 298, 299, 300, 302, 303, 306,
