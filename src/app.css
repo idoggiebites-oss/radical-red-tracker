@@ -931,6 +931,12 @@ tr.pickable:hover td { background: var(--bg3); }
   min-width: 0;
 }
 .boss-picker-label select { width: 100%; min-width: 0; }
+/* Current + category + boss, sharing the slot the single big dropdown used
+   to fill. The category select is narrower than the boss one: it holds
+   short fixed labels, while boss titles are long and variable. */
+.boss-picker { display: flex; align-items: flex-end; gap: 8px; flex: 1; min-width: 0; }
+.boss-picker .cat-label { flex: 0 1 150px; }
+.boss-current { flex: 0 0 auto; align-self: flex-end; white-space: nowrap; }
 .status-label { flex: 0 1 150px; white-space: nowrap; }
 .readiness-preview {
   display: grid;

@@ -616,24 +616,42 @@ function ReadinessView({
     () => nextRequiredIndex(modeData.trainerOrder, run),
     [modeData, run],
   );
-  useEffect(() => {
-    const autoKey = `rr-tracker.readinessBossAutoIdx.${run.id}`;
-    if (localStorage.getItem(autoKey) === String(nextOrderIdx)) return;
-    localStorage.setItem(autoKey, String(nextOrderIdx));
-    if (nextOrderIdx < 0) return;
+  // the fight the level-cap pill is counting toward, as a picker value —
+  // shared by the auto-follow effect below and the "Current" button, so
+  // both always mean exactly the same fight
+  const currentBossValue = useMemo(() => {
+    if (nextOrderIdx < 0) return "";
     const target = bossTeamFor(modeData, nextOrderIdx);
-    if (!target) return;
+    if (!target) return "";
     const cat = modeData.categories.find((c) => c.name === target.category);
     const i = cat?.bosses.findIndex(
       (b) => b.title === target.title && bossMatchesStarter(b.subtitle, rivalStarter),
     );
-    if (i === undefined || i < 0) return;
-    const v = `${target.category}|${i}`;
-    setSelected(v);
-    localStorage.setItem(storageKey, v);
-  }, [nextOrderIdx, modeData, run.id, rivalStarter, storageKey]);
+    return i === undefined || i < 0 ? "" : `${target.category}|${i}`;
+  }, [nextOrderIdx, modeData, rivalStarter]);
+  useEffect(() => {
+    const autoKey = `rr-tracker.readinessBossAutoIdx.${run.id}`;
+    if (localStorage.getItem(autoKey) === String(nextOrderIdx)) return;
+    localStorage.setItem(autoKey, String(nextOrderIdx));
+    if (!currentBossValue) return;
+    setSelected(currentBossValue);
+    localStorage.setItem(storageKey, currentBossValue);
+  }, [nextOrderIdx, currentBossValue, run.id, storageKey]);
   const levelCap = nextLevelCap(modeData, run);
   const [catName, idxStr] = selected.split("|");
+  // which category the boss dropdown lists. Follows the selection so the
+  // two selects never disagree — picking "Current" or letting the
+  // auto-follow move to another category retargets the list too, otherwise
+  // the boss select would hold a value none of its options carry and
+  // render blank.
+  const [catFilter, setCatFilter] = useState(
+    () => catName || modeData.categories[0]?.name || "",
+  );
+  useEffect(() => {
+    if (catName) setCatFilter(catName);
+  }, [catName]);
+  const catBosses =
+    modeData.categories.find((c) => c.name === catFilter)?.bosses ?? [];
   const boss = modeData.categories
     .find((c) => c.name === catName)
     ?.bosses[Number(idxStr)];
@@ -677,24 +695,51 @@ function ReadinessView({
         </label>
       </div>
       <div className="readiness-head head-boss">
-        <label className="boss-picker-label">
-          Boss team
-          <select value={selected} onChange={(e) => select(e.target.value)}>
-            <option value="">— choose a boss —</option>
-            {modeData.categories.map((cat) => (
-              <optgroup key={cat.name} label={cat.name}>
-                {cat.bosses.map((b, i) =>
-                  bossMatchesStarter(b.subtitle, rivalStarter) ? (
-                    <option key={i} value={`${cat.name}|${i}`}>
-                      {b.title}
-                      {b.subtitle ? ` — ${b.subtitle}` : ""}
-                    </option>
-                  ) : null,
-                )}
-              </optgroup>
-            ))}
-          </select>
-        </label>
+        <div className="boss-picker">
+          <button
+            className="boss-current"
+            title="Jump to the fight the level cap is counting toward"
+            disabled={!currentBossValue}
+            onClick={() => {
+              // set the category directly rather than leaving it to the
+              // follow-the-selection effect: if you browsed to another
+              // category while the current fight was already selected,
+              // select() is a no-op, catName never changes, and the effect
+              // would never fire — the button would look broken
+              setCatFilter(currentBossValue.split("|")[0]);
+              select(currentBossValue);
+            }}
+          >
+            Current
+          </button>
+          <label className="boss-picker-label cat-label">
+            Category
+            <select
+              value={catFilter}
+              onChange={(e) => setCatFilter(e.target.value)}
+            >
+              {modeData.categories.map((cat) => (
+                <option key={cat.name} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="boss-picker-label">
+            Boss team
+            <select value={selected} onChange={(e) => select(e.target.value)}>
+              <option value="">— choose a boss —</option>
+              {catBosses.map((b, i) =>
+                bossMatchesStarter(b.subtitle, rivalStarter) ? (
+                  <option key={i} value={`${catFilter}|${i}`}>
+                    {b.title}
+                    {b.subtitle ? ` — ${b.subtitle}` : ""}
+                  </option>
+                ) : null,
+              )}
+            </select>
+          </label>
+        </div>
       </div>
       <div className="readiness-col col-party">
         {party.length === 0 && (

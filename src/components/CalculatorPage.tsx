@@ -238,6 +238,10 @@ export function CalculatorPage({
     () => localStorage.getItem(CAUGHT_ONLY_KEY) === "1",
   );
   const [importedFrom, setImportedFrom] = useState("");
+  // signature of the Team-tab build we last copied in, so an edit made over
+  // there can be detected and re-applied (below) without re-importing on
+  // every render and stamping over manual tweaks made here
+  const importedBuild = useRef<string | null>(null);
   const [showYouSpreads, setShowYouSpreads] = useState(false);
   const [showOppSpreads, setShowOppSpreads] = useState(false);
   const [crit, setCrit] = useState(false);
@@ -358,8 +362,10 @@ export function CalculatorPage({
           next.item = b.item;
           next.evs = { ...DEFAULT_CFG.evs, ...b.evs };
           next.moves = [...b.moves, "", "", "", ""].slice(0, 4);
+          importedBuild.current = JSON.stringify(b);
           setImportedFrom(owned.nickname || owned.species);
         } else {
+          importedBuild.current = null;
           setImportedFrom("");
         }
         // keep the ability legal for the chosen species (unless randomized)
@@ -382,6 +388,40 @@ export function CalculatorPage({
       return next;
     });
   };
+
+  // A build edited on the Team tab used to be invisible here until you
+  // cleared the card and re-picked the species, because the copy above only
+  // runs on a species change. Watch the owning mon's build instead and
+  // re-apply it when it actually changes — comparing against the signature
+  // of what we last copied, so this fires on a real edit rather than on
+  // every render, and manual tweaks made here survive until the source
+  // build genuinely changes (at which point the Team tab is the truth).
+  useEffect(() => {
+    const owned = caught.find(
+      (m) => m.species.toLowerCase() === you.species.toLowerCase().trim(),
+    );
+    const sig = owned?.build ? JSON.stringify(owned.build) : null;
+    if (sig === importedBuild.current) return;
+    importedBuild.current = sig;
+    if (!owned?.build) {
+      setImportedFrom("");
+      return;
+    }
+    const b = owned.build;
+    setYou((c) => {
+      const next: PlayerMonConfig = {
+        ...c,
+        nature: b.nature || c.nature,
+        ability: b.ability || c.ability,
+        item: b.item,
+        evs: { ...DEFAULT_CFG.evs, ...b.evs },
+        moves: [...b.moves, "", "", "", ""].slice(0, 4),
+      };
+      localStorage.setItem(YOU_CFG_KEY, JSON.stringify(next));
+      return next;
+    });
+    setImportedFrom(owned.nickname || owned.species);
+  }, [caught, you.species]);
 
   const updateOpp = (patch: Partial<PlayerMonConfig>) => {
     setOpp((c) => {
