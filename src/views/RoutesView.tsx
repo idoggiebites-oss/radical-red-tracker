@@ -40,11 +40,38 @@ const STARTER_GROUP: RouteGroup = {
  * Not in the docs' encounter sheets (no grass/water methods), so these are
  * synthetic route groups the same way the starter row is */
 const EGG_LOCATIONS: { id: string; name: string }[] = [
-  { id: "egg-underground-tunnel", name: "UNDERGROUND TUNNEL" },
+  // id stays "…-tunnel" though the place is the Underground PATH: it keys
+  // the run's encounter record, so renaming it would orphan any catch
+  // already logged there
+  { id: "egg-underground-tunnel", name: "UNDERGROUND PATH" },
   { id: "egg-rocket-hideout", name: "ROCKET HIDEOUT" },
+  { id: "egg-saffron-city", name: "SAFFRON CITY" },
   { id: "egg-silph-co", name: "SILPH CO." },
   { id: "egg-indigo-plateau", name: "INDIGO PLATEAU" },
 ];
+
+/** where a row belongs in the run's progression, keyed by group name ->
+ * the group it should follow.
+ *
+ * The docs don't order these for us. Egg locations aren't encounter slots
+ * at all, so they have no place in the sheets and used to be dumped in a
+ * block at the very top. Diglett Cave *is* in the sheets, but listed at its
+ * Route 11 entrance — you reach the Viridian side long before that.
+ *
+ * A target may itself be a moved row (Silph Co. follows Saffron City, which
+ * follows Celadon), so placement recurses. */
+const ROUTE_AFTER: Record<string, string> = {
+  // Indigo Plateau looks wildly out of place this early, and isn't: the
+  // gate there checks badges, but reaching the egg only needs one, so
+  // Brock opens it. It's the badge count that gates this row, not the
+  // Victory Road progression the name suggests — don't "fix" it later.
+  "INDIGO PLATEAU · EGG": "PEWTER CITY",
+  "DIGLETT CAVE": "VIRIDIAN CITY",
+  "UNDERGROUND PATH · EGG": "CERULEAN CITY",
+  "ROCKET HIDEOUT · EGG": "CELADON CITY",
+  "SAFFRON CITY · EGG": "ROCKET HIDEOUT · EGG",
+  "SILPH CO. · EGG": "SAFFRON CITY · EGG",
+};
 const EGG_LOCATION_IDS = new Set(EGG_LOCATIONS.map((e) => e.id));
 const EGG_GROUPS: RouteGroup[] = EGG_LOCATIONS.map((e) => ({
   id: e.id,
@@ -103,6 +130,32 @@ export function RoutesView({
   const groups = useMemo(() => groupLocations(data.locations), []);
 
   const q = filter.trim().toLowerCase();
+  // one ordered list: doc order, minus anything with a declared placement,
+  // then each placed row emitted right after the row it follows (recursing,
+  // so a chain like Celadon -> Rocket Hideout -> Saffron -> Silph holds)
+  const placeRows = (base: RouteGroup[], extra: RouteGroup[]): RouteGroup[] => {
+    const all = [...base, ...extra];
+    const byName = new Map(all.map((g) => [g.name, g]));
+    const children = new Map<string, RouteGroup[]>();
+    for (const g of all) {
+      const after = ROUTE_AFTER[g.name];
+      if (after && byName.has(after)) {
+        if (!children.has(after)) children.set(after, []);
+        children.get(after)!.push(g);
+      }
+    }
+    const out: RouteGroup[] = [];
+    const emit = (g: RouteGroup) => {
+      out.push(g);
+      for (const child of children.get(g.name) ?? []) emit(child);
+    };
+    for (const g of all) {
+      const after = ROUTE_AFTER[g.name];
+      if (after && byName.has(after)) continue; // emitted by its anchor
+      emit(g);
+    }
+    return out;
+  };
   const matchesLoc = (loc: Location) => {
     if (loc.name.toLowerCase().includes(q)) return true;
     if (
@@ -130,6 +183,10 @@ export function RoutesView({
     if (g.name.toLowerCase().includes(q)) return true;
     return g.sections.some(({ loc }) => matchesLoc(loc));
   });
+  // eggs have no species data to match, so they only appear unfiltered —
+  // same as the starter row
+  const orderedGroups = placeRows(visibleGroups, q || !run ? [] : EGG_GROUPS);
+
   const otherFiltered = q
     ? otherStatics.filter(
         (ls) =>
@@ -212,20 +269,7 @@ export function RoutesView({
           toggle={() => setOpen(open === STARTER_ID ? null : STARTER_ID)}
         />
       )}
-      {run &&
-        !q &&
-        EGG_GROUPS.map((g) => (
-          <RouteRow
-            key={g.id}
-            group={g}
-            run={run}
-            updateRun={updateRun}
-            randomized={randomized}
-            open={open === g.id}
-            toggle={() => setOpen(open === g.id ? null : g.id)}
-          />
-        ))}
-      {visibleGroups.map((g) => {
+      {orderedGroups.map((g) => {
         const groupStatics = g.sections.flatMap(
           ({ loc }) => staticsMap[loc.id] ?? [],
         );
