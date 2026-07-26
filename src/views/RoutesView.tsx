@@ -67,6 +67,8 @@ const ROUTE_AFTER: Record<string, string> = {
   // Victory Road progression the name suggests — don't "fix" it later.
   "INDIGO PLATEAU · EGG": "PEWTER CITY",
   "DIGLETT CAVE": "VIRIDIAN CITY",
+  // reachable from Pallet Town on the way out, long before the docs list it
+  "ROUTE 21": "PALLET TOWN",
   "UNDERGROUND PATH · EGG": "CERULEAN CITY",
   "ROCKET HIDEOUT · EGG": "CELADON CITY",
   "SAFFRON CITY · EGG": "ROCKET HIDEOUT · EGG",
