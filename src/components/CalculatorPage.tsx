@@ -52,6 +52,12 @@ const WEATHERS = [
 ];
 const TERRAINS = ["Electric", "Grassy", "Psychic", "Misty"];
 
+/** sentinel for the Weather/Terrain selects: an empty value means "nothing
+ * picked, fall back to the boss fight or an ability", so saying "actually,
+ * no field at all" needs a value of its own. Only offered when something
+ * would otherwise be auto-filled. */
+const NO_FIELD = "none";
+
 const YOU_CFG_KEY = "rr-tracker.calcMon";
 const CAUGHT_ONLY_KEY = "rr-tracker.calcCaughtOnly";
 
@@ -480,18 +486,23 @@ export function CalculatorPage({
 
   const fieldOpts = useMemo(
     () => ({
-      weather: weather || undefined,
-      terrain: terrain || undefined,
+      weather: weather && weather !== NO_FIELD ? weather : undefined,
+      terrain: terrain && terrain !== NO_FIELD ? terrain : undefined,
       gameType: doubles ? "Doubles" : "Singles",
     }),
     [weather, terrain, doubles],
+  );
+  const suppressField = useMemo(
+    () => ({ weather: weather === NO_FIELD, terrain: terrain === NO_FIELD }),
+    [weather, terrain],
   );
   // manual pick > boss's scripted field > switch-in ability, except in
   // Hardcore where a "PERMANENT" boss field beats an ability too — see
   // resolveField's own comment for why the precedence differs by mode
   const resolvedField = useMemo(
-    () => resolveField(fieldOpts, bossField, [calcYou.ability, opp.ability], run.mode),
-    [fieldOpts, bossField, calcYou.ability, opp.ability, run.mode],
+    () =>
+      resolveField(fieldOpts, bossField, [calcYou.ability, opp.ability], run.mode, suppressField),
+    [fieldOpts, bossField, calcYou.ability, opp.ability, run.mode, suppressField],
   );
   // labels for the Weather/Terrain selects' blank option, so whichever
   // source actually filled it in (an ability, or the boss fight's own
@@ -1002,6 +1013,7 @@ function FieldConditionsPanel({
             onChange={(e) => setWeather(e.target.value)}
           >
             <option value="">{autoWeatherLabel ?? "None"}</option>
+            {autoWeatherLabel && <option value={NO_FIELD}>No weather</option>}
             {WEATHERS.map((w) => (
               <option key={w} value={w}>
                 {w}
@@ -1017,6 +1029,7 @@ function FieldConditionsPanel({
             onChange={(e) => setTerrain(e.target.value)}
           >
             <option value="">{autoTerrainLabel ?? "None"}</option>
+            {autoTerrainLabel && <option value={NO_FIELD}>No terrain</option>}
             {TERRAINS.map((t) => (
               <option key={t} value={t}>
                 {t}

@@ -361,19 +361,27 @@ export function resolveField(
   bossField: rr.FieldOptions,
   abilities: (string | undefined)[],
   mode: GameMode,
+  /** an explicit "None" pick, which has to be distinguishable from "nothing
+   * picked". Every fallback below triggers on an empty manual value, so
+   * without this a boss-set field (Giovanni's Psychic Terrain in Cerulean
+   * Cave) could never be cleared — clearing the select just re-ran the
+   * fallback that put it there. */
+  suppress: { weather?: boolean; terrain?: boolean } = {},
 ): rr.FieldOptions {
-  let weather = manual.weather;
-  let terrain = manual.terrain;
+  const fillWeather = !suppress.weather;
+  const fillTerrain = !suppress.terrain;
+  let weather = fillWeather ? manual.weather : undefined;
+  let terrain = fillTerrain ? manual.terrain : undefined;
   if (mode === "hardcore") {
-    weather = weather || bossField.weather;
-    terrain = terrain || bossField.terrain;
+    if (fillWeather) weather = weather || bossField.weather;
+    if (fillTerrain) terrain = terrain || bossField.terrain;
   }
   for (const a of abilities) {
-    weather = weather || weatherFromAbility(a);
-    terrain = terrain || terrainFromAbility(a);
+    if (fillWeather) weather = weather || weatherFromAbility(a);
+    if (fillTerrain) terrain = terrain || terrainFromAbility(a);
   }
-  weather = weather || bossField.weather;
-  terrain = terrain || bossField.terrain;
+  if (fillWeather) weather = weather || bossField.weather;
+  if (fillTerrain) terrain = terrain || bossField.terrain;
   return { ...manual, weather, terrain };
 }
 
