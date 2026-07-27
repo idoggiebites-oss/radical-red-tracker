@@ -70,6 +70,15 @@ export interface Result {
   range(): [number, number];
   defender: Pokemon;
   attacker: Pokemon;
+  /** the engine's own description fields. Only the ones that actually
+   * mattered get set, which is what lets us tell a terrain- or
+   * ability-blocked hit apart from a plain type immunity (see
+   * zeroDamageReason) — desc() itself just throws on 0 damage. */
+  rawDesc: {
+    terrain?: string;
+    defenderAbility?: string;
+    defenderItem?: string;
+  };
 }
 
 export interface Generation {

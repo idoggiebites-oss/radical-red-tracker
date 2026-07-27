@@ -1393,7 +1393,8 @@ function ResultRow({
 }) {
   const ok = !l.error;
   // non-numeric outcomes render their label instead of a 0–0% range
-  const status = ok && (l.desc === "status move" || l.desc === "no damage (immune)");
+  const status =
+    ok && (l.desc === "status move" || l.desc === "no damage (immune)" || !!l.blocked);
   // Sturdy/Focus Sash only ever protects a defender that's still at full
   // HP — ignore the engine's guard note for a matchup starting below it
   const guard = targetHpPercent >= 100 ? l.guard : undefined;
@@ -1434,7 +1435,7 @@ function ResultRow({
             {l.error
               ? l.error
               : status
-                ? l.desc
+                ? (l.blocked ? `blocked (${l.blocked})` : l.desc)
                 : ko
                   ? `KO · ${l.minPercent}%+`
                   : guard

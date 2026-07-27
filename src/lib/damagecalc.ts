@@ -678,6 +678,10 @@ export interface MatchupLine {
   maxPercent: number;
   /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
   guard?: string;
+  /** why this move did nothing, when the reason isn't the obvious one —
+   * see zeroDamageReason. A field rather than something to sniff out of
+   * `desc`, which callers were matching on by exact string */
+  blocked?: string;
   error?: string;
   /** present when the move's hit count is genuinely ambiguous (Fury Attack,
    * Bullet Seed, …) — [min, max] hits selectable for it */
@@ -775,7 +779,25 @@ export interface MoveRange {
   maxPercent: number;
   /** set when an otherwise-lethal hit is survived at 1 HP ("Sturdy"/"Focus Sash") */
   guard?: string;
+  /** why this move did nothing, when the reason isn't the obvious one —
+   * see zeroDamageReason */
+  blocked?: string;
   error?: string;
+}
+
+/** why a 0-damage hit did nothing, taken from the engine's own description
+ * rather than re-deriving the rules here. It records terrain/ability/item
+ * only when one of them was the reason it bailed out early, so a plain type
+ * immunity leaves all three unset — and that case gets no label, since a
+ * bare 0% against a Dark-type already reads as "immune". The ones worth
+ * naming are the invisible ones: Psychic Terrain stopping a priority move
+ * against a grounded target, Levitate, an Air Balloon.
+ * Only meaningful when the damage really is 0 — these fields are set on
+ * ordinary hits too (Expanding Force sets terrain), just for other reasons. */
+function zeroDamageReason(result: rr.Result): string | undefined {
+  const d = result.rawDesc ?? {};
+  if (d.terrain) return `${d.terrain} Terrain`;
+  return d.defenderAbility || d.defenderItem || undefined;
 }
 
 /** min–max damage of one move as % of the defender's max HP */
@@ -802,6 +824,7 @@ export function calcMoveRange(
       minPercent: Math.round((min / hp) * 1000) / 10,
       maxPercent,
       guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
+      blocked: max === 0 ? zeroDamageReason(result) : undefined,
     };
   } catch {
     return { move: moveName, minPercent: 0, maxPercent: 0, error: "calc failed" };
@@ -965,6 +988,7 @@ export function calcMoves(
       const result = rr.calculate(GEN, attacker, defender, move, new rr.Field(fieldOpts));
       let [min, max] = result.range();
       let desc: string;
+      let blocked: string | undefined;
       if (runAt) {
         const loMove = new rr.Move(GEN, moveName, { isCrit, hits: runAt[0] });
         const [loMin] = rr.calculate(GEN, attacker, defender, loMove, new rr.Field(fieldOpts)).range();
@@ -975,8 +999,17 @@ export function calcMoves(
       try {
         desc = result.desc();
       } catch {
-        // desc() throws when there's no damage: status moves, or immunity
-        desc = move.category === "Status" ? "status move" : "no damage (immune)";
+        // desc() throws when there's no damage: status moves, or immunity.
+        // "immune" is only right when nothing else explains it — a priority
+        // move stopped by Psychic Terrain isn't an immunity
+        const why = move.category === "Status" ? undefined : zeroDamageReason(result);
+        blocked = why;
+        desc =
+          move.category === "Status"
+            ? "status move"
+            : why
+              ? `blocked by ${why}`
+              : "no damage (immune)";
       }
       lines.push({
         move: moveName,
@@ -984,6 +1017,7 @@ export function calcMoves(
         minPercent: Math.round((min / hp) * 1000) / 10,
         maxPercent,
         guard: maxPercent >= 100 ? ohkoGuard(attacker, defender, move) : undefined,
+        blocked,
         hitsRange: range ?? undefined,
         slotIndex,
         pinnedHits,

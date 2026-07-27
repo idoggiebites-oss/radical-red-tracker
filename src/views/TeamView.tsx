@@ -1325,6 +1325,7 @@ function TargetCard({
 }) {
   const ok = line !== null && !line.error;
   const guard = ok ? line.guard : undefined;
+  const blocked = ok ? line.blocked : undefined;
   const ko = ok && !guard && line.minPercent >= 100;
   const maybeKo = ok && !guard && !ko && line.maxPercent >= 100;
   // remaining HP range: sure = survives even max damage, maybe = roll-dependent;
@@ -1347,11 +1348,16 @@ function TargetCard({
           <span className="hp-maybe" style={{ width: `${hi - lo}%` }} />
         </span>
         <span
-          className={"target-dmg" + (ko ? koClass : maybeKo || guard ? " maybe-ko" : "")}
+          className={
+            "target-dmg" +
+            (ko ? koClass : maybeKo || guard ? " maybe-ko" : blocked ? " blocked" : "")
+          }
           title={
             guard
               ? `${guard} keeps it at 1 HP through a single otherwise-lethal hit`
-              : undefined
+              : blocked
+                ? `No damage — ${blocked} stops this move landing`
+                : undefined
           }
         >
           {!line
@@ -1362,7 +1368,9 @@ function TargetCard({
                 ? `KO · ${line.minPercent}%+`
                 : guard
                   ? `${line.minPercent}–${line.maxPercent}% · 1 HP (${guard})`
-                  : `${line.minPercent}–${line.maxPercent}%${maybeKo ? " · may KO" : ""}`}
+                  : blocked
+                    ? `0% · blocked (${blocked})`
+                    : `${line.minPercent}–${line.maxPercent}%${maybeKo ? " · may KO" : ""}`}
         </span>
       </span>
     </div>
