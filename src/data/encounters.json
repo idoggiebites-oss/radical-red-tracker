@@ -19045,5 +19045,111 @@
     ]
    }
   ]
+ },
+ "mysteryGift": {
+  "notes": [
+   "To input these codes, talk to the red Nurse in any Pokémon Center and select the \"Mystery Gift\" option.",
+   "You may only claim those rewards after entering the Hall Of Fame at least once.",
+   "Those codes are case-sensitive and the rewards can only be redeemed once per save file.",
+   "They will never expire. Most Mystery Gifts can be inputted in v3.1 even released after that version.",
+   "Pokémon distributed through Mystery Gifts are always Lv. 85."
+  ],
+  "codes": [
+   {
+    "species": "Ho-Oh",
+    "code": "RXIIqgh29",
+    "info": "Has Hidden Ability Phoenix Down."
+   },
+   {
+    "species": "Calyrex-Ice",
+    "code": "86ZvZG1Bm",
+    "info": ""
+   },
+   {
+    "species": "Lugia",
+    "code": "qNubjEQuZki",
+    "info": ""
+   },
+   {
+    "species": "Rayquaza",
+    "code": "xZnwrncs",
+    "info": "Has exclusive Gift Moves Dragon Ascent and V-Create."
+   },
+   {
+    "species": "Darkrai",
+    "code": "s75piYi",
+    "info": "Has the move Dark Hole, which can only be retaught once"
+   },
+   {
+    "species": "Xerneas",
+    "code": "ZcqLcEfUDp5Z",
+    "info": ""
+   },
+   {
+    "species": "Zamazenta",
+    "code": "xo6HsTl5Uym1",
+    "info": "Holds Rusted Shield"
+   },
+   {
+    "species": "Reshiram",
+    "code": "nvfArRPTYXcr",
+    "info": ""
+   },
+   {
+    "species": "Palkia",
+    "code": "FHbrO5xLF3Vy",
+    "info": ""
+   },
+   {
+    "species": "Zacian",
+    "code": "enR6C8knHyO",
+    "info": "Holds Rusted Sword"
+   },
+   {
+    "species": "Deoxys",
+    "code": "ELGzsFeJATlE",
+    "info": "Has exclusive Gift Move Mystic Power"
+   },
+   {
+    "species": "Koraidon",
+    "code": "ghS57gu",
+    "info": ""
+   },
+   {
+    "species": "Zekrom",
+    "code": "02UXRthxIDrp",
+    "info": ""
+   },
+   {
+    "species": "Calyrex-Shadow",
+    "code": "pGIk3xteX4Am",
+    "info": ""
+   },
+   {
+    "species": "Giratina",
+    "code": "h77XuRIDLXea",
+    "info": "Has exclusive Gift Moves Dragon Hammer and Spirit Shackle, holds Griseous Orb"
+   },
+   {
+    "species": "Yveltal",
+    "code": "sW0rdPjYsrjx",
+    "info": "Has the move Dark Hole, which can only be retaught once"
+   },
+   {
+    "species": "Dialga",
+    "code": "Y2YWRRZPdw",
+    "info": "Holds Adamant Orb"
+   },
+   {
+    "species": "Miraidon",
+    "code": "divysuSN",
+    "info": ""
+   },
+   {
+    "species": "Groudon",
+    "code": "af7trmwb",
+    "info": "Holds Red Orb"
+   }
+  ]
  }
 }

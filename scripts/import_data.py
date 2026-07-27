@@ -40,6 +40,7 @@ ENCOUNTER_TABS = {
     "trades": 952974556,
     "gifts": 1585451773,
     "raids": 841196022,
+    "mystery_gift": 1403913857,
 }
 
 BOSS_TABS = {
@@ -340,6 +341,35 @@ def parse_trades(rows):
                     out.append({"location": loc, "give": give, "receive": reward})
                     rr += 1
     return out
+
+
+def parse_mystery_gift(rows):
+    """the Mystery Gift tab: a rules blurb, then one row per code.
+
+    Layout is fixed by the sheet — species in column 3, code in 5, optional
+    note in 7, under a header row whose first cell reads POKEMON. Found by
+    that header rather than a hardcoded row so an inserted line at the top
+    doesn't silently shift everything."""
+    header = None
+    for r in range(len(rows)):
+        if cell(rows, r, 2).upper() == "POKEMON":
+            header = r
+            break
+    notes, codes = [], []
+    # the bullet lines above the table are the redemption rules
+    for r in range(header if header is not None else len(rows)):
+        v = cell(rows, r, 2)
+        if v.startswith("-"):
+            notes.append(v.lstrip("- ").strip())
+    if header is not None:
+        for r in range(header + 1, len(rows)):
+            species = cell(rows, r, 3)
+            code = cell(rows, r, 5)
+            if not species or not code:
+                continue
+            codes.append({"species": species, "code": code,
+                          "info": cell(rows, r, 7)})
+    return {"notes": notes, "codes": codes}
 
 
 def parse_label_columns(rows, label_row, labels):
@@ -1456,11 +1486,13 @@ def main():
         "fossils": parse_fossils(tabs["fossils"]),
         "eggVendor": parse_egg_vendor(tabs["egg_vendor"]),
         "raids": parse_raids(tabs["raids"]),
+        "mysteryGift": parse_mystery_gift(tabs["mystery_gift"]),
     }
     n_slots = sum(len(m) for l in locations for m in l["methods"].values())
     print(f"  {len(locations)} locations, {n_slots} encounter slots, "
           f"{len(encounters['statics'])} statics, {len(encounters['gifts'])} gifts, "
-          f"{len(encounters['trades'])} trades")
+          f"{len(encounters['trades'])} trades, "
+          f"{len(encounters['mysteryGift']['codes'])} mystery gifts")
 
     print("Default bosses sheet:")
     default = parse_boss_sheet(DEFAULT_BOSSES_SHEET, "default", refresh)

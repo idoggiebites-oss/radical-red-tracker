@@ -536,6 +536,25 @@ tr.pickable:hover td { background: var(--bg3); }
   color: var(--accent2);
   white-space: nowrap;
 }
+/* same monospace treatment as the cheat codes — these are also strings you
+   have to retype exactly, and they're case-sensitive */
+.mystery-gift-code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+  color: var(--accent2);
+  white-space: nowrap;
+}
+.mystery-gift-notes { margin: 0 0 14px; }
+.ng-plus-head { margin: 26px 0 6px; font-size: 15px; }
+.ng-plus-list { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; }
+.ng-plus-chip {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 12px;
+}
+
 .species-columns { display: flex; gap: 30px; flex-wrap: wrap; }
 .species-column h4 { color: var(--accent2); }
 .species-line { padding: 2px 0; }

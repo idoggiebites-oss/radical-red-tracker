@@ -30,6 +30,7 @@ type RefTab =
   | "raids"
   | "tms"
   | "items"
+  | "mysterygift"
   | "cheats";
 
 const TABS: { id: RefTab; label: string }[] = [
@@ -41,12 +42,14 @@ const TABS: { id: RefTab; label: string }[] = [
   { id: "raids", label: "Raid Dens" },
   { id: "tms", label: "TMs & HMs" },
   { id: "items", label: "Items" },
+  { id: "mysterygift", label: "Mystery Gifts" },
   { id: "cheats", label: "Cheat Codes" },
 ];
 
 /** in-game NES-console codes (Pallet Town bedroom), player-confirmed
- * working on 4.1. Case-sensitive as shown. Mystery Gift codes (Ho-Oh,
- * Calyrex-Ice, …) are left out until confirmed from a reliable source. */
+ * working on 4.1. Case-sensitive as shown. Mystery Gift codes live in
+ * their own tab now — they're in the official docs, so they're imported
+ * rather than hand-kept (see MysteryGifts below). */
 const CHEAT_CODES: { code: string; effect: string }[] = [
   { code: "Woyaopp", effect: "Infinite Rare Candies & Pomeg Berries from a Youngster in Viridian City" },
   { code: "SO2Toxic", effect: "Unlocks free-item care packages throughout the run" },
@@ -227,7 +230,142 @@ export function ReferenceView() {
       {tab === "raids" && <Raids raids={data.raids} q={q} />}
       {tab === "tms" && <TmList q={q} />}
       {tab === "items" && <ItemList q={q} />}
+      {tab === "mysterygift" && <MysteryGifts q={q} />}
       {tab === "cheats" && <CheatCodes q={q} />}
+    </div>
+  );
+}
+
+/** New Game Plus Mystery Gift codes.
+ *
+ * Hand-kept, unlike the legendary codes above: these aren't on the docs'
+ * Mystery Gifts tab (checked — that tab holds only the 19 legendaries), so
+ * the importer has nothing to read. Supplied by the player from the game's
+ * own listing. If they ever land in the sheet, move them to
+ * scripts/import_data.py and delete this. */
+const NG_PLUS_NOTE =
+  "These require New Game Plus. Start a New Game from the title screen while " +
+  "your previous save data has at least one Hall Of Fame entry. New Game Plus " +
+  "won't be enabled in a new save file if the previous save had it enabled but " +
+  "never entered the Hall Of Fame.";
+
+const NG_PLUS_TYPES = [
+  "Normal", "Fire", "Water", "Grass", "Electric", "Flying", "Fighting", "Bug",
+  "Poison", "Rock", "Ground", "Psychic", "Ghost", "Ice", "Dragon", "Dark",
+  "Steel", "Fairy",
+];
+
+const NG_PLUS_CODES: {
+  code: string;
+  text: string;
+  /** rendered as chips under the description */
+  list?: string[];
+  listLabel?: string;
+}[] = [
+  {
+    code: "Seviian",
+    text: "One of each of these Pokémon's Sevii forms at Lv. 5.",
+    listLabel: "Sevii forms of",
+    list: ["Doduo", "Mantyke", "Teddiursa", "Feebas", "Carnivine", "Blitzle",
+           "Clauncher", "Noibat", "Dhelmise", "Wishiwashi", "Sizzlipede", "Nymble"],
+  },
+  {
+    code: "Random6",
+    text: "Six random unevolved Pokémon to build a team with (Metapod and " +
+      "Kakuna are an exception). No duplicates, except a regional form of " +
+      "one you already rolled.",
+  },
+  {
+    code: "<type>",
+    text: "Type-specific Random6: six random unevolved or single-stage " +
+      "Pokémon of that type. Only ONE of these 18 may be redeemed per save file.",
+    listLabel: "one of",
+    list: NG_PLUS_TYPES,
+  },
+  {
+    code: "Puzzle",
+    text: "Completes the Puzzle Battles in Viridian City's School (Pokévial), " +
+      "Cerulean City (Move Relearner) and Fuchsia City (Egg Move Tutor).",
+  },
+  {
+    code: "Mega",
+    text: "One of each Mega Stone, plus the ability to Mega Evolve before " +
+      "obtaining the Mega Ring. Needs the first three badges to redeem.",
+  },
+];
+
+/** Mystery Gift codes from the docs' own tab — legendaries redeemed at the
+ * red Nurse rather than caught, so they sit in Reference beside the cheat
+ * codes instead of anywhere in a run's encounter list. */
+function MysteryGifts({ q }: { q: string }) {
+  const { notes, codes } = data.mysteryGift ?? { notes: [], codes: [] };
+  const rows = codes.filter(
+    (c) =>
+      !q ||
+      c.species.toLowerCase().includes(q) ||
+      c.code.toLowerCase().includes(q) ||
+      c.info.toLowerCase().includes(q),
+  );
+  const ngRows = NG_PLUS_CODES.filter(
+    (c) =>
+      !q ||
+      c.code.toLowerCase().includes(q) ||
+      c.text.toLowerCase().includes(q) ||
+      (c.list ?? []).some((n) => n.toLowerCase().includes(q)),
+  );
+  return (
+    <div className="mystery-gifts">
+      {notes.length > 0 && (
+        <ul className="raid-info mystery-gift-notes">
+          {notes.map((n) => (
+            <li key={n}>{n}</li>
+          ))}
+        </ul>
+      )}
+      <table className="ref-table">
+        <tbody>
+          {rows.map((c) => (
+            <tr key={c.code}>
+              <td className="cell-sprite">
+                <Sprite species={c.species} size={36} />
+              </td>
+              <td className="cell-species">{c.species}</td>
+              <td>
+                <TypeBadges species={c.species} small />
+              </td>
+              <td className="mystery-gift-code">{c.code}</td>
+              <td className="muted">{c.info}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {rows.length === 0 && <p className="muted">No Mystery Gifts match.</p>}
+
+      <h3 className="ng-plus-head">New Game Plus codes</h3>
+      <p className="muted mystery-gift-notes">{NG_PLUS_NOTE}</p>
+      <table className="ref-table">
+        <tbody>
+          {ngRows.map((c) => (
+            <tr key={c.code}>
+              <td className="mystery-gift-code">{c.code}</td>
+              <td>
+                {c.text}
+                {c.list && (
+                  <div className="ng-plus-list">
+                    <span className="muted">{c.listLabel}:</span>{" "}
+                    {c.list.map((n) => (
+                      <span key={n} className="ng-plus-chip">
+                        {n}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {ngRows.length === 0 && <p className="muted">No New Game Plus codes match.</p>}
     </div>
   );
 }

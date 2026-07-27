@@ -66,6 +66,19 @@ export interface EncountersData {
   fossils: Record<string, string[]>;
   eggVendor: Record<string, string[]>;
   raids: RaidsData;
+  mysteryGift: MysteryGiftData;
+}
+
+/** the docs' Mystery Gift tab: redemption rules, then one code per legendary */
+export interface MysteryGiftCode {
+  species: string;
+  code: string;
+  info: string;
+}
+
+export interface MysteryGiftData {
+  notes: string[];
+  codes: MysteryGiftCode[];
 }
 
 export interface BossMon {
