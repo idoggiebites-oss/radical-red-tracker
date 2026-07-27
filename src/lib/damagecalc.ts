@@ -277,27 +277,33 @@ export function resolveMove(docMove: string): string | null {
 /** battle effect text from the boss docs -> calc field settings */
 export function fieldFromBattleEffect(effect: string): rr.FieldOptions {
   const e = effect.toUpperCase();
+  // whole words only. "TERRAIN" ends in "RAIN", so a substring test made
+  // every terrain-setting boss (Lt. Surge, Erika, Giovanni in Cerulean
+  // Cave, Bruno, Agatha) also report Rain — which isn't cosmetic, it was
+  // boosting Water, halving Fire and making Thunder never miss in those
+  // fights. Checked against every battle effect in the docs: real weather
+  // always appears as its own word ("PERMANENT RAIN"), and SAND only ever
+  // occurs inside SANDSTORM, which is matched whole anyway.
+  const has = (word: string) => new RegExp(`\\b${word}\\b`).test(e);
   const out: rr.FieldOptions = {};
-  // the unblockable/weather-immune-ignoring extreme weathers (checked
-  // first — their text doesn't contain "SUN"/"RAIN" as a substring, so
-  // order doesn't matter against the plain-weather checks below, but
-  // being explicit avoids relying on that) — same naming as the ability
-  // versions in WEATHER_ABILITIES (Desolate Land/Primordial Sea/Delta
-  // Stream, RR's Harsh Sunshine/Heavy Rain/Strong Winds)
-  if (e.includes("DESOLATE LAND")) out.weather = "Harsh Sunshine";
-  else if (e.includes("PRIMORDIAL SEA")) out.weather = "Heavy Rain";
-  else if (e.includes("DELTA STREAM")) out.weather = "Strong Winds";
-  else if (e.includes("SANDSTORM")) out.weather = "Sand";
-  else if (e.includes("RAIN")) out.weather = "Rain";
-  else if (e.includes("SUN")) out.weather = "Sun";
-  else if (e.includes("HAIL")) out.weather = "Hail";
-  else if (e.includes("SNOW")) out.weather = "Snow";
-  if (e.includes("ELECTRIC TERRAIN")) out.terrain = "Electric";
-  else if (e.includes("GRASSY TERRAIN")) out.terrain = "Grassy";
-  else if (e.includes("PSYCHIC TERRAIN")) out.terrain = "Psychic";
-  else if (e.includes("MISTY TERRAIN")) out.terrain = "Misty";
+  // the unblockable/weather-immune-ignoring extreme weathers first — same
+  // naming as the ability versions in WEATHER_ABILITIES (Desolate Land/
+  // Primordial Sea/Delta Stream, RR's Harsh Sunshine/Heavy Rain/Strong Winds)
+  if (has("DESOLATE LAND")) out.weather = "Harsh Sunshine";
+  else if (has("PRIMORDIAL SEA")) out.weather = "Heavy Rain";
+  else if (has("DELTA STREAM")) out.weather = "Strong Winds";
+  else if (has("SANDSTORM")) out.weather = "Sand";
+  else if (has("RAIN")) out.weather = "Rain";
+  else if (has("SUN")) out.weather = "Sun";
+  else if (has("HAIL")) out.weather = "Hail";
+  else if (has("SNOW")) out.weather = "Snow";
+  if (has("ELECTRIC TERRAIN")) out.terrain = "Electric";
+  else if (has("GRASSY TERRAIN")) out.terrain = "Grassy";
+  else if (has("PSYCHIC TERRAIN")) out.terrain = "Psychic";
+  else if (has("MISTY TERRAIN")) out.terrain = "Misty";
   return out;
 }
+
 
 /** weather summoned on switch-in, keyed by ability id */
 const WEATHER_ABILITIES: Record<string, string> = {
