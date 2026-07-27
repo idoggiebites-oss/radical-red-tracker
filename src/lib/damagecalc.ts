@@ -400,15 +400,18 @@ export function resolveField(
 export function autoFieldNote(
   fieldOpts: rr.FieldOptions,
   abilities: (string | undefined)[],
+  /** mirrors resolveField's suppression: an explicit "None" pick turns the
+   * ability off for this what-if, so the note mustn't still advertise it */
+  suppress: { weather?: boolean; terrain?: boolean } = {},
 ): string[] {
   const bits = new Set<string>();
-  if (!fieldOpts.weather) {
+  if (!fieldOpts.weather && !suppress.weather) {
     for (const a of abilities) {
       const w = weatherFromAbility(a);
       if (w) bits.add(`${w} (${a})`);
     }
   }
-  if (!fieldOpts.terrain) {
+  if (!fieldOpts.terrain && !suppress.terrain) {
     for (const a of abilities) {
       const t = terrainFromAbility(a);
       if (t) bits.add(`${t} Terrain (${a})`);
