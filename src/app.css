@@ -128,6 +128,11 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 }
 .route-fork-head { font-size: 13.5px; }
 
+/* copy that has to name a control's position swaps at the same 640px
+   breakpoint the layout does — display:none keeps the unused wording out
+   of the accessibility tree too, so only one is ever announced */
+.only-narrow { display: none; }
+
 .run-controls { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 /* mobile-only cog menu (see @media max-width:640px) — the run controls
    above stay inline on desktop, so these have no effect there */
@@ -1314,6 +1319,9 @@ tr.pickable:hover td { background: var(--bg3); }
 
   /* ios safari zooms the page when focusing inputs under 16px */
   input, select, textarea { font-size: 16px; }
+
+  .only-wide { display: none; }
+  .only-narrow { display: inline; }
 
   .topbar { position: relative; gap: 8px 12px; padding: 10px 0; flex-wrap: nowrap; }
   /* sits between the brand and the cog (DOM order: brand, cap-pill, cog)

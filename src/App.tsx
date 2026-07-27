@@ -457,9 +457,19 @@ export default function App() {
       <main>
         {!run && (
           <div className="empty-state">
+            {/* the tabs sit above this on desktop but in a fixed bottom bar
+                on mobile, where "new run" also moves into the ⚙ menu — so
+                the two wordings are swapped by the same 640px breakpoint
+                that moves them, and can't drift out of sync with the layout */}
             <p>
-              Create a run to start tracking your Nuzlocke, or browse the docs data
-              with the tabs above.
+              <span className="only-wide">
+                Create a run to start tracking your Nuzlocke, or browse the docs
+                data with the tabs above.
+              </span>
+              <span className="only-narrow">
+                Create a run from the ⚙ menu to start tracking your Nuzlocke, or
+                browse the docs data with the tabs below.
+              </span>
             </p>
             {/* storage eviction wipes everything, so there's no way to detect
                 that a run used to be here — this has to read sensibly both
