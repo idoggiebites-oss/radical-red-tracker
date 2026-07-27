@@ -1002,7 +1002,10 @@ tr.pickable:hover td { background: var(--bg3); }
 .col-boss { grid-area: bc; }
 .readiness-head { display: flex; align-items: flex-end; gap: 14px; }
 .readiness-head h3 { margin: 0; flex: 1; }
-.weather-label { flex: 0 0 auto; min-width: 110px; }
+/* weather + terrain sit side by side beside the "Party (n)" heading —
+   basis rather than min-width so a narrow phone shrinks them to share the
+   row instead of wrapping one of them onto its own line */
+.weather-label { flex: 0 1 110px; min-width: 0; }
 .boss-picker-label {
   display: flex;
   flex-direction: column;

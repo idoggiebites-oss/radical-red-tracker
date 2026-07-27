@@ -28,6 +28,8 @@ import {
   NATURE_EFFECTS,
   natureLabel,
   autoFieldNote,
+  TERRAINS,
+  WEATHERS,
   buildBossPokemon,
   buildPlayerPokemon,
   calcMoveRange,
@@ -43,19 +45,6 @@ import {
 import { ModifierToggle } from "../components/ModifierToggle";
 import { Combobox } from "../components/Combobox";
 
-// Harsh Sunshine/Heavy Rain/Strong Winds: same unblockable/type-nullifying
-// effects as Desolate Land/Primordial Sea/Delta Stream — some hardcore-mode
-// boss fights have one as a permanent field effect with no ability attached
-const WEATHERS = [
-  "Sun",
-  "Rain",
-  "Sand",
-  "Hail",
-  "Snow",
-  "Harsh Sunshine",
-  "Heavy Rain",
-  "Strong Winds",
-];
 
 const EMPTY_BUILD: MonBuild = {
   nature: "Serious",
@@ -678,6 +667,20 @@ function ReadinessView({
   // rather than as an auto-label, so it looked like it had worked.
   const suppressWeather =
     weatherPick?.boss === selected && weatherPick.value === "";
+  // terrain is the same story as weather above: seeded from the boss's own
+  // scripted field (Giovanni's Psychic Terrain in Cerulean Cave), overridable
+  // per boss, and "None" has to actively suppress rather than read as unset
+  const [terrainPick, setTerrainPick] = useState<{
+    boss: string;
+    value: string;
+  } | null>(null);
+  const terrain =
+    terrainPick?.boss === selected
+      ? terrainPick.value
+      : (bossField.terrain ?? "");
+  const terrainOverride = terrainPick?.boss === selected ? terrainPick.value : "";
+  const suppressTerrain =
+    terrainPick?.boss === selected && terrainPick.value === "";
   return (
     <div className="readiness">
       <div className="readiness-head head-party">
@@ -696,6 +699,22 @@ function ReadinessView({
             {WEATHERS.map((w) => (
               <option key={w} value={w}>
                 {w}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="boss-picker-label weather-label">
+          Terrain
+          <select
+            value={terrain}
+            onChange={(e) =>
+              setTerrainPick({ boss: selected, value: e.target.value })
+            }
+          >
+            <option value="">None</option>
+            {TERRAINS.map((t) => (
+              <option key={t} value={t}>
+                {t}
               </option>
             ))}
           </select>
@@ -782,6 +801,8 @@ function ReadinessView({
           levelCap={levelCap}
           weather={weatherOverride}
           suppressWeather={suppressWeather}
+          terrain={terrainOverride}
+          suppressTerrain={suppressTerrain}
           mode={run.mode}
           noEvs={run.mode === "hardcore" || !!run.minimalGrind}
         />
@@ -811,6 +832,8 @@ function MatchupSection({
   levelCap,
   weather,
   suppressWeather,
+  terrain,
+  suppressTerrain,
   mode,
   noEvs,
 }: {
@@ -826,6 +849,10 @@ function MatchupSection({
   /** the player chose "None" outright — suppress the boss's own weather
    * rather than treating the empty pick as "nothing chosen" */
   suppressWeather?: boolean;
+  /** a manual terrain override, same contract as `weather` above */
+  terrain: string;
+  /** the player chose "None" outright — suppress the boss's own terrain */
+  suppressTerrain?: boolean;
   mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
@@ -861,7 +888,7 @@ function MatchupSection({
     foeStatus,
     setFoeStatus,
   };
-  const props = { runId, party, boss, levelCap, weather, suppressWeather, bossField, mode, noEvs, ...shared };
+  const props = { runId, party, boss, levelCap, weather, suppressWeather, terrain, suppressTerrain, bossField, mode, noEvs, ...shared };
   return (
     <div className="matchup">
       <div className="segmented matchup-dir">
@@ -938,11 +965,13 @@ function MatchupControls({
  * against every Pokémon of the selected boss as an HP bar */
 function MoveMatchup({
   suppressWeather,
+  suppressTerrain,
   runId,
   party,
   boss,
   levelCap,
   weather,
+  terrain,
   bossField,
   mode,
   noEvs,
@@ -956,6 +985,9 @@ function MoveMatchup({
   bossField: ReturnType<typeof fieldFromBattleEffect>;
   /** the player chose "None": don't let the boss's own weather back in */
   suppressWeather?: boolean;
+  terrain: string;
+  /** the player chose "None": don't let the boss's own terrain back in */
+  suppressTerrain?: boolean;
   mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
@@ -992,6 +1024,7 @@ function MoveMatchup({
     const attacker = buildPlayerPokemon(cfg);
     const fieldOpts = {
       weather: weather || undefined,
+      terrain: terrain || undefined,
       gameType: doubles ? "Doubles" : "Singles",
     };
     // manual pick > boss's scripted field > switch-in ability, except in
@@ -1007,12 +1040,13 @@ function MoveMatchup({
       ),
       field: resolveField(fieldOpts, bossField, [cfg.ability, bm.ability], mode, {
         weather: suppressWeather,
+        terrain: suppressTerrain,
       }),
     }));
     const autoBits = autoFieldNote(
       fieldOpts,
       [cfg.ability, ...boss.pokemon.map((bm) => bm.ability)],
-      { weather: suppressWeather },
+      { weather: suppressWeather, terrain: suppressTerrain },
     );
     return {
       cfg,
@@ -1031,7 +1065,7 @@ function MoveMatchup({
           })),
         })),
     };
-  }, [mon, level, levelCap, boss, weather, suppressWeather, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
+  }, [mon, level, levelCap, boss, weather, suppressWeather, terrain, suppressTerrain, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!mon || !grid) return null;
   return (
     <>
@@ -1052,7 +1086,9 @@ function MoveMatchup({
           {!suppressWeather &&
             (weather || bossField.weather) &&
             ` · ${weather || bossField.weather}`}
-          {bossField.terrain && ` · ${bossField.terrain} Terrain`}
+          {!suppressTerrain &&
+            (terrain || bossField.terrain) &&
+            ` · ${terrain || bossField.terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
           {doubles && " · doubles"}
           {crit && " · crit"}
@@ -1106,11 +1142,13 @@ function MoveMatchup({
  * previews the damage into every member of your party */
 function FoeMatchup({
   suppressWeather,
+  suppressTerrain,
   runId,
   party,
   boss,
   levelCap,
   weather,
+  terrain,
   bossField,
   mode,
   noEvs,
@@ -1124,6 +1162,9 @@ function FoeMatchup({
   bossField: ReturnType<typeof fieldFromBattleEffect>;
   /** the player chose "None": don't let the boss's own weather back in */
   suppressWeather?: boolean;
+  terrain: string;
+  /** the player chose "None": don't let the boss's own terrain back in */
+  suppressTerrain?: boolean;
   mode: GameMode;
   /** hardcore/restricted run or a Minimal Grind start: EVs don't apply */
   noEvs?: boolean;
@@ -1146,6 +1187,7 @@ function FoeMatchup({
     const attacker = buildBossPokemon(bm, bossLevel, undefined, foeStatus);
     const fieldOpts = {
       weather: weather || undefined,
+      terrain: terrain || undefined,
       gameType: doubles ? "Doubles" : "Singles",
     };
     const defenders = party.map(([id, e]) => {
@@ -1166,13 +1208,14 @@ function FoeMatchup({
         poke: buildPlayerPokemon(cfg),
         field: resolveField(fieldOpts, bossField, [bm.ability, cfg.ability], mode, {
           weather: suppressWeather,
+          terrain: suppressTerrain,
         }),
       };
     });
     const autoBits = autoFieldNote(
       fieldOpts,
       [bm.ability, ...defenders.map((d) => d.ability)],
-      { weather: suppressWeather },
+      { weather: suppressWeather, terrain: suppressTerrain },
     );
     return {
       bossLevel,
@@ -1192,7 +1235,7 @@ function FoeMatchup({
           })),
         })),
     };
-  }, [bm, party, level, levelCap, weather, suppressWeather, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
+  }, [bm, party, level, levelCap, weather, suppressWeather, terrain, suppressTerrain, bossField, mode, crit, doubles, myStatus, foeStatus, noEvs]);
   if (!bm || !grid) return null;
   return (
     <>
@@ -1216,7 +1259,9 @@ function FoeMatchup({
           {!suppressWeather &&
             (weather || bossField.weather) &&
             ` · ${weather || bossField.weather}`}
-          {bossField.terrain && ` · ${bossField.terrain} Terrain`}
+          {!suppressTerrain &&
+            (terrain || bossField.terrain) &&
+            ` · ${terrain || bossField.terrain} Terrain`}
           {grid.autoBits.map((b) => ` · auto ${b}`).join("")}
           {doubles && " · doubles"}
           {crit && " · crit"}

@@ -275,6 +275,24 @@ export function resolveMove(docMove: string): string | null {
 }
 
 /** battle effect text from the boss docs -> calc field settings */
+/** the field values the pickers offer. Here rather than in a component
+ * because the calculator and Battle Readiness both render them, and a list
+ * that lives in two files is a list that drifts in one of them. Harsh
+ * Sunshine/Heavy Rain/Strong Winds are RR's names for Desolate Land/
+ * Primordial Sea/Delta Stream, which some hardcore fights set with no
+ * ability attached. */
+export const WEATHERS = [
+  "Sun",
+  "Rain",
+  "Sand",
+  "Hail",
+  "Snow",
+  "Harsh Sunshine",
+  "Heavy Rain",
+  "Strong Winds",
+];
+export const TERRAINS = ["Electric", "Grassy", "Psychic", "Misty"];
+
 export function fieldFromBattleEffect(effect: string): rr.FieldOptions {
   const e = effect.toUpperCase();
   // whole words only. "TERRAIN" ends in "RAIN", so a substring test made
