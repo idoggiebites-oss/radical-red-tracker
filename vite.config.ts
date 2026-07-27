@@ -20,7 +20,11 @@ export default defineConfig({
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
           {
-            src: 'pwa-512.png',
+            // its own file, not pwa-512 reused: a maskable icon is cropped to
+            // a circle by the launcher, so the artwork has to sit inside the
+            // central 80% safe zone with the corners filled. The plain icons
+            // above are the squircle itself, which would lose its corners.
+            src: 'pwa-512-maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
