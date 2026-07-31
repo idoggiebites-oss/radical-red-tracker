@@ -473,11 +473,16 @@ export default function App() {
             </p>
             {/* storage eviction wipes everything, so there's no way to detect
                 that a run used to be here — this has to read sensibly both
-                to a first-time visitor and to someone who just lost a run */}
+                to a first-time visitor and to someone who just lost a run.
+                Import moves into the ⚙ menu on mobile but is a header button
+                on desktop, so name it with the same 640px swap as above */}
             <p className="empty-recover">
               Had a run here before? Safari clears a web app's saved data after
               about a week without opening it. Import your most recent{" "}
-              <code>{RUN_FILE_EXT}</code> backup from the ⚙ menu to restore it.
+              <code>{RUN_FILE_EXT}</code> backup{" "}
+              <span className="only-wide">from the header</span>
+              <span className="only-narrow">from the ⚙ menu</span> to restore
+              it.
             </p>
           </div>
         )}
