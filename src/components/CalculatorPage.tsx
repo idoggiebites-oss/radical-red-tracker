@@ -3,6 +3,7 @@ import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, GameMode, Run } fr
 import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
 import { SpeciesCombobox } from "./SpeciesCombobox";
 import { Combobox } from "./Combobox";
+import { ItemCombobox } from "./ItemCombobox";
 import { ModifierToggle } from "./ModifierToggle";
 import { bossTeamFor } from "../lib/bossTarget";
 import { nextRequiredIndex } from "../lib/routeChoice";
@@ -11,7 +12,8 @@ import { nextLevelCap } from "../lib/levelCap";
 import {
   ABILITY_NAMES,
   BOOST_STATS,
-  ITEM_NAMES,
+  isKnownAbility,
+  isKnownItem,
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
@@ -688,11 +690,6 @@ export function CalculatorPage({
       </div>
       {!results && <p className="muted">Enter both Pokémon's species to calculate.</p>}
 
-      <datalist id="all-items-calc">
-        {ITEM_NAMES.map((i) => (
-          <option key={i} value={i} />
-        ))}
-      </datalist>
     </div>
   );
 }
@@ -794,13 +791,14 @@ function MonConfigCard({
             options={ABILITY_NAMES}
             value={cfg.ability}
             onChange={(ability) => update({ ability })}
+            invalid={!isKnownAbility(cfg.ability)}
           />
         )}
-        <input
+        <ItemCombobox
           placeholder="Item"
-          list="all-items-calc"
           value={cfg.item}
-          onChange={(e) => update({ item: e.target.value })}
+          onChange={(item) => update({ item })}
+          invalid={!isKnownItem(cfg.item)}
         />
         <select
           title="Status condition"

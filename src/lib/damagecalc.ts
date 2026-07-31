@@ -877,6 +877,23 @@ function matchItemName(item: string): string | undefined {
 
 const ABILITY_BY_KEY = new Map(ABILITY_NAMES.map((n) => [itemKey(n), n]));
 
+/** does the engine actually know this item? Empty (and the docs' "no item"
+ * spellings) count as known — they legitimately mean "holding nothing". Used
+ * to flag a typo in the UI, because an unknown name applies nothing at all
+ * while the field still looks accepted. */
+export function isKnownItem(item: string): boolean {
+  const t = item.trim();
+  if (!t || t === "-" || /no item/i.test(t)) return true;
+  return ITEM_BY_KEY.has(itemKey(t));
+}
+
+/** same for abilities — an unknown one is silently inert. Blank is fine
+ * (the mon just has no ability set). */
+export function isKnownAbility(ability: string): boolean {
+  const t = ability.trim();
+  return !t || ABILITY_BY_KEY.has(itemKey(t));
+}
+
 /** abilities have the same exact-string problem as items (`hasAbility` is
  * also an includes()), and the ability field is free text in randomizer
  * runs — fold to the engine's spelling, but pass an unknown name through

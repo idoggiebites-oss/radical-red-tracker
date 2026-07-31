@@ -22,12 +22,13 @@ import {
 } from "../lib/effectiveness";
 import {
   ABILITY_NAMES,
-  ITEM_NAMES,
   MOVE_NAMES,
   NATURES,
   NATURE_EFFECTS,
   natureLabel,
   applyNoEvs,
+  isKnownAbility,
+  isKnownItem,
   autoFieldNote,
   TERRAINS,
   WEATHERS,
@@ -45,6 +46,7 @@ import {
 } from "../lib/damagecalc";
 import { ModifierToggle } from "../components/ModifierToggle";
 import { Combobox } from "../components/Combobox";
+import { ItemCombobox } from "../components/ItemCombobox";
 
 
 const EMPTY_BUILD: MonBuild = {
@@ -307,11 +309,6 @@ export function TeamView({
         </div>
         {subtab === "roster" && toolbar}
       </div>
-      <datalist id="team-items">
-        {ITEM_NAMES.map((i) => (
-          <option key={i} value={i} />
-        ))}
-      </datalist>
       {subtab === "readiness" && (
         <ReadinessView
           key={run.id}
@@ -1500,13 +1497,13 @@ function BuildEditor({
             options={ABILITY_NAMES}
             value={build.ability}
             onChange={(ability) => onChange({ ...build, ability })}
+            invalid={!isKnownAbility(build.ability)}
           />
         )}
-        <input
-          placeholder="Held item"
-          list="team-items"
+        <ItemCombobox
           value={build.item}
-          onChange={(e) => onChange({ ...build, item: e.target.value })}
+          onChange={(item) => onChange({ ...build, item })}
+          invalid={!isKnownItem(build.item)}
         />
       </div>
       {!noEvs && (
