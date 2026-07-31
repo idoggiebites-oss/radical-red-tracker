@@ -1,11 +1,43 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+
+// Cloudflare Web Analytics. Cloudflare can't inject this itself: that only
+// happens for proxied traffic, and our DNS records are deliberately
+// unproxied so GitHub Pages can answer the certificate challenge directly
+// (see public/CNAME). So the beacon has to ship inside the page.
+//
+// Injected at build time only. Sitting in index.html it would also load on
+// the dev server, pulling a third-party script into every dev session and
+// reporting localhost traffic. The token is public by design — it is served
+// in the HTML to every visitor.
+const CF_BEACON_TOKEN = '85bfd9c26dc74936b00f49368abfc202'
+
+function cloudflareAnalytics(): Plugin {
+  return {
+    name: 'cf-web-analytics',
+    apply: 'build',
+    transformIndexHtml: () => [
+      {
+        // type="module" is deferred by default, so this never blocks paint;
+        // if it fails to load (offline, blocked) the app is unaffected
+        tag: 'script',
+        attrs: {
+          type: 'module',
+          src: 'https://static.cloudflareinsights.com/beacon.min.js',
+          'data-cf-beacon': JSON.stringify({ token: CF_BEACON_TOKEN }),
+        },
+        injectTo: 'body',
+      },
+    ],
+  }
+}
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    cloudflareAnalytics(),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
