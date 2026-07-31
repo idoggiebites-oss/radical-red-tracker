@@ -845,9 +845,39 @@ function bossEvs(mon: BossMon): rr.StatsTable {
   return evs;
 }
 
+/** the engine compares items by exact string (`hasItem` is an includes()
+ * against names like "Choice Band"), so anything typed by hand has to be
+ * folded back to the engine's own spelling first — case, spacing,
+ * punctuation and accents all differ harmlessly to a human and fatally to
+ * the lookup, and a miss applies NOTHING while looking accepted */
+const itemKey = (s: string): string =>
+  s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+const ITEM_BY_KEY = new Map(ITEM_NAMES.map((n) => [itemKey(n), n]));
+
+/** exact match ignoring case/spacing/punctuation; undefined when unknown */
+function matchItemName(item: string): string | undefined {
+  return ITEM_BY_KEY.get(itemKey(item));
+}
+
+const ABILITY_BY_KEY = new Map(ABILITY_NAMES.map((n) => [itemKey(n), n]));
+
+/** abilities have the same exact-string problem as items (`hasAbility` is
+ * also an includes()), and the ability field is free text in randomizer
+ * runs — fold to the engine's spelling, but pass an unknown name through
+ * untouched so a randomized/custom ability still reaches the engine */
+function cleanAbility(ability: string): string | undefined {
+  if (!ability) return undefined;
+  return ABILITY_BY_KEY.get(itemKey(ability)) ?? ability;
+}
+
 /** case-insensitive prefix lookup against the engine's own item list */
 function resolveItemName(item: string): string {
-  const hit = ITEM_NAMES.find((n) => n.toLowerCase() === item.toLowerCase());
+  const hit = matchItemName(item);
   if (hit) return hit;
   const stripped = item.replace(/\.$/, "");
   return ITEM_NAMES.find((n) => n.toLowerCase().startsWith(stripped.toLowerCase())) ?? item;
@@ -860,7 +890,11 @@ function resolveItemName(item: string): string {
  * throws on a miss, silently failing every calc against that Pokémon */
 function cleanItem(item: string): string | undefined {
   if (!item || item === "-" || /no item/i.test(item)) return undefined;
-  return item.endsWith(".") ? resolveItemName(item) : item;
+  // a docs abbreviation needs the prefix fallback, but a hand-typed name must
+  // NOT prefix-match: the field recalculates on every keystroke, so a lone
+  // "l" would silently equip Lagging Tail on the way to "Life Orb"
+  if (item.endsWith(".")) return resolveItemName(item);
+  return matchItemName(item) ?? item;
 }
 
 export function buildBossPokemon(
@@ -888,7 +922,7 @@ export function buildBossPokemon(
     return new rr.Pokemon(GEN, species, {
       level,
       nature: NATURES.includes(mon.nature) ? mon.nature : undefined,
-      ability: mon.ability || undefined,
+      ability: cleanAbility(mon.ability),
       item: cleanItem(mon.item),
       evs: bossEvs(mon),
       ivs,
@@ -922,7 +956,7 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
     return new rr.Pokemon(GEN, species, {
       level: cfg.level,
       nature: cfg.nature || undefined,
-      ability: cfg.ability || undefined,
+      ability: cleanAbility(cfg.ability),
       item: cleanItem(cfg.item),
       evs,
       ivs,
