@@ -74,7 +74,6 @@ const ROUTE_AFTER: Record<string, string> = {
   "SAFFRON CITY · EGG": "ROCKET HIDEOUT · EGG",
   "SILPH CO. · EGG": "SAFFRON CITY · EGG",
 };
-const EGG_LOCATION_IDS = new Set(EGG_LOCATIONS.map((e) => e.id));
 const EGG_GROUPS: RouteGroup[] = EGG_LOCATIONS.map((e) => ({
   id: e.id,
   name: `${e.name} · EGG`,
@@ -708,16 +707,32 @@ function RouteRow({
   const setEncounter = (patch: Partial<Run["encounters"][string]> | null) =>
     setEncounterAt(encId, patch);
 
-  const speciesOptions =
-    group.id === STARTER_ID || EGG_LOCATION_IDS.has(group.id) || randomized
-      ? WILD_SPECIES
-      : [...new Set(
-          group.sections.flatMap(({ loc }) =>
-            Object.values(loc.methods).flatMap(
-              (slots) => slots?.map((s) => s.species) ?? [],
-            ),
+  // this route's own documented slots, used for ranking (below) and for the
+  // encounter tables' click-to-fill
+  const routeSpecies = useMemo(
+    () => [
+      ...new Set(
+        group.sections.flatMap(({ loc }) =>
+          Object.values(loc.methods).flatMap(
+            (slots) => slots?.map((s) => s.species) ?? [],
           ),
-        )];
+        ),
+      ),
+    ],
+    [group],
+  );
+
+  // EVERY species is selectable, not just the ones documented on this route.
+  // A run can legitimately put something else in a route's encounter slot —
+  // an egg, a gift, a trade — and restricting the list didn't merely hide
+  // those names, it disabled the Caught/Fainted buttons for them entirely
+  // (encSpeciesValid checks membership of this same array), so there was no
+  // way to record the catch at all. The route's own slots stay at the front
+  // so typing still surfaces them ahead of the rest of the dex.
+  const speciesOptions = useMemo(() => {
+    const own = new Set(routeSpecies);
+    return [...routeSpecies, ...WILD_SPECIES.filter((s) => !own.has(s))];
+  }, [routeSpecies]);
 
   // "additional encounter" (bonus catch) slots: some players allow one more
   // catch on a route once the main encounter is resolved — same species
