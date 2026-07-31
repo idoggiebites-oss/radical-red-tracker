@@ -3,7 +3,9 @@
 Vite + React + TypeScript SPA, no backend — all run state lives in
 `localStorage` (`rr-tracker.v1` plus per-run UI keys like
 `rr-tracker.readinessBoss.<runId>`). Deployed to GitHub Pages via GitHub
-Actions on push to main (vite `base: '/radical-red-tracker/'`). It's a PWA
+Actions on push to main, served at https://radicalredtracker.com — the
+custom domain comes from `public/CNAME`, which is why vite `base` is `'/'`
+and not `/<repo-name>/`. It's a PWA
 (vite-plugin-pwa, autoUpdate, sprites runtime-cached): views are
 `React.lazy` chunks so each tab's data/engine loads on demand — keep new
 heavy imports (data JSONs, `rr-damage-calc`) out of `App.tsx`, which fetches
@@ -11,7 +13,7 @@ heavy imports (data JSONs, `rr-damage-calc`) out of `App.tsx`, which fetches
 
 ## Commands
 
-- `npm run dev` — dev server (http://localhost:5173/radical-red-tracker/)
+- `npm run dev` — dev server (http://localhost:5173/)
 - `npm run build` — `tsc -b && vite build`; run this to typecheck
 - `npm run lint` — oxlint (vendor warnings are noise; `npx oxlint src` for signal)
 - `python3 scripts/import_data.py --refresh` — regenerate `src/data/*.json`

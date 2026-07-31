@@ -78,8 +78,9 @@ export default defineConfig({
       },
     }),
   ],
-  // GitHub Pages serves the site under /<repo-name>/
-  base: '/radical-red-tracker/',
+  // served from the apex of radicalredtracker.com (public/CNAME), so the
+  // site sits at the domain root rather than under /<repo-name>/
+  base: '/',
   // rr-damage-calc is a linked local package of CommonJS bundles; force
   // pre-bundling so the dev server converts it to ESM
   optimizeDeps: {
