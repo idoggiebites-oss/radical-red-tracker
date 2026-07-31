@@ -835,6 +835,17 @@ const EV_KEYS: Record<string, keyof rr.StatsTable> = {
   HP: "hp", ATK: "atk", DEF: "def", SPA: "spa", SPD: "spd", SPE: "spe",
 };
 
+/** Minimal Grind (and hardcore/restricted) switch EVs off for EVERYONE, the
+ * trainers included — the hardcore sheet publishes no boss EVs at all, while
+ * default publishes them for most of its 792 entries. Strip them from the
+ * BossMon itself rather than threading a flag through buildBossPokemon and
+ * bossStatTotals: every consumer (both readiness grids, the stat table, the
+ * Calculator's opponent seed, the displayed EV row) then sees one Pokémon
+ * and they can't disagree about whether EVs applied. */
+export function applyNoEvs(mon: BossMon, noEvs: boolean): BossMon {
+  return noEvs ? { ...mon, evs: {} } : mon;
+}
+
 function bossEvs(mon: BossMon): rr.StatsTable {
   const evs: rr.StatsTable = {};
   for (const [k, v] of Object.entries(mon.evs)) {

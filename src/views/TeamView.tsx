@@ -27,6 +27,7 @@ import {
   NATURES,
   NATURE_EFFECTS,
   natureLabel,
+  applyNoEvs,
   autoFieldNote,
   TERRAINS,
   WEATHERS,
@@ -788,6 +789,7 @@ function ReadinessView({
             boss={boss}
             levelCap={levelCap}
             onCalc={onCalc}
+            noEvs={run.mode === "hardcore" || !!run.minimalGrind}
           />
         ) : (
           <p className="muted">Pick a boss team to check your party against.</p>
@@ -1033,7 +1035,7 @@ function MoveMatchup({
     const defenders = boss.pokemon.map((bm) => ({
       bm,
       poke: buildBossPokemon(
-        bm,
+        applyNoEvs(bm, !!noEvs),
         defaultBossLevel(bm.level, levelCap),
         undefined,
         foeStatus,
@@ -1184,7 +1186,7 @@ function FoeMatchup({
   const grid = useMemo(() => {
     if (!bm) return null;
     const bossLevel = defaultBossLevel(bm.level, levelCap);
-    const attacker = buildBossPokemon(bm, bossLevel, undefined, foeStatus);
+    const attacker = buildBossPokemon(applyNoEvs(bm, !!noEvs), bossLevel, undefined, foeStatus);
     const fieldOpts = {
       weather: weather || undefined,
       terrain: terrain || undefined,
@@ -1381,10 +1383,12 @@ function BossPreview({
   boss,
   levelCap,
   onCalc,
+  noEvs = false,
 }: {
   boss: Boss;
   levelCap?: number;
   onCalc?: (target: CalcTarget) => void;
+  noEvs?: boolean;
 }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
@@ -1434,6 +1438,7 @@ function BossPreview({
               team={boss.pokemon}
               teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
               onCalc={onCalc}
+              noEvs={noEvs}
             />
           )}
         </div>

@@ -3,7 +3,7 @@ import { Sprite } from "./Sprite";
 import { ItemSprite } from "./ItemSprite";
 import { TypeBadges } from "./TypeBadges";
 import { defensiveProfile, formatMult, typeColor } from "../lib/effectiveness";
-import { bossStatTotals, defaultBossLevel } from "../lib/damagecalc";
+import { applyNoEvs, bossStatTotals, defaultBossLevel } from "../lib/damagecalc";
 
 /** weak/resist/immune type chips for a species (+ defensive ability) */
 export function SpeciesDefenses({
@@ -55,6 +55,7 @@ export function MonCard({
   team,
   teamLabel,
   onCalc,
+  noEvs = false,
 }: {
   mon: BossMon;
   battleEffect: string;
@@ -66,11 +67,16 @@ export function MonCard({
   /** opens the dedicated Team → Calculator page with this Pokémon prefilled
    * as the Opponent, instead of a popup */
   onCalc?: (target: CalcTarget) => void;
+  /** hardcore/restricted run or a Minimal Grind start: EVs apply to nobody,
+   * trainers included — so the stat table must not include them and the EV
+   * row has nothing to show */
+  noEvs?: boolean;
 }) {
   // the stats it actually fights with (level, nature, EVs, item/ability
   // multipliers); the sheet's base line only remains for unknown species
   const statLevel = defaultBossLevel(mon.level, levelCap);
-  const totals = bossStatTotals(mon, statLevel);
+  const shown = applyNoEvs(mon, noEvs);
+  const totals = bossStatTotals(shown, statLevel);
   return (
     <div className="mon-card">
       <div className="mon-head">
@@ -153,11 +159,11 @@ export function MonCard({
                 </>
               )}
             </tr>
-            {Object.keys(mon.evs).length > 0 && (
+            {Object.keys(shown.evs).length > 0 && (
               <tr>
                 <td className="k">EVs</td>
                 {STAT_ORDER.map((s) => (
-                  <td key={s}>{mon.evs[s] || "–"}</td>
+                  <td key={s}>{shown.evs[s] || "–"}</td>
                 ))}
               </tr>
             )}

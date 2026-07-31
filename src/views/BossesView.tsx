@@ -29,6 +29,8 @@ export function BossesView({
   const [showOffPath, setShowOffPath] = useState(false);
 
   const levelCap = useMemo(() => nextLevelCap(modeData, run), [run, modeData]);
+  // Minimal Grind (and hardcore) turn EVs off for everyone, trainers included
+  const noEvs = run?.mode === "hardcore" || !!run?.minimalGrind;
   const rivalStarter = useMemo(() => rivalStarterFor(run), [run]);
 
   // teams the trainer order never names — almost entirely Postgame, plus a
@@ -106,6 +108,7 @@ export function BossesView({
                     levelCap={levelCap}
                     focus={focus}
                     onCalc={onCalc}
+                    noEvs={noEvs}
                   />
                 </div>
               ))}
@@ -136,6 +139,8 @@ function TrainerOrder({
   focus?: (BossTarget & { nonce: number }) | null;
   onCalc?: (target: CalcTarget) => void;
 }) {
+  // Minimal Grind (and hardcore) turn EVs off for everyone, trainers included
+  const noEvs = run?.mode === "hardcore" || !!run?.minimalGrind;
   const order = modeData.trainerOrder;
   // every order entry resolves to a team (verified across both modes), so a
   // row can always expand into the fight it names — which is the whole point
@@ -392,7 +397,7 @@ function TrainerOrder({
                   )}
                 </div>
               )}
-              <BossTeamBody boss={team.boss} levelCap={levelCap} onCalc={onCalc} />
+              <BossTeamBody boss={team.boss} levelCap={levelCap} onCalc={onCalc} noEvs={noEvs} />
             </div>
           )}
           </div>
@@ -448,12 +453,14 @@ function BossTeams({
   levelCap,
   focus,
   onCalc,
+  noEvs = false,
 }: {
   bosses: Boss[];
   filter: string;
   levelCap?: number;
   focus?: (BossTarget & { nonce: number }) | null;
   onCalc?: (target: CalcTarget) => void;
+  noEvs?: boolean;
 }) {
   const q = filter.trim().toLowerCase();
   const shown = bosses.filter((b) => {
@@ -473,6 +480,7 @@ function BossTeams({
           boss={b}
           levelCap={levelCap}
           onCalc={onCalc}
+          noEvs={noEvs}
           focusNonce={
             focus && b.title === focus.title &&
             shown.findIndex((x) => x.title === focus.title) === i
@@ -489,11 +497,13 @@ function BossCard({
   boss,
   levelCap,
   onCalc,
+  noEvs = false,
   focusNonce = 0,
 }: {
   boss: Boss;
   levelCap?: number;
   onCalc?: (target: CalcTarget) => void;
+  noEvs?: boolean;
   /** non-zero when cap-pill navigation targets this card: open and scroll to it */
   focusNonce?: number;
 }) {
@@ -542,7 +552,7 @@ function BossCard({
           ))}
         </div>
       )}
-      {open && <BossTeamBody boss={boss} levelCap={levelCap} onCalc={onCalc} />}
+      {open && <BossTeamBody boss={boss} levelCap={levelCap} onCalc={onCalc} noEvs={noEvs} />}
     </div>
   );
 }
@@ -555,10 +565,12 @@ function BossTeamBody({
   boss,
   levelCap,
   onCalc,
+  noEvs = false,
 }: {
   boss: Boss;
   levelCap?: number;
   onCalc?: (target: CalcTarget) => void;
+  noEvs?: boolean;
 }) {
   return (
     <>
@@ -579,6 +591,7 @@ function BossTeamBody({
             team={boss.pokemon}
             teamLabel={boss.title + (boss.subtitle ? ` — ${boss.subtitle}` : "")}
             onCalc={onCalc}
+            noEvs={noEvs}
           />
         ))}
       </div>

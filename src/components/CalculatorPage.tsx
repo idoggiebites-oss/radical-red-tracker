@@ -469,6 +469,7 @@ export function CalculatorPage({
 
   // ignore any saved EV spread when EVs don't apply, without clearing cfg
   const calcYou = useMemo(() => (noEvs ? { ...you, evs: {} } : you), [you, noEvs]);
+  const calcOpp = useMemo(() => (noEvs ? { ...opp, evs: {} } : opp), [opp, noEvs]);
 
   const fieldOpts = useMemo(
     () => ({
@@ -531,13 +532,13 @@ export function CalculatorPage({
   );
 
   const results = useMemo(() => {
-    const oppPoke = opp.species ? buildPlayerPokemon(opp) : null;
+    const oppPoke = calcOpp.species ? buildPlayerPokemon(calcOpp) : null;
     const youPoke = calcYou.species ? buildPlayerPokemon(calcYou) : null;
     if (!oppPoke || !youPoke) return null;
     const incoming = calcMoves(
       oppPoke,
       youPoke,
-      movesWithHits(opp),
+      movesWithHits(calcOpp),
       incomingField,
       crit,
     );
@@ -554,7 +555,7 @@ export function CalculatorPage({
       oppSpeed: effectiveSpeed(oppPoke, resolvedField, oppSide),
       youSpeed: effectiveSpeed(youPoke, resolvedField, yourSide),
     };
-  }, [opp, calcYou, incomingField, outgoingField, resolvedField, oppSide, yourSide, crit]);
+  }, [calcOpp, calcYou, incomingField, outgoingField, resolvedField, oppSide, yourSide, crit]);
 
   return (
     <div className="calculator-page">
@@ -625,14 +626,14 @@ export function CalculatorPage({
           <MonConfigCard
             title="Opponent"
             cfg={opp}
-            calcCfg={opp}
+            calcCfg={calcOpp}
             update={updateOpp}
             onClear={resetOpp}
             fieldOpts={resolvedField}
             side={oppSide}
             showSpreads={showOppSpreads}
             setShowSpreads={setShowOppSpreads}
-            noEvs={false}
+            noEvs={noEvs}
             anyAbility
             speciesOptions={ALL_SPECIES}
             headExtra={
