@@ -3,9 +3,14 @@
 Vite + React + TypeScript SPA, no backend — all run state lives in
 `localStorage` (`rr-tracker.v1` plus per-run UI keys like
 `rr-tracker.readinessBoss.<runId>`). Deployed to GitHub Pages via GitHub
-Actions on push to main, served at https://radicalredtracker.com — the
-custom domain comes from `public/CNAME`, which is why vite `base` is `'/'`
-and not `/<repo-name>/`. It's a PWA
+Actions on push to main, served at https://radicalredtracker.com, which is
+why vite `base` is `'/'` and not `/<repo-name>/`. The custom domain lives in
+the **Pages config**, not in `public/CNAME` — this repo deploys with
+`build_type: workflow`, and that mode ignores a CNAME file in the artifact.
+Set it with `gh api -X PUT repos/OWNER/REPO/pages -f cname=...` (adding a
+domain silently turns `https_enforced` off; turn it back on once
+`.https_certificate.state` reaches `approved`). `public/CNAME` is kept only
+as a record of the domain in git. It's a PWA
 (vite-plugin-pwa, autoUpdate, sprites runtime-cached): views are
 `React.lazy` chunks so each tab's data/engine loads on demand — keep new
 heavy imports (data JSONs, `rr-damage-calc`) out of `App.tsx`, which fetches
