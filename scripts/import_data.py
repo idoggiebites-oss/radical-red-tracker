@@ -1449,6 +1449,21 @@ def parse_boss_sheet(sheet_id, prefix, refresh):
 
 # --------------------------------------------------------------------- main
 
+def build_move_ids(rrdex: dict) -> dict:
+    """move id -> name, for reading a .sav (the save stores numeric ids).
+
+    Species and item ids are already recoverable by inverting the spriteIds
+    maps in types.json / items.json, but nothing else in the app carries the
+    move table, and the save needs it to name a Pokemon's four moves.
+    """
+    out = {}
+    for mid, mv in (rrdex.get("moves") or {}).items():
+        name = (mv or {}).get("name")
+        if isinstance(mid, int) and name:
+            out[str(mid)] = name
+    return out
+
+
 def main():
     refresh = "--refresh" in sys.argv
     OUT.mkdir(parents=True, exist_ok=True)
@@ -1532,7 +1547,10 @@ def main():
     (OUT / "bosses.json").write_text(json.dumps(bosses, ensure_ascii=False, indent=1))
     (OUT / "types.json").write_text(json.dumps(types, ensure_ascii=False, indent=1))
     (OUT / "items.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
-    print(f"\nWrote encounters.json, bosses.json, types.json and items.json to {OUT}")
+    move_ids = build_move_ids(rrdex)
+    (OUT / "moveIds.json").write_text(json.dumps(move_ids, ensure_ascii=False, indent=1))
+    print(f"\nWrote encounters.json, bosses.json, types.json, items.json and "
+          f"moveIds.json ({len(move_ids)} moves) to {OUT}")
     if warnings:
         print(f"{len(warnings)} warnings — review above.")
 

@@ -870,6 +870,13 @@ const itemKey = (s: string): string =>
 
 const ITEM_BY_KEY = new Map(ITEM_NAMES.map((n) => [itemKey(n), n]));
 
+/** the engine's own spelling of an item, ignoring case/spacing/punctuation;
+ * undefined when unknown. Exported so the save reader can turn a normalized
+ * item name from the id table into the name the rest of the app displays. */
+export function canonicalItem(item: string): string | undefined {
+  return matchItemName(item);
+}
+
 /** exact match ignoring case/spacing/punctuation; undefined when unknown */
 function matchItemName(item: string): string | undefined {
   return ITEM_BY_KEY.get(itemKey(item));
