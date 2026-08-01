@@ -801,23 +801,6 @@ tr.pickable:hover td { background: var(--bg3); }
   font-size: 13.5px;
   margin-bottom: 12px;
 }
-.orig-species { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(139,147,171,0.5); }
-.cell-mapped { white-space: nowrap; }
-.map-hint {
-  border: 1px dashed var(--line);
-  background: none;
-  color: var(--muted);
-  font-size: 12px;
-  padding: 1px 8px;
-}
-.map-value {
-  border: none;
-  background: none;
-  font-weight: 600;
-  padding: 1px 4px;
-}
-.map-input { width: 140px; padding: 2px 8px; font-size: 13px; }
-
 /* ---- damage calc ---- */
 
 .calc-btn { margin-left: auto; align-self: flex-start; padding: 2px 9px; font-size: 15px; }

@@ -147,14 +147,6 @@ export function RoutesView({
     ) {
       return true;
     }
-    if (
-      Object.entries(run?.seenSpecies ?? {}).some(
-        ([k, v]) =>
-          k.startsWith(loc.id + "|") && v.toLowerCase().includes(q),
-      )
-    ) {
-      return true;
-    }
     return Object.values(loc.methods).some((slots) =>
       slots?.some((s) => s.species.toLowerCase().includes(q)),
     );
@@ -236,9 +228,7 @@ export function RoutesView({
       {randomized && (
         <div className="randomizer-banner">
           🎲 Species randomizer active — type whatever you actually caught in
-          a route's species box (any species counts). If you want, click a
-          slot's <span className="map-hint">→ record</span> cell to note what
-          shows up in its place on that route.
+          a route's species box (any species counts).
         </div>
       )}
       {run && !q && (
@@ -650,21 +640,6 @@ function RouteRow({
   const showStatics =
     staticsOpen ?? (staticsDefaultOpen || statics.some((ls) => run?.encounters[ls.id]));
 
-  const seenFor = (locId: string, species: string) =>
-    run?.seenSpecies?.[`${locId}|${species}`];
-  const setSeen = (locId: string, species: string, seen: string) => {
-    updateRun((r) => {
-      const next = { ...(r.seenSpecies ?? {}) };
-      const key = `${locId}|${species}`;
-      if (seen.trim()) {
-        next[key] = seen.trim();
-      } else {
-        delete next[key];
-      }
-      return { ...r, seenSpecies: next };
-    });
-  };
-
   const setEncounterAt = (
     slotId: string,
     patch: Partial<Run["encounters"][string]> | null,
@@ -875,14 +850,6 @@ function RouteRow({
                       <h4>{METHOD_LABELS[m]}</h4>
                       <EncounterTable
                         slots={loc.methods[m]!}
-                        seen={
-                          randomized ? (sp) => seenFor(loc.id, sp) : undefined
-                        }
-                        onSee={
-                          randomized
-                            ? (sp, v) => setSeen(loc.id, sp, v)
-                            : undefined
-                        }
                         onPick={
                           run ? (sp) => setEncounterAt(lastSlotId, { species: sp }) : undefined
                         }
@@ -901,84 +868,32 @@ function RouteRow({
 
 function EncounterTable({
   slots,
-  seen,
-  onSee,
   onPick,
 }: {
   slots: EncounterSlot[];
-  /** when set, the species randomizer is active: per-route sighting notes */
-  seen?: (species: string) => string | undefined;
-  onSee?: (species: string, seen: string) => void;
   onPick?: (species: string) => void;
 }) {
-  const [editing, setEditing] = useState<string | null>(null);
-  const [editValue, setEditValue] = useState("");
-  const randomized = onSee !== undefined;
-  const startEditing = (species: string, current: string) => {
-    setEditing(species);
-    setEditValue(current);
-  };
   return (
     <table>
       <tbody>
-        {slots.map((s, i) => {
-          const sighted = seen?.(s.species);
-          const shown = sighted ?? s.species;
-          return (
-            <tr
-              key={i}
-              className={onPick ? "pickable" : ""}
-              title={onPick ? `Set ${shown} as this route's encounter` : undefined}
-              onClick={() => onPick?.(shown)}
-            >
-              <td className="cell-sprite">
-                <Sprite species={s.species} size={32} />
-              </td>
-              <td className={"cell-species" + (sighted ? " orig-species" : "")}>
-                {s.species}
-              </td>
-              {randomized && (
-                <td className="cell-mapped" onClick={(e) => e.stopPropagation()}>
-                  {editing === s.species ? (
-                    <SpeciesCombobox
-                      autoFocus
-                      className="map-input"
-                      value={editValue}
-                      options={WILD_SPECIES}
-                      placeholder="Saw here…"
-                      onChange={(v) => {
-                        setEditValue(v);
-                        onSee?.(s.species, v);
-                      }}
-                      onBlur={() => setEditing(null)}
-                      onEscape={() => setEditing(null)}
-                    />
-                  ) : sighted ? (
-                    <button
-                      className="map-value"
-                      title="Edit sighting"
-                      onClick={() => startEditing(s.species, sighted)}
-                    >
-                      → <Sprite species={sighted} size={26} /> {sighted}
-                    </button>
-                  ) : (
-                    <button
-                      className="map-hint"
-                      onClick={() => startEditing(s.species, "")}
-                    >
-                      → record
-                    </button>
-                  )}
-                </td>
-              )}
-              <td>
-                <TypeBadges species={shown} small />
-              </td>
-              <td className="cell-rarity">{s.rarity}</td>
-              <td className="cell-levels">{s.levels && `Lv. ${s.levels}`}</td>
-            </tr>
-          );
-        })}
+        {slots.map((s, i) => (
+          <tr
+            key={i}
+            className={onPick ? "pickable" : ""}
+            title={onPick ? `Set ${s.species} as this route's encounter` : undefined}
+            onClick={() => onPick?.(s.species)}
+          >
+            <td className="cell-sprite">
+              <Sprite species={s.species} size={32} />
+            </td>
+            <td className="cell-species">{s.species}</td>
+            <td>
+              <TypeBadges species={s.species} small />
+            </td>
+            <td className="cell-rarity">{s.rarity}</td>
+            <td className="cell-levels">{s.levels && `Lv. ${s.levels}`}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

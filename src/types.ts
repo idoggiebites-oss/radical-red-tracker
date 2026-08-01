@@ -248,13 +248,9 @@ export interface Run {
   /** legacy global randomizer mapping (original -> randomized species) from
    * older runs; still read for starter identification, no longer written */
   speciesMap?: Record<string, string>;
-  /** species randomizer sightings, keyed `<locationId>|<docSpecies>` -> what
-   * actually appeared in that slot. Display-only and per route — catches are
-   * whatever the user types in the species box. */
-  seenSpecies?: Record<string, string>;
-  /** manual randomizer toggles (Routes toolbar; the hidden save-file import
-   * can also detect them): species unlocks the route "became…" mapping UI,
-   * abilities frees the ability inputs in builds and the calc */
+  /** manual randomizer toggles (Routes toolbar; the save-file import can also
+   * detect them): species opens the catch box to any species, abilities frees
+   * the ability inputs in builds and the calc */
   randomizer?: { species?: boolean; abilities?: boolean };
   /** lab ball taken: 0 left/grass · 1 middle/water · 2 right/fire. The
    * position decides the rival's counterpick even when the species are a
