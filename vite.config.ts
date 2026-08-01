@@ -78,17 +78,21 @@ export default defineConfig({
         runtimeCaching: [
           {
             // our own mirrored sprites (public/sprites/{species,items,custom}).
-            // StaleWhileRevalidate, not CacheFirst: these live in public/ so
-            // their filenames never change between deploys, and a re-cleaned
-            // sprite would otherwise be invisible to anyone who had already
-            // cached the old one — for up to the 90 days below. Serving from
-            // cache and refreshing in the background keeps it instant while
-            // still letting a fix actually land.
+            // CacheFirst: these live in public/ so their filenames never
+            // change between deploys, which used to argue for
+            // StaleWhileRevalidate — otherwise a re-cleaned sprite stays
+            // invisible to anyone holding the old one. But SWR revalidates
+            // EVERY hit, and these pages are sprite-dense: opening every
+            // route fires ~640 background fetches for art that already
+            // painted from cache. On a phone that traffic competes with the
+            // requests that actually block pixels. The expiry below is the
+            // compromise: a corrected sprite lands within a month rather
+            // than on the next view, and nothing re-requests until then.
             urlPattern: ({ url }: { url: URL }) => url.pathname.includes('/sprites/'),
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             options: {
               cacheName: 'sprites',
-              expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 90 },
+              expiration: { maxEntries: 3000, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
