@@ -9,16 +9,7 @@ import type {
 } from "./types";
 import { loadState, newRun, saveState } from "./lib/storage";
 import { checkForUpdate } from "./lib/appUpdate";
-import { readSaveFile } from "./lib/saveFile";
-import {
-  readParty,
-  readBoxes,
-  readExtraStorage,
-  placeOnRoutes,
-  encountersFrom,
-  type PlacedMon,
-} from "./lib/saveImport";
-import encountersData from "./data/encounters.json";
+import type { PlacedMon } from "./lib/saveImport";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
@@ -595,6 +586,10 @@ function NewRunDialog({
   const [importMons, setImportMons] = useState(true);
   const [graveyard, setGraveyard] = useState(true);
 
+  // the .sav reader pulls in the damage-calc engine and four data files, so
+  // it stays out of the eager bundle and loads when a file is actually picked
+  const importer = useRef<typeof import("./lib/saveImport") | null>(null);
+
   const willPlace = (placed ?? []).filter((p) => p.locationId);
   const create = () =>
     onCreate(
@@ -602,7 +597,9 @@ function NewRunDialog({
       mode,
       saveInfo,
       minimalGrind,
-      importMons && placed ? encountersFrom(placed, { graveyard }) : undefined,
+      importMons && placed && importer.current
+        ? importer.current.encountersFrom(placed, { graveyard })
+        : undefined,
     );
 
   const onSaveFile = async (file: File | undefined) => {
@@ -611,6 +608,22 @@ function NewRunDialog({
     setPlaced(null);
     if (!file) return;
     const buffer = await file.arrayBuffer();
+    let mods;
+    try {
+      mods = await Promise.all([
+        import("./lib/saveImport"),
+        import("./lib/saveFile"),
+        import("./data/encounters.json"),
+      ]);
+    } catch {
+      // first visit on a bad connection: the reader isn't cached yet
+      setSaveError(
+        "Couldn't load the save-file reader. Check your connection and try again.",
+      );
+      return;
+    }
+    const [saveImport, { readSaveFile }, encountersData] = mods;
+    importer.current = saveImport;
     const info = readSaveFile(buffer);
     if (!info) {
       setSaveError(
@@ -624,11 +637,11 @@ function NewRunDialog({
     // and which Pokemon were caught where, so the run can start already filled in
     try {
       const mons = [
-        ...readParty(buffer),
-        ...readBoxes(buffer),
-        ...readExtraStorage(buffer),
+        ...saveImport.readParty(buffer),
+        ...saveImport.readBoxes(buffer),
+        ...saveImport.readExtraStorage(buffer),
       ];
-      setPlaced(placeOnRoutes(mons, encountersData.locations));
+      setPlaced(saveImport.placeOnRoutes(mons, encountersData.default.locations));
     } catch {
       // a save we can read the header of but not the Pokemon: keep the run
       // creation working and just don't offer the import
