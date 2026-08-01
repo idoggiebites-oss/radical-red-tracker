@@ -122,13 +122,17 @@ own read-only stat-table preview.
   no longer imports the calculator — just a sprite/stat-table/`onCalc`
   callback), `src/lib/levelCap.ts`.
 - Randomizer: manual 🎲 toggles on the Routes toolbar (`run.randomizer`) —
-  species opens the catch box to any species and adds optional per-route
-  sighting notes (`run.seenSpecies`, keyed `<locId>|<docSpecies>`; the old
-  global `run.speciesMap` is legacy, read only for starter identification);
+  species opens the catch box to any species and hides the wild-encounter
+  tables (the doc species aren't real options once anything can appear);
   abilities frees ability inputs in builds/calc
-  (`speciesRandomized`/`abilitiesRandomized` in `src/lib/saveFile.ts`).
-  Hidden feature: save-file upload (which detects the same flags) behind
-  `SAVE_FILE_FEATURE=false` in `src/lib/featureFlags.ts`.
+  (`speciesRandomized`/`abilitiesRandomized` in `src/lib/saveFile.ts`). The
+  old global `run.speciesMap` is legacy, read only for starter
+  identification. There was a per-route sighting log (`run.seenSpecies`,
+  a "→ record" cell in each encounter table) — removed, because it needed
+  the tables that a randomized run hides, so it could never render. Old runs
+  may still carry `seenSpecies` data; nothing reads it. The save-file upload
+  detects the same flags (`SAVE_FILE_FEATURE` in `src/lib/featureFlags.ts`,
+  now on).
 
 ## Conventions & gotchas
 
