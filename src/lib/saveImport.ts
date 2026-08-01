@@ -98,8 +98,14 @@ const MAPSEC_NAMES: string[] = [
   "Victory Road", "Rocket Hideout", "Silph Co.", "Pokemon Mansion",
   "Safari Zone", "Pokemon League", "Rock Tunnel", "Seafoam Islands",
   "Pokemon Tower", "Cerulean Cave", "Power Plant",
-  // 143+ is the Sevii Islands. Left unmapped: nothing has anchored it yet,
-  // and a wrong route here is worse than no route.
+  // 143-149: seven entries between the Power Plant and Kindle Road that
+  // nothing has anchored. Empty strings hold their places so every byte after
+  // them stays aligned; mapsecName treats "" as unknown.
+  "", "", "", "", "", "", "",
+  // 150 is Kindle Road, from a Grimmsnarl caught there. It's the only Sevii
+  // anchor so far, so the rest of the archipelago stays unmapped rather than
+  // extrapolated — FireRed's own table even orders Seven Island before Six.
+  "Kindle Road",
 ];
 
 /** RR reports the starter as 157, which in vanilla FireRed is an unused
@@ -112,7 +118,7 @@ const MAPSEC_STARTER = 157;
 const METLOC_EGG = 253;
 
 export function mapsecName(byte: number): string | null {
-  return MAPSEC_NAMES[byte - MAPSEC_BASE] ?? null;
+  return MAPSEC_NAMES[byte - MAPSEC_BASE] || null;
 }
 
 // gen 3 text encoding: digits, then A-Z, then a-z, 0xFF terminates
