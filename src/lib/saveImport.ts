@@ -65,6 +65,20 @@ const BOX_MOVE_BITS = 10;
 const BOX_MOVE_SHIFT = 24;
 const BOX_SLOTS = 14 * 30;
 
+/** A SECOND Pokémon storage region, in sector 0 after the trainer block, in
+ * the same 58-byte format. It is where the boxes past what the PC region can
+ * hold actually live: sections 5-13 give 615 slots, only 20.5 boxes of 30, so
+ * a box numbered above that cannot physically be there. Players commonly
+ * reserve a high box as a nuzlocke graveyard, which is how this was found —
+ * 15 Pokémon that a box-count-capped reader misses entirely.
+ *
+ * Entries here are filtered on the trainer's own OT id: unlike the PC region
+ * this sector holds unrelated data, and without that filter it produces
+ * convincing false positives. */
+const EXTRA_SECTION = 0;
+const EXTRA_START = 0xb0;
+const TRAINER_ID_OFFSET = 0x0a;
+
 /** FireRed's MAPSEC table — RR uses it unmodified (verified: Pewter City=90,
  * Route 25=125, Diglett's Cave=131, Viridian Forest=126, Mt. Moon=127).
  * The two entries between Saffron City and Route 1 are FireRed's own "fly-up"
@@ -178,6 +192,10 @@ export interface SaveMon {
   metLevel: number | null;
   inParty: boolean;
   boxSlot: number | null;
+  /** from the overflow storage region rather than the PC boxes. Players tend
+   * to use a high box as a graveyard, but the save records no such thing, so
+   * whether that means "fainted" is the player's call, not ours. */
+  extraStorage: boolean;
 }
 
 /** the GAME's nature order, which is what `PID % 25` indexes. Deliberately
@@ -251,7 +269,60 @@ export function readParty(buffer: ArrayBuffer): SaveMon[] {
       metLevel: origins & 0x7f,
       inParty: true,
       boxSlot: null,
+      extraStorage: false,
     });
+  }
+  return out;
+}
+
+/** decode one 58-byte compact entry (PC box or overflow storage) */
+function readCompactMon(
+  view: DataView,
+  bytes: Uint8Array,
+  o: number,
+): Omit<SaveMon, "inParty" | "boxSlot" | "extraStorage"> | null {
+  const pid = view.getUint32(o, true);
+  const speciesId = view.getUint16(o + BOX_SPECIES, true);
+  const species = speciesById.get(speciesId);
+  if (!pid || !speciesId || !species) return null;
+  const packed = view.getBigUint64(o + BOX_MOVES, true);
+  const mask = (1n << BigInt(BOX_MOVE_BITS)) - 1n;
+  const moveIds = [0, 1, 2, 3].map((n) =>
+    Number((packed >> BigInt(BOX_MOVE_SHIFT + n * BOX_MOVE_BITS)) & mask),
+  );
+  const metLocation = bytes[o + BOX_MET_LOCATION];
+  return {
+    speciesId,
+    species,
+    nickname: decodeText(bytes.subarray(o + 8, o + 18)),
+    level: null,
+    nature: GAME_NATURES[pid % 25] ?? "",
+    item: itemById.get(view.getUint16(o + BOX_ITEM, true)) ?? "",
+    moves: moveIds.filter(Boolean).map((id) => moveById[String(id)] ?? ""),
+    evs: {},
+    ivs: {},
+    metLocation,
+    metLocationName: mapsecName(metLocation),
+    metLevel: null,
+  };
+}
+
+/** the overflow storage region — see EXTRA_START. Filtered on the trainer's
+ * own OT id, because this sector holds plenty that isn't a Pokémon. */
+export function readExtraStorage(buffer: ArrayBuffer): SaveMon[] {
+  const view = new DataView(buffer);
+  const bytes = new Uint8Array(buffer);
+  if (buffer.byteLength < SAVE_BYTES) return [];
+  const sectors = sectorMap(view);
+  const base = sectors.get(EXTRA_SECTION);
+  if (base === undefined) return [];
+  const trainerId = view.getUint32(base + TRAINER_ID_OFFSET, true);
+  const out: SaveMon[] = [];
+  for (let slot = 0; base + EXTRA_START + (slot + 1) * BOX_STRIDE <= base + SECTOR_DATA; slot++) {
+    const o = base + EXTRA_START + slot * BOX_STRIDE;
+    if (view.getUint32(o + 4, true) !== trainerId) continue;
+    const mon = readCompactMon(view, bytes, o);
+    if (mon) out.push({ ...mon, inParty: false, boxSlot: slot, extraStorage: true });
   }
   return out;
 }
@@ -302,6 +373,7 @@ export function readBoxes(buffer: ArrayBuffer): SaveMon[] {
       metLevel: null,
       inParty: false,
       boxSlot: slot,
+      extraStorage: false,
     });
   }
   return out;
@@ -377,17 +449,26 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
   });
 }
 
-/** the run.encounters map a set of placed Pokémon would produce */
-export function encountersFrom(placed: PlacedMon[]): Run["encounters"] {
+/** the run.encounters map a set of placed Pokémon would produce.
+ *
+ * `graveyard` marks everything from the overflow storage region as fainted.
+ * That's opt-in because the save never records a death — reserving a high box
+ * for the fallen is a player convention, and someone using it as ordinary
+ * storage would have a boxful wrongly buried. */
+export function encountersFrom(
+  placed: PlacedMon[],
+  opts: { graveyard?: boolean } = {},
+): Run["encounters"] {
   const out: Run["encounters"] = {};
   for (const p of placed) {
     if (!p.locationId) continue;
     const m = p.mon;
+    const buried = opts.graveyard && m.extraStorage;
     out[p.locationId] = {
       species: m.species,
       nickname: m.nickname,
-      status: "caught",
-      inParty: m.inParty,
+      status: buried ? "fainted" : "caught",
+      inParty: buried ? false : m.inParty,
       kos: 0,
       build: {
         nature: m.nature || "Serious",

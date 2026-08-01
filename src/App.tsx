@@ -13,6 +13,7 @@ import { readSaveFile } from "./lib/saveFile";
 import {
   readParty,
   readBoxes,
+  readExtraStorage,
   placeOnRoutes,
   encountersFrom,
   type PlacedMon,
@@ -592,6 +593,7 @@ function NewRunDialog({
   const [saveError, setSaveError] = useState("");
   const [placed, setPlaced] = useState<PlacedMon[] | null>(null);
   const [importMons, setImportMons] = useState(true);
+  const [graveyard, setGraveyard] = useState(true);
 
   const willPlace = (placed ?? []).filter((p) => p.locationId);
   const create = () =>
@@ -600,7 +602,7 @@ function NewRunDialog({
       mode,
       saveInfo,
       minimalGrind,
-      importMons && placed ? encountersFrom(placed) : undefined,
+      importMons && placed ? encountersFrom(placed, { graveyard }) : undefined,
     );
 
   const onSaveFile = async (file: File | undefined) => {
@@ -621,7 +623,11 @@ function NewRunDialog({
     setMode(info.hardmode || info.restricted ? "hardcore" : "default");
     // and which Pokemon were caught where, so the run can start already filled in
     try {
-      const mons = [...readParty(buffer), ...readBoxes(buffer)];
+      const mons = [
+        ...readParty(buffer),
+        ...readBoxes(buffer),
+        ...readExtraStorage(buffer),
+      ];
       setPlaced(placeOnRoutes(mons, encountersData.locations));
     } catch {
       // a save we can read the header of but not the Pokemon: keep the run
@@ -722,6 +728,18 @@ function NewRunDialog({
               />
               Import {placed.length} Pokémon from the save
             </label>
+            {importMons && placed.some((p) => p.mon.extraStorage) && (
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={graveyard}
+                  onChange={(e) => setGraveyard(e.target.checked)}
+                />
+                Treat the{" "}
+                {placed.filter((p) => p.mon.extraStorage).length} in your
+                overflow box as the graveyard (mark them fainted)
+              </label>
+            )}
             {importMons && (
               <>
                 <p className="muted">
@@ -739,7 +757,11 @@ function NewRunDialog({
                         )}
                       </span>
                       <span className="si-where">
-                        {p.locationId ? p.mon.metLocationName : p.unplacedReason}
+                        {p.mon.extraStorage && graveyard && p.locationId
+                          ? `✝ ${p.mon.metLocationName}`
+                          : p.locationId
+                            ? p.mon.metLocationName
+                            : p.unplacedReason}
                       </span>
                     </li>
                   ))}
