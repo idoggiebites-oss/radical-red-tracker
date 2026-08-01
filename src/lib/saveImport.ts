@@ -21,7 +21,9 @@
 import typesJson from "../data/types.json";
 import itemsJson from "../data/items.json";
 import moveIdsJson from "../data/moveIds.json";
+import abilityIdsJson from "../data/abilityIds.json";
 import { canonicalItem } from "./damagecalc";
+import { readSaveFile } from "./saveFile";
 import { groupLocations, type RouteGroup } from "./routeGroups";
 import type { Location, Run } from "../types";
 import { STARTER_ID } from "./storage";
@@ -185,6 +187,77 @@ export function speciesNameFor(id: number): string {
   return speciesById.get(id) ?? "";
 }
 
+
+/** Radical Red does not store a Pokémon's ability. It recomputes it from the
+ * trainer id, the species and the base ability every time — which is why no
+ * byte, bit or species table in the save contains it, and why two Pokémon of
+ * the same species always share an ability.
+ *
+ * These two candidate pools are game data (the abilities the randomizer is
+ * allowed to pick from: the normal pool drops 19 form-changing abilities like
+ * Wonder Guard and Disguise, and the restricted pool drops 29 more powerful
+ * ones for hardcore). They were taken from hzla's Dynamic-Calc-Decomps, which
+ * declares no licence — they are lists of ids extracted from the ROM rather
+ * than authored work, but the source deserves the credit and this is the one
+ * thing here not derived from our own data.
+ * https://github.com/hzla/Dynamic-Calc-Decomps */
+const NORMAL_ABILITY_POOL = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,60,61,62,63,64,65,66,67,68,69,70,71,72,73,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,157,158,160,161,162,163,166,167,169,171,172,173,175,176,177,178,179,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,206,207,208,209,210,212,213,214,215,216,217,218,220,221,222,223,224,225,226,227,228,229,230,231,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,251,252,74,254,255,253];
+const RESTRICTED_ABILITY_POOL = [1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,57,58,60,61,62,63,64,65,66,67,68,69,70,71,72,73,75,77,78,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,112,113,114,115,116,119,121,122,123,124,125,126,127,128,129,130,132,133,135,136,137,138,139,140,141,144,145,146,147,148,149,150,151,152,153,154,158,160,161,162,163,166,167,169,171,175,177,178,179,185,186,187,188,189,190,192,193,194,195,196,198,199,200,201,202,203,204,206,208,209,210,215,216,217,218,220,221,222,223,224,225,226,227,228,229,230,231,233,234,235,236,237,238,239,240,241,242,243,244,245,246,248,249,251,74,254,255,253];
+
+const abilityNames = (abilityIdsJson as { names: Record<string, string> }).names;
+const abilitySlotsBySpecies = (abilityIdsJson as {
+  bySpeciesId: Record<string, number[]>;
+}).bySpeciesId;
+
+/** the exact hash Radical Red uses. Ported from the reference implementation;
+ * every step matters, including the `> length` comparison (not `>=`) and the
+ * 0xFFFF masks, which is why it is written out rather than tidied. */
+function randomizedAbilityId(
+  trainerId: number,
+  restricted: boolean,
+  abilityId: number,
+  speciesId: number,
+): number {
+  if (!abilityId) return 0;
+  const tid = Math.max(1, trainerId) >>> 0;
+  const pool = restricted ? RESTRICTED_ABILITY_POOL : NORMAL_ABILITY_POOL;
+  const n = pool.length;
+  if (!n) return abilityId;
+  const secret = ((tid >>> 16) & 0xffff) % 0xff;
+  let i = (tid & 0xffff) % n;
+  i = (i + speciesId + abilityId) & 0xffff;
+  if (i > n) i = (i - n + 2) & 0xffff;
+  i = (i ^ (secret & 0xffff)) % n;
+  return pool[i] >>> 0;
+}
+
+/** slot 2 is the hidden ability, flagged either by the top bit of the IV word
+ * or by a 191 marker byte; otherwise the slot is bit 0 of the PID. */
+function abilitySlotFrom(pid: number, ivWord: number, marker: number): number {
+  if ((ivWord & 0x80000000) !== 0) return 2;
+  if (marker === 191) return 2;
+  return pid & 1;
+}
+
+function abilityNameFor(
+  speciesId: number,
+  slot: number,
+  trainerId: number,
+  randomized: boolean,
+  restricted: boolean,
+): string {
+  const slots = abilitySlotsBySpecies[String(speciesId)] ?? [];
+  let base = slots[slot] ?? 0;
+  // an empty slot means the species simply has no ability there; fall back to
+  // its first real one rather than reporting nothing
+  if (!base) base = slots.find(Boolean) ?? 0;
+  if (!base) return "";
+  const id = randomized
+    ? randomizedAbilityId(trainerId, restricted, base, speciesId)
+    : base;
+  return abilityNames[String(id)] ?? "";
+}
+
 export interface SaveMon {
   speciesId: number;
   /** app-facing species name; "" when the id isn't in our data */
@@ -193,6 +266,7 @@ export interface SaveMon {
   /** party only — the compact box entry doesn't carry it */
   level: number | null;
   nature: string;
+  ability: string;
   item: string;
   moves: string[];
   evs: Record<string, number>;
@@ -249,6 +323,11 @@ export function readParty(buffer: ArrayBuffer): SaveMon[] {
   const base = sectors.get(PARTY_SECTION);
   if (base === undefined) return [];
 
+  const info = readSaveFile(buffer);
+  const trainerId = info?.trainedId ?? 0;
+  const randomized = !!info?.random.abilities;
+  const restricted = !!(info?.hardmode || info?.restricted);
+
   const count = Math.min(bytes[base + PARTY_COUNT], 6);
   const out: SaveMon[] = [];
   for (let i = 0; i < count; i++) {
@@ -269,6 +348,13 @@ export function readParty(buffer: ArrayBuffer): SaveMon[] {
       nickname: decodeText(bytes.subarray(o + 8, o + 18)),
       level: bytes[o + 0x54],
       nature: GAME_NATURES[pid % 25] ?? "",
+      ability: abilityNameFor(
+        speciesId,
+        abilitySlotFrom(pid, ivWord, bytes[o + 0x4a]),
+        trainerId,
+        randomized,
+        restricted,
+      ),
       item: itemById.get(view.getUint16(o + 0x22, true)) ?? "",
       moves: [0, 1, 2, 3]
         .map((n) => view.getUint16(o + 0x2c + n * 2, true))
@@ -292,6 +378,7 @@ function readCompactMon(
   view: DataView,
   bytes: Uint8Array,
   o: number,
+  ctx: { trainerId: number; randomized: boolean; restricted: boolean },
 ): Omit<SaveMon, "inParty" | "boxSlot" | "extraStorage"> | null {
   const pid = view.getUint32(o, true);
   const speciesId = view.getUint16(o + BOX_SPECIES, true);
@@ -309,6 +396,14 @@ function readCompactMon(
     nickname: decodeText(bytes.subarray(o + 8, o + 18)),
     level: null,
     nature: GAME_NATURES[pid % 25] ?? "",
+    ability: abilityNameFor(
+      speciesId,
+      // the compact entry keeps the same two markers, 0x18 lower down
+      abilitySlotFrom(pid, view.getUint32(o + 0x36, true), bytes[o + 0x39]),
+      ctx.trainerId,
+      ctx.randomized,
+      ctx.restricted,
+    ),
     item: itemById.get(view.getUint16(o + BOX_ITEM, true)) ?? "",
     moves: moveIds.filter(Boolean).map((id) => moveById[String(id)] ?? ""),
     evs: {},
@@ -329,11 +424,17 @@ export function readExtraStorage(buffer: ArrayBuffer): SaveMon[] {
   const base = sectors.get(EXTRA_SECTION);
   if (base === undefined) return [];
   const trainerId = view.getUint32(base + TRAINER_ID_OFFSET, true);
+  const info = readSaveFile(buffer);
+  const ctx = {
+    trainerId: info?.trainedId ?? trainerId,
+    randomized: !!info?.random.abilities,
+    restricted: !!(info?.hardmode || info?.restricted),
+  };
   const out: SaveMon[] = [];
   for (let slot = 0; base + EXTRA_START + (slot + 1) * BOX_STRIDE <= base + SECTOR_DATA; slot++) {
     const o = base + EXTRA_START + slot * BOX_STRIDE;
     if (view.getUint32(o + 4, true) !== trainerId) continue;
-    const mon = readCompactMon(view, bytes, o);
+    const mon = readCompactMon(view, bytes, o, ctx);
     if (mon) out.push({ ...mon, inParty: false, boxSlot: slot, extraStorage: true });
   }
   return out;
@@ -352,41 +453,22 @@ export function readBoxes(buffer: ArrayBuffer): SaveMon[] {
     pc.set(new Uint8Array(buffer, off, SECTOR_DATA), i * SECTOR_DATA);
   });
   const pcView = new DataView(pc.buffer, pc.byteOffset, pc.byteLength);
+  const info = readSaveFile(buffer);
+  const ctx = {
+    trainerId: info?.trainedId ?? 0,
+    randomized: !!info?.random.abilities,
+    restricted: !!(info?.hardmode || info?.restricted),
+  };
 
   const out: SaveMon[] = [];
   for (let slot = 0; slot < BOX_SLOTS; slot++) {
     const o = BOX_HEADER + slot * BOX_STRIDE;
     if (o + BOX_STRIDE > pc.length) break;
-    const pid = pcView.getUint32(o, true);
-    const speciesId = pcView.getUint16(o + BOX_SPECIES, true);
-    const species = speciesById.get(speciesId);
-    // an empty slot is zeroes; junk further in the region can still parse as a
-    // "valid" species, so require a real pid AND a species we actually know
-    if (!pid || !speciesId || !species) continue;
-    const metLocation = pc[o + BOX_MET_LOCATION];
-    // BigInt: the move field's top bits sit above 32, where >>> would wrap
-    const packed = pcView.getBigUint64(o + BOX_MOVES, true);
-    const mask = (1n << BigInt(BOX_MOVE_BITS)) - 1n;
-    const moveIds = [0, 1, 2, 3].map((n) =>
-      Number((packed >> BigInt(BOX_MOVE_SHIFT + n * BOX_MOVE_BITS)) & mask),
-    );
-    out.push({
-      speciesId,
-      species,
-      nickname: decodeText(pc.subarray(o + 8, o + 18)),
-      level: null,
-      nature: GAME_NATURES[pid % 25] ?? "",
-      item: itemById.get(pcView.getUint16(o + BOX_ITEM, true)) ?? "",
-      moves: moveIds.filter(Boolean).map((id) => moveById[String(id)] ?? ""),
-      evs: {},
-      ivs: {},
-      metLocation,
-      metLocationName: mapsecName(metLocation),
-      metLevel: null,
-      inParty: false,
-      boxSlot: slot,
-      extraStorage: false,
-    });
+    const mon = readCompactMon(pcView, pc, o, ctx);
+    // readCompactMon rejects empty slots and the junk further into the region
+    // that can still parse as a plausible species
+    if (!mon) continue;
+    out.push({ ...mon, inParty: false, boxSlot: slot, extraStorage: false });
   }
   return out;
 }
@@ -484,7 +566,7 @@ export function encountersFrom(
       kos: 0,
       build: {
         nature: m.nature || "Serious",
-        ability: "",
+        ability: m.ability,
         item: m.item,
         moves: [0, 1, 2, 3].map((i) => m.moves[i] ?? ""),
         evs: m.evs,

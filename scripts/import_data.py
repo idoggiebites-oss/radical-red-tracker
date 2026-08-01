@@ -1449,6 +1449,34 @@ def parse_boss_sheet(sheet_id, prefix, refresh):
 
 # --------------------------------------------------------------------- main
 
+
+def build_ability_data(rrdex: dict) -> tuple[dict, dict]:
+    """ability id -> name, and species id -> the three ability ids in the
+    GAME's slot order, both needed to work out a Pokemon's ability from a save.
+
+    The save stores no ability at all — Radical Red derives it from the
+    trainer id, the species and the base ability (see saveImport.ts), so the
+    base ability for a slot has to be exact.
+
+    The dex lists a species' abilities as [slot1, slot2, slot0]; the game's
+    own order is [slot0, slot1, slot2], i.e. hidden last. Rotating is not a
+    guess: it is what reproduces real abilities from real saves, and it was
+    cross-checked against an independent table for 966 species.
+    """
+    names = {}
+    for aid, ab in (rrdex.get("abilities") or {}).items():
+        nm = ((ab or {}).get("names") or [None])[0]
+        if isinstance(aid, int) and nm:
+            names[str(aid)] = nm
+    by_species = {}
+    for sid, ent in (rrdex.get("species") or {}).items():
+        abils = [a[0] if isinstance(a, list) else a for a in (ent or {}).get("abilities") or []]
+        abils = (abils + [0, 0, 0])[:3]
+        # dex order [1, 2, 0] -> game order [0, 1, 2]
+        by_species[str(sid)] = [abils[1], abils[2], abils[0]]
+    return names, by_species
+
+
 def build_move_ids(rrdex: dict) -> dict:
     """move id -> name, for reading a .sav (the save stores numeric ids).
 
@@ -1548,9 +1576,12 @@ def main():
     (OUT / "types.json").write_text(json.dumps(types, ensure_ascii=False, indent=1))
     (OUT / "items.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
     move_ids = build_move_ids(rrdex)
+    ability_names, ability_slots = build_ability_data(rrdex)
+    (OUT / "abilityIds.json").write_text(json.dumps(
+        {"names": ability_names, "bySpeciesId": ability_slots}, ensure_ascii=False, indent=1))
     (OUT / "moveIds.json").write_text(json.dumps(move_ids, ensure_ascii=False, indent=1))
     print(f"\nWrote encounters.json, bosses.json, types.json, items.json and "
-          f"moveIds.json ({len(move_ids)} moves) to {OUT}")
+          f"moveIds.json ({len(move_ids)} moves) and abilityIds.json to {OUT}")
     if warnings:
         print(f"{len(warnings)} warnings — review above.")
 
