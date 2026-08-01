@@ -98,14 +98,20 @@ const MAPSEC_NAMES: string[] = [
   "Victory Road", "Rocket Hideout", "Silph Co.", "Pokemon Mansion",
   "Safari Zone", "Pokemon League", "Rock Tunnel", "Seafoam Islands",
   "Pokemon Tower", "Cerulean Cave", "Power Plant",
-  // 143-149: seven entries between the Power Plant and Kindle Road that
-  // nothing has anchored. Empty strings hold their places so every byte after
-  // them stays aligned; mapsecName treats "" as unknown.
-  "", "", "", "", "", "", "",
-  // 150 is Kindle Road, from a Grimmsnarl caught there. It's the only Sevii
-  // anchor so far, so the rest of the archipelago stays unmapped rather than
-  // extrapolated — FireRed's own table even orders Seven Island before Six.
-  "Kindle Road",
+  // Sevii, anchored at three points from real catches: One Island (143),
+  // Kindle Road (150) and Treasure Beach (151). Exactly seven slots separate
+  // the first two, which is exactly the seven islands — the same structural
+  // check that confirmed the Underground Path pair back in Kanto.
+  //
+  // Seven Island really does come before Six in FireRed's table. Neither is
+  // in the docs' encounter data, so the order can't affect placement either
+  // way, but don't "correct" it.
+  "One Island", "Two Island", "Three Island", "Four Island", "Five Island",
+  "Seven Island", "Six Island",
+  "Kindle Road", "Treasure Beach",
+  // 152+ continues into Cape Brink, Bond Bridge, Mt. Ember and Berry Forest,
+  // several of which the docs DO have encounter tables for — so a wrong guess
+  // here would misplace rather than merely fail. Unanchored, so unmapped.
 ];
 
 /** RR reports the starter as 157, which in vanilla FireRed is an unused
