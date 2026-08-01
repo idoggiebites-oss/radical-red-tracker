@@ -1509,3 +1509,26 @@ tr.pickable:hover td { background: var(--bg3); }
   .calc-dialog h2 { font-size: 16px; }
   .result-move { flex-basis: 96px; font-size: 12px; }
 }
+
+/* new-run dialog: what a .sav import would bring in. The list is scrollable
+   rather than capped by count — a late-game save can hold dozens, and
+   truncating it would hide exactly the ones that failed to place. */
+.save-import { border-top: 1px solid var(--line); padding-top: 10px; }
+.save-import-list {
+  list-style: none; margin: 6px 0 0; padding: 0;
+  max-height: 190px; overflow-y: auto;
+  font-size: 12.5px;
+}
+.save-import-list li {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 3px 0; border-bottom: 1px solid var(--line);
+}
+.save-import-list li:last-child { border-bottom: none; }
+.save-import-list .si-where { color: var(--muted); text-align: right; flex: 0 1 auto; }
+.save-import-list li.unplaced .si-mon { color: var(--muted); }
+.save-import-list li.unplaced .si-where { color: var(--fainted); }
+
+/* .dialog label stacks its control under its text, which is right for the
+   name/mode fields but puts a checkbox on its own line, centred above the
+   sentence it belongs to. Checkboxes read inline. */
+.dialog label.checkbox { flex-direction: row; align-items: center; }

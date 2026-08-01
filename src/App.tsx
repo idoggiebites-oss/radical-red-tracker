@@ -10,6 +10,14 @@ import type {
 import { loadState, newRun, saveState } from "./lib/storage";
 import { checkForUpdate } from "./lib/appUpdate";
 import { readSaveFile } from "./lib/saveFile";
+import {
+  readParty,
+  readBoxes,
+  placeOnRoutes,
+  encountersFrom,
+  type PlacedMon,
+} from "./lib/saveImport";
+import encountersData from "./data/encounters.json";
 import { SAVE_FILE_FEATURE } from "./lib/featureFlags";
 import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
@@ -415,8 +423,9 @@ export default function App() {
       {creating && (
         <NewRunDialog
           onCancel={() => setCreating(false)}
-          onCreate={(name, m, saveInfo, minimalGrind) => {
+          onCreate={(name, m, saveInfo, minimalGrind, encounters) => {
             const r = newRun(name, m, saveInfo, minimalGrind);
+            if (encounters) r.encounters = encounters;
             setState((s) => ({ runs: [...s.runs, r], activeRunId: r.id }));
             setCreating(false);
           }}
@@ -572,6 +581,7 @@ function NewRunDialog({
     mode: GameMode,
     saveInfo?: RunSaveInfo,
     minimalGrind?: boolean,
+    encounters?: Run["encounters"],
   ) => void;
   onCancel: () => void;
 }) {
@@ -580,14 +590,26 @@ function NewRunDialog({
   const [minimalGrind, setMinimalGrind] = useState(false);
   const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
   const [saveError, setSaveError] = useState("");
+  const [placed, setPlaced] = useState<PlacedMon[] | null>(null);
+  const [importMons, setImportMons] = useState(true);
 
-  const create = () => onCreate(name.trim(), mode, saveInfo, minimalGrind);
+  const willPlace = (placed ?? []).filter((p) => p.locationId);
+  const create = () =>
+    onCreate(
+      name.trim(),
+      mode,
+      saveInfo,
+      minimalGrind,
+      importMons && placed ? encountersFrom(placed) : undefined,
+    );
 
   const onSaveFile = async (file: File | undefined) => {
     setSaveError("");
     setSaveInfo(undefined);
+    setPlaced(null);
     if (!file) return;
-    const info = readSaveFile(await file.arrayBuffer());
+    const buffer = await file.arrayBuffer();
+    const info = readSaveFile(buffer);
     if (!info) {
       setSaveError(
         "Couldn't read that file. Make sure it's the emulator's battery save (.sav), not a save state.",
@@ -597,6 +619,15 @@ function NewRunDialog({
     setSaveInfo(info);
     // the save knows which mode the run is actually in
     setMode(info.hardmode || info.restricted ? "hardcore" : "default");
+    // and which Pokemon were caught where, so the run can start already filled in
+    try {
+      const mons = [...readParty(buffer), ...readBoxes(buffer)];
+      setPlaced(placeOnRoutes(mons, encountersData.locations));
+    } catch {
+      // a save we can read the header of but not the Pokemon: keep the run
+      // creation working and just don't offer the import
+      setPlaced(null);
+    }
   };
 
   const randomFlags = saveInfo
@@ -642,9 +673,15 @@ function NewRunDialog({
         {SAVE_FILE_FEATURE && (
           <label>
             Save file (optional)
+            {/* application/octet-stream first, on purpose. iOS resolves an
+                accept list to UTIs off the file's extension, and .sav/.sa2/.fla
+                map to nothing Apple knows — listing only those greys out every
+                real save, the same way an invented .rrnuz once did to backups.
+                octet-stream resolves to public.data, so iOS shows files rather
+                than nothing, while desktop still gets the extension hints. */}
             <input
               type="file"
-              accept=".sav,.sa2,.fla"
+              accept="application/octet-stream,.sav,.sa2,.fla"
               onChange={(e) => onSaveFile(e.target.files?.[0])}
             />
           </label>
@@ -672,6 +709,42 @@ function NewRunDialog({
                 in a route's species box, and optionally note what shows up in
                 each slot.
               </div>
+            )}
+          </div>
+        )}
+        {placed && placed.length > 0 && (
+          <div className="save-import">
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                checked={importMons}
+                onChange={(e) => setImportMons(e.target.checked)}
+              />
+              Import {placed.length} Pokémon from the save
+            </label>
+            {importMons && (
+              <>
+                <p className="muted">
+                  {willPlace.length} will be placed on the route they were
+                  caught on. Anything below that couldn&apos;t be matched is
+                  left for you to record yourself — it is never guessed.
+                </p>
+                <ul className="save-import-list">
+                  {placed.map((p, i) => (
+                    <li key={i} className={p.locationId ? undefined : "unplaced"}>
+                      <span className="si-mon">
+                        {p.mon.nickname || p.mon.species}
+                        {p.mon.nickname && (
+                          <span className="muted"> · {p.mon.species}</span>
+                        )}
+                      </span>
+                      <span className="si-where">
+                        {p.locationId ? p.mon.metLocationName : p.unplacedReason}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         )}

@@ -22,6 +22,8 @@ import typesJson from "../data/types.json";
 import itemsJson from "../data/items.json";
 import moveIdsJson from "../data/moveIds.json";
 import { canonicalItem } from "./damagecalc";
+import { groupLocations, type RouteGroup } from "./routeGroups";
+import type { Location, Run } from "../types";
 
 const SECTOR = 0x1000;
 const SECTOR_ID = 0xff4;
@@ -282,6 +284,83 @@ export function readBoxes(buffer: ArrayBuffer): SaveMon[] {
       inParty: false,
       boxSlot: slot,
     });
+  }
+  return out;
+}
+
+
+/** MAPSEC names the docs spell differently. Everything else matches once
+ * case and punctuation are folded. */
+const MAPSEC_ALIASES: Record<string, string> = {
+  "Vermilion City": "VERMILLION CITY", // the docs use two Ls
+  "Diglett's Cave": "DIGLETT CAVE", // and drop the possessive
+};
+
+const foldName = (s: string) => s.toUpperCase().replace(/[^A-Z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+
+export interface PlacedMon {
+  mon: SaveMon;
+  /** the route group's encounter-slot id, or null when we can't place it */
+  locationId: string | null;
+  /** why it couldn't be placed, for the UI to explain rather than hide */
+  unplacedReason: string | null;
+}
+
+/** Match each Pokémon's met location to the route group that owns its
+ * encounter slot. Deliberately conservative: anything that doesn't resolve
+ * cleanly is returned unplaced with a reason, for the player to assign, not
+ * guessed at. Several real map sections (Lavender Town, Saffron City, Indigo
+ * Plateau, the Underground Paths) have no wild encounters, so the docs never
+ * list them and there is no slot to place a gift or trade caught there. */
+export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon[] {
+  const groups: RouteGroup[] = groupLocations(locations);
+  const byName = new Map<string, string>();
+  for (const g of groups) if (!byName.has(foldName(g.name))) byName.set(foldName(g.name), g.id);
+
+  const taken = new Map<string, string>(); // locationId -> the nickname that claimed it
+  return mons.map((mon) => {
+    const name = mon.metLocationName;
+    if (!name) {
+      return {
+        mon,
+        locationId: null,
+        unplacedReason:
+          mon.metLocation === 157
+            ? "caught somewhere that isn't a route (a gift or your starter)"
+            : `unknown map section (${mon.metLocation})`,
+      };
+    }
+    const id = byName.get(foldName(MAPSEC_ALIASES[name] ?? name));
+    if (!id) return { mon, locationId: null, unplacedReason: `${name} has no encounter table` };
+    const claimed = taken.get(id);
+    if (claimed) {
+      return { mon, locationId: null, unplacedReason: `${name} is already taken by ${claimed}` };
+    }
+    taken.set(id, mon.nickname || mon.species);
+    return { mon, locationId: id, unplacedReason: null };
+  });
+}
+
+/** the run.encounters map a set of placed Pokémon would produce */
+export function encountersFrom(placed: PlacedMon[]): Run["encounters"] {
+  const out: Run["encounters"] = {};
+  for (const p of placed) {
+    if (!p.locationId) continue;
+    const m = p.mon;
+    out[p.locationId] = {
+      species: m.species,
+      nickname: m.nickname,
+      status: "caught",
+      inParty: m.inParty,
+      kos: 0,
+      build: {
+        nature: m.nature || "Serious",
+        ability: "",
+        item: m.item,
+        moves: [0, 1, 2, 3].map((i) => m.moves[i] ?? ""),
+        evs: m.evs,
+      },
+    };
   }
   return out;
 }
