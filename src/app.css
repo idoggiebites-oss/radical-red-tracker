@@ -769,6 +769,20 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- save file / randomizer ---- */
 
 .save-error { color: #ff8a8a; font-size: 13px; margin: 0; }
+/* sits directly under the file input, so it reads as help text for it rather
+   than as another dialog field */
+.save-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: -4px 0 0;
+}
+.save-hint code {
+  font-size: 11px;
+  background: var(--bg3);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
 .save-summary {
   background: var(--bg3);
   border: 1px solid var(--line);

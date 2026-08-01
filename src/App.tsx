@@ -692,6 +692,15 @@ function NewRunDialog({
             />
           </label>
         )}
+        {SAVE_FILE_FEATURE && !saveInfo && (
+          <p className="save-hint">
+            Your emulator&apos;s battery save — the <code>.sav</code> next to
+            the ROM, not a save state. It fills in your party, boxes and where
+            each Pokémon was caught, and you get to review all of it before
+            anything is created. The file is read here on your device and never
+            uploaded.
+          </p>
+        )}
         {saveError && <p className="save-error">{saveError}</p>}
         {saveInfo && (
           <div className="save-summary">
