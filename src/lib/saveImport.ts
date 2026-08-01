@@ -515,7 +515,11 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
     if (!byName.has(foldName(e.name))) byName.set(foldName(e.name), e.id);
   }
 
-  const taken = new Map<string, string>(); // locationId -> the nickname that claimed it
+  // how many Pokémon have already claimed each route, so the second and later
+  // ones land in that route's additional-encounter slots instead of being
+  // turned away
+  const extras = new Map<string, number>();
+  const taken = new Map<string, string>(); // starter slot -> who claimed it
   return mons.map((mon) => {
     if (mon.metLocation === MAPSEC_STARTER) {
       const claimed = taken.get(STARTER_ID);
@@ -534,12 +538,18 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
     }
     const id = byName.get(foldName(MAPSEC_ALIASES[name] ?? name));
     if (!id) return { mon, locationId: null, unplacedReason: `${name} is not a route we track` };
-    const claimed = taken.get(id);
-    if (claimed) {
-      return { mon, locationId: null, unplacedReason: `${name} is already taken by ${claimed}` };
-    }
-    taken.set(id, mon.nickname || mon.species);
-    return { mon, locationId: id, unplacedReason: null };
+    // More than one Pokémon from the same place is normal — players allow a
+    // bonus catch, and the app already models that with `<encId>-extra-N`
+    // slots. The first claims the route's main slot and the rest chain off
+    // it. The numbering has to start at 1 and stay contiguous, because
+    // RoutesView discovers these by looping until a slot is missing.
+    const used = extras.get(id) ?? 0;
+    extras.set(id, used + 1);
+    return {
+      mon,
+      locationId: used === 0 ? id : `${id}-extra-${used}`,
+      unplacedReason: null,
+    };
   });
 }
 
