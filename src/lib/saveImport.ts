@@ -43,7 +43,22 @@ const SECTOR_DATA = 0xf80;
 const BOX_HEADER = 4;
 const BOX_STRIDE = 58;
 const BOX_SPECIES = 0x1c;
+const BOX_ITEM = 0x1e;
 const BOX_MET_LOCATION = 0x33;
+
+/** Boxed moves are packed, not stored as four u16s. The eight bytes at +0x24
+ * are a little-endian 64-bit field whose top 40 bits hold four 10-bit move
+ * ids (10 bits reaches 1023; RR has 1003 moves, so the fit is deliberate).
+ * The low 24 bits are something else — PP Ups and friendship most likely;
+ * current PP needn't be stored because gen 3 heals a Pokémon on withdrawal.
+ *
+ * Found by diffing one Pokémon across two saves, boxed in the first and
+ * withdrawn into the party in the second, so its real moves were known.
+ * Verified on two such Pokémon plus eight more that decode to coherent
+ * level-appropriate movesets. */
+const BOX_MOVES = 0x24;
+const BOX_MOVE_BITS = 10;
+const BOX_MOVE_SHIFT = 24;
 const BOX_SLOTS = 14 * 30;
 
 /** FireRed's MAPSEC table — RR uses it unmodified (verified: Pewter City=90,
@@ -245,14 +260,20 @@ export function readBoxes(buffer: ArrayBuffer): SaveMon[] {
     // "valid" species, so require a real pid AND a species we actually know
     if (!pid || !speciesId || !species) continue;
     const metLocation = pc[o + BOX_MET_LOCATION];
+    // BigInt: the move field's top bits sit above 32, where >>> would wrap
+    const packed = pcView.getBigUint64(o + BOX_MOVES, true);
+    const mask = (1n << BigInt(BOX_MOVE_BITS)) - 1n;
+    const moveIds = [0, 1, 2, 3].map((n) =>
+      Number((packed >> BigInt(BOX_MOVE_SHIFT + n * BOX_MOVE_BITS)) & mask),
+    );
     out.push({
       speciesId,
       species,
       nickname: decodeText(pc.subarray(o + 8, o + 18)),
       level: null,
       nature: GAME_NATURES[pid % 25] ?? "",
-      item: "",
-      moves: [],
+      item: itemById.get(pcView.getUint16(o + BOX_ITEM, true)) ?? "",
+      moves: moveIds.filter(Boolean).map((id) => moveById[String(id)] ?? ""),
       evs: {},
       ivs: {},
       metLocation,
