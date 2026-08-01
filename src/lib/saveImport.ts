@@ -25,6 +25,7 @@ import { canonicalItem } from "./damagecalc";
 import { groupLocations, type RouteGroup } from "./routeGroups";
 import type { Location, Run } from "../types";
 import { STARTER_ID } from "./storage";
+import { EGG_LOCATIONS } from "./eggLocations";
 
 const SECTOR = 0x1000;
 const SECTOR_ID = 0xff4;
@@ -339,6 +340,14 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
   const groups: RouteGroup[] = groupLocations(locations);
   const byName = new Map<string, string>();
   for (const g of groups) if (!byName.has(foldName(g.name))) byName.set(foldName(g.name), g.id);
+  // Egg locations are real encounter slots the Routes list synthesises, but
+  // they aren't in encounters.json because the docs' sheets only cover wild
+  // encounters. Without them a Pokemon hatched in Saffron City or Lavender
+  // Town reads as "nowhere we recognise". Keyed on the bare place name, which
+  // is what a met location reports; real routes are added first and win.
+  for (const e of EGG_LOCATIONS) {
+    if (!byName.has(foldName(e.name))) byName.set(foldName(e.name), e.id);
+  }
 
   const taken = new Map<string, string>(); // locationId -> the nickname that claimed it
   return mons.map((mon) => {
@@ -358,7 +367,7 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
       return { mon, locationId: null, unplacedReason: `unknown map section (${mon.metLocation})` };
     }
     const id = byName.get(foldName(MAPSEC_ALIASES[name] ?? name));
-    if (!id) return { mon, locationId: null, unplacedReason: `${name} has no encounter table` };
+    if (!id) return { mon, locationId: null, unplacedReason: `${name} is not a route we track` };
     const claimed = taken.get(id);
     if (claimed) {
       return { mon, locationId: null, unplacedReason: `${name} is already taken by ${claimed}` };

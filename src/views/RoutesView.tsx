@@ -13,6 +13,7 @@ import { SpeciesCombobox } from "../components/SpeciesCombobox";
 import { TypeBadges, WILD_SPECIES } from "../components/TypeBadges";
 import { speciesRandomized } from "../lib/saveFile";
 import { STARTER_ID } from "../lib/storage";
+import { EGG_GROUPS } from "../lib/eggLocations";
 import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
 import { groupLocations, type RouteGroup } from "../lib/routeGroups";
 import {
@@ -39,16 +40,6 @@ const STARTER_GROUP: RouteGroup = {
  * the run's species-randomizer toggle — as a bonus encounter opportunity.
  * Not in the docs' encounter sheets (no grass/water methods), so these are
  * synthetic route groups the same way the starter row is */
-const EGG_LOCATIONS: { id: string; name: string }[] = [
-  // id stays "…-tunnel" though the place is the Underground PATH: it keys
-  // the run's encounter record, so renaming it would orphan any catch
-  // already logged there
-  { id: "egg-underground-tunnel", name: "UNDERGROUND PATH" },
-  { id: "egg-rocket-hideout", name: "ROCKET HIDEOUT" },
-  { id: "egg-saffron-city", name: "SAFFRON CITY" },
-  { id: "egg-silph-co", name: "SILPH CO." },
-  { id: "egg-indigo-plateau", name: "INDIGO PLATEAU" },
-];
 
 /** where a row belongs in the run's progression, keyed by group name ->
  * the group it should follow.
@@ -70,21 +61,11 @@ const ROUTE_AFTER: Record<string, string> = {
   // reachable from Pallet Town on the way out, long before the docs list it
   "ROUTE 21": "PALLET TOWN",
   "UNDERGROUND PATH · EGG": "CERULEAN CITY",
+  "LAVENDER TOWN · EGG": "ROCK TUNNEL",
   "ROCKET HIDEOUT · EGG": "CELADON CITY",
   "SAFFRON CITY · EGG": "ROCKET HIDEOUT · EGG",
   "SILPH CO. · EGG": "SAFFRON CITY · EGG",
 };
-const EGG_GROUPS: RouteGroup[] = EGG_LOCATIONS.map((e) => ({
-  id: e.id,
-  name: `${e.name} · EGG`,
-  postgame: false,
-  sections: [
-    {
-      label: null,
-      loc: { id: e.id, name: `${e.name} · EGG`, postgame: false, methods: {} },
-    },
-  ],
-}));
 
 const METHOD_LABELS: Record<MethodKey, string> = {
   grass_day: "Grass / Cave · Day",
