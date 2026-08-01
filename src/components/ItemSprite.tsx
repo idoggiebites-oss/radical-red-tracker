@@ -4,7 +4,15 @@ import { knownSpriteIdx, rememberSpriteIdx } from "../lib/spriteResolve";
 
 /** Inline held-item icon; renders nothing when the item is unknown, the
  * sprite 404s everywhere, or the name is a "no item" placeholder. */
-export function ItemSprite({ name, size = 22 }: { name: string; size?: number }) {
+export function ItemSprite({
+  name,
+  size = 22,
+  loading = "eager",
+}: {
+  name: string;
+  size?: number;
+  loading?: "eager" | "lazy";
+}) {
   const urls = itemSpriteUrls(name);
   const start = knownSpriteIdx("i:" + name, urls.length);
   const [state, setState] = useState({ name, srcIdx: start });
@@ -18,7 +26,8 @@ export function ItemSprite({ name, size = 22 }: { name: string; size?: number })
       title={name}
       width={size}
       height={size}
-      loading="lazy"
+      loading={loading}
+      decoding="async"
       onLoad={() => rememberSpriteIdx("i:" + name, srcIdx)}
       onError={() => setState({ name, srcIdx: srcIdx + 1 })}
     />

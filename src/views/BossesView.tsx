@@ -377,7 +377,10 @@ function TrainerOrder({
               <span className="order-expand">
                 <span className="order-preview">
                   {team.boss.pokemon.map((m, k) => (
-                    <Sprite key={k} species={m.species} size={26} />
+                    // one row per fight, six sprites each — eager here would
+                    // queue hundreds of off-screen fetches ahead of the rows
+                    // actually on screen
+                    <Sprite key={k} species={m.species} size={26} loading="lazy" />
                   ))}
                 </span>
                 <span className="chev">{expanded ? "▾" : "▸"}</span>
@@ -523,7 +526,7 @@ function BossCard({
         </span>
         <span className="boss-preview">
           {boss.pokemon.map((m, i) => (
-            <Sprite key={i} species={m.species} size={30} />
+            <Sprite key={i} species={m.species} size={30} loading="lazy" />
           ))}
         </span>
         <span className="chev">{open ? "▾" : "▸"}</span>
