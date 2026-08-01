@@ -81,16 +81,30 @@ function decodeText(bytes: Uint8Array): string {
 
 /** dex id -> the species name the rest of the app uses. Built by inverting
  * types.json's spriteIds rather than shipping a second species table, so it
- * can't drift from the names every other view resolves against. A handful of
- * ids carry more than one name (cosmetic forms); prefer the unsuffixed one. */
+ * can't drift from the names every other view resolves against.
+ *
+ * Nine ids carry several of our names, because the docs distinguish cosmetic
+ * forms the dex does not (Burmy cloaks, Deerling seasons, Pumpkaboo sizes).
+ * Pick the plainest: fewest form suffixes, then shortest, then alphabetical
+ * for determinism. Sorting by dashes alone isn't enough — "Any Cap Pikachu"
+ * and "Pikachu" both share id 25 and neither has one, so a caught Pikachu
+ * imported under the randomizer-only label.
+ *
+ * Note this map is deliberately finer-grained than the dex's own names: the
+ * dex labels ids 1184 and 1207 both "Urshifu", while ours separates them into
+ * Urshifu and Urshifu-Rapid-Strike, which is the distinction that decides
+ * whether the mon is Fighting/Dark or Fighting/Water. */
 const speciesById: Map<number, string> = (() => {
   const ids = (typesJson as { spriteIds?: Record<string, number> }).spriteIds ?? {};
-  const m = new Map<number, string>();
+  const byId = new Map<number, string[]>();
   for (const [name, id] of Object.entries(ids)) {
-    const prev = m.get(id);
-    if (prev === undefined || (prev.includes("-") && !name.includes("-"))) m.set(id, name);
+    const list = byId.get(id);
+    if (list) list.push(name);
+    else byId.set(id, [name]);
   }
-  return m;
+  const plainest = (a: string, b: string) =>
+    a.split("-").length - b.split("-").length || a.length - b.length || a.localeCompare(b);
+  return new Map([...byId].map(([id, names]) => [id, [...names].sort(plainest)[0]]));
 })();
 
 const itemById: Map<number, string> = (() => {
@@ -103,6 +117,11 @@ const itemById: Map<number, string> = (() => {
 })();
 
 const moveById = moveIdsJson as Record<string, string>;
+
+/** the app's species name for a save's numeric id, or "" if we don't know it */
+export function speciesNameFor(id: number): string {
+  return speciesById.get(id) ?? "";
+}
 
 export interface SaveMon {
   speciesId: number;
