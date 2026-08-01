@@ -24,6 +24,7 @@ import moveIdsJson from "../data/moveIds.json";
 import { canonicalItem } from "./damagecalc";
 import { groupLocations, type RouteGroup } from "./routeGroups";
 import type { Location, Run } from "../types";
+import { STARTER_ID } from "./storage";
 
 const SECTOR = 0x1000;
 const SECTOR_ID = 0xff4;
@@ -76,7 +77,24 @@ const MAPSEC_NAMES: string[] = [
   ...Array.from({ length: 25 }, (_, i) => `Route ${i + 1}`),
   "Viridian Forest", "Mt. Moon", "S.S. Anne", "Underground Path",
   "Underground Path", "Diglett's Cave",
+  // 132-142, the Kanto dungeons. Self-confirming from a late-game save:
+  // byte 139 held an Articuno and 142 a Zapdos, which is exactly where the
+  // Seafoam Islands and the Power Plant sit in this order.
+  "Victory Road", "Rocket Hideout", "Silph Co.", "Pokemon Mansion",
+  "Safari Zone", "Pokemon League", "Rock Tunnel", "Seafoam Islands",
+  "Pokemon Tower", "Cerulean Cave", "Power Plant",
+  // 143+ is the Sevii Islands. Left unmapped: nothing has anchored it yet,
+  // and a wrong route here is worse than no route.
 ];
+
+/** RR reports the starter as 157, which in vanilla FireRed is an unused
+ * Sevii placeholder. Confirmed on two unrelated saves whose owners named
+ * their starter. It goes to the app's starter slot, not a route. */
+const MAPSEC_STARTER = 157;
+/** gen 3's "hatched from an egg" met location — the four unnamed starters in
+ * a test save all reported it. An egg was never caught anywhere, so it has no
+ * route to claim. */
+const METLOC_EGG = 253;
 
 export function mapsecName(byte: number): string | null {
   return MAPSEC_NAMES[byte - MAPSEC_BASE] ?? null;
@@ -294,6 +312,11 @@ export function readBoxes(buffer: ArrayBuffer): SaveMon[] {
 const MAPSEC_ALIASES: Record<string, string> = {
   "Vermilion City": "VERMILLION CITY", // the docs use two Ls
   "Diglett's Cave": "DIGLETT CAVE", // and drop the possessive
+  "Pokemon Mansion": "MANSION", // the docs drop "Pokemon"
+  "Seafoam Islands": "SEAFOAM", // and "Islands"
+  "Pokemon Tower": "PKMN TOWER", // and abbreviate this one
+  // Safari Zone needs none: routeGroups already folds its five zones onto
+  // that base name, the same way it folds Route 21A/21B onto Route 21.
 };
 
 const foldName = (s: string) => s.toUpperCase().replace(/[^A-Z0-9 ]/g, "").replace(/\s+/g, " ").trim();
@@ -319,16 +342,20 @@ export function placeOnRoutes(mons: SaveMon[], locations: Location[]): PlacedMon
 
   const taken = new Map<string, string>(); // locationId -> the nickname that claimed it
   return mons.map((mon) => {
+    if (mon.metLocation === MAPSEC_STARTER) {
+      const claimed = taken.get(STARTER_ID);
+      if (claimed) {
+        return { mon, locationId: null, unplacedReason: `the starter slot is already taken by ${claimed}` };
+      }
+      taken.set(STARTER_ID, mon.nickname || mon.species);
+      return { mon, locationId: STARTER_ID, unplacedReason: null };
+    }
+    if (mon.metLocation === METLOC_EGG) {
+      return { mon, locationId: null, unplacedReason: "hatched from an egg, not caught on a route" };
+    }
     const name = mon.metLocationName;
     if (!name) {
-      return {
-        mon,
-        locationId: null,
-        unplacedReason:
-          mon.metLocation === 157
-            ? "caught somewhere that isn't a route (a gift or your starter)"
-            : `unknown map section (${mon.metLocation})`,
-      };
+      return { mon, locationId: null, unplacedReason: `unknown map section (${mon.metLocation})` };
     }
     const id = byName.get(foldName(MAPSEC_ALIASES[name] ?? name));
     if (!id) return { mon, locationId: null, unplacedReason: `${name} has no encounter table` };
