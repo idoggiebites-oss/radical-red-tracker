@@ -1245,7 +1245,6 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 
 .starter-note { font-size: 12.5px; max-width: 480px; }
-.starter-filter-note { font-size: 13px; margin: 0 0 8px; }
 
 /* ---- starter picker ---- */
 
@@ -1521,9 +1520,6 @@ tr.pickable:hover td { background: var(--bg3); }
 
   .dialog { width: min(340px, calc(100vw - 24px)); }
 
-  /* the calculator wants every pixel on a phone */
-  .calc-dialog { width: calc(100vw - 16px); padding: 14px; max-height: 94vh; }
-  .calc-dialog h2 { font-size: 16px; }
   .result-move { flex-basis: 96px; font-size: 12px; }
 }
 
