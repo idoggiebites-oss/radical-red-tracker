@@ -584,10 +584,30 @@ tr.pickable:hover td { background: var(--bg3); }
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* the save-import preview can make this dialog taller than a phone screen,
+     which pushed Cancel/Create off the bottom edge with no way to reach them.
+     Cap it and let the body scroll; dvh so iOS browser chrome is accounted
+     for, with vh as the fallback. */
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
 }
 .dialog h2 { margin: 0; }
 .dialog label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
-.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+/* pinned to the bottom of the scrolling dialog so the buttons are always
+   reachable no matter how long the import list runs. Negative margins bleed
+   it over the dialog's own 20px padding so no content shows beneath it. */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  position: sticky;
+  bottom: -20px;
+  margin: 0 -20px -20px;
+  padding: 12px 20px 20px;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+}
 
 /* ---- raid dens ---- */
 
@@ -1532,3 +1552,10 @@ tr.pickable:hover td { background: var(--bg3); }
    name/mode fields but puts a checkbox on its own line, centred above the
    sentence it belongs to. Checkboxes read inline. */
 .dialog label.checkbox { flex-direction: row; align-items: center; }
+
+
+/* one scroll container, not two: on a phone the dialog itself scrolls, so a
+   nested scrolling list just fights the touch gesture */
+@media (max-width: 640px) {
+  .save-import-list { max-height: none; overflow-y: visible; }
+}
