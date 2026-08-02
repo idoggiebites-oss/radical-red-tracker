@@ -845,10 +845,13 @@ tr.pickable:hover td { background: var(--bg3); }
 .calc-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .calc-row input, .calc-row select { flex: 1 1 90px; min-width: 0; }
 .calc-row input[type=number] { flex: 0 1 70px; }
-/* the held-item field was a plain <input> in these rows until it became a
-   combobox; keep the row's own basis rather than .combobox's wider
-   standalone one (flex: 1 1 200px), which would wrap the row */
-.calc-row .item-combobox { flex: 1 1 90px; min-width: 0; }
+/* comboboxes in these rows take the row's own basis, not .combobox's wider
+   standalone one (flex: 1 1 200px; min-width: 160px), which would wrap the
+   row. Applies to every combobox, not just the held item: the Opponent card
+   always renders its ability as a free-text combobox (a boss's ability need
+   not be legal for the species) while Your card renders a <select>, so an
+   item-only rule left the two cards wrapping at different points */
+.calc-row .combobox:not(.calc-move) { flex: 1 1 90px; min-width: 0; }
 .calc-row.evs { gap: 4px; align-items: flex-end; }
 .calc-row.evs label { display: flex; flex-direction: column; font-size: 11px; color: var(--muted); flex: 1; }
 .calc-row.evs input { width: 100%; padding: 3px 6px; }
