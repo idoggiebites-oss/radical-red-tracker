@@ -475,6 +475,15 @@ export default function App() {
                 browse the docs data with the tabs below.
               </span>
             </p>
+            {/* deliberately outside the 640px swap above: this is the only
+                sentence naming what the app does, and search indexes the
+                mobile layout, where an only-wide span is display:none and
+                so invisible to a crawler as well as to a phone */}
+            <p>
+              Radical Red Tracker follows your route encounters, boss teams and
+              level caps, and includes a damage calculator and battle-readiness
+              matchups for every boss Pokémon.
+            </p>
             {/* storage eviction wipes everything, so there's no way to detect
                 that a run used to be here — this has to read sensibly both
                 to a first-time visitor and to someone who just lost a run.
