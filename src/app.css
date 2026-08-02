@@ -79,7 +79,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
 }
-.brand { display: flex; flex-direction: column; }
+/* an <h1> for search; the resets keep it looking like the plain block it
+   replaced, since the two spans below set their own size and weight */
+.brand { display: flex; flex-direction: column; margin: 0; font-size: inherit; font-weight: inherit; }
 .brand-title { font-weight: 700; font-size: 18px; color: var(--accent); }
 .brand-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
 

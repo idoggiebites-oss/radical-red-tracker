@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# the sprite mirror is thousands of images with no standalone value in
+# search, and crawling it wastes the budget that should go to the app
+Disallow: /sprites/
+
+Sitemap: https://radicalredtracker.com/sitemap.xml

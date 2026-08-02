@@ -8,9 +8,62 @@
     <meta name="theme-color" content="#12151c" />
     <meta
       name="description"
-      content="Route encounters, boss teams, level caps and run tracking for Pokémon Radical Red 4.1 Nuzlockes"
+      content="Track route encounters, boss teams and level caps for Pokémon Radical Red 4.1 Nuzlockes — with a built-in damage calculator and battle-readiness matchups"
     />
-    <title>Radical Red 4.1 Nuzlocke Tracker</title>
+    <!-- the site ranks for "radical red tracker", so the exact phrase leads
+         the title rather than being split by "4.1 Nuzlocke" -->
+    <title>Radical Red Tracker — 4.1 Nuzlocke Routes &amp; Boss Teams</title>
+    <link rel="canonical" href="https://radicalredtracker.com/" />
+
+    <!-- Google showed the bare domain as the site name because nothing
+         declared one; og:site_name plus the WebSite schema below are where
+         it takes "Radical Red Tracker" from -->
+    <meta property="og:site_name" content="Radical Red Tracker" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://radicalredtracker.com/" />
+    <meta property="og:title" content="Radical Red Tracker — 4.1 Nuzlocke Routes &amp; Boss Teams" />
+    <meta
+      property="og:description"
+      content="Track route encounters, boss teams and level caps for Pokémon Radical Red 4.1 Nuzlockes — with a built-in damage calculator and battle-readiness matchups"
+    />
+    <meta property="og:image" content="https://radicalredtracker.com/pwa-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Radical Red Tracker — 4.1 Nuzlocke Routes &amp; Boss Teams" />
+    <meta
+      name="twitter:description"
+      content="Track route encounters, boss teams and level caps for Pokémon Radical Red 4.1 Nuzlockes — with a built-in damage calculator and battle-readiness matchups"
+    />
+    <meta name="twitter:image" content="https://radicalredtracker.com/pwa-512.png" />
+
+    <script type="application/ld+json">
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Radical Red Tracker",
+          "url": "https://radicalredtracker.com/"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Radical Red Tracker",
+          "url": "https://radicalredtracker.com/",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "featureList": [
+            "Route encounter tracking",
+            "Boss teams and trainer order",
+            "Level caps",
+            "Damage calculator",
+            "Battle readiness matchups",
+            "Save file (.sav) import"
+          ],
+          "description": "Track route encounters, boss teams and level caps for Pokémon Radical Red 4.1 Nuzlockes — with a built-in damage calculator and battle-readiness matchups",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        }
+      ]
+    </script>
   </head>
   <body>
     <div id="root"></div>

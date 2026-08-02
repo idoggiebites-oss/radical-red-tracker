@@ -255,10 +255,13 @@ export default function App() {
   return (
     <div className={appClass}>
       <header className="topbar">
-        <div className="brand">
+        {/* an <h1> rather than a <div>: the page had no heading at all, so
+            the element search weights most was simply missing. Renders
+            identically — .brand neutralises the browser's h1 defaults */}
+        <h1 className="brand">
           <span className="brand-title">Radical Red 4.1</span>
           <span className="brand-sub">Nuzlocke Tracker</span>
-        </div>
+        </h1>
         {run && currentCap && needsRouteChoice && (
           <button
             className="cap-pill route-pending"
