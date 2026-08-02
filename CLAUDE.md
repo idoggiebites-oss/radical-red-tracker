@@ -71,6 +71,14 @@ so Tailwind affects the right Pokémon's Speed. `buildPlayerPokemon`/
 `buildBossPokemon`/`bossStatTotals`, which now exist only for `MonCard`'s
 own read-only stat-table preview.
 
+Item names and the folding key they share live in `src/lib/itemNames.ts`, not
+in the adapter, and it deep-imports `rr-damage-calc/data/items.js` rather than
+the package root — importing the adapter for one string lookup pulled the whole
+482 kB engine chunk into the `.sav` picker (~200ms of blocking per import).
+`damagecalc.ts` re-exports `ITEM_NAMES`/`canonicalItem`/`GEN`, so callers that
+already need the engine are unaffected; anything that only needs names should
+import from `itemNames.ts` directly.
+
 Item and ability names from the docs go through `resolveItem`/`resolveAbility`,
 which `cleanItem`/`cleanAbility` and `isKnownItem`/`isKnownAbility` all share —
 the flag must never contradict the calc, which it did (Lt. Surge's Pincurchin

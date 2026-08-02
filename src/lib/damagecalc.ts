@@ -5,8 +5,13 @@ import * as rr from "rr-damage-calc";
 import { getFinalSpeed } from "rr-damage-calc/mechanics/util.js";
 import typesJson from "../data/types.json";
 import type { BossMon, GameMode } from "../types";
+import { GEN } from "./gen";
+import { ITEM_NAMES, itemKey, matchItemName } from "./itemNames";
 
-export const GEN = 9;
+// re-exported so existing callers keep one import site for these
+export { GEN } from "./gen";
+export { ITEM_NAMES, canonicalItem } from "./itemNames";
+
 const gen = rr.Generations.get(GEN);
 
 export const NATURES = [
@@ -16,12 +21,8 @@ export const NATURES = [
   "Sassy", "Serious", "Timid",
 ];
 
-/** item and ability name lists from the calc data, for pickers. Deduped —
- * the vendored data has at least one real duplicate (Mountaineer: once in
- * the inherited base-game list, again in the RR-specific additions), which
- * broke every <datalist>/<select> built from these with a React duplicate-
- * key warning */
-export const ITEM_NAMES: string[] = [...new Set(rr.ITEMS[GEN] ?? [])].sort();
+/** ability name list from the calc data, for pickers. Deduped for the same
+ * reason ITEM_NAMES is (see itemNames.ts) */
 export const ABILITY_NAMES: string[] = [...new Set(rr.ABILITIES[GEN] ?? [])].sort();
 
 /** RR base stats as the engine sees them, keyed by display label */
@@ -861,32 +862,6 @@ function bossEvs(mon: BossMon): rr.StatsTable {
   return evs;
 }
 
-/** the engine compares items by exact string (`hasItem` is an includes()
- * against names like "Choice Band"), so anything typed by hand has to be
- * folded back to the engine's own spelling first — case, spacing,
- * punctuation and accents all differ harmlessly to a human and fatally to
- * the lookup, and a miss applies NOTHING while looking accepted */
-const itemKey = (s: string): string =>
-  s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
-
-const ITEM_BY_KEY = new Map(ITEM_NAMES.map((n) => [itemKey(n), n]));
-
-/** the engine's own spelling of an item, ignoring case/spacing/punctuation;
- * undefined when unknown. Exported so the save reader can turn a normalized
- * item name from the id table into the name the rest of the app displays. */
-export function canonicalItem(item: string): string | undefined {
-  return matchItemName(item);
-}
-
-/** exact match ignoring case/spacing/punctuation; undefined when unknown */
-function matchItemName(item: string): string | undefined {
-  return ITEM_BY_KEY.get(itemKey(item));
-}
-
 const ABILITY_BY_KEY = new Map(ABILITY_NAMES.map((n) => [itemKey(n), n]));
 
 /** docs spellings the engine has no prefix for: outright misspellings and
@@ -933,9 +908,9 @@ function expandAbbrev(name: string, names: string[]): string | undefined {
 function resolveItem(item: string, species?: string): string | undefined {
   const k = itemKey(item);
   return (
-    ITEM_BY_KEY.get(k) ??
+    matchItemName(k) ??
     (species ? BY_SPECIES[k]?.[species] : undefined) ??
-    (DOC_ALIASES[k] ? ITEM_BY_KEY.get(itemKey(DOC_ALIASES[k])) : undefined) ??
+    (DOC_ALIASES[k] ? matchItemName(DOC_ALIASES[k]) : undefined) ??
     expandAbbrev(item, ITEM_NAMES)
   );
 }

@@ -22,7 +22,9 @@ import typesJson from "../data/types.json";
 import itemsJson from "../data/items.json";
 import moveIdsJson from "../data/moveIds.json";
 import abilityIdsJson from "../data/abilityIds.json";
-import { canonicalItem } from "./damagecalc";
+// from ./itemNames, not ./damagecalc — the adapter would pull the whole
+// engine chunk into the file-picking interaction for one string lookup
+import { canonicalItem } from "./itemNames";
 import { readSaveFile } from "./saveFile";
 import { groupLocations, type RouteGroup } from "./routeGroups";
 import type { Location, Run } from "../types";
