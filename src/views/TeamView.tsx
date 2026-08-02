@@ -1497,13 +1497,13 @@ function BuildEditor({
             options={ABILITY_NAMES}
             value={build.ability}
             onChange={(ability) => onChange({ ...build, ability })}
-            invalid={!isKnownAbility(build.ability)}
+            invalid={!isKnownAbility(build.ability, species)}
           />
         )}
         <ItemCombobox
           value={build.item}
           onChange={(item) => onChange({ ...build, item })}
-          invalid={!isKnownItem(build.item)}
+          invalid={!isKnownItem(build.item, species)}
         />
       </div>
       {!noEvs && (

@@ -855,14 +855,14 @@ function MonConfigCard({
             options={ABILITY_NAMES}
             value={cfg.ability}
             onChange={(ability) => update({ ability })}
-            invalid={!isKnownAbility(cfg.ability)}
+            invalid={!isKnownAbility(cfg.ability, cfg.species)}
           />
         )}
         <ItemCombobox
           placeholder="Item"
           value={cfg.item}
           onChange={(item) => update({ item })}
-          invalid={!isKnownItem(cfg.item)}
+          invalid={!isKnownItem(cfg.item, cfg.species)}
         />
         <select
           title="Status condition"

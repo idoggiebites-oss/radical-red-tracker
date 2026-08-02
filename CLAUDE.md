@@ -71,6 +71,20 @@ so Tailwind affects the right Pokémon's Speed. `buildPlayerPokemon`/
 `buildBossPokemon`/`bossStatTotals`, which now exist only for `MonCard`'s
 own read-only stat-table preview.
 
+Item and ability names from the docs go through `resolveItem`/`resolveAbility`,
+which `cleanItem`/`cleanAbility` and `isKnownItem`/`isKnownAbility` all share —
+the flag must never contradict the calc, which it did (Lt. Surge's Pincurchin
+was marked invalid while the calc read its item fine). Order is exact key →
+species-specific (`BY_SPECIES`: "Applite" is Flapplite on Flapple-Mega but
+Appletunite on Appletun-Mega; "As One" splits by Calyrex forme) → `DOC_ALIASES`
+for outright misspellings (Abomasnite, Comotose, Swords of Ruin) → word-by-word
+prefix expansion. That last step only runs on names containing a dot, because
+the calculator re-resolves on every keystroke and a lone "l" must not equip
+Lagging Tail en route to "Life Orb". Matching per word rather than per string
+is what reaches mid-name abbreviations — "Corner. Mask", "Hearth. Mask",
+"HeavyD. Boots" all resolved to nothing under the old trailing-only
+`startsWith`, so those items were silently inert in every calc.
+
 `PlayerMonConfig.types` overrides the dex typing (Protean/Libero, Soak,
 Forest's Curse), surfaced as the two type selects on each Calculator card;
 undefined means "use the dex", and picking the natural types back clears it

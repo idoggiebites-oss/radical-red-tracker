@@ -889,52 +889,105 @@ function matchItemName(item: string): string | undefined {
 
 const ABILITY_BY_KEY = new Map(ABILITY_NAMES.map((n) => [itemKey(n), n]));
 
+/** docs spellings the engine has no prefix for: outright misspellings and
+ * one plural. Keyed like every other lookup here, so case, spacing and
+ * punctuation are already normalised away. */
+const DOC_ALIASES: Record<string, string> = {
+  abomasnite: "Abomasite",
+  comotose: "Comatose",
+  swordsofruin: "Sword of Ruin",
+};
+
+/** docs names that are ambiguous on their own — the same string means a
+ * different engine name depending on who holds it, so these can only be
+ * resolved where the species is known. Both build* functions have it. */
+const BY_SPECIES: Record<string, Record<string, string>> = {
+  applite: { "Flapple-Mega": "Flapplite", "Appletun-Mega": "Appletunite" },
+  asone: {
+    "Calyrex-Ice": "As One (Glastrier)",
+    "Calyrex-Shadow": "As One (Spectrier)",
+  },
+};
+
+/** the docs shorten long names with a dot, and not only at the end:
+ * "Weakness Pol." and "Terrain Exten." but also "Corner. Mask",
+ * "Hearth. Mask" and "HeavyD. Boots". Matching word by word expands an
+ * abbreviated word wherever it sits, which a startsWith() against the whole
+ * string cannot — that only ever caught the trailing case, so the Ogerpon
+ * masks and Heavy-Duty Boots silently resolved to nothing.
+ *
+ * Only applied to names containing a dot. The calculator's item field
+ * re-resolves on every keystroke, so a lone "l" must not equip Lagging Tail
+ * on the way to "Life Orb". */
+function expandAbbrev(name: string, names: string[]): string | undefined {
+  if (!name.includes(".")) return undefined;
+  const want = name.split(/\s+/).map(itemKey).filter(Boolean);
+  if (!want.length) return undefined;
+  return names.find((n) => {
+    const got = n.split(/\s+/).map(itemKey).filter(Boolean);
+    return got.length === want.length && want.every((w, i) => got[i].startsWith(w));
+  });
+}
+
+/** the engine's own spelling for a docs or hand-typed name, or undefined */
+function resolveItem(item: string, species?: string): string | undefined {
+  const k = itemKey(item);
+  return (
+    ITEM_BY_KEY.get(k) ??
+    (species ? BY_SPECIES[k]?.[species] : undefined) ??
+    (DOC_ALIASES[k] ? ITEM_BY_KEY.get(itemKey(DOC_ALIASES[k])) : undefined) ??
+    expandAbbrev(item, ITEM_NAMES)
+  );
+}
+
+function resolveAbility(ability: string, species?: string): string | undefined {
+  const k = itemKey(ability);
+  return (
+    ABILITY_BY_KEY.get(k) ??
+    (species ? BY_SPECIES[k]?.[species] : undefined) ??
+    (DOC_ALIASES[k] ? ABILITY_BY_KEY.get(itemKey(DOC_ALIASES[k])) : undefined) ??
+    expandAbbrev(ability, ABILITY_NAMES)
+  );
+}
+
 /** does the engine actually know this item? Empty (and the docs' "no item"
  * spellings) count as known — they legitimately mean "holding nothing". Used
  * to flag a typo in the UI, because an unknown name applies nothing at all
- * while the field still looks accepted. */
-export function isKnownItem(item: string): boolean {
+ * while the field still looks accepted.
+ *
+ * Asks the same resolver the calc uses, so the flag can't contradict the
+ * numbers: a docs abbreviation the calc happily expands used to be shown as
+ * invalid anyway (Lt. Surge's Pincurchin holding "Terrain Extend."). */
+export function isKnownItem(item: string, species?: string): boolean {
   const t = item.trim();
   if (!t || t === "-" || /no item/i.test(t)) return true;
-  return ITEM_BY_KEY.has(itemKey(t));
+  return resolveItem(t, species) !== undefined;
 }
 
 /** same for abilities — an unknown one is silently inert. Blank is fine
  * (the mon just has no ability set). */
-export function isKnownAbility(ability: string): boolean {
+export function isKnownAbility(ability: string, species?: string): boolean {
   const t = ability.trim();
-  return !t || ABILITY_BY_KEY.has(itemKey(t));
+  return !t || resolveAbility(t, species) !== undefined;
 }
 
 /** abilities have the same exact-string problem as items (`hasAbility` is
  * also an includes()), and the ability field is free text in randomizer
  * runs — fold to the engine's spelling, but pass an unknown name through
  * untouched so a randomized/custom ability still reaches the engine */
-function cleanAbility(ability: string): string | undefined {
+function cleanAbility(ability: string, species?: string): string | undefined {
   if (!ability) return undefined;
-  return ABILITY_BY_KEY.get(itemKey(ability)) ?? ability;
+  return resolveAbility(ability, species) ?? ability;
 }
 
-/** case-insensitive prefix lookup against the engine's own item list */
-function resolveItemName(item: string): string {
-  const hit = matchItemName(item);
-  if (hit) return hit;
-  const stripped = item.replace(/\.$/, "");
-  return ITEM_NAMES.find((n) => n.toLowerCase().startsWith(stripped.toLowerCase())) ?? item;
-}
-
-/** the docs abbreviate long item names with a trailing dot ("Weakness
- * Pol.", "Terrain Exten."/"Terrain Extend.") — an unresolved name reaches
- * the engine's item table as a miss, and at least one internal check
- * (Knock Off's mega-stone guard) assumes the lookup always succeeds and
- * throws on a miss, silently failing every calc against that Pokémon */
-function cleanItem(item: string): string | undefined {
+/** an unresolved item name reaches the engine's item table as a miss, and at
+ * least one internal check (Knock Off's mega-stone guard) assumes the lookup
+ * always succeeds and throws on a miss, silently failing every calc against
+ * that Pokémon — so this falls through to the raw name only when nothing
+ * else matched */
+function cleanItem(item: string, species?: string): string | undefined {
   if (!item || item === "-" || /no item/i.test(item)) return undefined;
-  // a docs abbreviation needs the prefix fallback, but a hand-typed name must
-  // NOT prefix-match: the field recalculates on every keystroke, so a lone
-  // "l" would silently equip Lagging Tail on the way to "Life Orb"
-  if (item.endsWith(".")) return resolveItemName(item);
-  return matchItemName(item) ?? item;
+  return resolveItem(item, species) ?? item;
 }
 
 export function buildBossPokemon(
@@ -962,8 +1015,8 @@ export function buildBossPokemon(
     return new rr.Pokemon(GEN, species, {
       level,
       nature: NATURES.includes(mon.nature) ? mon.nature : undefined,
-      ability: cleanAbility(mon.ability),
-      item: cleanItem(mon.item),
+      ability: cleanAbility(mon.ability, mon.species),
+      item: cleanItem(mon.item, mon.species),
       evs: bossEvs(mon),
       ivs,
       boosts,
@@ -996,8 +1049,8 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
     const pokemon = new rr.Pokemon(GEN, species, {
       level: cfg.level,
       nature: cfg.nature || undefined,
-      ability: cleanAbility(cfg.ability),
-      item: cleanItem(cfg.item),
+      ability: cleanAbility(cfg.ability, cfg.species),
+      item: cleanItem(cfg.item, cfg.species),
       evs,
       ivs,
       boosts,
