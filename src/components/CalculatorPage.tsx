@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Boss, BossMode, BossMon, CalcTarget, CaughtMon, GameMode, Run } from "../types";
-import { ALL_SPECIES, abilitiesFor } from "./TypeBadges";
+import { ALL_SPECIES, abilitiesFor, typesFor } from "./TypeBadges";
+import { ALL_TYPES } from "../lib/effectiveness";
 import { SpeciesCombobox } from "./SpeciesCombobox";
 import { Combobox } from "./Combobox";
 import { ItemCombobox } from "./ItemCombobox";
@@ -377,6 +378,9 @@ export function CalculatorPage({
         next.status = "";
         next.moveHits = undefined;
         next.currentHpPercent = undefined;
+        // a typing override belongs to the mon it was set on — keeping it
+        // would silently retype whatever species is picked next
+        next.types = undefined;
       }
       localStorage.setItem(YOU_CFG_KEY, JSON.stringify(next));
       return next;
@@ -435,6 +439,8 @@ export function CalculatorPage({
         next.status = "";
         next.moveHits = undefined;
         next.currentHpPercent = undefined;
+        // see updateYou
+        next.types = undefined;
       }
       return next;
     });
@@ -698,6 +704,64 @@ export function CalculatorPage({
  * base stats, totals grid with stage boosts, a combined IV+EV editor, and 4
  * move slots. Shared by "Your Pokémon" and "Opponent" — the only real
  * difference between the two is which flags/lists get passed in. */
+/** typing override, sharing the ability/item/status row — that row already
+ * wrapped on a narrow card and left the status select stretched across the
+ * full width, so the pair costs no vertical space.
+ *
+ * Only rendered once the species resolves: with no natural typing there is
+ * nothing sensible to preselect. Picking the species' own types back clears
+ * the override rather than storing a copy of them, so the card keeps
+ * following the dex if the species changes again. */
+function TypeSelects({
+  cfg,
+  update,
+}: {
+  cfg: PlayerMonConfig;
+  update: (patch: Partial<PlayerMonConfig>) => void;
+}) {
+  const natural = typesFor(cfg.species);
+  if (natural.length === 0) return null;
+  const current = cfg.types?.filter(Boolean) ?? natural;
+  const t1 = current[0] ?? natural[0];
+  const t2 = current[1] ?? "";
+
+  const set = (a: string, b: string) => {
+    // picking type 1 equal to type 2 collapses to a single type rather than
+    // producing a Fire/Fire mon
+    const pair = b && b !== a ? [a, b] : [a];
+    const natural2 = pair.length === natural.length && pair.every((t, i) => t === natural[i]);
+    update({ types: natural2 ? undefined : pair });
+  };
+
+  return (
+    <>
+      <select
+        title="Type 1 — overrides the dex typing, for Protean and friends"
+        value={t1}
+        onChange={(e) => set(e.target.value, t2)}
+      >
+        {ALL_TYPES.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+      <select
+        title="Type 2 — none for a single-type Pokémon"
+        value={t2}
+        onChange={(e) => set(t1, e.target.value)}
+      >
+        <option value="">(no 2nd type)</option>
+        {ALL_TYPES.filter((t) => t !== t1).map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}
+
 function MonConfigCard({
   title,
   cfg,
@@ -811,6 +875,7 @@ function MonConfigCard({
             </option>
           ))}
         </select>
+        <TypeSelects cfg={cfg} update={update} />
       </div>
       {baseStats && (
         <div className="muted base-stats-line">

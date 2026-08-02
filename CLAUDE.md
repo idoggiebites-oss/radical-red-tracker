@@ -71,6 +71,21 @@ so Tailwind affects the right Pokémon's Speed. `buildPlayerPokemon`/
 `buildBossPokemon`/`bossStatTotals`, which now exist only for `MonCard`'s
 own read-only stat-table preview.
 
+`PlayerMonConfig.types` overrides the dex typing (Protean/Libero, Soak,
+Forest's Curse), surfaced as the two type selects on each Calculator card;
+undefined means "use the dex", and picking the natural types back clears it
+rather than storing a copy, so a species change stays correct. Applying it
+is fiddlier than it looks and the shape is forced: assign **both**
+`pokemon.types` and `pokemon.species.types` **after** construction, never
+via the constructor's `overrides`. `extend()` (vendor/rrcalc/util.js) merges
+arrays index-wise into the existing one, so `["Water"]` over Fire/Flying
+gives Water/Flying — and because `calc()` clones both Pokémon before every
+calculation, replaying `overrides: this.species` through that same merge, a
+shorter array grows its old second type back on the first clone. Dropping a
+type therefore pads the slot with `""`, which the mechanics already treat as
+absent (`gen789.js` guards on `defender.types[1] ?`). A 2→1 override is the
+only case that exposes this; 1→1 swaps pass either way.
+
 ## App structure
 
 - `src/App.tsx` — tabs (Routes/Bosses/Team/Reference), run switcher, level

@@ -450,6 +450,11 @@ export interface PlayerMonConfig {
   boosts?: Record<string, number>;
   /** engine status code ("brn", "par", …), "" = healthy */
   status?: string;
+  /** the typing to calculate with, overriding the species' natural one —
+   * for Protean/Libero, Soak, Forest's Curse and anything else that retypes
+   * a Pokémon mid-battle. One or two entries; undefined = use the dex
+   * typing, which is also what a species change falls back to. */
+  types?: string[];
   moves: string[];
   /** per move-slot: a pinned hit count for a multi-hit move (e.g. 4 or 5 to
    * check Loaded Dice/Skill Link), matched by index to `moves`. undefined
@@ -988,7 +993,7 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
     if (key && v !== 0) boosts[key] = Math.max(-6, Math.min(6, v));
   }
   try {
-    return new rr.Pokemon(GEN, species, {
+    const pokemon = new rr.Pokemon(GEN, species, {
       level: cfg.level,
       nature: cfg.nature || undefined,
       ability: cleanAbility(cfg.ability),
@@ -998,6 +1003,28 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
       boosts,
       status: cfg.status || "",
     });
+    // Typing override. Two engine details force the shape of this:
+    //
+    // 1. It can't go through the constructor's `overrides`, because that
+    //    deep-merges arrays index-wise (vendor/rrcalc/util.js extend), so
+    //    ["Water"] over Fire/Flying yields Water/Flying.
+    // 2. calc() clones both Pokémon before every calculation, and clone()
+    //    replays `overrides: this.species` through that same merge. So a
+    //    shorter array can never drop a type — it grows back on the first
+    //    clone. The removed slot is padded with "" instead, which the
+    //    mechanics already treat as "no second type" (gen789.js guards on
+    //    `defender.types[1] ?` before asking for its effectiveness).
+    //
+    // Both fields are assigned because the mechanics read `types` while
+    // clone() re-derives it from `species.types`.
+    const override = cfg.types?.filter(Boolean);
+    if (override?.length) {
+      const padded = [...override];
+      while (padded.length < pokemon.species.types.length) padded.push("");
+      pokemon.species.types = padded;
+      pokemon.types = padded;
+    }
+    return pokemon;
   } catch {
     return null;
   }

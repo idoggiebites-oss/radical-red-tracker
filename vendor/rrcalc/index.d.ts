@@ -24,7 +24,11 @@ export interface PokemonOptions {
 export class Pokemon {
   constructor(gen: number | Generation, name: string, options?: PokemonOptions);
   maxHP(): number;
-  species: { baseStats: Required<StatsTable> };
+  /** `species.types` is what the constructor copies `types` from, and what
+   * clone() feeds back through `overrides`; the mechanics read `types`.
+   * Both are writable, and a typing override has to set both. */
+  species: { baseStats: Required<StatsTable>; types: string[] };
+  types: string[];
   stats: Required<StatsTable>;
   rawStats: Required<StatsTable>;
   ability?: string;
