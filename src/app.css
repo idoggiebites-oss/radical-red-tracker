@@ -136,6 +136,32 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .only-narrow { display: none; }
 
 .run-controls { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+/* The level cap pill can't render until bosses.json resolves (App.tsx loads
+   it as its own chunk), so first paint has brand + run controls on one line
+   and the pill drops in ~250ms later. Between roughly 860px and 1024px that
+   arrival is what pushes the controls onto a second row, growing the topbar
+   52px and shoving the tab bar, the whole route list and the footer down
+   with it — measured CLS 0.87 at 900px, well into "poor", and it lands late
+   enough that someone reaching for a tab hits the wrong one.
+
+   Fixing it by reserving height needs a magic number, and reserving the
+   pill's width needs to guess at boss-name length. Making the wrap
+   unconditional needs neither: below the width where everything fits on one
+   line anyway, the controls take their own row from the first frame, so the
+   pill arriving changes nothing about the layout underneath. It only changes
+   what the first 250ms look like — the settled layout is identical.
+
+   The upper bound is 1099px because `.app` is capped at 1100px wide, so a
+   wider viewport can't give the topbar any more room than it already has. */
+@media (min-width: 641px) and (max-width: 1099px) {
+  .run-controls {
+    flex-basis: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+}
+
 /* mobile-only cog menu (see @media max-width:640px) — the run controls
    above stay inline on desktop, so these have no effect there */
 .settings-cog, .cog-backdrop { display: none; }
