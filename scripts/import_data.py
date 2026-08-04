@@ -1273,6 +1273,14 @@ NATURES = {
 
 SPECIES_COLS = [4, 9, 14, 19, 24, 29]
 
+# Variant labels above a boss block are usually marked "(!) TEAM ONE", but the
+# Indigo League sheets write the champion's as a bare "IF RIVAL HAS SQUIRTLE"
+# with no marker. Matching the known wording as well as the marker is what
+# gets the champion's three starter-dependent teams labelled at all; the
+# alternative — accepting any text above a block — would sweep up stray
+# cells. Anchored and exact on purpose.
+VARIANT_LABEL_RE = re.compile(r"^(IF RIVAL HAS \w+|TEAM (ONE|TWO|THREE))$", re.I)
+
 
 def find_base_stats_row(rows, start):
     for r in range(start + 1, min(start + 30, len(rows))):
@@ -1290,14 +1298,18 @@ def parse_boss_block(rows, r, tab):
     nature_row, ability_row, item_row = bs - 8, bs - 7, bs - 6
     move_rows = range(bs - 5, bs - 1)
     # variant label like '(!) IF RIVAL HAS CHARMANDER' and 'BATTLE EFFECT: ...'
-    # notes sit just above the block
+    # notes sit just above the block. Six rows, not four: the gap is 4 in the
+    # default sheets but 5 in hardcore, which silently cost every hardcore
+    # Elite Four block its TEAM ONE/TEAM TWO label.
     subtitle = ""
     battle_effect = ""
-    for rr in range(max(0, r - 4), r):
+    for rr in range(max(0, r - 6), r):
         for c in range(3, 12):
             v = cell(rows, rr, c)
             if v.startswith("(!)"):
                 subtitle = v.lstrip("(!) ").strip()
+            elif VARIANT_LABEL_RE.match(v):
+                subtitle = v.strip()
             elif v.startswith("BATTLE EFFECT"):
                 battle_effect = v.split(":", 1)[-1].strip()
     mons = []

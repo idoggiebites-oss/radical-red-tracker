@@ -9675,7 +9675,7 @@
      },
      {
       "title": "ROUTE 12 · FISHERMAN · ANDREW",
-      "subtitle": "",
+      "subtitle": "BACK TO BACK",
       "battleEffect": "PERMANENT SNOW",
       "notes": "",
       "pokemon": [
@@ -14852,7 +14852,7 @@
     "bosses": [
      {
       "title": "ELITE FOUR · LORELEI",
-      "subtitle": "",
+      "subtitle": "RAIN TEAM",
       "battleEffect": "DOUBLES",
       "notes": "",
       "pokemon": [
@@ -15031,7 +15031,7 @@
      },
      {
       "title": "ELITE FOUR · LORELEI",
-      "subtitle": "",
+      "subtitle": "SNOW TEAM",
       "battleEffect": "DOUBLES",
       "notes": "",
       "pokemon": [
@@ -16284,7 +16284,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
@@ -16462,7 +16462,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
@@ -16640,7 +16640,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
@@ -36055,7 +36055,7 @@
      },
      {
       "title": "ROUTE 12 · FISHERMAN · ANDREW",
-      "subtitle": "",
+      "subtitle": "BACK TO BACK",
       "battleEffect": "PERMANENT SNOW",
       "notes": "",
       "pokemon": [
@@ -41180,7 +41180,7 @@
      },
      {
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
-      "subtitle": "",
+      "subtitle": "FIRST BATTLE",
       "battleEffect": "PERMANENT TAILWIND",
       "notes": "",
       "pokemon": [
@@ -41347,7 +41347,7 @@
      },
      {
       "title": "CERULEA. CAVE · BLACK BELT · KETCHUP",
-      "subtitle": "",
+      "subtitle": "REMATCH",
       "battleEffect": "KETCHUP'S POKEMON WILL ENDURE A HIT IF ABOVE 75% OF MAX HP",
       "notes": "",
       "pokemon": [
@@ -41773,7 +41773,7 @@
     "bosses": [
      {
       "title": "ELITE FOUR · LORELEI",
-      "subtitle": "",
+      "subtitle": "RAIN TEAM",
       "battleEffect": "DOUBLES + PERMANENT PRIMORDIAL SEA",
       "notes": "",
       "pokemon": [
@@ -41932,7 +41932,7 @@
      },
      {
       "title": "ELITE FOUR · LORELEI",
-      "subtitle": "",
+      "subtitle": "SNOW TEAM",
       "battleEffect": "DOUBLES + PERMANENT SNOW",
       "notes": "",
       "pokemon": [
@@ -42089,7 +42089,7 @@
      },
      {
       "title": "ELITE FOUR · BRUNO",
-      "subtitle": "",
+      "subtitle": "TEAM ONE",
       "battleEffect": "PERMANENT MISTY TERRAIN",
       "notes": "",
       "pokemon": [
@@ -42244,7 +42244,7 @@
      },
      {
       "title": "ELITE FOUR · BRUNO",
-      "subtitle": "",
+      "subtitle": "TEAM TWO",
       "battleEffect": "PERMANENT MISTY TERRAIN",
       "notes": "",
       "pokemon": [
@@ -42401,7 +42401,7 @@
      },
      {
       "title": "ELITE FOUR · AGATHA",
-      "subtitle": "",
+      "subtitle": "TEAM ONE",
       "battleEffect": "PERMANENT PSYCHIC TERRAIN",
       "notes": "",
       "pokemon": [
@@ -42558,7 +42558,7 @@
      },
      {
       "title": "ELITE FOUR · AGATHA",
-      "subtitle": "",
+      "subtitle": "TEAM TWO",
       "battleEffect": "PERMANENT PSYCHIC TERRAIN",
       "notes": "",
       "pokemon": [
@@ -42715,7 +42715,7 @@
      },
      {
       "title": "ELITE FOUR · LANCE",
-      "subtitle": "",
+      "subtitle": "TEAM ONE",
       "battleEffect": "CAN'T REMOVE HAZARDS",
       "notes": "",
       "pokemon": [
@@ -42868,7 +42868,7 @@
      },
      {
       "title": "ELITE FOUR · LANCE",
-      "subtitle": "",
+      "subtitle": "TEAM TWO",
       "battleEffect": "CAN'T REMOVE HAZARDS",
       "notes": "",
       "pokemon": [
@@ -43021,7 +43021,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS SQUIRTLE",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
@@ -43176,7 +43176,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS CHARMANDER",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
@@ -43331,7 +43331,7 @@
      },
      {
       "title": "CHAMPION · RIVAL",
-      "subtitle": "",
+      "subtitle": "IF RIVAL HAS BULBASAUR",
       "battleEffect": "",
       "notes": "",
       "pokemon": [
