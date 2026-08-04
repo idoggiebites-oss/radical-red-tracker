@@ -130,6 +130,19 @@ only case that exposes this; 1→1 swaps pass either way.
 - `src/views/BossesView.tsx` — trainer order/level caps + boss teams. Each
   boss Pokémon's "Calc" button calls an `onCalc` prop (threaded down from
   `App.tsx`) instead of opening a dialog — see Calculator below.
+  **Fights with more than one possible team** (the Elite Four's TEAM ONE/TWO
+  and Lorelei's RAIN/SNOW TEAM, Bugsy either side of Lt. Surge, Jasmine/
+  Pryce, Ketchup's rematch) go through `src/lib/bossVariants.ts` —
+  `chosenBoss()` is the single resolver, and the pick lives on
+  `run.bossTeam` keyed `"<category>|<title>"`. Use it anywhere a
+  `BossTarget` becomes a real team: BossesView's row, Battle Readiness's
+  auto-select and the Calculator's next-boss seeding all call it, and they
+  must agree or the app preps for a team the row isn't showing. The rival's
+  starter variants are a different mechanism — `bossMatchesStarter` filters
+  those to one before `chosenBoss` ever sees them, which is why the champion
+  offers no picker. Readiness's auto-follow guard is keyed on the order index
+  **and** the chosen variant; index alone bails when you switch teams,
+  because switching doesn't advance the frontier.
 - `src/views/TeamView.tsx` — subtabs "Party & Box" (party/box/graveyard, KO
   counters, build editor, Evolve/Devolve via `evolutionsFor`/
   `preEvolutionsFor` in `src/lib/effectiveness.ts`; graveyard entries carry

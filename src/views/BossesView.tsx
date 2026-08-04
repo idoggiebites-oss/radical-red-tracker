@@ -5,6 +5,7 @@ import { isEffectivelyOptional, nextRequiredIndex, ROUTE_CHOICES } from "../lib/
 import { Sprite } from "../components/Sprite";
 import { MonCard } from "../components/MonCard";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
+import { chosenBoss, variantLabel, withBossTeam } from "../lib/bossVariants";
 import { nextLevelCap } from "../lib/levelCap";
 import { ALL_TYPES, defensiveProfile, typeColor } from "../lib/effectiveness";
 
@@ -150,13 +151,23 @@ function TrainerOrder({
       order.map((_, i) => {
         const bt = bossTeamFor(modeData, i);
         if (!bt) return null;
-        const cat = modeData.categories.find((c) => c.name === bt.category);
-        const boss = cat?.bosses.find(
-          (b) => b.title === bt.title && bossMatchesStarter(b.subtitle, rivalStarter ?? null),
+        const hit = chosenBoss(
+          modeData,
+          run,
+          bt.category,
+          bt.title,
+          rivalStarter ?? null,
         );
-        return boss ? { boss, category: bt.category } : null;
+        return hit
+          ? {
+              boss: hit.boss,
+              category: bt.category,
+              variants: hit.variants,
+              variantIdx: hit.index,
+            }
+          : null;
       }),
-    [modeData, order, rivalStarter],
+    [modeData, order, rivalStarter, run],
   );
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   // cap-pill navigation names a team, not an order index — find the row that
@@ -390,6 +401,29 @@ function TrainerOrder({
           )}
           {!hidden && expanded && team && (
             <div className="order-team" ref={openRef}>
+              {/* fights the game picks a team for (the Elite Four bring one
+                  of two). The pick is stored on the run so Battle Readiness
+                  and the Calculator prep for the same team this row shows. */}
+              {run && team.variants.length > 1 && (
+                <div className="variant-picker">
+                  <span className="variant-label">Team they bring</span>
+                  {team.variants.map((v, k) => (
+                    <button
+                      key={k}
+                      className={"variant-opt" + (k === team.variantIdx ? " active" : "")}
+                      aria-pressed={k === team.variantIdx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateRun((r) =>
+                          withBossTeam(r, team.category, team.boss.title, k),
+                        );
+                      }}
+                    >
+                      {variantLabel(v, k)}
+                    </button>
+                  ))}
+                </div>
+              )}
               {(team.boss.battleEffect || team.boss.chained || team.boss.chainedNext) && (
                 <div className="effect-row">
                   {team.boss.battleEffect && (

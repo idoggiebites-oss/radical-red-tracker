@@ -10,6 +10,7 @@ import { abilitiesRandomized } from "../lib/saveFile";
 import { nextLevelCap } from "../lib/levelCap";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import { bossTeamFor } from "../lib/bossTarget";
+import { chosenBoss } from "../lib/bossVariants";
 import { nextRequiredIndex } from "../lib/routeChoice";
 import {
   ALL_TYPES,
@@ -611,15 +612,30 @@ function ReadinessView({
     const target = bossTeamFor(modeData, nextOrderIdx);
     if (!target) return "";
     const cat = modeData.categories.find((c) => c.name === target.category);
-    const i = cat?.bosses.findIndex(
-      (b) => b.title === target.title && bossMatchesStarter(b.subtitle, rivalStarter),
+    // the picker's value is an index into the category's FULL boss list, but
+    // which team this fight brings is the run's choice among the variants —
+    // so resolve the choice first, then find that exact block's real index
+    const hit = chosenBoss(
+      modeData,
+      run,
+      target.category,
+      target.title,
+      rivalStarter ?? null,
     );
+    const i = hit ? cat?.bosses.indexOf(hit.boss) : undefined;
     return i === undefined || i < 0 ? "" : `${target.category}|${i}`;
-  }, [nextOrderIdx, modeData, rivalStarter]);
+  }, [nextOrderIdx, modeData, rivalStarter, run]);
   useEffect(() => {
     const autoKey = `rr-tracker.readinessBossAutoIdx.${run.id}`;
-    if (localStorage.getItem(autoKey) === String(nextOrderIdx)) return;
-    localStorage.setItem(autoKey, String(nextOrderIdx));
+    // keyed on the fight AND which of its teams the run expects, not the
+    // order index alone: picking the Elite Four's other team in the Bosses
+    // tab doesn't advance the frontier, so an index-only guard bailed out
+    // and left readiness prepping for the team you just said they won't
+    // bring. A manual pick in the readiness dropdown still survives — that
+    // changes `selected`, not this key.
+    const autoValue = `${nextOrderIdx}|${currentBossValue}`;
+    if (localStorage.getItem(autoKey) === autoValue) return;
+    localStorage.setItem(autoKey, autoValue);
     if (!currentBossValue) return;
     setSelected(currentBossValue);
     localStorage.setItem(storageKey, currentBossValue);

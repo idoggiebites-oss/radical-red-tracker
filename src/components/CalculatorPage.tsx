@@ -7,8 +7,9 @@ import { Combobox } from "./Combobox";
 import { ItemCombobox } from "./ItemCombobox";
 import { ModifierToggle } from "./ModifierToggle";
 import { bossTeamFor } from "../lib/bossTarget";
+import { chosenBoss } from "../lib/bossVariants";
 import { nextRequiredIndex } from "../lib/routeChoice";
-import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
+import { rivalStarterFor } from "../lib/starters";
 import { nextLevelCap } from "../lib/levelCap";
 import {
   ABILITY_NAMES,
@@ -178,11 +179,9 @@ function resolveNextBoss(modeData: BossMode, run: Run): { boss: Boss; mon: BossM
   if (idx < 0) return null;
   const bt = bossTeamFor(modeData, idx);
   if (!bt) return null;
-  const cat = modeData.categories.find((c) => c.name === bt.category);
   const rivalStarter = rivalStarterFor(run);
-  const boss = cat?.bosses.find(
-    (b) => b.title === bt.title && bossMatchesStarter(b.subtitle, rivalStarter),
-  );
+  // honours the run's team pick for fights that bring one of several
+  const boss = chosenBoss(modeData, run, bt.category, bt.title, rivalStarter)?.boss;
   const mon = boss?.pokemon[0];
   return boss && mon ? { boss, mon } : null;
 }

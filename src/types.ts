@@ -252,6 +252,11 @@ export interface Run {
    * detect them): species opens the catch box to any species, abilities frees
    * the ability inputs in builds and the calc */
   randomizer?: { species?: boolean; abilities?: boolean };
+  /** fights that can bring more than one team (the Elite Four bring one of
+   * two, Bugsy changes either side of Lt. Surge): "<category>|<title>" ->
+   * index into that fight's starter-filtered variant list. Absent means the
+   * first team, which is what every row showed before this existed. */
+  bossTeam?: Record<string, number>;
   /** lab ball taken: 0 left/grass · 1 middle/water · 2 right/fire. The
    * position decides the rival's counterpick even when the species are a
    * different region's trio or randomized. */
