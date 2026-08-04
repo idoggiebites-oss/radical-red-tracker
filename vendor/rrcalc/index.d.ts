@@ -19,6 +19,11 @@ export interface PokemonOptions {
   boosts?: StatsTable;
   /** "brn" | "par" | "psn" | "tox" | "slp" | "frz" ("" = healthy) */
   status?: string;
+  /** Which stat Protosynthesis/Quark Drive boosts. "auto" = whichever is
+   * highest, which is what the game does. Leaving it undefined does NOT
+   * mean "auto" — `isQPActive` (mechanics/util.js) returns false outright
+   * when it is unset, so both abilities are silently inert. */
+  boostedStat?: "auto" | "atk" | "def" | "spa" | "spd" | "spe";
 }
 
 export class Pokemon {

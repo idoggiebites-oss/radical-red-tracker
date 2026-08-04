@@ -8,3 +8,15 @@ export function getFinalSpeed(
   field: Field,
   side: unknown,
 ): number;
+
+/** whether Protosynthesis/Quark Drive is currently boosting this Pokémon.
+ * Returns false outright when `pokemon.boostedStat` is unset, before any
+ * weather/terrain/Booster Energy check — see PokemonOptions.boostedStat. */
+export function isQPActive(pokemon: Pokemon, field: Field): boolean;
+
+/** the stat that boost applies to: `boostedStat` when it names one, else
+ * whichever of atk/def/spa/spd/spe is highest after boosts */
+export function getQPBoostedStat(
+  pokemon: Pokemon,
+  gen?: Generation,
+): "atk" | "def" | "spa" | "spd" | "spe";

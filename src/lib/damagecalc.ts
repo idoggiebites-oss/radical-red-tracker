@@ -2,7 +2,11 @@
  * Gen 9 in the vendored data set carries the Radical Red changes. */
 
 import * as rr from "rr-damage-calc";
-import { getFinalSpeed } from "rr-damage-calc/mechanics/util.js";
+import {
+  getFinalSpeed,
+  getQPBoostedStat,
+  isQPActive,
+} from "rr-damage-calc/mechanics/util.js";
 import typesJson from "../data/types.json";
 import type { BossMon, GameMode } from "../types";
 import { GEN } from "./gen";
@@ -536,30 +540,44 @@ export function itemStatMods(
   }
 }
 
-/** stat multipliers granted by an ability under the given field */
+/** engine stat key -> the label the stat tables use */
+const QP_STAT_LABEL: Record<string, string> = {
+  atk: "ATK",
+  def: "DEF",
+  spa: "SPA",
+  spd: "SPD",
+  spe: "SPE",
+};
+
+/** stat multipliers granted by an ability under the given field.
+ *
+ * Protosynthesis/Quark Drive are asked of the engine rather than reimplemented
+ * here, because the two answers must agree: this function only feeds the
+ * "Item/ability: SPA ×1.3" line, while the damage comes from the mechanics,
+ * and a hand-rolled copy had already drifted. It tested `weather === "Sun"`
+ * where the engine tests `weather.includes("Sun")`, so every Desolate Land
+ * fight — RR calls it Harsh Sunshine, and Blaine's hardcore team is three
+ * Protosynthesis mons under it — printed no boost at all. */
 export function abilityStatMods(
   ability: string,
-  item: string,
   fieldOpts: rr.FieldOptions,
-  stats: Record<string, number>,
+  pokemon?: rr.Pokemon,
 ): Partial<Record<string, number>> {
   const id = rr.toID(ability || "");
   if (id === "hugepower" || id === "purepower") return { ATK: 2 };
   if (id === "hustle" || id === "gorillatactics") return { ATK: 1.5 };
   if (id === "furcoat") return { DEF: 2 };
-  const booster = rr.toID(item || "") === "boosterenergy";
-  const active =
-    (id === "protosynthesis" && (fieldOpts.weather === "Sun" || booster)) ||
-    (id === "quarkdrive" && (fieldOpts.terrain === "Electric" || booster));
-  if (active) {
-    // boosts the holder's highest non-HP stat
-    let best = "ATK";
-    for (const k of BOOST_STATS) {
-      if ((stats[k] ?? 0) > (stats[best] ?? 0)) best = k;
-    }
+  if (id !== "protosynthesis" && id !== "quarkdrive") return {};
+  if (!pokemon) return {};
+  try {
+    const field = new rr.Field(fieldOpts);
+    if (!isQPActive(pokemon, field)) return {};
+    const best = QP_STAT_LABEL[getQPBoostedStat(pokemon, gen)];
+    if (!best) return {};
     return { [best]: best === "SPE" ? 1.5 : 1.3 };
+  } catch {
+    return {};
   }
-  return {};
 }
 
 export interface StatTotals {
@@ -582,7 +600,7 @@ export function statTotals(
   const base = computedStats(cfg);
   if (!base) return null;
   const itemMods = itemStatMods(cfg.item, speciesName, nfe);
-  const abilityMods = abilityStatMods(cfg.ability, cfg.item, fieldOpts, base);
+  const abilityMods = abilityStatMods(cfg.ability, fieldOpts, pokemon);
   const totals: Record<string, number> = { HP: base.HP };
   for (const k of BOOST_STATS) {
     if (k === "SPE") {
@@ -623,7 +641,7 @@ export function bossStatTotals(
   };
   const nfe = !!gen.species.get(rr.toID(speciesName))?.nfe;
   const itemMods = itemStatMods(mon.item, speciesName, nfe);
-  const abilityMods = abilityStatMods(mon.ability, mon.item, fieldOpts, base);
+  const abilityMods = abilityStatMods(mon.ability, fieldOpts, poke);
   const totals: Record<string, number> = { HP: base.HP };
   for (const k of BOOST_STATS) {
     if (k === "SPE") {
@@ -996,6 +1014,9 @@ export function buildBossPokemon(
       ivs,
       boosts,
       status: status || "",
+      // required for Protosynthesis/Quark Drive to do anything at all —
+      // see buildPlayerPokemon for why
+      boostedStat: "auto",
     });
   } catch {
     return null;
@@ -1030,6 +1051,14 @@ export function buildPlayerPokemon(cfg: PlayerMonConfig): rr.Pokemon | null {
       ivs,
       boosts,
       status: cfg.status || "",
+      // Protosynthesis and Quark Drive are inert without this. The engine's
+      // isQPActive (mechanics/util.js) bails on `!pokemon.boostedStat`
+      // BEFORE it ever looks at the weather, the terrain or Booster Energy,
+      // so an unset field doesn't mean "work it out" — it means "off". The
+      // ability then applied nothing while still being listed on the card,
+      // and our own abilityStatMods printed a ×1.3 the damage ignored.
+      // "auto" is the game's behaviour: whichever stat is highest.
+      boostedStat: "auto",
     });
     // Typing override. Two engine details force the shape of this:
     //
