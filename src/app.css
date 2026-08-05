@@ -493,6 +493,13 @@ tr.pickable:hover td { background: var(--bg3); }
 .boss-title { font-weight: 700; }
 .boss-subtitle { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
 .boss-preview { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
+/* re-import preview: colour the verb, not the whole row, so a long list
+   still reads as one list */
+.save-import-list li.sync-added .si-where { color: var(--caught); }
+.save-import-list li.sync-updated .si-where { color: var(--accent2); }
+.save-import-list li.sync-absent { opacity: 0.65; }
+.save-warn { color: var(--accent2); }
+
 /* which of a fight's several teams the run is prepping for. Segmented rather
    than a <select>: there are only ever two or three, and the point is to
    compare them, which a control you have to open hides. */

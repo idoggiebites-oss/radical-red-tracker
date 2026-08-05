@@ -27,7 +27,7 @@ import abilityIdsJson from "../data/abilityIds.json";
 import { canonicalItem } from "./itemNames";
 import { readSaveFile } from "./saveFile";
 import { groupLocations, type RouteGroup } from "./routeGroups";
-import type { Location, Run } from "../types";
+import type { Location, RouteEncounter, Run } from "../types";
 import { STARTER_ID } from "./storage";
 import { EGG_LOCATIONS } from "./eggLocations";
 
@@ -586,4 +586,116 @@ export function encountersFrom(
     };
   }
   return out;
+}
+
+/** what re-importing would do to one location, for the review list */
+export interface EncounterChange {
+  locationId: string;
+  kind: "added" | "updated" | "unchanged" | "absent";
+  species: string;
+  nickname: string;
+  /** plain-language summary of what changes; "" when nothing does */
+  detail: string;
+}
+
+/** The party's EV block is real; the box's compact 58-byte entry has no EV
+ * data at all and `parseBoxMon` returns `{}`. Refreshing from that would
+ * wipe EVs a player typed in for anything currently boxed, so "the save
+ * doesn't carry this" has to be distinguishable from "the save says zero". */
+const hasEvData = (m: SaveMon) => Object.values(m.evs).some((v) => v > 0);
+
+function describeUpdate(prev: RouteEncounter, next: RouteEncounter): string {
+  const bits: string[] = [];
+  if (prev.species !== next.species) bits.push(`${prev.species} → ${next.species}`);
+  if ((prev.nickname || "") !== (next.nickname || "")) bits.push("nickname");
+  const a = prev.build;
+  const b = next.build;
+  if (a && b) {
+    if (a.ability !== b.ability) bits.push("ability");
+    if (a.item !== b.item) bits.push("item");
+    if (a.nature !== b.nature) bits.push("nature");
+    if ((a.moves ?? []).join("|") !== (b.moves ?? []).join("|")) bits.push("moves");
+    if (JSON.stringify(a.evs ?? {}) !== JSON.stringify(b.evs ?? {})) bits.push("EVs");
+  } else if (b) {
+    bits.push("build");
+  }
+  return bits.join(", ");
+}
+
+/** Merge a freshly-read save into a run that already has encounters.
+ *
+ * The split is between what the game knows and what only the player knows.
+ * The save is authoritative for species (so evolutions land), nickname,
+ * ability, item, nature, moves and party membership. It knows nothing about
+ * whether a Pokémon died, how many KOs it has or why it fell, so `status`,
+ * `kos`, `deathTags` and `deathNote` are never touched — a mon buried in
+ * the app stays buried even though the save still has it alive, which is
+ * the whole reason a nuzlocke tracker exists separately from the game.
+ *
+ * Locations the save doesn't cover are left completely alone and merely
+ * reported: releasing, trading, or recording a catch by hand all look
+ * identical from here, and none of them should silently delete a row. */
+export function mergeEncounters(
+  existing: Run["encounters"],
+  placed: PlacedMon[],
+  opts: { graveyard?: boolean } = {},
+): { encounters: Run["encounters"]; changes: EncounterChange[] } {
+  const incoming = encountersFrom(placed, opts);
+  const monByLocation = new Map<string, SaveMon>();
+  for (const p of placed) if (p.locationId) monByLocation.set(p.locationId, p.mon);
+
+  const encounters: Run["encounters"] = { ...existing };
+  const changes: EncounterChange[] = [];
+
+  for (const [id, next] of Object.entries(incoming)) {
+    const prev = existing[id];
+    if (!prev) {
+      encounters[id] = next;
+      changes.push({
+        locationId: id,
+        kind: "added",
+        species: next.species,
+        nickname: next.nickname,
+        detail: next.status === "fainted" ? "new, marked fainted" : "new catch",
+      });
+      continue;
+    }
+    const mon = monByLocation.get(id);
+    const base = next.build ?? prev.build;
+    const merged: RouteEncounter = {
+      ...prev,
+      species: next.species,
+      nickname: next.nickname,
+      inParty: next.inParty,
+      build: base
+        ? {
+            ...base,
+            // keep typed-in EVs when this one is boxed and the save has none
+            evs: mon && !hasEvData(mon) ? (prev.build?.evs ?? base.evs) : base.evs,
+          }
+        : prev.build,
+    };
+    const detail = describeUpdate(prev, merged);
+    encounters[id] = detail ? merged : prev;
+    changes.push({
+      locationId: id,
+      kind: detail ? "updated" : "unchanged",
+      species: merged.species,
+      nickname: merged.nickname,
+      detail,
+    });
+  }
+
+  for (const [id, prev] of Object.entries(existing)) {
+    if (incoming[id]) continue;
+    changes.push({
+      locationId: id,
+      kind: "absent",
+      species: prev.species,
+      nickname: prev.nickname,
+      detail: "not in the save — left as it is",
+    });
+  }
+
+  return { encounters, changes };
 }

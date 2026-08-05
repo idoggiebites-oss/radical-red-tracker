@@ -229,6 +229,8 @@ export default function App() {
   // normal "next fight", it's a decision blocking the tracker's progress
   const needsRouteChoice = !!(currentCap && currentCap.entry.routeChoice && !run?.sabrinaRoute);
   const [routePickerOpen, setRoutePickerOpen] = useState(false);
+  // re-read a .sav into the run already in progress (cog menu)
+  const [syncing, setSyncing] = useState(false);
   const routePromptedKey = run ? `rr-tracker.routePrompted.${run.id}` : "";
   useEffect(() => {
     if (needsRouteChoice && routePromptedKey && !localStorage.getItem(routePromptedKey)) {
@@ -355,6 +357,17 @@ export default function App() {
               Export
             </button>
           )}
+          {run && SAVE_FILE_FEATURE && (
+            <button
+              title="Re-read your .sav to pull in new catches, evolutions and build changes"
+              onClick={() => {
+                setRunMenuOpen(false);
+                setSyncing(true);
+              }}
+            >
+              Update from save
+            </button>
+          )}
           <button
             title={`Load a run from a ${RUN_FILE_EXT} backup file`}
             onClick={() => {
@@ -423,6 +436,17 @@ export default function App() {
             if (encounters) r.encounters = encounters;
             setState((s) => ({ runs: [...s.runs, r], activeRunId: r.id }));
             setCreating(false);
+          }}
+        />
+      )}
+
+      {syncing && run && (
+        <SyncSaveDialog
+          run={run}
+          onCancel={() => setSyncing(false)}
+          onApply={(encounters, saveInfo) => {
+            updateRun((r) => ({ ...r, encounters, saveInfo: saveInfo ?? r.saveInfo }));
+            setSyncing(false);
           }}
         />
       )}
@@ -531,6 +555,201 @@ export default function App() {
         <code>python3 scripts/import_data.py --refresh</code> to re-import after doc
         updates.
       </footer>
+    </div>
+  );
+}
+
+/** Re-read a .sav into a run already in progress.
+ *
+ * Deliberately not "create the run again": the save is authoritative for
+ * what the game records (species, so evolutions land, plus nickname,
+ * ability, item, nature, moves and who's in the party) and knows nothing
+ * about what only the player knows (whether something died, its KO count,
+ * the note explaining how). mergeEncounters draws that line; this dialog's
+ * job is to show the consequences before anything is written, because a
+ * re-import touches a run that already has hours of play in it. */
+function SyncSaveDialog({
+  run,
+  onApply,
+  onCancel,
+}: {
+  run: Run;
+  onApply: (encounters: Run["encounters"], saveInfo?: RunSaveInfo) => void;
+  onCancel: () => void;
+}) {
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [saveInfo, setSaveInfo] = useState<RunSaveInfo | undefined>();
+  const [graveyard, setGraveyard] = useState(true);
+  const [placed, setPlaced] = useState<PlacedMon[] | null>(null);
+  const importer = useRef<typeof import("./lib/saveImport") | null>(null);
+
+  // recomputed rather than stored so the graveyard toggle re-previews live
+  const preview = useMemo(() => {
+    if (!placed || !importer.current) return null;
+    return importer.current.mergeEncounters(run.encounters, placed, { graveyard });
+  }, [placed, graveyard, run.encounters]);
+
+  const onFile = async (file: File | undefined) => {
+    setError("");
+    setPlaced(null);
+    setSaveInfo(undefined);
+    if (!file) return;
+    setBusy(true);
+    try {
+      const buffer = await file.arrayBuffer();
+
+      // loading the reader and reading with it fail for completely different
+      // reasons, and one catch around both reported a parse crash as "check
+      // your connection" — which sent me looking at the save file when the
+      // real fault was a module that never loaded
+      let mods;
+      try {
+        mods = await Promise.all([
+          import("./lib/saveImport"),
+          import("./lib/saveFile"),
+          import("./data/encounters.json"),
+        ]);
+      } catch (err) {
+        console.error("save reader failed to load", err);
+        setError(
+          "Couldn't load the save-file reader. Check your connection and try again.",
+        );
+        return;
+      }
+      const [saveImport, { readSaveFile }, encountersData] = mods;
+      importer.current = saveImport;
+
+      const info = readSaveFile(buffer);
+      if (!info) {
+        setError(
+          "Couldn't read that file. Make sure it's the emulator's battery save (.sav), not a save state.",
+        );
+        return;
+      }
+      setSaveInfo(info);
+
+      try {
+        const mons = [
+          ...saveImport.readParty(buffer),
+          ...saveImport.readBoxes(buffer),
+          ...saveImport.readExtraStorage(buffer),
+        ];
+        setPlaced(
+          saveImport.placeOnRoutes(mons, encountersData.default.locations),
+        );
+      } catch (err) {
+        // the header read fine, so the file is a real save — say what
+        // actually broke rather than guessing at the cause
+        console.error("save parse failed", err);
+        setError(
+          `Read the trainer data, but not the Pokémon: ${
+            (err as Error)?.message ?? "unknown error"
+          }`,
+        );
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const counts = {
+    added: preview?.changes.filter((c) => c.kind === "added").length ?? 0,
+    updated: preview?.changes.filter((c) => c.kind === "updated").length ?? 0,
+    unchanged: preview?.changes.filter((c) => c.kind === "unchanged").length ?? 0,
+    absent: preview?.changes.filter((c) => c.kind === "absent").length ?? 0,
+  };
+  // "nothing to do" is a real outcome worth stating rather than an empty list
+  const willChange = counts.added + counts.updated > 0;
+  const shown = preview?.changes.filter((c) => c.kind !== "unchanged") ?? [];
+
+  return (
+    <div className="dialog-backdrop" onClick={onCancel}>
+      <div className="dialog" onClick={(e) => e.stopPropagation()}>
+        <h2>Update from save</h2>
+        <p className="muted">
+          Re-read your <code>.sav</code> to pull in new catches, evolutions and
+          build changes. Your status marks, KO counts and graveyard notes are
+          kept — the save doesn&apos;t record those, so nothing here can
+          overwrite them.
+        </p>
+        <label>
+          Save file
+          {/* octet-stream first for the same iOS UTI reason as the new-run
+              dialog — see the note there before changing this list */}
+          <input
+            type="file"
+            accept="application/octet-stream,.sav,.sa2,.fla"
+            onChange={(e) => onFile(e.target.files?.[0])}
+          />
+        </label>
+        {busy && <p className="muted">Reading…</p>}
+        {error && <p className="save-error">{error}</p>}
+        {saveInfo && (
+          <div className="save-summary">
+            <div>
+              Trainer <strong>{saveInfo.trainerName || "?"}</strong>
+              {run.saveInfo?.trainerName &&
+                run.saveInfo.trainerName !== saveInfo.trainerName && (
+                  <span className="save-warn">
+                    {" "}
+                    — this run was started from <strong>
+                      {run.saveInfo.trainerName}
+                    </strong>
+                    &apos;s save
+                  </span>
+                )}
+            </div>
+          </div>
+        )}
+        {preview && (
+          <div className="save-import">
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                checked={graveyard}
+                onChange={(e) => setGraveyard(e.target.checked)}
+              />
+              Treat your overflow box as the graveyard (new entries only)
+            </label>
+            <p className="muted">
+              {counts.added} new · {counts.updated} updated · {counts.unchanged}{" "}
+              already current · {counts.absent} not in the save
+            </p>
+            {shown.length === 0 ? (
+              <p className="muted">
+                Nothing to change — this run already matches the save.
+              </p>
+            ) : (
+              <ul className="save-import-list">
+                {shown.map((c) => (
+                  <li key={c.locationId} className={`sync-${c.kind}`}>
+                    <span className="si-mon">
+                      {c.nickname || c.species}
+                      {c.nickname && <span className="muted"> · {c.species}</span>}
+                    </span>
+                    <span className="si-where">{c.detail}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+        <div className="dialog-actions">
+          <button onClick={onCancel}>Cancel</button>
+          <button
+            className="primary"
+            disabled={!preview || !willChange}
+            onClick={() => preview && onApply(preview.encounters, saveInfo)}
+          >
+            {willChange
+              ? `Apply ${counts.added + counts.updated} change${
+                  counts.added + counts.updated === 1 ? "" : "s"
+                }`
+              : "Apply"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

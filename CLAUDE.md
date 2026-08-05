@@ -183,6 +183,21 @@ only case that exposes this; 1→1 swaps pass either way.
   may still carry `seenSpecies` data; nothing reads it. The save-file upload
   detects the same flags (`SAVE_FILE_FEATURE` in `src/lib/featureFlags.ts`,
   now on).
+- **Re-importing a save into a run already in progress** (cog menu → "Update
+  from save", `SyncSaveDialog` in `App.tsx`) goes through
+  `mergeEncounters()` in `saveImport.ts`, never `encountersFrom()` — the
+  latter builds a fresh map and would wipe KO counts, graveyard notes and
+  status marks. The line is what the game records vs what only the player
+  knows: species (so evolutions land), nickname, ability, item, nature,
+  moves and party membership come from the save; `status`, `kos`,
+  `deathTags` and `deathNote` are never touched, and locations the save
+  doesn't cover are left alone and merely reported. **The trap worth
+  knowing:** the box's compact 58-byte entry carries no EV data at all
+  (`parseBoxMon` returns `evs: {}`), so a blanket refresh silently zeroes
+  EVs typed in for anything currently boxed — `hasEvData()` distinguishes
+  "the save doesn't know" from "the save says zero". A run started by hand
+  can attach a save this way later; `saveInfo` is refreshed on apply, and a
+  mismatched trainer name is flagged rather than blocked.
 
 ## Conventions & gotchas
 
