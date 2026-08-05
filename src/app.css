@@ -135,36 +135,67 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
    of the accessibility tree too, so only one is ever announced */
 .only-narrow { display: none; }
 
-.run-controls { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+/* The run actions live behind the cog at every width, not just on a phone.
+   They used to sit inline on desktop, which made the header's width depend
+   on its contents: the level cap pill can't render until bosses.json
+   resolves, so first paint had brand + controls on one line and the pill
+   dropped in ~250ms later, wrapping the controls onto a second row and
+   shoving the tab bar, the route list and the footer down 52px with it.
+   Measured 0.75-0.87 CLS, and it landed late enough that someone reaching
+   for a tab hit the wrong one.
 
-/* The level cap pill can't render until bosses.json resolves (App.tsx loads
-   it as its own chunk), so first paint has brand + run controls on one line
-   and the pill drops in ~250ms later. Between roughly 860px and 1024px that
-   arrival is what pushes the controls onto a second row, growing the topbar
-   52px and shoving the tab bar, the whole route list and the footer down
-   with it — measured CLS 0.87 at 900px, well into "poor", and it lands late
-   enough that someone reaching for a tab hits the wrong one.
+   Two earlier attempts traded one thing for another — reserving height
+   needs a magic number, forcing the wrap costs the empty state its compact
+   header. Collapsing the actions removes the cause instead: the header is
+   one row whether or not the pill is there, so there is nothing to shift.
+   It also leaves desktop and mobile with the same header rather than two.
 
-   Fixing it by reserving height needs a magic number, and reserving the
-   pill's width needs to guess at boss-name length. Making the wrap
-   unconditional needs neither: below the width where everything fits on one
-   line anyway, the controls take their own row from the first frame, so the
-   pill arriving changes nothing about the layout underneath. It only changes
-   what the first 250ms look like — the settled layout is identical.
-
-   The upper bound is 1099px because `.app` is capped at 1100px wide, so a
-   wider viewport can't give the topbar any more room than it already has. */
-@media (min-width: 641px) and (max-width: 1099px) {
-  .run-controls {
-    flex-basis: 100%;
-    margin-left: 0;
-    justify-content: flex-end;
-  }
+   The run switcher itself stays inline above 640px (see .run-switcher-inline
+   in App.tsx) — it is read far more often than it is clicked. */
+.topbar { position: relative; }
+.run-switcher-inline { display: none; }
+.settings-cog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin-left: auto;
+  border-radius: 8px;
+  color: var(--muted);
 }
+.settings-cog:hover { color: var(--text); }
+.settings-cog .icon-mask { width: 20px; height: 20px; }
+.cog-backdrop { display: block; position: fixed; inset: 0; z-index: 14; }
+.run-controls {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  width: min(280px, calc(100vw - 20px));
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 15;
+}
+.run-controls.open { display: flex; }
+.run-controls select { flex: none; width: 100%; }
 
-/* mobile-only cog menu (see @media max-width:640px) — the run controls
-   above stay inline on desktop, so these have no effect there */
-.settings-cog, .cog-backdrop { display: none; }
+@media (min-width: 641px) {
+  /* the header copy of the switcher; the popover's copy hides so the same
+     control is never present twice */
+  .run-switcher-inline { display: block; margin-left: auto; }
+  .run-switcher-inline select { max-width: 220px; }
+  .run-controls > select { display: none; }
+  .settings-cog { margin-left: 8px; }
+}
 
 .tabs { display: flex; gap: 4px; margin: 14px 0; }
 .tab {
@@ -193,6 +224,14 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   display: none;
   width: 22px;
   height: 22px;
+}
+
+/* holds the tab row's flow space while it is fixed (see App.tsx). Height is
+   set inline from a measurement; the rule exists so the element is a plain
+   block that neither collapses its child's margins nor adds space of its own */
+.tabs-slot { display: block; }
+@media (min-width: 641px) {
+  .tabs-slot { height: var(--tabs-slot-h, auto); }
 }
 
 /* zero-height marker at the top nav's natural position — App.tsx watches
@@ -594,6 +633,31 @@ tr.pickable:hover td { background: var(--bg3); }
 /* ---- reference ---- */
 
 .ref-table { border-collapse: collapse; width: 100%; }
+
+/* The two Reference tables whose ROWS grow as you scroll (Statics 40 at a
+   time, Items' specials 24 — see Chunked in ReferenceView). Auto layout
+   re-computes every column from every row, so each reveal re-widths the
+   whole table, re-wraps the text and moves rows that were already on screen
+   by hundreds of pixels. That was the largest single contributor to this
+   page's field CLS on a phone, and it only happens while scrolling, which
+   is why load-time measurements never saw it.
+   Widths are the ones auto layout settles on today, pinned so they hold
+   from the first chunk instead of being discovered at the last. The others
+   (TMs, gifts, trades) render whole and can stay auto. */
+.cols-statics, .cols-items { table-layout: fixed; }
+.cols-statics td:nth-child(1) { width: 48px; }
+.cols-statics td:nth-child(2) { width: 115px; }
+.cols-statics td:nth-child(3) { width: 124px; }
+.cols-items td:nth-child(1) { width: 34px; }
+.cols-items td:nth-child(2) { width: 115px; }
+/* a phone has no room for the desktop species/type columns — these are the
+   widths auto layout squeezes to at 390px, so the look is unchanged there
+   too rather than merely stable */
+@media (max-width: 640px) {
+  .cols-statics td:nth-child(2) { width: 93px; }
+  .cols-statics td:nth-child(3) { width: 124px; }
+  .cols-items td:nth-child(2) { width: 115px; }
+}
 .ref-table td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
 .cheat-codes-note { margin: 0 0 10px; max-width: 560px; }
 .cheat-code {
@@ -1422,46 +1486,13 @@ tr.pickable:hover td { background: var(--bg3); }
   .cap-pill strong { white-space: nowrap; }
   .cap-next { display: block; margin-left: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  /* run controls (switcher/new/export/import/delete) collapse behind the
-     settings cog instead of a full row across the header */
-  .settings-cog {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    margin-left: auto;
-    border-radius: 8px;
-    color: var(--muted);
-  }
-  .settings-cog:hover { color: var(--text); }
-  .settings-cog .icon-mask { width: 20px; height: 20px; }
-  .cog-backdrop { display: block; position: fixed; inset: 0; z-index: 14; }
-  .run-controls {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 8px;
-    width: min(280px, calc(100vw - 20px));
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    background: var(--bg2);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    z-index: 15;
-  }
-  .run-controls.open { display: flex; }
+  /* the cog popover itself is now unconditional (see .settings-cog above);
+     only the phone-specific sizing of the header remains here */
 
   /* the top .tabs row used to provide breathing room below the topbar's
      border via its own margin; now that it's a fixed bottom bar on mobile
      it no longer occupies that space, so restore it directly on main */
   main { padding-top: 14px; }
-  .run-controls select { flex: none; width: 100%; }
 
   /* bottom nav bar: fixed + thumb-reachable instead of a top row you have
      to scroll back up for; leaves room to add per-tab icons later without

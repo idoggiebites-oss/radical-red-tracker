@@ -148,7 +148,7 @@ export function ReferenceView() {
           resetKey={q}
         >
           {(rows) => (
-            <table className="ref-table">
+            <table className="ref-table cols-statics">
               <tbody>
                 {rows.map((s, i) => (
                   <tr key={i}>
@@ -464,7 +464,7 @@ function ItemList({ q }: { q: string }) {
               </h3>
               <Chunked items={list} step={24} resetKey={q}>
                 {(rows) => (
-                  <table className="ref-table">
+                  <table className="ref-table cols-items">
                     <tbody>
                       {rows.map((i, idx) => (
                         <tr key={idx}>

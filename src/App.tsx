@@ -1,4 +1,12 @@
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type {
   AppState,
   BossesData,
@@ -54,6 +62,33 @@ export default function App() {
   // so toggling the nav's own position can't feed back into the observer
   const [showFloatingNav, setShowFloatingNav] = useState(false);
   const tabsSentinelRef = useRef<HTMLDivElement>(null);
+  // the flow space the tab row occupies, so `.tabs-slot` can hold it open
+  // while the row is fixed. Margins are part of that space and offsetHeight
+  // excludes them, hence the computed-style read.
+  const tabsRef = useRef<HTMLElement>(null);
+  const [tabsHeight, setTabsHeight] = useState(0);
+  useEffect(() => {
+    const el = tabsRef.current;
+    // only meaningful while it is still in flow; once floating its box is
+    // detached and would measure the wrong thing
+    if (!el || showFloatingNav) return;
+    const measure = () => {
+      const cs = getComputedStyle(el);
+      const h =
+        el.getBoundingClientRect().height +
+        parseFloat(cs.marginTop) +
+        parseFloat(cs.marginBottom);
+      setTabsHeight((prev) => (Math.abs(prev - h) > 0.5 ? h : prev));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [showFloatingNav]);
   useEffect(() => {
     const el = tabsSentinelRef.current;
     if (!el) return;
@@ -250,6 +285,23 @@ export default function App() {
     return names;
   }, [modeData, currentCap, needsRouteChoice]);
 
+  const runSwitcher = (
+    <select
+      value={state.activeRunId ?? ""}
+      onChange={(e) => {
+        setState((s) => ({ ...s, activeRunId: e.target.value || null }));
+        setRunMenuOpen(false);
+      }}
+    >
+      <option value="">— no run —</option>
+      {state.runs.map((r) => (
+        <option key={r.id} value={r.id}>
+          {r.name} ({r.mode})
+        </option>
+      ))}
+    </select>
+  );
+
   const appClass =
     "app" +
     (showFloatingNav ? " floating-nav-active" : "") +
@@ -302,6 +354,13 @@ export default function App() {
             </span>
           </button>
         )}
+        {/* Rendered twice on purpose, and only ever one is displayed: the
+            switcher belongs in the header on desktop (you read it far more
+            often than you click it) and inside the popover on a phone, where
+            there is no room beside the brand. display:none keeps the hidden
+            one out of the accessibility tree, so nothing is announced or
+            focusable twice. */}
+        <div className="run-switcher-inline">{runSwitcher}</div>
         <button
           className="settings-cog"
           title="Run settings"
@@ -320,20 +379,7 @@ export default function App() {
           <div className="cog-backdrop" onClick={() => setRunMenuOpen(false)} />
         )}
         <div className={runMenuOpen ? "run-controls open" : "run-controls"}>
-          <select
-            value={state.activeRunId ?? ""}
-            onChange={(e) => {
-              setState((s) => ({ ...s, activeRunId: e.target.value || null }));
-              setRunMenuOpen(false);
-            }}
-          >
-            <option value="">— no run —</option>
-            {state.runs.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name} ({r.mode})
-              </option>
-            ))}
-          </select>
+          {runSwitcher}
           <button
             onClick={() => {
               setRunMenuOpen(false);
@@ -463,7 +509,31 @@ export default function App() {
       )}
 
       <div ref={tabsSentinelRef} className="tabs-sentinel" />
-      <nav className={showFloatingNav ? "tabs floating" : "tabs"}>
+      {/* Holds the tab row's place once it goes `position: fixed`. Without
+          it the row leaves the flow and everything below jumps up ~66px —
+          and back down when you scroll up again, so it re-scores every time
+          you cross the threshold rather than once. That was the larger half
+          of this page's field CLS on desktop, and it was invisible to every
+          measurement that didn't scroll.
+
+          Measured rather than hard-coded: the height is the nav's own,
+          margins included, taken while it is still in flow. Reserving space
+          on `.tabs-sentinel` instead would have been fewer lines and a bug —
+          the IntersectionObserver watches that element, so resizing it on
+          the very signal it produces feeds straight back into itself. */}
+      <div
+        className="tabs-slot"
+        // as a custom property, not `height`, so the mobile breakpoint can
+        // ignore it: below 641px the row is fixed unconditionally and was
+        // never in flow, so reserving space there ADDS 81px that never
+        // existed — a shift in the opposite direction
+        style={
+          showFloatingNav && tabsHeight
+            ? ({ "--tabs-slot-h": `${tabsHeight}px` } as CSSProperties)
+            : undefined
+        }
+      >
+      <nav ref={tabsRef} className={showFloatingNav ? "tabs floating" : "tabs"}>
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -481,6 +551,7 @@ export default function App() {
           </button>
         ))}
       </nav>
+      </div>
 
       <main>
         {!run && (
