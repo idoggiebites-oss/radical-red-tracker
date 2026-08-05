@@ -118,8 +118,18 @@ export default defineConfig({
   // site sits at the domain root rather than under /<repo-name>/
   base: '/',
   // rr-damage-calc is a linked local package of CommonJS bundles; force
-  // pre-bundling so the dev server converts it to ESM
+  // pre-bundling so the dev server converts it to ESM.
+  //
+  // EVERY deep path we import needs its own entry here. The production build
+  // handles CJS interop on its own, so a missing entry breaks the dev server
+  // only — `does not provide an export named 'ITEMS'` at runtime, long after
+  // a prod-build check has come back clean. Adding the itemNames deep import
+  // without adding it here took out the whole .sav reader in dev.
   optimizeDeps: {
-    include: ['rr-damage-calc', 'rr-damage-calc/mechanics/util.js'],
+    include: [
+      'rr-damage-calc',
+      'rr-damage-calc/mechanics/util.js',
+      'rr-damage-calc/data/items.js',
+    ],
   },
 })
