@@ -1,6 +1,5 @@
 import {
   Suspense,
-  lazy,
   useEffect,
   useMemo,
   useRef,
@@ -23,20 +22,23 @@ import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
 import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import { nextLevelCap } from "./lib/levelCap";
+import { ViewErrorBoundary, lazyView } from "./lib/lazyView";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
-// items.json, the damage calc) loads only when its tab is opened
-const RoutesView = lazy(() =>
+// items.json, the damage calc) loads only when its tab is opened.
+// lazyView, not lazy: a deploy landing while the page is open leaves these
+// asking for hashes that no longer exist — see lib/lazyView.tsx
+const RoutesView = lazyView(() =>
   import("./views/RoutesView").then((m) => ({ default: m.RoutesView })),
 );
-const BossesView = lazy(() =>
+const BossesView = lazyView(() =>
   import("./views/BossesView").then((m) => ({ default: m.BossesView })),
 );
-const TeamView = lazy(() =>
+const TeamView = lazyView(() =>
   import("./views/TeamView").then((m) => ({ default: m.TeamView })),
 );
-const ReferenceView = lazy(() =>
+const ReferenceView = lazyView(() =>
   import("./views/ReferenceView").then((m) => ({ default: m.ReferenceView })),
 );
 
@@ -51,7 +53,24 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
 
 export default function App() {
   const [state, setState] = useState<AppState>(loadState);
-  const [tab, setTab] = useState<Tab>("routes");
+  // remembered for the session so a chunk-failure reload (see lib/lazyView)
+  // returns to the tab that was clicked instead of dumping the user on Routes
+  const [tab, setTab] = useState<Tab>(() => {
+    try {
+      const saved = sessionStorage.getItem("rr-tracker.tab");
+      if (TABS.some((t) => t.id === saved)) return saved as Tab;
+    } catch {
+      // storage disabled: start where we always did
+    }
+    return "routes";
+  });
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("rr-tracker.tab", tab);
+    } catch {
+      // nothing to do; the tab just won't survive a reload
+    }
+  }, [tab]);
   const [creating, setCreating] = useState(false);
   // mobile only: run controls (switcher/new/export/import/delete) collapse
   // behind a cog button instead of a full row across the header
@@ -594,6 +613,7 @@ export default function App() {
             </p>
           </div>
         )}
+        <ViewErrorBoundary>
         <Suspense fallback={<p className="muted">Loading…</p>}>
           {tab === "routes" && <RoutesView run={run} updateRun={updateRun} />}
           {tab === "bosses" && modeData && (
@@ -618,6 +638,7 @@ export default function App() {
           )}
           {tab === "reference" && <ReferenceView />}
         </Suspense>
+        </ViewErrorBoundary>
       </main>
 
       <footer className="footer">

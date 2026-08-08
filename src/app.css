@@ -532,6 +532,21 @@ tr.pickable:hover td { background: var(--bg3); }
 .boss-title { font-weight: 700; }
 .boss-subtitle { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
 .boss-preview { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
+/* shown when a tab's chunk can't load and the one-shot reload is spent —
+   anything is better than the blank screen that used to appear here */
+.view-error {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.view-error p { margin: 0; }
+
 /* re-import preview: colour the verb, not the whole row, so a long list
    still reads as one list */
 .save-import-list li.sync-added .si-where { color: var(--caught); }
