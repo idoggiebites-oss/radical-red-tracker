@@ -206,7 +206,30 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   border-radius: 8px 8px 0 0;
   font-weight: 600;
 }
-.tab.active { color: var(--text); background: var(--bg3); }
+.tab.active { color: var(--text); }
+
+/* the sliding selection highlight (see components/TabBar.tsx). One element
+   translated between buttons rather than a background on the active one —
+   a background can only appear and disappear, it cannot travel. */
+.tabs { position: relative; }
+.tab-pill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--bg3);
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+              width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.tab { position: relative; z-index: 1; }
+/* a drag across the row shouldn't also scroll the page or fire iOS text
+   selection; taps still work because the handler commits on pointerup */
+.tabs { touch-action: none; -webkit-user-select: none; user-select: none; }
+@media (prefers-reduced-motion: reduce) {
+  .tab-pill { transition: none; }
+}
 /* base for any currentColor-tintable svg icon rendered via mask-image */
 .icon-mask {
   display: inline-block;
@@ -1554,6 +1577,10 @@ tr.pickable:hover td { background: var(--bg3); }
     pointer-events: none;
     transition: none;
   }
+  /* icons only on a phone: the labels are what made this bar 80px tall, and
+     dropping them buys 26px of screen back while letting the icons grow —
+     bigger targets, not smaller. The names survive as aria-labels (see
+     TabBar.tsx), so nothing is lost to a screen reader. */
   .tab {
     flex: 1;
     display: flex;
@@ -1563,7 +1590,8 @@ tr.pickable:hover td { background: var(--bg3); }
     text-align: center;
     border-radius: 8px;
   }
-  .tab-icon { display: block; margin-bottom: 2px; }
+  .tab-icon { display: block; width: 24px; height: 24px; margin-bottom: 0; }
+  .tab-label { display: none; }
   /* reserve space for the fixed bar (now taller, see .tabs padding above)
      so it never covers the last content. Sized to clear the bar on its own
      with real room to spare — it briefly leaned on iOS's momentum-scroll

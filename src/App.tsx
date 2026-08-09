@@ -23,6 +23,7 @@ import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/run
 import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import { nextLevelCap } from "./lib/levelCap";
 import { ViewErrorBoundary, lazyView } from "./lib/lazyView";
+import { TabBar } from "./components/TabBar";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -552,24 +553,14 @@ export default function App() {
             : undefined
         }
       >
-      <nav ref={tabsRef} className={showFloatingNav ? "tabs floating" : "tabs"}>
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            className={tab === t.id ? "tab active" : "tab"}
-            onClick={() => setTab(t.id)}
-          >
-            <span
-              className="icon-mask tab-icon"
-              style={{
-                maskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
-                WebkitMaskImage: `url(${import.meta.env.BASE_URL}icons/${t.icon}.svg)`,
-              }}
-            />
-            {t.label}
-          </button>
-        ))}
-      </nav>
+      <TabBar
+        tabs={TABS}
+        value={tab}
+        onChange={setTab}
+        floating={showFloatingNav}
+        navRef={tabsRef}
+        iconBase={import.meta.env.BASE_URL}
+      />
       </div>
 
       <main>
