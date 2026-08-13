@@ -199,9 +199,13 @@ only case that exposes this; 1→1 swaps pass either way.
   can't answer instead of passing dex defaults off as facts. This is why
   `ReferenceView` takes a `run` prop at all. `dex.ts` also builds the
   reverse indexes the docs have no equivalent of (species → where to catch
-  it, species → which bosses field it); the boss one and the learnset table
-  are big chunks, so both load on the **first expand**, not on mount —
-  otherwise every visit to Reference pays for them just to read Items.
+  it, species → which bosses field it). The boss index and the learnset
+  table are big chunks (602 kB / 415 kB), and each waits for the thing that
+  needs it: the boss index on the first expand, the learnset table on the
+  first time the collapsed Learnset block is opened. Loading either on
+  mount would make every visit to Reference pay for it just to read Items.
+  The learnset block's open state lives on the tab, not the entry, so
+  browsing species to species doesn't mean re-opening it.
 - Shared: `src/components/MonCard.tsx` (boss mon card; imports the
   calculator for its stat-table preview), `src/lib/levelCap.ts`.
   **`SpeciesDefenses` lives in its own file**, not in MonCard, precisely

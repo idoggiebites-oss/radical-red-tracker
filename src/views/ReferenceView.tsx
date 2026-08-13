@@ -332,27 +332,42 @@ function Pokedex({ q, run }: { q: string; run: Run | null }) {
   const roll = useMemo(() => abilityRollFor(run), [run]);
   const caveats = useMemo(() => dexCaveats(run), [run]);
 
-  // the boss index and the learnset table are big lazy chunks (602 kB and
-  // 415 kB) and only the EXPANDED entry needs either, so they're fetched on
-  // the first expand rather than on mount — otherwise every visit to
-  // Reference pays for them just to read the Items list
-  const [extrasReady, setExtrasReady] = useState(
-    () => bossIndexReady() && learnsetsReady(),
-  );
-  const [extrasFailed, setExtrasFailed] = useState(false);
+  // whether the learnset block is open, kept here rather than per entry so
+  // browsing from one Pokémon to the next doesn't mean re-opening it
+  const [movesOpen, setMovesOpen] = useState(false);
+
+  // both of these are big lazy chunks (602 kB of bosses, 415 kB of
+  // learnsets) and each waits for the thing that actually needs it — the
+  // boss index on the first expand, the learnset table on the first time the
+  // learnset block is opened. Fetching either on mount would make every
+  // visit to Reference pay for it just to read the Items list.
+  const [bossesReady, setBossesReady] = useState(bossIndexReady);
+  const [movesReady, setMovesReady] = useState(learnsetsReady);
+  // only a reload recovers a failed chunk import (see learnsets.ts), so the
+  // detail says so instead of showing "Loading…" for ever
+  const [failed, setFailed] = useState(false);
   useEffect(() => {
-    if (extrasReady || !open) return;
+    if (bossesReady || !open) return;
     let live = true;
-    Promise.all([loadBossIndex(), loadLearnsets()]).then(
-      () => live && setExtrasReady(true),
-      // only a reload recovers a failed chunk import (see learnsets.ts), so
-      // say so instead of showing "Loading…" for ever
-      () => live && setExtrasFailed(true),
+    loadBossIndex().then(
+      () => live && setBossesReady(true),
+      () => live && setFailed(true),
     );
     return () => {
       live = false;
     };
-  }, [extrasReady, open]);
+  }, [bossesReady, open]);
+  useEffect(() => {
+    if (movesReady || !movesOpen) return;
+    let live = true;
+    loadLearnsets().then(
+      () => live && setMovesReady(true),
+      () => live && setFailed(true),
+    );
+    return () => {
+      live = false;
+    };
+  }, [movesReady, movesOpen]);
 
   // matches the name, a type or an ability — so "Levitate" or "Ghost" find
   // everything that has it, which is the reverse lookup the docs can't do
@@ -424,8 +439,11 @@ function Pokedex({ q, run }: { q: string; run: Run | null }) {
                           <DexDetail
                             entry={e}
                             roll={roll}
-                            ready={extrasReady}
-                            failed={extrasFailed}
+                            bossesReady={bossesReady}
+                            movesReady={movesReady}
+                            failed={failed}
+                            movesOpen={movesOpen}
+                            onToggleMoves={() => setMovesOpen((v) => !v)}
                           />
                         </td>
                       </tr>
@@ -446,20 +464,29 @@ const SLOT_LABELS = ["Ability 1", "Ability 2", "Hidden"];
 function DexDetail({
   entry,
   roll,
-  ready,
+  bossesReady,
+  movesReady,
   failed,
+  movesOpen,
+  onToggleMoves,
 }: {
   entry: DexEntry;
   roll: ReturnType<typeof abilityRollFor>;
-  ready: boolean;
-  /** the boss/learnset chunks didn't load; a reload is the only fix */
+  bossesReady: boolean;
+  movesReady: boolean;
+  /** a chunk didn't load; a reload is the only fix */
   failed: boolean;
+  movesOpen: boolean;
+  onToggleMoves: () => void;
 }) {
   const abilities = abilitiesFor(entry, roll);
   const evolutions = evolutionsFor(entry.species);
   const spots = catchSpotsFor(entry.species);
-  const bosses = ready ? bossesFor(entry.species) : [];
-  const moves = ready ? learnsetFor(entry.species) : null;
+  const bosses = bossesReady ? bossesFor(entry.species) : [];
+  const moves = movesReady ? learnsetFor(entry.species) : null;
+  const moveCount = moves
+    ? moves.level.length + moves.tm.length + moves.hm.length + moves.tutor.length + moves.egg.length
+    : 0;
 
   return (
     <div className="dex-detail">
@@ -545,9 +572,9 @@ function DexDetail({
       <section className="dex-block">
         <h4>
           Bosses running it{" "}
-          {ready && <span className="count muted">({bosses.length})</span>}
+          {bossesReady && <span className="count muted">({bosses.length})</span>}
         </h4>
-        {!ready ? (
+        {!bossesReady ? (
           <p className="muted">{failed ? "Couldn't load — reload the page." : "Loading…"}</p>
         ) : bosses.length === 0 ? (
           <p className="muted">No boss brings this one.</p>
@@ -566,8 +593,20 @@ function DexDetail({
       </section>
 
       <section className="dex-block dex-moves">
-        <h4>Learnset</h4>
-        {!moves ? (
+        <button
+          className="dex-moves-head"
+          onClick={onToggleMoves}
+          aria-expanded={movesOpen}
+        >
+          <h4>
+            Learnset{" "}
+            {movesOpen && moves && (
+              <span className="count muted">({moveCount})</span>
+            )}
+          </h4>
+          <span className="chev">{movesOpen ? "▾" : "▸"}</span>
+        </button>
+        {!movesOpen ? null : !moves ? (
           <p className="muted">{failed ? "Couldn't load — reload the page." : "Loading…"}</p>
         ) : (
           <div className="dex-move-groups">
