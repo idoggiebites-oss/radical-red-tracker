@@ -253,6 +253,12 @@ anything shelling out to `git log` there would silently see one commit.
 from the oldest, so published notes keep their id only while new entries go
 on top. Renumbering re-shows old notes to everyone.
 
+**A user-facing change isn't finished until its note is written**, in the
+same commit as the change — the note is part of the work, not a follow-up.
+Draft it without being asked and let it be edited, rather than asking
+whether to add one. Nothing about a refactor, a chunking fix or a CI change
+belongs here; if the player can't see it, it has no note.
+
 The panel is keyed on **what the reader has already seen**
 (`rr-tracker.lastSeenNote`), not on the build. That is the whole design:
 every push deploys, and a busy day here runs to 17 pushes, so a per-deploy
