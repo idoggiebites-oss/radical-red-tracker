@@ -105,3 +105,11 @@ export function abilitiesRandomized(run: Run | null): boolean {
   if (run?.randomizer?.abilities) return true;
   return SAVE_FILE_FEATURE && !!run?.saveInfo?.random.abilities;
 }
+
+/** the save reports randomized learnsets, so the dex's move lists no longer
+ * describe this run. There's no manual toggle for this one — nothing in the
+ * app depends on learnsets except the Party & Box move filter, which says so
+ * rather than pretending it knows. */
+export function learnsetsRandomized(run: Run | null): boolean {
+  return SAVE_FILE_FEATURE && !!run?.saveInfo?.random.learnset;
+}

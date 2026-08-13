@@ -891,6 +891,23 @@ tr.pickable:hover td { background: var(--bg3); }
   font-size: 11.5px;
   font-weight: 700;
 }
+/* a free-text box, not a select like Type: 950+ move names don't fit a
+   dropdown, and the combobox's own flex-grow would eat the whole toolbar */
+.box-toolbar .move-filter .combobox { flex: 0 0 auto; width: 150px; }
+/* every row on screen matches the move filter, so the source is an
+   annotation, not a highlight — only "already has it" earns a colour */
+.learn-pill {
+  margin-left: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.learn-pill.knows { border-color: var(--caught); color: var(--caught); }
 
 /* ---- boss rewards ---- */
 

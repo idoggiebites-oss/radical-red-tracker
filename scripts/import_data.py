@@ -1504,6 +1504,99 @@ def build_move_ids(rrdex: dict) -> dict:
     return out
 
 
+# the dex's own move table shortens seven names to fit its UI (and misspells
+# one); the app's pickers offer the calc engine's names, so a learnset holding
+# "Drain Kiss" would be unreachable by anyone typing "Draining Kiss". Every
+# one of these matches exactly one engine move — no guessing involved.
+DEX_MOVE_NAMES = {
+    "Drain Kiss": "Draining Kiss",
+    "Disarm Cry": "Disarming Voice",
+    "Flower Guard": "Flower Shield",
+    "Prism Laser": "Prismatic Laser",
+    "Crafty Guard": "Crafty Shield",
+    "Inferno Parade": "Infernal Parade",
+    "Soupercell Slam": "Supercell Slam",
+}
+
+
+def build_learnsets(rrdex: dict, sprite_ids: dict) -> dict:
+    """app species name -> every move it can learn, for the Party & Box filter.
+
+    Two dex quirks make this shorter than it looks: a species' 'tmMoves' /
+    'tutorMoves' are INDICES into the global tmMoves/tutorMoves tables (not
+    move ids), and the dex already folds pre-evolution level-up moves into
+    evolved forms at level 1 (Venusaur lists Bulbasaur's), so no ancestor
+    walking is needed. Keying off spriteIds means every alias and
+    same-species spelling merge build_types() resolved carries over.
+
+    Global tm table index i is TM i+1 up to 119, and HM i-119 above it
+    (cross-checked against the docs' own TM/HM lists); a move is at most one
+    TM, so the number lives in one global map instead of per species.
+    """
+    move_names = {i: (m or {}).get("name") for i, m in (rrdex.get("moves") or {}).items()}
+    tm_table = rrdex.get("tmMoves") or {}
+    tutor_table = rrdex.get("tutorMoves") or {}
+    tms, hms = {}, {}
+    for idx, mid in tm_table.items():
+        if not mid or not move_names.get(mid):
+            continue
+        if idx < 120:
+            tms[str(mid)] = idx + 1
+        else:
+            hms[str(mid)] = idx - 119
+
+    used: set[int] = set()
+    species: dict[str, dict] = {}
+    missing = []
+    for name, sid in sprite_ids.items():
+        mon = (rrdex.get("species") or {}).get(sid)
+        if not mon:
+            missing.append(name)
+            continue
+        # lowest level wins — evolved forms relist inherited moves at 1 AND
+        # at the level the base form would have learnt them
+        lowest: dict[int, int] = {}
+        for pair in mon.get("levelupMoves") or []:
+            mid, lvl = pair[0], pair[1]
+            if move_names.get(mid) and lvl < lowest.get(mid, 10**6):
+                lowest[mid] = lvl
+        def ids(key, table=None):
+            out = set()
+            for v in mon.get(key) or []:
+                mid = table[v] if table is not None else v
+                if mid and move_names.get(mid):
+                    out.add(mid)
+            return sorted(out)
+        entry = {
+            "l": sorted(([m, lv] for m, lv in lowest.items()), key=lambda p: (p[1], p[0])),
+            "t": ids("tmMoves", tm_table),
+            "u": ids("tutorMoves", tutor_table),
+            "e": ids("eggMoves"),
+        }
+        entry = {k: v for k, v in entry.items() if v}
+        if not entry:
+            continue
+        species[name] = entry
+        used.update(m for m, _ in entry.get("l", []))
+        for k in ("t", "u", "e"):
+            used.update(entry.get(k, []))
+    if missing:
+        warn(f"learnsets: {len(missing)} species with no dex entry: {missing[:10]}")
+    total = sum(len(e.get("l", [])) + len(e.get("t", [])) + len(e.get("u", []))
+                + len(e.get("e", [])) for e in species.values())
+    print(f"  learnsets for {len(species)} species, {total} entries, "
+          f"{len(used)} distinct moves")
+    return {
+        "moves": {str(m): DEX_MOVE_NAMES.get(move_names[m], move_names[m])
+                  for m in sorted(used)},
+        "tms": {m: n for m, n in sorted(tms.items(), key=lambda kv: kv[1])
+                if int(m) in used},
+        "hms": {m: n for m, n in sorted(hms.items(), key=lambda kv: kv[1])
+                if int(m) in used},
+        "species": species,
+    }
+
+
 def main():
     refresh = "--refresh" in sys.argv
     OUT.mkdir(parents=True, exist_ok=True)
@@ -1587,13 +1680,17 @@ def main():
     (OUT / "bosses.json").write_text(json.dumps(bosses, ensure_ascii=False, indent=1))
     (OUT / "types.json").write_text(json.dumps(types, ensure_ascii=False, indent=1))
     (OUT / "items.json").write_text(json.dumps(items, ensure_ascii=False, indent=1))
+    print("Learnsets:")
+    learnsets = build_learnsets(rrdex, types["spriteIds"])
+    (OUT / "learnsets.json").write_text(json.dumps(learnsets, ensure_ascii=False))
     move_ids = build_move_ids(rrdex)
     ability_names, ability_slots = build_ability_data(rrdex)
     (OUT / "abilityIds.json").write_text(json.dumps(
         {"names": ability_names, "bySpeciesId": ability_slots}, ensure_ascii=False, indent=1))
     (OUT / "moveIds.json").write_text(json.dumps(move_ids, ensure_ascii=False, indent=1))
-    print(f"\nWrote encounters.json, bosses.json, types.json, items.json and "
-          f"moveIds.json ({len(move_ids)} moves) and abilityIds.json to {OUT}")
+    print(f"\nWrote encounters.json, bosses.json, types.json, items.json, "
+          f"learnsets.json, moveIds.json ({len(move_ids)} moves) and "
+          f"abilityIds.json to {OUT}")
     if warnings:
         print(f"{len(warnings)} warnings — review above.")
 

@@ -40,6 +40,16 @@ still get types/stats/abilities (evolution method 254 = mega, excluded), and
 emits `spriteIds` maps (species → dex ID in types.json, normalized item name
 → item ID in items.json) used for sprite fallbacks.
 
+`learnsets.json` (species → level-up/TM/tutor/egg moves, for the Party & Box
+move filter) is keyed off types.json's `spriteIds`, so every alias and
+alternate-spelling merge `build_types()` resolved carries over for free. Two
+dex quirks it relies on: a species' `tmMoves`/`tutorMoves` are INDICES into
+the global tables, not move ids, and pre-evolution level-up moves are already
+folded into evolved forms at level 1 (no ancestor walking). Global TM index
+`i` is TM `i+1` up to 119 and HM `i-119` above it. The dex shortens seven
+move names to fit its own UI ("Drain Kiss", "Soupercell Slam") — `DEX_MOVE_NAMES`
+maps them back, or nobody typing the real name would ever match them.
+
 ## Sprites
 
 `Sprite`/`ItemSprite` chain URLs on 404 and render nothing/fallback at the
@@ -147,7 +157,15 @@ only case that exposes this; 1→1 swaps pass either way.
   counters, build editor, Evolve/Devolve via `evolutionsFor`/
   `preEvolutionsFor` in `src/lib/effectiveness.ts`; graveyard entries carry
   post-mortem notes + cause tags — `deathTags`/`deathNote` on
-  `RouteEncounter`, editor auto-opens on faint), "Battle readiness"
+  `RouteEncounter`, editor auto-opens on faint; the "Can learn" filter is
+  `src/lib/learnsets.ts` — the ~500 kB table is a dynamic `import()` fetched
+  only once a move is typed, so **never import it statically**, and the
+  filter stays off until it lands. A half-typed move is not a filter: it
+  applies only once the text names exactly one move, by full name or
+  unambiguous prefix, or every section would empty out on "ear". A build
+  that already lists the move matches even when the dex disagrees —
+  randomized learnsets are a real run setting (`learnsetsRandomized`, which
+  the toolbar warns about) and the dex has gaps), "Battle readiness"
   (two-column grid areas ph/bh/pc/bc/mu, weather picker seeded from boss
   battle effect, MoveMatchup HP-bar damage grid; its boss-preview `MonCard`s
   use the same `onCalc` prop as BossesView), and "Calculator"

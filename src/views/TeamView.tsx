@@ -6,7 +6,7 @@ import { MonCard, SpeciesDefenses } from "../components/MonCard";
 import { CalculatorPage } from "../components/CalculatorPage";
 import { TypeBadges, abilitiesFor, typesFor } from "../components/TypeBadges";
 import { isNoItem } from "../lib/itemSprites";
-import { abilitiesRandomized } from "../lib/saveFile";
+import { abilitiesRandomized, learnsetsRandomized } from "../lib/saveFile";
 import { nextLevelCap } from "../lib/levelCap";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
 import { bossTeamFor } from "../lib/bossTarget";
@@ -45,6 +45,15 @@ import {
   type MoveRange,
   type PlayerMonConfig,
 } from "../lib/damagecalc";
+import {
+  foldMove,
+  learnSource,
+  learnsetsReady,
+  loadLearnsets,
+  sameMove,
+  sourceLabel,
+  sourceTitle,
+} from "../lib/learnsets";
 import { ModifierToggle } from "../components/ModifierToggle";
 import { Combobox } from "../components/Combobox";
 import { ItemCombobox } from "../components/ItemCombobox";
@@ -101,6 +110,24 @@ export function TeamView({
   }, [calcTarget]);
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "BST" | "">("");
   const [filterType, setFilterType] = useState("");
+  const [filterMove, setFilterMove] = useState("");
+  // the learnset table is a ~500 kB lazy chunk: nothing loads it until a
+  // move is actually typed, and the filter stays off until it lands
+  const [learnReady, setLearnReady] = useState(learnsetsReady);
+  const [learnFailed, setLearnFailed] = useState(false);
+  useEffect(() => {
+    if (!filterMove || learnReady) return;
+    let live = true;
+    loadLearnsets().then(
+      () => live && setLearnReady(true),
+      // a filter that silently does nothing is worse than one that says it
+      // couldn't load; only a reload can actually fix it (see learnsets.ts)
+      () => live && setLearnFailed(true),
+    );
+    return () => {
+      live = false;
+    };
+  }, [filterMove, learnReady]);
   const [buildOpen, setBuildOpen] = useState<string | null>(null);
   const [evolveOpen, setEvolveOpen] = useState<string | null>(null);
   const [notesOpen, setNotesOpen] = useState<string | null>(null);
@@ -125,10 +152,54 @@ export function TeamView({
 
   if (!run) return <p className="muted">Create or select a run to see your team.</p>;
 
+  // a half-typed move is not a filter: emptying every section on "ear" would
+  // read as broken. Filter only once the text names exactly one real move —
+  // by full name, or by an unambiguous prefix ("earthq")
+  const move = (() => {
+    const q = filterMove.trim();
+    if (!q) return "";
+    const exact = MOVE_NAMES.find((n) => sameMove(n, q));
+    if (exact) return exact;
+    const key = foldMove(q);
+    const starts = MOVE_NAMES.filter((n) => foldMove(n).startsWith(key));
+    return starts.length === 1 ? starts[0] : "";
+  })();
+  const moveFilterOn = !!move && learnReady;
+  /** a build that already lists the move counts even when the dex says the
+   * species can't learn it — a randomized learnset or a gap in the dex data
+   * doesn't make the move any less present on that Pokémon */
+  const moveMatch = (e: Entry[1]) => {
+    if (!moveFilterOn) return null;
+    const knows = (e.build?.moves ?? []).some((m) => m && sameMove(m, move));
+    const src = learnSource(e.species, move);
+    return src || knows ? { src, knows } : null;
+  };
+
+  /** the pill saying HOW a match gets the move — null outside that filter */
+  const moveTag = (e: Entry[1]) => {
+    const hit = moveMatch(e);
+    if (!hit) return null;
+    return (
+      <span
+        className={hit.knows ? "learn-pill knows" : "learn-pill"}
+        title={
+          hit.src
+            ? sourceTitle(move, hit.src)
+            : `${move}: in this Pokémon's build, though the dex doesn't list it`
+        }
+      >
+        {hit.knows ? "Knows it" : sourceLabel(hit.src!)}
+      </span>
+    );
+  };
+
   const refine = (items: Entry[]): Entry[] => {
     let out = items;
     if (filterType) {
       out = out.filter(([, e]) => typesFor(e.species).includes(filterType));
+    }
+    if (moveFilterOn) {
+      out = out.filter(([, e]) => moveMatch(e));
     }
     if (sortStat === "KOS") {
       out = [...out].sort(([, a], [, b]) => (b.kos ?? 0) - (a.kos ?? 0));
@@ -238,6 +309,7 @@ export function TeamView({
     setSpecies,
     anyAbility,
     noEvs: run.mode === "hardcore" || !!run.minimalGrind,
+    moveTag,
   };
 
   const toolbar = (
@@ -279,11 +351,39 @@ export function TeamView({
           {filterType}
         </span>
       )}
+      <label className="move-filter">
+        Can learn
+        <Combobox
+          value={filterMove}
+          onChange={setFilterMove}
+          options={MOVE_NAMES}
+          placeholder="Any move"
+        />
+      </label>
+      {filterMove && <button onClick={() => setFilterMove("")}>Clear</button>}
+      {learnFailed && !learnReady && (
+        <span className="muted">
+          couldn't load move data{" "}
+          <button onClick={() => location.reload()}>Reload</button>
+        </span>
+      )}
+      {move && learnReady && learnsetsRandomized(run) && (
+        <span className="muted">
+          this run randomized learnsets — the dex's lists won't match
+        </span>
+      )}
     </div>
   );
 
-  const filteredEmpty = (base: string) =>
-    filterType ? `Nothing here matches ${filterType}.` : base;
+  const filteredEmpty = (base: string) => {
+    // a failed load leaves the filter off for good — don't leave an empty
+    // graveyard claiming to be loading forever
+    if (move && !learnReady) return learnFailed ? base : "Loading learnsets…";
+    if (move && filterType) return `Nothing here is ${filterType} and can learn ${move}.`;
+    if (move) return `Nothing here can learn ${move}.`;
+    if (filterType) return `Nothing here matches ${filterType}.`;
+    return base;
+  };
 
   return (
     <div className="team">
@@ -1691,6 +1791,8 @@ interface SectionCommon {
   statLevel: number;
   /** section-specific panel under a card (graveyard: death notes editor) */
   extraPanel?: (locId: string, e: Entry[1]) => React.ReactNode;
+  /** "how does this one learn the filtered move" pill, when that filter is on */
+  moveTag?: (e: Entry[1]) => React.ReactNode;
 }
 
 /** Evolve/Build toggle buttons shared by the full-card and compact layouts */
@@ -1870,6 +1972,7 @@ function TeamCard({
                 <div className="team-name">
                   {e.nickname || e.species}
                   {e.nickname && <span className="muted"> · {e.species}</span>}
+                  {common.moveTag?.(e)}
                   {highlightStat &&
                     highlightStat !== "KOS" &&
                     highlightStat !== "BST" &&
@@ -1995,6 +2098,7 @@ function MiniTable({
                 <td className="cell-species">
                   {e.nickname || e.species}
                   {e.nickname && <span className="muted"> ({e.species})</span>}
+                  {card.moveTag?.(e)}
                   {highlightStat &&
                     highlightStat !== "KOS" &&
                     highlightStat !== "BST" &&
