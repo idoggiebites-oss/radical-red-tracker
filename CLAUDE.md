@@ -241,6 +241,28 @@ only case that exposes this; 1→1 swaps pass either way.
   can attach a save this way later; `saveInfo` is refreshed on apply, and a
   mismatched trainer name is flagged rather than blocked.
 
+## Release notes ("What's new")
+
+`CHANGELOG.md` at the repo root is player-facing release notes, read by
+`src/lib/changelog.ts` via a `?raw` import — inlined at build time, so there
+is no generator and no generated file to drift. It deliberately does NOT read
+git: CI checks out shallow (`actions/checkout` with no `fetch-depth`), so
+anything shelling out to `git log` there would silently see one commit.
+
+**Add entries at the top; never renumber.** Notes are numbered by counting up
+from the oldest, so published notes keep their id only while new entries go
+on top. Renumbering re-shows old notes to everyone.
+
+The panel is keyed on **what the reader has already seen**
+(`rr-tracker.lastSeenNote`), not on the build. That is the whole design:
+every push deploys, and a busy day here runs to 17 pushes, so a per-deploy
+popup would fire all day. Batching by last-seen gives one panel per visit
+however many times we shipped in between. A reader with no stored position —
+a new player, or everyone already using the app the day this shipped — sees
+nothing and gets their position recorded, so history is never dumped on
+anyone. Only user-visible work belongs in the file; refactors and chunking go
+in the commit message.
+
 ## Conventions & gotchas
 
 - Never define a React component inside another component's render — it

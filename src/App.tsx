@@ -24,6 +24,7 @@ import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import { nextLevelCap } from "./lib/levelCap";
 import { ViewErrorBoundary, lazyView } from "./lib/lazyView";
 import { TabBar } from "./components/TabBar";
+import { WhatsNew } from "./components/WhatsNew";
 import "./app.css";
 
 // each view is its own chunk so the data/engine it imports (bosses.json,
@@ -493,6 +494,12 @@ export default function App() {
           )}
         </div>
       </header>
+
+      {/* under the header, above the tabs: seen on the way in, and out of
+          the way of whichever tab you came for. Renders null unless there
+          are unread notes, decided synchronously so it can't appear a beat
+          late and push the page down. */}
+      <WhatsNew />
 
       {creating && (
         <NewRunDialog

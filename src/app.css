@@ -698,6 +698,42 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 .ref-table td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
 
+/* ---- what's new ---- */
+
+.whats-new {
+  border: 1px solid var(--accent2);
+  background: var(--bg2);
+  border-radius: 10px;
+  padding: 10px 14px 12px;
+  margin: 0 0 14px;
+  font-size: 14px;
+}
+.whats-new-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.whats-new-head strong { color: var(--accent2); letter-spacing: 0.02em; }
+.whats-new-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+}
+.whats-new-close:hover { color: var(--text); }
+.whats-new ul { margin: 6px 0 0; padding-left: 18px; }
+.whats-new li { padding: 2px 0; }
+.whats-new-rest {
+  margin: 6px 0 0;
+  font-size: 13px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.whats-new-rest:hover { color: var(--text); }
+
 /* ---- Pokédex ---- */
 
 /* 1247 rows revealed 40 at a time, so it needs the same pinned columns as
