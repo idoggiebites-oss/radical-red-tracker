@@ -186,9 +186,29 @@ only case that exposes this; 1→1 swaps pass either way.
   above that side's own card via CSS `grid-template-areas` — the JSX itself
   keeps cards before results so mobile's plain single-column stacking
   (no `grid-template-areas` override) is unaffected.
-- Shared: `src/components/MonCard.tsx` (boss mon card + `SpeciesDefenses`;
-  no longer imports the calculator — just a sprite/stat-table/`onCalc`
-  callback), `src/lib/levelCap.ts`.
+- `src/views/ReferenceView.tsx` — segmented subtabs over one shared filter
+  box and the `Chunked` lazy-render helper. **Pokédex** (first, and the
+  default) lists all 1247 species from `src/lib/dex.ts`, expanding in place
+  like the Team tab's collapsed rows. Its point is **abilities**: the game
+  stores none, it recomputes them from the trainer id, so with a save
+  imported `abilityRollFor(run)` replays that hash (`src/lib/
+  abilityRandomizer.ts`) and the whole dex shows the run's REAL abilities,
+  base struck through. Only abilities are recoverable — species
+  randomization looks like a seeded shuffle and was shelved, the learnset
+  randomizer's mapping is unknown — so `dexCaveats()` prints what the tab
+  can't answer instead of passing dex defaults off as facts. This is why
+  `ReferenceView` takes a `run` prop at all. `dex.ts` also builds the
+  reverse indexes the docs have no equivalent of (species → where to catch
+  it, species → which bosses field it); the boss one and the learnset table
+  are big chunks, so both load on the **first expand**, not on mount —
+  otherwise every visit to Reference pays for them just to read Items.
+- Shared: `src/components/MonCard.tsx` (boss mon card; imports the
+  calculator for its stat-table preview), `src/lib/levelCap.ts`.
+  **`SpeciesDefenses` lives in its own file**, not in MonCard, precisely
+  because MonCard pulls the 484 kB engine chunk and the Pokédex wants the
+  type chips and nothing else — same trap as `itemNames` vs `damagecalc`.
+  `METHOD_LABELS` is in `src/lib/methods.ts` so Routes and the Pokédex
+  can't name the same encounter slot differently.
 - Randomizer: manual 🎲 toggles on the Routes toolbar (`run.randomizer`) —
   species opens the catch box to any species and hides the wild-encounter
   tables (the doc species aren't real options once anything can appear);

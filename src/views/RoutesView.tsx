@@ -16,6 +16,7 @@ import { STARTER_ID } from "../lib/storage";
 import { EGG_GROUPS } from "../lib/eggLocations";
 import { POSITION_LABELS, STARTER_REGIONS } from "../lib/starters";
 import { groupLocations, type RouteGroup } from "../lib/routeGroups";
+import { METHOD_LABELS } from "../lib/methods";
 import {
   staticSlotId,
   staticsByLocation,
@@ -65,15 +66,6 @@ const ROUTE_AFTER: Record<string, string> = {
   "ROCKET HIDEOUT · EGG": "CELADON CITY",
   "SAFFRON CITY · EGG": "ROCKET HIDEOUT · EGG",
   "SILPH CO. · EGG": "SAFFRON CITY · EGG",
-};
-
-const METHOD_LABELS: Record<MethodKey, string> = {
-  grass_day: "Grass / Cave · Day",
-  grass_night: "Grass / Cave · Night",
-  old_rod: "Old Rod",
-  good_rod: "Good Rod",
-  super_rod: "Super Rod",
-  surfing: "Surfing",
 };
 
 const STATUS_META: { id: EncounterStatus; label: string; icon: string }[] = [

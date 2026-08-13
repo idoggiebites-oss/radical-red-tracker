@@ -21,10 +21,14 @@
 import typesJson from "../data/types.json";
 import itemsJson from "../data/items.json";
 import moveIdsJson from "../data/moveIds.json";
-import abilityIdsJson from "../data/abilityIds.json";
 // from ./itemNames, not ./damagecalc — the adapter would pull the whole
 // engine chunk into the file-picking interaction for one string lookup
 import { canonicalItem } from "./itemNames";
+import {
+  abilityNames,
+  abilitySlotsBySpecies,
+  randomizedAbilityId,
+} from "./abilityRandomizer";
 import { readSaveFile } from "./saveFile";
 import { groupLocations, type RouteGroup } from "./routeGroups";
 import type { Location, RouteEncounter, Run } from "../types";
@@ -189,49 +193,6 @@ export function speciesNameFor(id: number): string {
   return speciesById.get(id) ?? "";
 }
 
-
-/** Radical Red does not store a Pokémon's ability. It recomputes it from the
- * trainer id, the species and the base ability every time — which is why no
- * byte, bit or species table in the save contains it, and why two Pokémon of
- * the same species always share an ability.
- *
- * These two candidate pools are game data (the abilities the randomizer is
- * allowed to pick from: the normal pool drops 19 form-changing abilities like
- * Wonder Guard and Disguise, and the restricted pool drops 29 more powerful
- * ones for hardcore). They were taken from hzla's Dynamic-Calc-Decomps, which
- * declares no licence — they are lists of ids extracted from the ROM rather
- * than authored work, but the source deserves the credit and this is the one
- * thing here not derived from our own data.
- * https://github.com/hzla/Dynamic-Calc-Decomps */
-const NORMAL_ABILITY_POOL = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,60,61,62,63,64,65,66,67,68,69,70,71,72,73,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,157,158,160,161,162,163,166,167,169,171,172,173,175,176,177,178,179,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,206,207,208,209,210,212,213,214,215,216,217,218,220,221,222,223,224,225,226,227,228,229,230,231,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,251,252,74,254,255,253];
-const RESTRICTED_ABILITY_POOL = [1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,57,58,60,61,62,63,64,65,66,67,68,69,70,71,72,73,75,77,78,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,112,113,114,115,116,119,121,122,123,124,125,126,127,128,129,130,132,133,135,136,137,138,139,140,141,144,145,146,147,148,149,150,151,152,153,154,158,160,161,162,163,166,167,169,171,175,177,178,179,185,186,187,188,189,190,192,193,194,195,196,198,199,200,201,202,203,204,206,208,209,210,215,216,217,218,220,221,222,223,224,225,226,227,228,229,230,231,233,234,235,236,237,238,239,240,241,242,243,244,245,246,248,249,251,74,254,255,253];
-
-const abilityNames = (abilityIdsJson as { names: Record<string, string> }).names;
-const abilitySlotsBySpecies = (abilityIdsJson as {
-  bySpeciesId: Record<string, number[]>;
-}).bySpeciesId;
-
-/** the exact hash Radical Red uses. Ported from the reference implementation;
- * every step matters, including the `> length` comparison (not `>=`) and the
- * 0xFFFF masks, which is why it is written out rather than tidied. */
-function randomizedAbilityId(
-  trainerId: number,
-  restricted: boolean,
-  abilityId: number,
-  speciesId: number,
-): number {
-  if (!abilityId) return 0;
-  const tid = Math.max(1, trainerId) >>> 0;
-  const pool = restricted ? RESTRICTED_ABILITY_POOL : NORMAL_ABILITY_POOL;
-  const n = pool.length;
-  if (!n) return abilityId;
-  const secret = ((tid >>> 16) & 0xffff) % 0xff;
-  let i = (tid & 0xffff) % n;
-  i = (i + speciesId + abilityId) & 0xffff;
-  if (i > n) i = (i - n + 2) & 0xffff;
-  i = (i ^ (secret & 0xffff)) % n;
-  return pool[i] >>> 0;
-}
 
 /** slot 2 is the hidden ability, flagged either by the top bit of the IV word
  * or by a 191 marker byte; otherwise the slot is bit 0 of the PID. */

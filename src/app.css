@@ -697,6 +697,50 @@ tr.pickable:hover td { background: var(--bg3); }
   .cols-items td:nth-child(2) { width: 115px; }
 }
 .ref-table td { padding: 5px 12px 5px 0; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+
+/* ---- Pokédex ---- */
+
+/* 1247 rows revealed 40 at a time, so it needs the same pinned columns as
+   the two tables above for the same reason — see the comment there */
+.dex-table { table-layout: fixed; }
+.dex-table td:nth-child(1) { width: 20px; }
+.dex-table td:nth-child(2) { width: 44px; }
+.dex-table td:nth-child(3) { width: 160px; }
+.dex-table td:nth-child(4) { width: 130px; }
+.dex-table td:nth-child(6) { width: 44px; text-align: right; }
+.dex-table .cell-abils { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dex-note { margin: 0 0 8px; max-width: 640px; font-size: 13px; }
+
+.dex-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 4px 20px;
+  padding: 10px 0 14px;
+  white-space: normal;
+}
+.dex-block h4 { margin: 8px 0 4px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.dex-block h5 { margin: 6px 0 2px; font-size: 12px; color: var(--accent2); }
+.dex-list, .dex-abils { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
+.dex-list li, .dex-abils li { padding: 1px 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.dex-slot { min-width: 62px; font-size: 11.5px; }
+.dex-was { text-decoration: line-through; }
+.dex-lv { min-width: 52px; font-size: 11.5px; }
+/* the learnset is the one block that can run to 100+ rows: give it the full
+   width of the detail grid and split it into its own columns */
+.dex-moves { grid-column: 1 / -1; }
+.dex-move-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 20px; align-items: start; }
+
+/* a phone has room for the name and the abilities, not both plus types and
+   BST — and the abilities are the reason this tab exists, so the type column
+   goes (the expanded entry shows badges) and BST with it. The detail grid
+   must also be capped: .ref-table becomes an overflow-x scroller down here,
+   so an auto-fit grid inside it would silently widen instead of wrapping. */
+@media (max-width: 640px) {
+  .dex-table td:nth-child(3) { width: 118px; }
+  .dex-table td.cell-types, .dex-table td.cell-bst { display: none; }
+  .dex-detail { grid-template-columns: 1fr; max-width: 340px; }
+  .dex-move-groups { grid-template-columns: 1fr; }
+}
 .cheat-codes-note { margin: 0 0 10px; max-width: 560px; }
 .cheat-code {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;

@@ -1,6 +1,8 @@
 import {
+  Fragment,
   useDeferredValue,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -12,16 +14,36 @@ import type {
   ItemEntry,
   ItemsData,
   RaidLocation,
+  Run,
   TmEntry,
 } from "../types";
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { TypeBadges } from "../components/TypeBadges";
+import { SpeciesDefenses } from "../components/SpeciesDefenses";
+import { STAT_KEYS, evolutionsFor } from "../lib/effectiveness";
+import {
+  DEX_ENTRIES,
+  abilitiesFor,
+  abilityRollFor,
+  bossesFor,
+  bossIndexReady,
+  catchSpotsFor,
+  dexCaveats,
+  loadBossIndex,
+  type DexEntry,
+} from "../lib/dex";
+import {
+  learnsetFor,
+  learnsetsReady,
+  loadLearnsets,
+} from "../lib/learnsets";
 
 const items = itemsJson as unknown as ItemsData;
 const data = encountersJson as unknown as EncountersData;
 
 type RefTab =
+  | "pokedex"
   | "statics"
   | "gifts"
   | "trades"
@@ -34,6 +56,7 @@ type RefTab =
   | "cheats";
 
 const TABS: { id: RefTab; label: string }[] = [
+  { id: "pokedex", label: "Pokédex" },
   { id: "statics", label: "Statics & Legendaries" },
   { id: "gifts", label: "Gifts" },
   { id: "trades", label: "Trades" },
@@ -108,8 +131,8 @@ function Chunked<T>({
   );
 }
 
-export function ReferenceView() {
-  const [tab, setTab] = useState<RefTab>("statics");
+export function ReferenceView({ run }: { run?: Run | null }) {
+  const [tab, setTab] = useState<RefTab>("pokedex");
   const [filter, setFilter] = useState("");
   // the input keeps the live value so typing never waits on the list render
   const q = useDeferredValue(filter).trim().toLowerCase();
@@ -135,6 +158,8 @@ export function ReferenceView() {
           onChange={(e) => setFilter(e.target.value)}
         />
       </div>
+
+      {tab === "pokedex" && <Pokedex q={q} run={run ?? null} />}
 
       {tab === "statics" && (
         <Chunked
@@ -297,6 +322,315 @@ const NG_PLUS_CODES: {
 /** Mystery Gift codes from the docs' own tab — legendaries redeemed at the
  * red Nurse rather than caught, so they sit in Reference beside the cheat
  * codes instead of anywhere in a run's encounter list. */
+/** every species, with what this run actually does to it. Abilities are the
+ * whole point: with a save imported we replay the game's own ability hash, so
+ * a randomized run sees its real abilities dex-wide rather than the defaults
+ * (see lib/dex.ts). Rows expand in place, the same shape as the Team tab's
+ * collapsed sections, so one Pokémon can be read without losing the list. */
+function Pokedex({ q, run }: { q: string; run: Run | null }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const roll = useMemo(() => abilityRollFor(run), [run]);
+  const caveats = useMemo(() => dexCaveats(run), [run]);
+
+  // the boss index and the learnset table are big lazy chunks (602 kB and
+  // 415 kB) and only the EXPANDED entry needs either, so they're fetched on
+  // the first expand rather than on mount — otherwise every visit to
+  // Reference pays for them just to read the Items list
+  const [extrasReady, setExtrasReady] = useState(
+    () => bossIndexReady() && learnsetsReady(),
+  );
+  const [extrasFailed, setExtrasFailed] = useState(false);
+  useEffect(() => {
+    if (extrasReady || !open) return;
+    let live = true;
+    Promise.all([loadBossIndex(), loadLearnsets()]).then(
+      () => live && setExtrasReady(true),
+      // only a reload recovers a failed chunk import (see learnsets.ts), so
+      // say so instead of showing "Loading…" for ever
+      () => live && setExtrasFailed(true),
+    );
+    return () => {
+      live = false;
+    };
+  }, [extrasReady, open]);
+
+  // matches the name, a type or an ability — so "Levitate" or "Ghost" find
+  // everything that has it, which is the reverse lookup the docs can't do
+  const rows = useMemo(() => {
+    if (!q) return DEX_ENTRIES;
+    return DEX_ENTRIES.filter(
+      (e) =>
+        e.species.toLowerCase().includes(q) ||
+        e.types.some((t) => t.toLowerCase().includes(q)) ||
+        abilitiesFor(e, roll).some(
+          (a) =>
+            a.actual.toLowerCase().includes(q) || a.base.toLowerCase().includes(q),
+        ),
+    );
+  }, [q, roll]);
+
+  return (
+    <>
+      <p className="muted dex-note">
+        {roll
+          ? "Abilities are this run's own — recomputed from your save's trainer ID, the same way the game does it."
+          : "Abilities are the dex's defaults. Import a save on a run with the ability randomizer on to see that run's real ones."}
+      </p>
+      {caveats.map((c) => (
+        <p key={c} className="muted dex-note">
+          Note: {c}.
+        </p>
+      ))}
+      {rows.length === 0 && <p className="muted">No Pokémon matches that.</p>}
+      <Chunked items={rows} step={40} resetKey={q}>
+        {(visible) => (
+          <table className="ref-table dex-table">
+            <tbody>
+              {visible.map((e) => {
+                const isOpen = open === e.species;
+                return (
+                  <Fragment key={e.species}>
+                    <tr
+                      className={isOpen ? "mini-row open" : "mini-row"}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isOpen}
+                      onClick={() => setOpen(isOpen ? null : e.species)}
+                      onKeyDown={(ev) => {
+                        if (ev.key === "Enter" || ev.key === " ") {
+                          ev.preventDefault();
+                          setOpen(isOpen ? null : e.species);
+                        }
+                      }}
+                    >
+                      <td className="cell-chev">{isOpen ? "▾" : "▸"}</td>
+                      <td className="cell-sprite">
+                        <Sprite species={e.species} size={36} />
+                      </td>
+                      <td className="cell-species">{e.species}</td>
+                      <td className="cell-types">
+                        <TypeBadges species={e.species} small />
+                      </td>
+                      <td className="cell-abils muted">
+                        {abilitiesFor(e, roll)
+                          .map((a) => a.actual)
+                          .join(" · ")}
+                      </td>
+                      <td className="cell-bst muted">{e.bst || ""}</td>
+                    </tr>
+                    {isOpen && (
+                      <tr className="mini-row-card">
+                        <td colSpan={6}>
+                          <DexDetail
+                            entry={e}
+                            roll={roll}
+                            ready={extrasReady}
+                            failed={extrasFailed}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </Chunked>
+    </>
+  );
+}
+
+const SLOT_LABELS = ["Ability 1", "Ability 2", "Hidden"];
+
+function DexDetail({
+  entry,
+  roll,
+  ready,
+  failed,
+}: {
+  entry: DexEntry;
+  roll: ReturnType<typeof abilityRollFor>;
+  ready: boolean;
+  /** the boss/learnset chunks didn't load; a reload is the only fix */
+  failed: boolean;
+}) {
+  const abilities = abilitiesFor(entry, roll);
+  const evolutions = evolutionsFor(entry.species);
+  const spots = catchSpotsFor(entry.species);
+  const bosses = ready ? bossesFor(entry.species) : [];
+  const moves = ready ? learnsetFor(entry.species) : null;
+
+  return (
+    <div className="dex-detail">
+      <section className="dex-block">
+        <h4>Abilities</h4>
+        <ul className="dex-abils">
+          {abilities.map((a) => (
+            <li key={a.slot}>
+              <span className="dex-slot muted">{SLOT_LABELS[a.slot] ?? "Ability"}</span>
+              {a.actual !== a.base ? (
+                <>
+                  <span className="dex-was muted">{a.base}</span>
+                  <span className="dex-arrow muted">→</span>
+                  <strong>{a.actual}</strong>
+                </>
+              ) : (
+                <strong>{a.base}</strong>
+              )}
+            </li>
+          ))}
+          {abilities.length === 0 && <li className="muted">None recorded.</li>}
+        </ul>
+      </section>
+
+      <section className="dex-block">
+        <h4>Base stats</h4>
+        {/* the row's own type column is hidden on a phone, so this is where
+            the typing is readable there */}
+        <TypeBadges species={entry.species} small />
+        <table className="stat-table">
+          <thead>
+            <tr>
+              {STAT_KEYS.map((s) => (
+                <th key={s}>{s}</th>
+              ))}
+              <th>BST</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {STAT_KEYS.map((s) => (
+                <td key={s}>{entry.stats[s] ?? "–"}</td>
+              ))}
+              <td>{entry.bst || "–"}</td>
+            </tr>
+          </tbody>
+        </table>
+        <SpeciesDefenses species={entry.species} />
+      </section>
+
+      {evolutions.length > 0 && (
+        <section className="dex-block">
+          <h4>Evolves</h4>
+          <ul className="dex-list">
+            {evolutions.map((ev) => (
+              <li key={ev.to + ev.how}>
+                <Sprite species={ev.to} size={24} /> {ev.to}{" "}
+                <span className="muted">{ev.how}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="dex-block">
+        <h4>
+          Where to catch it <span className="count muted">({spots.length})</span>
+        </h4>
+        {spots.length === 0 ? (
+          <p className="muted">Not obtainable in the wild — evolve or trade for it.</p>
+        ) : (
+          <ul className="dex-list">
+            {spots.map((s, i) => (
+              <li key={i}>
+                <strong>{s.where}</strong> <span className="muted">{s.method}</span>{" "}
+                <span className="muted">{s.detail}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="dex-block">
+        <h4>
+          Bosses running it{" "}
+          {ready && <span className="count muted">({bosses.length})</span>}
+        </h4>
+        {!ready ? (
+          <p className="muted">{failed ? "Couldn't load — reload the page." : "Loading…"}</p>
+        ) : bosses.length === 0 ? (
+          <p className="muted">No boss brings this one.</p>
+        ) : (
+          <ul className="dex-list">
+            {bosses.map((b, i) => (
+              <li key={i}>
+                <strong>{b.title}</strong>{" "}
+                <span className="muted">
+                  {b.mode} · {b.category} · Lv {b.level}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="dex-block dex-moves">
+        <h4>Learnset</h4>
+        {!moves ? (
+          <p className="muted">{failed ? "Couldn't load — reload the page." : "Loading…"}</p>
+        ) : (
+          <div className="dex-move-groups">
+            <div>
+              <h5>By level</h5>
+              <ul className="dex-list">
+                {moves.level.map((m) => (
+                  <li key={m.move}>
+                    <span className="dex-lv muted">Lv {m.level}</span> {m.move}
+                  </li>
+                ))}
+                {moves.level.length === 0 && <li className="muted">None.</li>}
+              </ul>
+            </div>
+            <div>
+              <h5>TMs &amp; HMs</h5>
+              <ul className="dex-list">
+                {moves.hm.map((m) => (
+                  <li key={"hm" + m.move}>
+                    <span className="dex-lv muted">
+                      HM {String(m.num).padStart(2, "0")}
+                    </span>{" "}
+                    {m.move}
+                  </li>
+                ))}
+                {moves.tm.map((m) => (
+                  <li key={"tm" + m.move}>
+                    <span className="dex-lv muted">
+                      TM {String(m.num).padStart(3, "0")}
+                    </span>{" "}
+                    {m.move}
+                  </li>
+                ))}
+                {moves.tm.length + moves.hm.length === 0 && (
+                  <li className="muted">None.</li>
+                )}
+              </ul>
+            </div>
+            <div>
+              <h5>Tutor</h5>
+              <ul className="dex-list">
+                {moves.tutor.map((m) => (
+                  <li key={m}>{m}</li>
+                ))}
+                {moves.tutor.length === 0 && <li className="muted">None.</li>}
+              </ul>
+            </div>
+            <div>
+              <h5>Egg</h5>
+              <ul className="dex-list">
+                {moves.egg.map((m) => (
+                  <li key={m}>{m}</li>
+                ))}
+                {moves.egg.length === 0 && <li className="muted">None.</li>}
+              </ul>
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
 function MysteryGifts({ q }: { q: string }) {
   const { notes, codes } = data.mysteryGift ?? { notes: [], codes: [] };
   const rows = codes.filter(

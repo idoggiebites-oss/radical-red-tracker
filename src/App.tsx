@@ -627,7 +627,9 @@ export default function App() {
               onClearCalcTarget={clearCalcTarget}
             />
           )}
-          {tab === "reference" && <ReferenceView />}
+          {/* the Pokédex shows the ACTIVE run's randomized abilities, so it
+              needs the run itself, not just its data */}
+          {tab === "reference" && <ReferenceView run={run} />}
         </Suspense>
         </ViewErrorBoundary>
       </main>

@@ -120,6 +120,43 @@ function sourcesFor(species: string): Map<number, LearnSource> {
   return out;
 }
 
+export interface LearnsetGroups {
+  level: { move: string; level: number }[];
+  tm: { move: string; num: number }[];
+  hm: { move: string; num: number }[];
+  tutor: string[];
+  egg: string[];
+}
+
+/** everything one species can learn, grouped for display — the Pokédex's
+ * view of the same table the Party & Box filter queries one move at a time.
+ * Null until `loadLearnsets()` has landed. */
+export function learnsetFor(species: string): LearnsetGroups | null {
+  if (!data) return null;
+  const ent = entryFor(species);
+  if (!ent) return null;
+  const name = (id: number) => data!.moves[String(id)] ?? "";
+  const byName = (a: string, b: string) => a.localeCompare(b);
+  return {
+    level: (ent.l ?? [])
+      // the dex records moves a form starts with at level 0 as well as 1;
+      // "Lv 0" means nothing to a player, so both read as level 1
+      .map(([id, level]) => ({ move: name(id), level: Math.max(1, level) }))
+      .filter((m) => m.move)
+      .sort((a, b) => a.level - b.level || byName(a.move, b.move)),
+    tm: (ent.t ?? [])
+      .filter((id) => data!.tms[String(id)])
+      .map((id) => ({ move: name(id), num: data!.tms[String(id)] }))
+      .sort((a, b) => a.num - b.num),
+    hm: (ent.t ?? [])
+      .filter((id) => data!.hms[String(id)])
+      .map((id) => ({ move: name(id), num: data!.hms[String(id)] }))
+      .sort((a, b) => a.num - b.num),
+    tutor: (ent.u ?? []).map(name).filter(Boolean).sort(byName),
+    egg: (ent.e ?? []).map(name).filter(Boolean).sort(byName),
+  };
+}
+
 /** same move, however either side spelled it */
 export const sameMove = (a: string, b: string) => fold(a) === fold(b);
 

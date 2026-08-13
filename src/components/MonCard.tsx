@@ -2,48 +2,8 @@ import type { BossMon, CalcTarget } from "../types";
 import { Sprite } from "./Sprite";
 import { ItemSprite } from "./ItemSprite";
 import { TypeBadges } from "./TypeBadges";
-import { defensiveProfile, formatMult, typeColor } from "../lib/effectiveness";
+import { SpeciesDefenses } from "./SpeciesDefenses";
 import { applyNoEvs, bossStatTotals, defaultBossLevel } from "../lib/damagecalc";
-
-/** weak/resist/immune type chips for a species (+ defensive ability) */
-export function SpeciesDefenses({
-  species,
-  ability,
-}: {
-  species: string;
-  ability?: string;
-}) {
-  const profile = defensiveProfile(species, ability);
-  const entries = Object.entries(profile);
-  if (entries.length === 0) return null;
-  const groups: { label: string; test: (m: number) => boolean }[] = [
-    { label: "Weak", test: (m) => m > 1 },
-    { label: "Resist", test: (m) => m > 0 && m < 1 },
-    { label: "Immune", test: (m) => m === 0 },
-  ];
-  return (
-    <div className="mon-defenses">
-      {groups.map(({ label, test }) => {
-        const items = entries
-          .filter(([, m]) => test(m))
-          .sort(([, a], [, b]) => b - a);
-        if (items.length === 0) return null;
-        return (
-          <div key={label} className="def-row">
-            <span className="k">{label}</span>
-            <span className="def-chips">
-              {items.map(([t, m]) => (
-                <span key={t} className="type-badge" style={{ background: typeColor(t) }}>
-                  {t} {formatMult(m)}
-                </span>
-              ))}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 const STAT_ORDER = ["HP", "ATK", "DEF", "SPA", "SPD", "SPE"];
 
