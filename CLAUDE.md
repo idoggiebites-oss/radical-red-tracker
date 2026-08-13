@@ -257,11 +257,19 @@ The panel is keyed on **what the reader has already seen**
 (`rr-tracker.lastSeenNote`), not on the build. That is the whole design:
 every push deploys, and a busy day here runs to 17 pushes, so a per-deploy
 popup would fire all day. Batching by last-seen gives one panel per visit
-however many times we shipped in between. A reader with no stored position —
-a new player, or everyone already using the app the day this shipped — sees
-nothing and gets their position recorded, so history is never dumped on
-anyone. Only user-visible work belongs in the file; refactors and chunking go
-in the commit message.
+however many times we shipped in between. Only user-visible work belongs in
+the file; refactors and chunking go in the commit message.
+
+A reader with **no stored position** is split two ways, because "we have
+never recorded you" means opposite things for a player who predates the
+panel and one opening the app for the first time. `HAD_STATE_AT_STARTUP`
+(is `rr-tracker.v1` already in localStorage, read at *module load* — App's
+own save effect would otherwise create the key and erase the distinction)
+picks between `BACKFILL_FROM`, so an existing player is told about the work
+they missed, and the newest note, so a new player is told nothing about an
+app they have never seen. The position is written on the way in, not on
+dismiss, so it can't be re-derived on a later visit once that signal no
+longer means what it did.
 
 ## Conventions & gotchas
 

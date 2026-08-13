@@ -57,6 +57,27 @@ export const NEWEST_NOTE = NOTES.length ? NOTES[0].id : 0;
 
 const KEY = "rr-tracker.lastSeenNote";
 
+/** Where a reader with no stored position starts.
+ *
+ * Players who predate this panel have no position, and treating them as
+ * new would mean the recent work never gets announced to the people who
+ * would most want it. But a genuinely new player must NOT be shown "the
+ * Reference tab has a Pokédex" as news about an app they are opening for
+ * the first time. The two are told apart by whether the app had saved
+ * state before this session: read at module load, which is well before
+ * App's own save effect can create the key and blur the distinction.
+ *
+ * This only ever applies once per reader — the position is written
+ * immediately — so the set it covers empties out as people visit. */
+const BACKFILL_FROM = 3; // the 2026-08-09 tab bar; everything since is new
+const HAD_STATE_AT_STARTUP = (() => {
+  try {
+    return localStorage.getItem("rr-tracker.v1") !== null;
+  } catch {
+    return false;
+  }
+})();
+
 function lastSeen(): number | null {
   try {
     const raw = localStorage.getItem(KEY);
@@ -68,15 +89,15 @@ function lastSeen(): number | null {
   }
 }
 
-/** notes added since this reader last dismissed the panel.
- *
- * A reader we've never recorded gets NOTHING — not the whole history. That
- * covers both a brand-new player and everyone already using the app on the
- * day this ships; `markSeen` then records where they came in, so the next
- * real note is the first thing they see. */
+/** where an unrecorded reader is treated as having got to: an existing
+ * player is caught up only to BACKFILL_FROM, a first-time visitor to the
+ * newest note, so only the former is told anything */
+export const startingPosition = () =>
+  HAD_STATE_AT_STARTUP ? BACKFILL_FROM : NEWEST_NOTE;
+
+/** notes added since this reader last dismissed the panel */
 export function unseenNotes(): Note[] {
-  const seen = lastSeen();
-  if (seen === null) return [];
+  const seen = lastSeen() ?? startingPosition();
   return NOTES.filter((n) => n.id > seen);
 }
 

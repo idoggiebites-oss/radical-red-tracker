@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   isFirstRun,
   markSeen,
+  startingPosition,
   unseenNotes,
   type Note,
 } from "../lib/changelog";
@@ -36,10 +37,12 @@ export function WhatsNew() {
   const [notes, setNotes] = useState<Note[]>(unseenNotes);
   const [showAll, setShowAll] = useState(false);
 
-  // a reader with no recorded position gets nothing this visit; record where
-  // they came in so the next real note is the first thing they see
+  // pin an unrecorded reader's position on the way in. Writing it now (not
+  // on dismiss) is what stops the starting position being re-derived on a
+  // later visit, when "did the app have saved state" no longer means what it
+  // meant the first time.
   useEffect(() => {
-    if (isFirstRun()) markSeen();
+    if (isFirstRun()) markSeen(startingPosition());
   }, []);
 
   if (notes.length === 0) return null;
