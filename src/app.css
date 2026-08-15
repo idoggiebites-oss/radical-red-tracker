@@ -738,12 +738,18 @@ tr.pickable:hover td { background: var(--bg3); }
 
 /* 1247 rows revealed 40 at a time, so it needs the same pinned columns as
    the two tables above for the same reason — see the comment there */
+/* Every width here is scoped to `> tbody > tr.mini-row >` on purpose. A bare
+   `.dex-table td:nth-child(n)` is a DESCENDANT selector, so it reaches
+   straight into the stat table inside an expanded entry and sets its 3rd and
+   4th columns to the list's DEF/SPA widths — which is what made the base
+   stats read HP ATK  DEF   SPA  SPD SPE BST. Nesting a table inside a table
+   with positional rules needs the child combinator. */
 .dex-table { table-layout: fixed; }
-.dex-table td:nth-child(1) { width: 20px; }
-.dex-table td:nth-child(2) { width: 44px; }
-.dex-table td:nth-child(3) { width: 160px; }
-.dex-table td:nth-child(4) { width: 130px; }
-.dex-table td:nth-child(6) { width: 44px; text-align: right; }
+.dex-table > tbody > tr.mini-row > td:nth-child(1) { width: 20px; }
+.dex-table > tbody > tr.mini-row > td:nth-child(2) { width: 44px; }
+.dex-table > tbody > tr.mini-row > td:nth-child(3) { width: 160px; }
+.dex-table > tbody > tr.mini-row > td:nth-child(4) { width: 130px; }
+.dex-table > tbody > tr.mini-row > td:nth-child(6) { width: 44px; text-align: right; }
 .dex-table .cell-abils { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dex-note { margin: 0 0 8px; max-width: 640px; font-size: 13px; }
 
@@ -787,7 +793,7 @@ tr.pickable:hover td { background: var(--bg3); }
    must also be capped: .ref-table becomes an overflow-x scroller down here,
    so an auto-fit grid inside it would silently widen instead of wrapping. */
 @media (max-width: 640px) {
-  .dex-table td:nth-child(3) { width: 118px; }
+  .dex-table > tbody > tr.mini-row > td:nth-child(3) { width: 118px; }
   .dex-table td.cell-types, .dex-table td.cell-bst { display: none; }
   .dex-detail { grid-template-columns: 1fr; max-width: 340px; }
   .dex-move-groups { grid-template-columns: 1fr; }
