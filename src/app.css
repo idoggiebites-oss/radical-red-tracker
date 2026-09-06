@@ -1840,6 +1840,43 @@ tr.pickable:hover td { background: var(--bg3); }
    data-dense panel costs readability on exactly the screens you're reading
    while playing. */
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  /* Both bottom bars, tuned on a real iPhone against the app's own sprite list
+     rather than guessed at. The numbers are deliberately transparent: a 6px
+     core blur and a 0.37 fill let the rows read through, which is the look that
+     was picked over the more obscuring one it replaced.
+
+     The lensing is the part doing the work. Real thick glass doesn't blur its
+     background evenly — it compresses and brightens what is near the curved
+     rim, and that difference between rim and core is what the eye reads as
+     thickness. So a second backdrop layer, barely blurred and brightened, is
+     masked to everything outside the middle 27% and sits under a soft core.
+     Both use only blur/brightness/saturate, which every engine here renders —
+     unlike the SVG displacement below, which Safari silently declines. */
+  .tabs.floating {
+    background: rgba(25, 29, 39, 0.37);
+    -webkit-backdrop-filter: blur(6px) saturate(240%);
+    backdrop-filter: blur(6px) saturate(240%);
+    /* the lit top edge, with the outer drop shadow as its far side — a near
+       and a far edge is most of what makes a panel look solid */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.44),
+      0 10px 30px rgba(0, 0, 0, 0.45);
+    /* the rim layer sits at z-index -1; without a stacking context of its own
+       it would fall behind the page instead of behind the buttons */
+    isolation: isolate;
+  }
+  .tabs.floating::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: -1;
+    -webkit-backdrop-filter: blur(5px) brightness(1.55) saturate(160%);
+    backdrop-filter: blur(5px) brightness(1.55) saturate(160%);
+    -webkit-mask: radial-gradient(120% 150% at 50% 50%, transparent 27%, #000 88%);
+            mask: radial-gradient(120% 150% at 50% 50%, transparent 27%, #000 88%);
+  }
+
   .dialog {
     background: rgba(25, 29, 39, 0.72);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
@@ -1875,16 +1912,8 @@ tr.pickable:hover td { background: var(--bg3); }
       bottom: calc(6px + env(safe-area-inset-bottom));
       padding: 6px;
       border-radius: 26px;
-      background: rgba(25, 29, 39, 0.55);
-      -webkit-backdrop-filter: blur(28px) saturate(200%);
-      backdrop-filter: blur(28px) saturate(200%);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      /* same lit edge as the desktop bar; this part is only a box-shadow, so
-         it costs nothing and works everywhere */
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.35),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-        0 10px 30px rgba(0, 0, 0, 0.45);
+      /* fill, blur, rim and shadow come from the shared rule above */
     }
     .tab { border-radius: 18px; }
     .tab-pill { border-radius: 18px; background: rgba(255, 255, 255, 0.14); }
@@ -1902,18 +1931,9 @@ tr.pickable:hover td { background: var(--bg3); }
       bottom: 14px;
       padding: 8px;
       border-radius: 26px;
-      background: rgba(25, 29, 39, 0.6);
-      -webkit-backdrop-filter: blur(28px) saturate(200%);
-      backdrop-filter: blur(28px) saturate(200%);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      /* the 1px inset white line is what gives the panel thickness: it reads
-         as the lit top edge of a solid piece of glass rather than a painted
-         rectangle. Paired with the outer drop shadow it has a near and a far
-         side, which is most of the illusion. */
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.35),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-        0 10px 30px rgba(0, 0, 0, 0.45);
+      /* fill, blur and shadow come from the shared rule above — only the
+         geometry differs between the two bars */
     }
     /* refraction on top of a light blur. The blur has to stay small — at the
        28px above, the displacement is averaged away again and the panel is
@@ -1935,12 +1955,8 @@ tr.pickable:hover td { background: var(--bg3); }
        28px — which on the phone reads as the bar going see-through, the
        symptom that sent us looking in the first place. */
     .tabs.floating {
-      -webkit-backdrop-filter: url(#glass-refraction) blur(14px) saturate(200%);
-      backdrop-filter: url(#glass-refraction) blur(14px) saturate(200%);
-      /* half the blur hides half as much, and the Pokédex's rows were legible
-         through the bar at 0.6 — bending text is a glitch, not a material.
-         The fill makes up the obscuring the blur gave up. */
-      background: rgba(25, 29, 39, 0.72);
+      -webkit-backdrop-filter: url(#glass-refraction) blur(6px) saturate(240%);
+      backdrop-filter: url(#glass-refraction) blur(6px) saturate(240%);
     }
     .tabs.floating .tab { border-radius: 18px; }
     .tabs.floating .tab-pill { border-radius: 18px; background: rgba(255, 255, 255, 0.14); }
