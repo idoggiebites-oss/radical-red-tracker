@@ -1920,13 +1920,20 @@ tr.pickable:hover td { background: var(--bg3); }
        back to flat grey (measured: it looks identical to no filter at all).
        14px is where the bending still reads.
 
-       Only the desktop bar gets this, and the reason is a trap: WebKit
-       answers true to `CSS.supports('backdrop-filter','url(#x)')` whether or
-       not it can render one, so neither @supports nor the cascade can hold a
-       fallback for it. An engine that parses this and can't draw it keeps the
-       14px and loses the 28px — fine on a desktop, but the phone bar is the
-       one people actually look at, so it is left on the plain blur above
-       until this can be checked on a real iPhone. */
+       Desktop only, and NOT for want of trying it on the phone: **iOS Safari
+       does not render an SVG filter reference in backdrop-filter.** Checked
+       on a real iPhone against a striped test page where the bending is
+       unmissable — the panel came back with the stripes dead straight. Don't
+       re-attempt this on the phone bar without new evidence that WebKit
+       shipped it; the app's own chrome is too dark and flat to tell the
+       difference, so test it against high contrast or you will fool yourself.
+
+       And it cannot be feature-detected around: WebKit answers true to
+       `CSS.supports('backdrop-filter','url(#x)')` regardless, so neither
+       @supports nor the cascade can hold a fallback behind it. An engine that
+       parses this and can't draw it keeps the 14px and silently loses the
+       28px — which on the phone reads as the bar going see-through, the
+       symptom that sent us looking in the first place. */
     .tabs.floating {
       -webkit-backdrop-filter: url(#glass-refraction) blur(14px) saturate(200%);
       backdrop-filter: url(#glass-refraction) blur(14px) saturate(200%);
