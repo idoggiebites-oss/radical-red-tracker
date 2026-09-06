@@ -15,6 +15,13 @@ ignored by the parser.
 
 ## 2026-09-06
 
+- The Pokédex has a **"Can learn" search**: type a move and it narrows to the
+  Pokémon that can learn it, each tagged with how — the level, the TM number,
+  tutor or egg. The same search Party & Box already had, now across the whole
+  dex.
+- On a run with the ability randomizer, searching the Pokédex for an ability
+  no longer turns up Pokémon that only have it in the unrandomized game. It
+  lists the ones that actually have it in your run.
 - Scrolling on a wide screen no longer jumps: the bottom tab bar now fades in
   once the top row scrolls away, instead of the row itself leaping down to the
   bottom of the window and dragging the page with it. Settling right on the

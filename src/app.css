@@ -975,7 +975,10 @@ tr.pickable:hover td { background: var(--bg3); }
 .mini-row-card > td { padding: 4px 0 12px; white-space: normal; }
 .mini-row-card .team-card-wrap { max-width: 420px; }
 .box-toolbar { display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap; }
-.box-toolbar label {
+/* the Pokédex's move filter is the same control in a different toolbar, so
+   it takes the same layout rather than a second one that drifts */
+.box-toolbar label,
+.reference .toolbar .move-filter {
   display: flex;
   gap: 6px;
   align-items: center;
@@ -994,9 +997,12 @@ tr.pickable:hover td { background: var(--bg3); }
 }
 /* a free-text box, not a select like Type: 950+ move names don't fit a
    dropdown, and the combobox's own flex-grow would eat the whole toolbar */
-.box-toolbar .move-filter .combobox { flex: 0 0 auto; width: 150px; }
+.box-toolbar .move-filter .combobox,
+.reference .toolbar .move-filter .combobox { flex: 0 0 auto; width: 150px; }
 /* every row on screen matches the move filter, so the source is an
    annotation, not a highlight — only "already has it" earns a colour */
+/* leading its cell in the Pokédex, trailing in Party & Box */
+.cell-abils .learn-pill { margin-left: 0; margin-right: 8px; }
 .learn-pill {
   margin-left: 8px;
   background: var(--bg3);

@@ -157,6 +157,35 @@ export function learnsetFor(species: string): LearnsetGroups | null {
   };
 }
 
+/** every move this table has a learnset for, sorted. Empty until the chunk
+ * is loaded, so a picker built on it fills in once loadLearnsets() lands.
+ * Read from the learnset data rather than the calc engine's MOVE_NAMES on
+ * purpose: that list lives in damagecalc, and importing it anywhere near the
+ * Reference tab drags the 484 kB calc chunk in with it. */
+export function moveNames(): string[] {
+  if (!data) return [];
+  moveNameCache ??= [...new Set(Object.values(data.moves))]
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+  return moveNameCache;
+}
+let moveNameCache: string[] | null = null;
+
+/** a typed string resolved to the one move it can only mean — by full name
+ * or by an unambiguous prefix — and "" when it is still ambiguous. A
+ * half-typed move must not filter: emptying the list on "ear" reads as
+ * broken rather than as "keep typing". */
+export function resolveMove(typed: string): string {
+  const q = typed.trim();
+  if (!q || !data) return "";
+  const names = moveNames();
+  const exact = names.find((n) => sameMove(n, q));
+  if (exact) return exact;
+  const key = fold(q);
+  const starts = names.filter((n) => fold(n).startsWith(key));
+  return starts.length === 1 ? starts[0] : "";
+}
+
 /** same move, however either side spelled it */
 export const sameMove = (a: string, b: string) => fold(a) === fold(b);
 

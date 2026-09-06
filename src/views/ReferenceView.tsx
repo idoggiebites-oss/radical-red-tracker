@@ -20,6 +20,7 @@ import type {
 import { Sprite } from "../components/Sprite";
 import { ItemSprite } from "../components/ItemSprite";
 import { TypeBadges } from "../components/TypeBadges";
+import { Combobox } from "../components/Combobox";
 import { SpeciesDefenses } from "../components/SpeciesDefenses";
 import { STAT_KEYS, evolutionsFor } from "../lib/effectiveness";
 import {
@@ -34,9 +35,14 @@ import {
   type DexEntry,
 } from "../lib/dex";
 import {
+  learnSource,
   learnsetFor,
   learnsetsReady,
   loadLearnsets,
+  moveNames,
+  resolveMove,
+  sourceLabel,
+  sourceTitle,
 } from "../lib/learnsets";
 
 const items = itemsJson as unknown as ItemsData;
@@ -134,8 +140,20 @@ function Chunked<T>({
 export function ReferenceView({ run }: { run?: Run | null }) {
   const [tab, setTab] = useState<RefTab>("pokedex");
   const [filter, setFilter] = useState("");
+  const [filterMove, setFilterMove] = useState("");
   // the input keeps the live value so typing never waits on the list render
   const q = useDeferredValue(filter).trim().toLowerCase();
+  // empty until the learnset chunk lands, which turns the picker into a
+  // plain text box for the first keystroke or two rather than blocking it
+  const [moveOptions, setMoveOptions] = useState<string[]>(moveNames);
+  useEffect(() => {
+    if (moveOptions.length || !filterMove) return;
+    let live = true;
+    loadLearnsets().then(() => live && setMoveOptions(moveNames()));
+    return () => {
+      live = false;
+    };
+  }, [moveOptions.length, filterMove]);
 
   return (
     <div className="reference">
@@ -157,9 +175,28 @@ export function ReferenceView({ run }: { run?: Run | null }) {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
+        {/* the same control Party & Box uses, so the two move searches read
+            as one feature. Its options arrive with the learnset chunk, which
+            the Pokédex only fetches once someone actually types here. */}
+        {tab === "pokedex" && (
+          <label className="move-filter">
+            Can learn
+            <Combobox
+              value={filterMove}
+              onChange={setFilterMove}
+              options={moveOptions}
+              placeholder="Any move"
+            />
+          </label>
+        )}
+        {tab === "pokedex" && filterMove && (
+          <button onClick={() => setFilterMove("")}>Clear</button>
+        )}
       </div>
 
-      {tab === "pokedex" && <Pokedex q={q} run={run ?? null} />}
+      {tab === "pokedex" && (
+        <Pokedex q={q} typedMove={filterMove} run={run ?? null} />
+      )}
 
       {tab === "statics" && (
         <Chunked
@@ -322,12 +359,33 @@ const NG_PLUS_CODES: {
 /** Mystery Gift codes from the docs' own tab — legendaries redeemed at the
  * red Nurse rather than caught, so they sit in Reference beside the cheat
  * codes instead of anywhere in a run's encounter list. */
+/** how a filtered species gets the move — the level, TM number, tutor or
+ * egg. Same pill as Party & Box's move filter, minus its "Knows it" case:
+ * the dex has no build to know anything. */
+function MoveTag({ species, move }: { species: string; move: string }) {
+  const src = learnSource(species, move);
+  if (!src) return null;
+  return (
+    <span className="learn-pill" title={sourceTitle(move, src)}>
+      {sourceLabel(src)}
+    </span>
+  );
+}
+
 /** every species, with what this run actually does to it. Abilities are the
  * whole point: with a save imported we replay the game's own ability hash, so
  * a randomized run sees its real abilities dex-wide rather than the defaults
  * (see lib/dex.ts). Rows expand in place, the same shape as the Team tab's
  * collapsed sections, so one Pokémon can be read without losing the list. */
-function Pokedex({ q, run }: { q: string; run: Run | null }) {
+function Pokedex({
+  q,
+  typedMove,
+  run,
+}: {
+  q: string;
+  typedMove: string;
+  run: Run | null;
+}) {
   const [open, setOpen] = useState<string | null>(null);
   const roll = useMemo(() => abilityRollFor(run), [run]);
   const caveats = useMemo(() => dexCaveats(run), [run]);
@@ -357,8 +415,11 @@ function Pokedex({ q, run }: { q: string; run: Run | null }) {
       live = false;
     };
   }, [bossesReady, open]);
+  // the same 415 kB chunk backs the "Can learn" filter, so typing in that box
+  // is the other thing that earns fetching it — still nothing on mount
+  const wantsMoves = movesOpen || !!typedMove;
   useEffect(() => {
-    if (movesReady || !movesOpen) return;
+    if (movesReady || !wantsMoves) return;
     let live = true;
     loadLearnsets().then(
       () => live && setMovesReady(true),
@@ -367,22 +428,31 @@ function Pokedex({ q, run }: { q: string; run: Run | null }) {
     return () => {
       live = false;
     };
-  }, [movesReady, movesOpen]);
+  }, [movesReady, wantsMoves]);
+
+  // resolved against the real move list, so a half-typed name filters nothing
+  const move = movesReady ? resolveMove(typedMove) : "";
+  const moveFilterOn = !!move;
 
   // matches the name, a type or an ability — so "Levitate" or "Ghost" find
-  // everything that has it, which is the reverse lookup the docs can't do
+  // everything that has it, which is the reverse lookup the docs can't do.
+  // Only `actual` is matched, never `base`: on a randomized run the base is
+  // the ability this species USED to have, and answering "who has Levitate"
+  // with a list of Pokémon that don't have it in your run is worse than
+  // answering nothing. Outside a randomized run the two are equal anyway.
   const rows = useMemo(() => {
-    if (!q) return DEX_ENTRIES;
-    return DEX_ENTRIES.filter(
-      (e) =>
-        e.species.toLowerCase().includes(q) ||
-        e.types.some((t) => t.toLowerCase().includes(q)) ||
-        abilitiesFor(e, roll).some(
-          (a) =>
-            a.actual.toLowerCase().includes(q) || a.base.toLowerCase().includes(q),
-        ),
-    );
-  }, [q, roll]);
+    let out = DEX_ENTRIES;
+    if (q) {
+      out = out.filter(
+        (e) =>
+          e.species.toLowerCase().includes(q) ||
+          e.types.some((t) => t.toLowerCase().includes(q)) ||
+          abilitiesFor(e, roll).some((a) => a.actual.toLowerCase().includes(q)),
+      );
+    }
+    if (moveFilterOn) out = out.filter((e) => learnSource(e.species, move));
+    return out;
+  }, [q, roll, moveFilterOn, move]);
 
   return (
     <>
@@ -427,6 +497,11 @@ function Pokedex({ q, run }: { q: string; run: Run | null }) {
                         <TypeBadges species={e.species} small />
                       </td>
                       <td className="cell-abils muted">
+                        {/* the pill leads the cell rather than trailing the
+                            ability list: on a phone a three-ability species
+                            pushed it past the right edge, and the pill is the
+                            reason the row is in the list at all */}
+                        {moveFilterOn && <MoveTag species={e.species} move={move} />}
                         {abilitiesFor(e, roll)
                           .map((a) => a.actual)
                           .join(" · ")}
