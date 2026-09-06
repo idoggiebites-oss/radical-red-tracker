@@ -1850,9 +1850,12 @@ tr.pickable:hover td { background: var(--bg3); }
   }
 
   /* the phone bar: inset capsule rather than a full-width slab, so content
-     passes beside it as well as under it — which is what sells the material */
+     passes beside it as well as under it — which is what sells the material.
+     Scoped to .floating like the rest of the phone bar's rules: the in-flow
+     top row is on the page here too, just display:none, and it is not the
+     bar being described. */
   @media (max-width: 640px) {
-    .tabs {
+    .tabs.floating {
       left: 10px;
       right: 10px;
       width: auto;
