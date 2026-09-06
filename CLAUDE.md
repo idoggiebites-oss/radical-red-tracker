@@ -259,6 +259,13 @@ Draft it without being asked and let it be edited, rather than asking
 whether to add one. Nothing about a refactor, a chunking fix or a CI change
 belongs here; if the player can't see it, it has no note.
 
+Visible is necessary but not sufficient: **the panel interrupts someone
+mid-run, so a note has to be worth the interruption.** A new feature, or a
+fix for something a player would have hit and been annoyed by, earns one; a
+small cosmetic correction does not, even though they could see it. Those
+still get a full explanation — in the commit message, which is where the
+engineering record lives.
+
 The panel is keyed on **what the reader has already seen**
 (`rr-tracker.lastSeenNote`), not on the build. That is the whole design:
 every push deploys, and a busy day here runs to 17 pushes, so a per-deploy
