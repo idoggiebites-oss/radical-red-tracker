@@ -4,9 +4,15 @@
  * 404 through the chain and the <img> hides itself. */
 
 import typesJson from "../data/types.json";
+import cleanedSpriteIds from "../data/cleanedSprites.json";
 
 const SPRITE_IDS = (typesJson as unknown as { spriteIds: Record<string, number> })
   .spriteIds;
+
+/** dex ids with a hand-cleaned copy in public/sprites/custom/ — written by
+ * scripts/clean_rrdex_sprites.py from the same is_custom_form() that decides
+ * what to clean, so this is the file list, not a guess about it */
+const CLEANED = new Set<number>(cleanedSpriteIds);
 
 const RRDEX_SPECIES =
   "https://raw.githubusercontent.com/JwowSquared/Radical-Red-Pokedex/master/graphics/species/front";
@@ -96,20 +102,6 @@ const SPECIAL: Record<string, string> = {
   "anycappikachu": "pikachu",
 };
 
-/** species with an official mega — Showdown hosts those sprites; a "-Mega"
- * on any other species is an RR custom that only the RR dex has. The canon
- * list is frozen, so this can't rot. */
-const CANON_MEGA = new Set([
-  "venusaur", "charizard", "blastoise", "beedrill", "pidgeot", "alakazam",
-  "slowbro", "gengar", "kangaskhan", "pinsir", "gyarados", "aerodactyl",
-  "mewtwo", "ampharos", "steelix", "scizor", "heracross", "houndoom",
-  "tyranitar", "sceptile", "blaziken", "swampert", "gardevoir", "sableye",
-  "mawile", "aggron", "medicham", "manectric", "sharpedo", "camerupt",
-  "altaria", "banette", "absol", "glalie", "salamence", "metagross",
-  "latias", "latios", "rayquaza", "lopunny", "garchomp", "lucario",
-  "abomasnow", "gallade", "audino", "diancie",
-]);
-
 const SUFFIX: Record<string, string> = {
   a: "alola",
   g: "galar",
@@ -129,7 +121,7 @@ const SUFFIX: Record<string, string> = {
 };
 
 export function spriteUrls(species: string): string[] {
-  const { slug, customForm } = speciesSlug(species);
+  const slug = speciesSlug(species);
   const showdown = [
     `https://play.pokemonshowdown.com/sprites/gen5/${slug}.png`,
     `https://play.pokemonshowdown.com/sprites/dex/${slug}.png`,
@@ -138,10 +130,9 @@ export function spriteUrls(species: string): string[] {
   // the RR dex repo's raw PNGs have no alpha channel — a chroma-key
   // background bakes in as a solid green/pink box. scripts/clean_rrdex_sprites.py
   // pre-cleans the RR-custom set (Sevii forms, custom megas) into
-  // public/sprites/custom/<id>.png; try that first for species we know are
-  // genuinely custom
+  // public/sprites/custom/<id>.png; try that first where we actually have one
   const cleaned =
-    customForm && id !== undefined
+    id !== undefined && CLEANED.has(id)
       ? [`${import.meta.env.BASE_URL}sprites/custom/${id}.png`]
       : [];
   // full local mirror (scripts/fetch_sprites.mjs) — resolved through this
@@ -153,16 +144,15 @@ export function spriteUrls(species: string): string[] {
       ? [`${import.meta.env.BASE_URL}sprites/species/${id}.png`]
       : [];
   const rrdex = id !== undefined ? [`${RRDEX_SPECIES}/${id}.png`] : [];
-  // customForm is a guess (an unrecognized dash suffix), not proof Showdown
-  // doesn't have it — Rotom-Wash and most Pikachu cosmetic forms resolve
-  // fine on Showdown with their slug exactly as typed, dash included, and
-  // only fall through to the uncleaned rrdex (worse: no alpha channel) if
-  // that genuinely 404s. Always try Showdown before rrdex; only a cleaned
-  // local copy (species we've confirmed are custom) jumps the queue
+  // an unrecognized dash suffix is not proof Showdown lacks the form —
+  // Rotom-Wash and most Pikachu cosmetics resolve fine on Showdown with the
+  // slug exactly as typed, dash included, and only fall through to the
+  // uncleaned rrdex (worse: no alpha channel) if that genuinely 404s. Always
+  // try Showdown before rrdex; only a cleaned local copy jumps the queue
   return [...cleaned, ...mirrored, ...showdown, ...rrdex];
 }
 
-function speciesSlug(species: string): { slug: string; customForm: boolean } {
+function speciesSlug(species: string): string {
   // Showdown filenames drop punctuation and join multi-word names with
   // nothing ("Tapu Koko" -> tapukoko, "Mr. Mime" -> mrmime, Flabébé ->
   // flabebe); dashes only separate forms
@@ -174,7 +164,6 @@ function speciesSlug(species: string): { slug: string; customForm: boolean } {
     .replace(/\s+/g, "")
     .replace(/-+/g, "-")
     .replace(/-$/, "");
-  let customForm = false;
   if (SPECIAL[slug]) {
     slug = SPECIAL[slug];
   } else {
@@ -182,17 +171,11 @@ function speciesSlug(species: string): { slug: string; customForm: boolean } {
     if (dash > 0) {
       const base = slug.slice(0, dash);
       const suffix = slug.slice(dash + 1);
-      if (SUFFIX[suffix]) {
-        slug = `${base}-${SUFFIX[suffix]}`;
-        if (suffix.startsWith("mega") && !CANON_MEGA.has(base)) customForm = true;
-      } else {
-        // unrecognized suffix — often still a real Showdown sprite (Rotom
-        // forms, most Pikachu cosmetics) using the slug exactly as typed;
-        // customForm here just means "not confident it's on Showdown",
-        // not "confirmed custom" — spriteUrls() still tries Showdown first
-        customForm = true;
-      }
+      // an unrecognized suffix is left exactly as typed — often still a real
+      // Showdown sprite (Rotom forms, most Pikachu cosmetics), and the URL
+      // chain in spriteUrls() falls through if it isn't
+      if (SUFFIX[suffix]) slug = `${base}-${SUFFIX[suffix]}`;
     }
   }
-  return { slug, customForm };
+  return slug;
 }

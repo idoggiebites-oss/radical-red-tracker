@@ -28,13 +28,18 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 TYPES_JSON = ROOT / "src" / "data" / "types.json"
 OUT_DIR = ROOT / "public" / "sprites" / "custom"
+# src/lib/sprites.ts reads this to know which ids have a cleaned copy —
+# without it the app would have to guess, and a guess that says yes where
+# there's no file costs a 404 on every render of that species
+CLEANED_JSON = ROOT / "src" / "data" / "cleanedSprites.json"
 RRDEX_SPECIES = (
     "https://raw.githubusercontent.com/JwowSquared/Radical-Red-Pokedex"
     "/master/graphics/species/front"
 )
 
-# must mirror CANON_MEGA in src/lib/sprites.ts: species with an official
-# Showdown-hosted mega sprite — any other "-Mega" is an RR custom
+# species with an official Showdown-hosted mega sprite — any other "-Mega"
+# is an RR custom. This list lives only here now: the app doesn't re-derive
+# which species are custom, it reads the id list this script writes
 CANON_MEGA = {
     "venusaur", "charizard", "blastoise", "beedrill", "pidgeot", "alakazam",
     "slowbro", "gengar", "kangaskhan", "pinsir", "gyarados", "aerodactyl",
@@ -138,7 +143,13 @@ def main():
         finally:
             raw_path.unlink(missing_ok=True)
 
+    # list the directory rather than this run's successes: a partial run
+    # must not drop ids whose files are still sitting there from last time
+    on_disk = sorted(int(p.stem) for p in OUT_DIR.glob("*.png"))
+    CLEANED_JSON.write_text(json.dumps(on_disk) + "\n")
+
     print(f"done: {ok} cleaned, {fail} failed -> {OUT_DIR}")
+    print(f"wrote {len(on_disk)} ids -> {CLEANED_JSON.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
