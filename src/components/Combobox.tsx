@@ -93,7 +93,12 @@ export function Combobox({
   // paint, so listRef's real height (from *this* render's suggestions) is
   // already measurable — no separate invisible measuring pass needed.
   useLayoutEffect(() => {
-    if (!showList || !wrapRef.current) return;
+    // drop the old position on close, so reopening measures from scratch
+    // rather than painting one frame at wherever the input used to be
+    if (!showList || !wrapRef.current) {
+      setRect((r) => (r ? null : r));
+      return;
+    }
     const update = () => {
       const r = wrapRef.current!.getBoundingClientRect();
       const vv = window.visualViewport;
@@ -174,12 +179,23 @@ export function Combobox({
           <ul
             ref={listRef}
             className="combobox-list combobox-list-portal"
-            // invisible until the first real measurement lands (rect
-            // starts null on first open) so it never flashes at (0,0)
+            // hidden until the first real measurement lands, so it never
+            // flashes at (0,0). visibility rather than an off-screen offset:
+            // -9999px is still a painted element, so if the layout effect's
+            // measurement ever misses the frame (a busy main thread is all it
+            // takes) the browser sees the list travel thousands of px and
+            // scores it as a layout shift. A visibility:hidden element is
+            // excluded from that accounting — and unlike display:none it
+            // still lays out, which is what makes listRef measurable below.
             style={
               rect
                 ? { top: rect.top, left: rect.left, width: rect.width }
-                : { top: 0, left: -9999, width: wrapRef.current?.offsetWidth }
+                : {
+                    visibility: "hidden",
+                    top: 0,
+                    left: 0,
+                    width: wrapRef.current?.offsetWidth,
+                  }
             }
           >
             {suggestions.map((s, i) => (
