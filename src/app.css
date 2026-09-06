@@ -249,29 +249,28 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
   height: 22px;
 }
 
-/* holds the tab row's flow space while it is fixed (see App.tsx). Height is
-   set inline from a measurement; the rule exists so the element is a plain
-   block that neither collapses its child's margins nor adds space of its own */
-.tabs-slot { display: block; }
-@media (min-width: 641px) {
-  .tabs-slot { height: var(--tabs-slot-h, auto); }
-}
-
-/* zero-height marker at the top nav's natural position — App.tsx watches
-   it with an IntersectionObserver to know when that nav has scrolled out
-   of view, independent of the nav's own position (see .tabs.floating) */
+/* zero-height marker at the top nav's natural position — App.tsx measures
+   it on scroll to know when that row has left the screen, and reveals the
+   bottom bar (see .tabs.floating). Nothing about it moves when the bar
+   appears, so reading it can't feed back into its own trigger. */
 .tabs-sentinel { height: 0; }
 
 /* trailing marker under a partially-rendered Reference list — scrolling it
    into view reveals the next chunk (see Chunked in ReferenceView) */
 .chunk-sentinel { height: 1px; }
 
-/* desktop: once the top tab row scrolls out of view, echo it as a fixed
-   bottom bar like mobile always has (mobile's own @media max-width:640px
-   rule below already makes .tabs fixed unconditionally, so this only
-   matters — and only applies — above that breakpoint) */
+/* desktop: the second tab bar, fixed at the bottom, revealed once the top
+   row scrolls away. It is a separate element from that row rather than the
+   same one relocating — a row that moves takes its highlight pill 456px
+   with it, and the browser charges 0.33 CLS for the trip, every crossing.
+   (Below 641px the mobile rules further down show this same bar always.) */
 @media (min-width: 641px) {
   .tabs.floating {
+    /* visibility, not display, so it can fade — and unlike opacity alone it
+       takes the duplicate tabs out of the accessibility tree while hidden */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.18s ease, visibility 0.18s;
     position: fixed;
     left: 0;
     right: 0;
@@ -295,6 +294,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
     border-radius: 8px;
   }
   .tabs.floating .tab-icon { display: block; margin-bottom: 2px; }
+  .app.floating-nav-active .tabs.floating { visibility: visible; opacity: 1; }
   /* reserve room so the floating bar never covers the last bit of content */
   .app.floating-nav-active { padding-bottom: 76px; }
 }
@@ -1650,10 +1650,15 @@ tr.pickable:hover td { background: var(--bg3); }
      it no longer occupies that space, so restore it directly on main */
   main { padding-top: 14px; }
 
+  /* the in-flow top row is desktop-only: on a phone the bottom bar is the
+     whole navigation, so the top copy would be a duplicate to scroll past
+     (and a second set of the same four tabs for a screen reader) */
+  .tabs:not(.floating) { display: none; }
+
   /* bottom nav bar: fixed + thumb-reachable instead of a top row you have
      to scroll back up for; leaves room to add per-tab icons later without
      restructuring (label text stays its own element) */
-  .tabs {
+  .tabs.floating {
     position: fixed;
     left: 0;
     right: 0;
@@ -1687,10 +1692,13 @@ tr.pickable:hover td { background: var(--bg3); }
        Opacity (not display, so it can be delayed) plus a transition-delay
        on the reveal only, so the bar stays invisible until iOS's dismiss
        animation (~250ms) has actually finished, not just started. */
+    /* unconditionally visible here, whatever the desktop rule says: the
+       scroll-triggered reveal is a desktop affordance only */
+    visibility: visible;
     opacity: 1;
     transition: opacity 0.15s ease 280ms;
   }
-  .app.keyboard-open .tabs {
+  .app.keyboard-open .tabs.floating {
     opacity: 0;
     pointer-events: none;
     transition: none;
@@ -1865,8 +1873,8 @@ tr.pickable:hover td { background: var(--bg3); }
   }
 
   /* desktop's equivalent — the bar that appears once the top tab row scrolls
-     away. Centred pill; its width is its content's, so it can't collide with
-     the `.tabs-slot` flow reservation that keeps this from shifting the page */
+     away. Centred pill, width of its content; it is its own element and the
+     top row stays put, so it never displaces anything on the page */
   @media (min-width: 641px) {
     .tabs.floating {
       left: 50%;

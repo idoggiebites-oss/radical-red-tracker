@@ -4,7 +4,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import type {
   AppState,
@@ -46,6 +45,12 @@ const ReferenceView = lazyView(() =>
 
 type Tab = "routes" | "bosses" | "team" | "reference";
 
+/** how far past the top edge the tab row must go before the bottom bar
+ * takes over, and how far back before it hands off again. Anything smaller
+ * than a wheel notch lets a scroll settling on the boundary flip the bar
+ * repeatedly. */
+const NAV_DEAD_BAND = 48;
+
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "routes", label: "Routes", icon: "nav-routes" },
   { id: "bosses", label: "Bosses", icon: "nav-bosses" },
@@ -77,47 +82,39 @@ export default function App() {
   // mobile only: run controls (switcher/new/export/import/delete) collapse
   // behind a cog button instead of a full row across the header
   const [runMenuOpen, setRunMenuOpen] = useState(false);
-  // desktop: once the top tab row scrolls out of view, echo it as a fixed
-  // bottom bar (mobile already has one unconditionally, via CSS alone) —
-  // tracked off a sentinel placed right before <nav>, not the nav itself,
-  // so toggling the nav's own position can't feed back into the observer
+  // desktop: once the top tab row scrolls out of view, reveal the second
+  // tab bar fixed at the bottom (mobile shows that one unconditionally, via
+  // CSS alone). Two bars rather than one that relocates: moving a single row
+  // from top to bottom moved its highlight pill 456px, which the browser
+  // scores as a layout shift worth 0.33 CLS every time you cross the
+  // threshold. Nothing moves now — the top row stays in flow and the bottom
+  // one fades in — so there is no flow space to reserve either.
   const [showFloatingNav, setShowFloatingNav] = useState(false);
   const tabsSentinelRef = useRef<HTMLDivElement>(null);
-  // the flow space the tab row occupies, so `.tabs-slot` can hold it open
-  // while the row is fixed. Margins are part of that space and offsetHeight
-  // excludes them, hence the computed-style read.
-  const tabsRef = useRef<HTMLElement>(null);
-  const [tabsHeight, setTabsHeight] = useState(0);
-  useEffect(() => {
-    const el = tabsRef.current;
-    // only meaningful while it is still in flow; once floating its box is
-    // detached and would measure the wrong thing
-    if (!el || showFloatingNav) return;
-    const measure = () => {
-      const cs = getComputedStyle(el);
-      const h =
-        el.getBoundingClientRect().height +
-        parseFloat(cs.marginTop) +
-        parseFloat(cs.marginBottom);
-      setTabsHeight((prev) => (Math.abs(prev - h) > 0.5 ? h : prev));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, [showFloatingNav]);
   useEffect(() => {
     const el = tabsSentinelRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setShowFloatingNav(!entry.isIntersecting),
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const top = el.getBoundingClientRect().top;
+      // a dead band, not a single threshold: the ribbon appears once the row
+      // is well past the top edge and only leaves once the row is properly
+      // back on screen. With one shared boundary a trackpad settling on it
+      // flipped the bar 19 times in a 10px wobble.
+      setShowFloatingNav((prev) => (prev ? top < 0 : top < -NAV_DEAD_BAND));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
   // hide the mobile bottom nav while the on-screen keyboard or a native
   // <select> picker wheel is up — position:fixed detaches from the screen
@@ -536,39 +533,12 @@ export default function App() {
       )}
 
       <div ref={tabsSentinelRef} className="tabs-sentinel" />
-      {/* Holds the tab row's place once it goes `position: fixed`. Without
-          it the row leaves the flow and everything below jumps up ~66px —
-          and back down when you scroll up again, so it re-scores every time
-          you cross the threshold rather than once. That was the larger half
-          of this page's field CLS on desktop, and it was invisible to every
-          measurement that didn't scroll.
-
-          Measured rather than hard-coded: the height is the nav's own,
-          margins included, taken while it is still in flow. Reserving space
-          on `.tabs-sentinel` instead would have been fewer lines and a bug —
-          the IntersectionObserver watches that element, so resizing it on
-          the very signal it produces feeds straight back into itself. */}
-      <div
-        className="tabs-slot"
-        // as a custom property, not `height`, so the mobile breakpoint can
-        // ignore it: below 641px the row is fixed unconditionally and was
-        // never in flow, so reserving space there ADDS 81px that never
-        // existed — a shift in the opposite direction
-        style={
-          showFloatingNav && tabsHeight
-            ? ({ "--tabs-slot-h": `${tabsHeight}px` } as CSSProperties)
-            : undefined
-        }
-      >
       <TabBar
         tabs={TABS}
         value={tab}
         onChange={setTab}
-        floating={showFloatingNav}
-        navRef={tabsRef}
         iconBase={import.meta.env.BASE_URL}
       />
-      </div>
 
       <main>
         {!run && (
@@ -647,6 +617,19 @@ export default function App() {
         <code>python3 scripts/import_data.py --refresh</code> to re-import after doc
         updates.
       </footer>
+
+      {/* the bottom bar. Always rendered, never moved: on a phone it is the
+          only bar (the top row is display:none there), on desktop it fades
+          in once the top row scrolls away. Hidden with visibility rather
+          than opacity alone so that while it is hidden it is out of the
+          accessibility tree and out of the tab order, not just invisible. */}
+      <TabBar
+        tabs={TABS}
+        value={tab}
+        onChange={setTab}
+        bottom
+        iconBase={import.meta.env.BASE_URL}
+      />
     </div>
   );
 }

@@ -12,7 +12,7 @@
  * background on the active button, because a background cannot animate
  * between elements — it can only appear and disappear. Measuring the target
  * button and translating a single pill is what produces the glide. */
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export interface TabDef<T extends string> {
   id: T;
@@ -24,27 +24,18 @@ export function TabBar<T extends string>({
   tabs,
   value,
   onChange,
-  floating,
-  navRef,
+  bottom,
   iconBase,
 }: {
   tabs: readonly TabDef<T>[];
   value: T;
   onChange: (id: T) => void;
-  floating?: boolean;
-  /** the app measures this row's flow height to reserve space when it goes
-   * fixed (see App.tsx) — the ref has to reach the real <nav> */
-  navRef?: React.RefObject<HTMLElement | null>;
+  /** render as the fixed bottom bar rather than the in-flow top row. Both
+   * are on the page at once — see App.tsx for why neither one moves. */
+  bottom?: boolean;
   iconBase: string;
 }) {
   const localRef = useRef<HTMLElement | null>(null);
-  const setNav = useCallback(
-    (el: HTMLElement | null) => {
-      localRef.current = el;
-      if (navRef) navRef.current = el;
-    },
-    [navRef],
-  );
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   /** which tab the finger is currently over; null when not dragging */
   const [preview, setPreview] = useState<T | null>(null);
@@ -61,13 +52,13 @@ export function TabBar<T extends string>({
     const measure = () =>
       setPill({ x: btn.offsetLeft, w: btn.offsetWidth });
     measure();
-    // the row reflows on rotate, on the desktop/mobile breakpoint, and when
-    // it becomes the floating bar — all of which move the buttons
+    // the row reflows on rotate and at the desktop/mobile breakpoint, both
+    // of which move the buttons
     const ro = new ResizeObserver(measure);
     ro.observe(nav);
     ro.observe(btn);
     return () => ro.disconnect();
-  }, [shown, tabs, floating]);
+  }, [shown, tabs, bottom]);
 
   /** the tab under a viewport x, or null when the point is off the row */
   const tabAt = (clientX: number): T | null => {
@@ -128,8 +119,13 @@ export function TabBar<T extends string>({
 
   return (
     <nav
-      ref={setNav}
-      className={floating ? "tabs floating" : "tabs"}
+      ref={localRef}
+      className={bottom ? "tabs floating" : "tabs"}
+      // both bars are on the page at once and, scrolled down on desktop,
+      // both are in the accessibility tree — two nav landmarks offering the
+      // same four tabs. That is fine (a header nav and a footer nav are the
+      // everyday version of it) as long as they can be told apart by name.
+      aria-label={bottom ? "Sections, bottom bar" : "Sections"}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={finish}

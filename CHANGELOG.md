@@ -13,6 +13,13 @@ entries only go on top. Renumbering would re-show old notes to everyone.
 A bullet under a `## date` heading is one note. Everything else here is
 ignored by the parser.
 
+## 2026-09-06
+
+- Scrolling on a wide screen no longer jumps: the bottom tab bar now fades in
+  once the top row scrolls away, instead of the row itself leaping down to the
+  bottom of the window and dragging the page with it. Settling right on the
+  point where it changed over used to flip it back and forth.
+
 ## 2026-08-13
 
 - Pokémon entries in the Pokédex now start with the learnset folded away, so
