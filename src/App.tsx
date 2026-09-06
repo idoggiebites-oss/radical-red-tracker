@@ -326,6 +326,41 @@ export default function App() {
     (keyboardOpen ? " keyboard-open" : "");
   return (
     <div className={appClass}>
+      {/* The displacement map behind the bottom bar's glass. A plain
+          backdrop blur only averages what is behind it, which reads as flat
+          grey; real glass bends the background instead. feTurbulence makes a
+          smooth noise field and feDisplacementMap pushes the backdrop's
+          pixels around by it, so straight edges passing under the bar curve.
+          Rendered once here rather than per bar — a filter is referenced by
+          id, so one definition serves every element that asks for it.
+          width/height 0 keeps it out of layout; it draws nothing itself. */}
+      <svg
+        className="filter-defs"
+        width="0"
+        height="0"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <filter id="glass-refraction" x="0%" y="0%" width="100%" height="100%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.01"
+            numOctaves="2"
+            seed="7"
+            result="noise"
+          />
+          {/* softening the noise first is what makes the distortion read as
+              flowing glass rather than as television static */}
+          <feGaussianBlur in="noise" stdDeviation="2" result="softNoise" />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="softNoise"
+            scale="70"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
       <header className="topbar">
         {/* an <h1> rather than a <div>: the page had no heading at all, so
             the element search weights most was simply missing. Renders
