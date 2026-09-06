@@ -1954,9 +1954,16 @@ tr.pickable:hover td { background: var(--bg3); }
        parses this and can't draw it keeps the 14px and silently loses the
        28px — which on the phone reads as the bar going see-through, the
        symptom that sent us looking in the first place. */
+    /* The shared numbers were tuned on a phone and read as too transparent
+       here, because a blur radius is absolute pixels while the content behind
+       is not: 6px buries 13px phone text and merely softens desktop's larger
+       type and its CAUGHT badges. So the desktop bar buys back the obscuring
+       with more blur and more fill — still inside the range where the
+       displacement above survives, which 28px was not. */
     .tabs.floating {
-      -webkit-backdrop-filter: url(#glass-refraction) blur(6px) saturate(240%);
-      backdrop-filter: url(#glass-refraction) blur(6px) saturate(240%);
+      -webkit-backdrop-filter: url(#glass-refraction) blur(14px) saturate(240%);
+      backdrop-filter: url(#glass-refraction) blur(14px) saturate(240%);
+      background: rgba(25, 29, 39, 0.55);
     }
     .tabs.floating .tab { border-radius: 18px; }
     .tabs.floating .tab-pill { border-radius: 18px; background: rgba(255, 255, 255, 0.14); }
