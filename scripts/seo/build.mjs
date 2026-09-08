@@ -14,23 +14,58 @@ import {
   groupByPerson,
   personOf,
   placeOf,
+  placeParts,
   slug,
   spriteSrc,
+  distinctFights,
   teamProfile,
   titleCase,
+  titlePlace,
   typesOf,
   withOrder,
 } from "./data.mjs";
 import { esc, modeToggle, shell, typeChip } from "./render.mjs";
-import { itemsPage, routesPage } from "./reference.mjs";
+import {
+  ROUTE_PAGES,
+  evolutionsPage,
+  itemsPage,
+  megaStonesPage,
+  raidDensPage,
+  routePage,
+  routesPage,
+  tmsPage,
+} from "./reference.mjs";
 import { calculatorPage, readinessPage, saveImportPage } from "./features.mjs";
 
 const dist = fileURLToPath(new URL("../../dist/", import.meta.url));
 
-/** persons with their own page. The generator can produce one for any name
- * in the boss data — this list is what's published, and it grows as pages
- * earn impressions rather than all at once. */
-const BOSS_PAGES = ["giovanni", "sabrina"];
+/** the boss pages that are published. The generator can produce one for any
+ * name in the data; a `category` narrows it to that name's fights in one
+ * category, which is what separates the champion from the fifteen other
+ * fights the rival turns up in.
+ *
+ * The rival himself has no page yet: fifteen fights, each with three
+ * starter-dependent teams, is a different kind of page and needs its own
+ * explanation of which team you get. */
+const BOSS_PAGES = [
+  { slug: "brock" },
+  { slug: "misty" },
+  { slug: "lt-surge" },
+  { slug: "erika" },
+  { slug: "koga" },
+  { slug: "sabrina" },
+  { slug: "blaine" },
+  { slug: "clair" },
+  { slug: "giovanni" },
+  { slug: "archer" },
+  { slug: "ariana" },
+  { slug: "lorelei" },
+  { slug: "bruno" },
+  { slug: "agatha" },
+  { slug: "lance" },
+  { slug: "champion", person: "rival", category: "Indigo League", name: "The Champion" },
+];
+const bossPageSlugs = BOSS_PAGES.map((p) => p.slug);
 
 const written = [];
 
@@ -136,20 +171,28 @@ ${
 function fightSection(f, person, mode, level = 2) {
   const b = f.boss;
   // the trainer-order row spells the place out in full; the title abbreviates
-  // it to fit the docs' own column ("CERULEA. CAVE")
-  const place = titleCase(f.order?.location ?? placeOf(b.title));
+  // it to fit the docs' own column ("CERULEA. CAVE"), and for a gym leader
+  // names a role rather than a place at all
+  const place = titleCase(f.order?.location ?? titlePlace(b.title));
   const name = titleCase(person);
+  // "The Champion — Champion" and "Lance — Elite Four" repeat themselves:
+  // the docs use a role as the location for those rows. Fall back to the
+  // category, which is the one thing that does distinguish the fight.
+  const dupe = place && (place === name || name.includes(place));
   const heading = [
     level === 2 ? name : null,
-    place,
+    (dupe ? "" : place) || titleCase(f.category),
     b.subtitle && `(${titleCase(b.subtitle)})`,
   ]
     .filter(Boolean)
     .join(" — ")
     .replace(" — (", " (");
   const h = `h${level}`;
+  const partners = placeParts(b.title).partners.map((x) => titleCase(x));
   const meta = [
     ["Location", place],
+    [place ? "Part of" : "Fight", titleCase(f.category)],
+    ["Alongside", partners.join(" and ")],
     ["Level cap", capOf(f.order)],
     ["Battle", b.battleEffect ? titleCase(b.battleEffect) : "Single battle"],
     ["Notes", b.notes],
@@ -200,7 +243,7 @@ function levelCapsPage() {
       });
     const rows = leaders
       .map(({ name, row, title }) => {
-        const page = BOSS_PAGES.includes(slug(name)) ? `/bosses/${slug(name)}` : null;
+        const page = bossPageSlugs.includes(slug(name)) ? `/bosses/${slug(name)}` : null;
         return `<tr>
 <td><strong>${page ? `<a href="${page}">${esc(titleCase(name))}</a>` : esc(titleCase(name))}</strong></td>
 <td>${esc(titleCase(row?.location ?? "—"))}</td>
@@ -259,9 +302,14 @@ function bossesPage() {
             const person = personOf(b.title);
             const g = withOrder(id, groups.get(slug(person)));
             const f = g.find((x) => x.boss === b);
-            const page = BOSS_PAGES.includes(slug(person))
-              ? `/bosses/${slug(person)}`
-              : null;
+            // the champion's page is keyed on the fight, not the person —
+            // the rival's other fifteen fights have no page
+            const entry = BOSS_PAGES.find(
+              (b) =>
+                (b.person ?? b.slug) === slug(person) &&
+                (!b.category || b.category === cat.name),
+            );
+            const page = entry ? `/bosses/${entry.slug}` : null;
             const label = titleCase(
               [placeOf(b.title), b.subtitle].filter(Boolean).join(" · "),
             );
@@ -326,6 +374,20 @@ function relatedBosses(mode, orderIndex) {
 <a class="cta ghost" href="/level-caps">Level caps</a></p>`;
 }
 
+/** the fights a boss page covers, in game order. A `category` narrows the
+ * person's fights to that one category — how the champion's page exists
+ * without dragging in the rival's other fifteen. */
+function pageGroup(mode, entry) {
+  const group = groupByPerson(mode).get(entry.person ?? entry.slug);
+  if (!group) return null;
+  if (!entry.category) return group;
+  const fights = group.fights.filter((f) => f.category === entry.category);
+  return fights.length ? { ...group, fights } : null;
+}
+
+/** Hand-written ledes where there is something specific to say. Everything
+ * else is derived below — a made-up sentence per boss would be sixteen
+ * chances to state something the data doesn't support. */
 const PAGE_COPY = {
   giovanni: {
     title: "Radical Red Giovanni Teams — Rocket Hideout, Silph & Cerulean Cave",
@@ -337,44 +399,145 @@ team each time. Every fight below is the documented 4.1 team — levels, abiliti
 held items, natures and moves — for both Normal and Hardcore mode.`,
   },
   sabrina: {
-    title: "Radical Red Sabrina Team, Moves & Matchups — 4.1",
-    description:
-      "Prepare for Sabrina in Radical Red 4.1 with her full team, moves, abilities, held items, battle effects and damage-calculator matchups.",
-    h1: "Sabrina Boss Fight — Radical Red 4.1",
     lede: `Sabrina's Saffron City gym is a double battle in Radical Red 4.1, and in
 Hardcore mode it runs under permanent Trick Room. Her full team for both modes is
 below, with the level cap in force and every move, ability and held item.`,
   },
 };
 
-function bossPage(personSlug) {
-  const copy = PAGE_COPY[personSlug];
+/** the copy for a boss page, computed from the fights themselves: how many
+ * there are, where they happen, the cap, whether the modes differ. */
+function pageCopy(entry) {
+  const group = pageGroup("default", entry) ?? pageGroup("hardcore", entry);
+  const name = entry.name ?? titleCase(group?.person ?? entry.slug);
+  // alternate teams for one fight are one fight: the champion brings three
+  // teams depending on your starter, and is fought once
+  const fights = distinctFights(withOrder("default", group));
+  const places = [
+    ...new Set(fights.map((f) => titleCase(f.order?.location ?? titlePlace(f.boss.title)))),
+  ].filter(Boolean);
+  const isLeader = fights.some((f) => f.category === "Kanto Leaders");
+  const isE4 = fights.some((f) => f.category === "Indigo League");
+  const role = entry.slug === "champion" ? "Champion" : isE4 ? "Elite Four" : isLeader ? "Gym Leader" : null;
+  const multi = fights.length > 1;
+  const timesWord = fights.length === 2 ? "twice" : `${fights.length} times`;
+  const caps = [...new Set(fights.map((f) => f.order?.levelCap).filter(Boolean))];
+  const effects = [...new Set(fights.map((f) => f.boss.battleEffect).filter(Boolean))];
+
+  // does Hardcore bring a different team? Compared by species, so "the same
+  // six at different levels" doesn't get called a different team.
+  const speciesOf = (g) =>
+    (g?.fights ?? []).map((f) => f.boss.pokemon.map((m) => m.species).join(",")).join("|");
+  const modesDiffer = speciesOf(pageGroup("default", entry)) !== speciesOf(pageGroup("hardcore", entry));
+
+  const list = (xs) =>
+    xs.length > 1 ? `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}` : xs[0] ?? "";
+
+  // how each fight is best identified in prose: where it happens, or, for
+  // the ones the trainer order doesn't track, what kind of fight it is
+  const qualifiers = fights.map((f) => {
+    const p = titleCase(f.order?.location ?? titlePlace(f.boss.title));
+    return p && p !== name && !name.includes(p) ? p : `the ${titleCase(f.category)} fight`;
+  });
+  const ledePlaces = places.filter(
+    (p) => p !== name && !name.includes(p) && (!role || p !== role),
+  );
+
+  const lede = [
+    multi
+      ? `${name} is fought ${timesWord} in Radical Red 4.1 — ${list([
+          ...new Set(qualifiers),
+        ])} — with a different team each time.`
+      : (() => {
+          const clause = `${role && !name.includes(role) ? `, the ${role.toLowerCase()}` : ""}${
+            ledePlaces.length ? ` at ${ledePlaces[0]}` : ""
+          }`;
+          return clause
+            ? `${name}${clause}, in Radical Red 4.1.`
+            : `${name} in Radical Red 4.1.`;
+        })(),
+    // one fight, one cap worth stating up front; with several, each fight's
+    // own table carries its own and a single number here would be a lie
+    fights.length === 1 && caps.length === 1
+      ? `The level cap for the fight is ${caps[0]}.`
+      : "",
+    effects.length === 0
+      ? ""
+      : multi
+        ? `Some of these fights set permanent conditions of their own — ${list(
+            effects.map((e) => titleCase(e)),
+          )}.`
+        : `It runs under ${list(effects.map((e) => titleCase(e)))}.`,
+    modesDiffer
+      ? `Hardcore mode brings a different team, and both are below.`
+      : `The team is the same in Normal and Hardcore mode.`,
+    `Every level, ability, held item, nature and move is the documented 4.1 data.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const override = PAGE_COPY[entry.slug] ?? {};
+  return {
+    name,
+    title:
+      override.title ??
+      (multi
+        ? `Radical Red ${name} Teams — All ${fights.length} Fights & Movesets`
+        : `Radical Red ${name} Team, Moves & Matchups — 4.1`),
+    description:
+      override.description ??
+      `${name}'s full Radical Red 4.1 team${
+        places.length ? ` at ${list(places)}` : ""
+      } — levels, moves, abilities, held items and battle conditions, for Normal and Hardcore, with damage-calculator and party matchups.`,
+    h1: override.h1 ?? (multi ? `${name} Teams in Radical Red 4.1` : `${name} Boss Fight — Radical Red 4.1`),
+    lede: override.lede ?? lede,
+  };
+}
+
+function bossPage(entry) {
+  const copy = pageCopy(entry);
   const panels = MODES.map(({ id, label }) => {
-    const group = groupByPerson(id).get(personSlug);
+    const group = pageGroup(id, entry);
     if (!group) return { mode: id, label, html: `<p class="muted">Not in this mode.</p>` };
     const fights = withOrder(id, group);
     return {
       mode: id,
       label,
       html:
-        fights.map((f) => fightSection(f, group.person, id)).join("\n") +
+        fights.map((f) => fightSection(f, copy.name, id)).join("\n") +
         relatedBosses(id, fights[fights.length - 1]?.orderIndex),
     };
   });
-  const person = titleCase(groupByPerson("default").get(personSlug)?.person ?? personSlug);
   return shell({
-    path: `/bosses/${personSlug}`,
+    path: `/bosses/${entry.slug}`,
     title: copy.title,
     description: copy.description,
     h1: copy.h1,
     crumbs: [
       ["/bosses", "Boss teams"],
-      [`/bosses/${personSlug}`, person],
+      [`/bosses/${entry.slug}`, copy.name],
     ],
-    body: `<p class="lede">${copy.lede}</p>${modeToggle(personSlug, panels)}`,
+    body: `<p class="lede">${copy.lede}</p>${modeToggle(entry.slug, panels)}`,
   });
 }
 
+/** a compact look at a team: who is on it, without the full cards */
+function teamPreview(boss) {
+  return `<div class="tags">${boss.pokemon
+    .map((m) => {
+      const src = spriteSrc(m.species);
+      return `<span class="tag">${
+        src
+          ? `<img src="${src}" alt="" width="24" height="24" loading="lazy" decoding="async">`
+          : ""
+      }${esc(m.species)} <b>${esc(m.level)}</b></span>`;
+    })
+    .join("")}</div>`;
+}
+
+/** The Elite Four page is a hub, not a fifth copy of five teams: each
+ * member's full cards live on their own page, and duplicating them here
+ * would split which URL the fight belongs to. */
 function eliteFourPage() {
   const panels = MODES.map(({ id, label }) => {
     const cat = bosses[id].categories.find((c) => c.name === "Indigo League");
@@ -383,14 +546,32 @@ function eliteFourPage() {
     const html = cat.bosses
       .map((b) => {
         const person = personOf(b.title);
+        const entry = BOSS_PAGES.find(
+          (e) => (e.person ?? e.slug) === slug(person) && (!e.category || e.category === cat.name),
+        );
         const fights = withOrder(id, groups.get(slug(person)));
         const f = fights.find((x) => x.boss === b);
-        // one h2 per member, their alternate teams as h3s under it
+        const display = entry?.name ?? titleCase(person);
         const head = seen.has(person)
           ? ""
-          : `<h2 id="${id}-${slug(person)}">${esc(titleCase(person))}</h2>`;
+          : `<h2 id="${id}-${slug(person)}">${esc(display)}</h2>
+<p class="muted">${esc(
+              [
+                f?.order?.location && !display.includes(titleCase(f.order.location))
+                  ? titleCase(f.order.location)
+                  : "",
+                f?.order?.levelCap ? `level cap ${f.order.levelCap}` : "",
+              ]
+                .filter(Boolean)
+                .join(" · "),
+            )}</p>
+${entry ? `<p><a class="cta" href="/bosses/${entry.slug}">${esc(display)}'s full team</a></p>` : ""}`;
         seen.add(person);
-        return head + fightSection(f, person, id, 3);
+        return `${head}
+<h3>${esc(b.subtitle ? titleCase(b.subtitle) : "Team")}${
+          b.battleEffect ? ` <span class="effect">· ${esc(titleCase(b.battleEffect))}</span>` : ""
+        }</h3>
+${teamPreview(b)}`;
       })
       .join("\n");
     return { mode: id, label, html };
@@ -403,12 +584,13 @@ function eliteFourPage() {
     h1: "Radical Red Elite Four & Champion",
     crumbs: [["/elite-four", "Elite Four"]],
     body: `<p class="lede">Lorelei, Bruno, Agatha, Lance and the Champion, with every
-alternate lineup the game can bring — Lorelei's rain and snow teams, and the
-second team each of the others can field. All of it is the documented Radical Red
-4.1 data, for Normal and Hardcore mode, including the permanent weather and
-terrain each fight sets.</p>
+alternate lineup the game can bring — Lorelei's rain and snow teams, the second
+team each of the others can field, and the champion's three teams, one per
+starter. Each member's Pokémon are previewed below with the conditions their
+fight sets; their own page has the full sets, moves and matchups.</p>
 <p><a class="cta" href="/">Check your team against them</a>
-<a class="cta ghost" href="/bosses">All boss teams</a></p>
+<a class="cta ghost" href="/bosses">All boss teams</a>
+<a class="cta ghost" href="/level-caps">Level caps</a></p>
 ${modeToggle("e4", panels)}`,
   });
 }
@@ -433,12 +615,20 @@ ${urls
 
 write("/level-caps", levelCapsPage());
 write("/bosses", bossesPage());
-for (const p of BOSS_PAGES) write(`/bosses/${p}`, bossPage(p));
+for (const p of BOSS_PAGES) write(`/bosses/${p.slug}`, bossPage(p));
 write("/elite-four", eliteFourPage());
 write("/routes", routesPage());
+for (const r of ROUTE_PAGES) write(`/routes/${r.slug}`, routePage(r));
 write("/items-tms", itemsPage());
+write("/tms", tmsPage());
+write("/mega-stones", megaStonesPage());
+write("/raid-dens", raidDensPage());
+write("/evolutions", evolutionsPage());
 write("/damage-calculator", calculatorPage());
 write("/battle-readiness", readinessPage());
 write("/save-import", saveImportPage());
 writeFileSync(dist + "sitemap.xml", sitemap());
+// what check.mjs walks: every page this run produced, so a new page is
+// covered by the regression check without anyone adding it there
+writeFileSync(dist + "seo-pages.json", JSON.stringify(written));
 console.log(`seo: ${written.length} pages + sitemap.xml`);

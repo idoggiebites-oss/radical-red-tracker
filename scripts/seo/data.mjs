@@ -44,13 +44,28 @@ export function slug(s) {
  * three Giovanni fights share one page. */
 export function personOf(title) {
   const parts = title.split("·");
-  return (parts.length > 1 ? parts[parts.length - 1] : title).trim();
+  // tag battles are titled "SILPH CO. · ARIANA · & ARCHER" — the last
+  // segment is still the person, with the ampersand joining them
+  return (parts.length > 1 ? parts[parts.length - 1] : title).trim().replace(/^&\s*/, "");
+}
+
+/** the title's place, and anyone the boss is fought alongside. The docs put
+ * both in the same field, separated by the same "·" that separates the
+ * person, so "SILPH CO. · ARIANA · & ARCHER" is one fight at Silph Co.
+ * against two trainers — not a place called "Silph Co. · Ariana · &". */
+export function placeParts(title) {
+  const segs = title.split("·").map((x) => x.trim());
+  segs.pop();
+  const place = segs.shift() ?? "";
+  const partners = segs
+    .map((x) => x.replace(/^&\s*/, "").trim())
+    .filter((x) => x && x !== "&");
+  return { place, partners };
 }
 
 /** the place half of the title, abbreviated as the docs write it */
 export function placeOf(title) {
-  const parts = title.split("·");
-  return parts.length > 1 ? parts.slice(0, -1).join("·").trim() : "";
+  return placeParts(title).place;
 }
 
 /** every fight in a mode, flattened, in game order (categories are already
@@ -91,37 +106,98 @@ function placeScore(place, location) {
   ).length;
 }
 
+/** title prefixes that name a ROLE rather than a place. "GYM LEADER ·
+ * BROCK" says nothing about Pewter City, so these must never be used as a
+ * location — a page that calls "Gym Leader" a place reads like a machine
+ * wrote it, because one did. */
+const ROLE_PREFIXES = new Set([
+  "GYM LEADER",
+  "ELITE FOUR",
+  "CHAMPION",
+  "PARTNER",
+  "LEADER",
+  "RIVAL",
+]);
+
+/** the place a fight's title names, or "" when the prefix is a role */
+export function titlePlace(title) {
+  const place = placeOf(title);
+  return ROLE_PREFIXES.has(norm(place)) ? "" : place;
+}
+
+/** distinct fights, keyed by category and title. Alternate teams for one
+ * fight (the Elite Four's TEAM ONE/TWO, the champion's three
+ * starter-dependent teams) share a key: they are one fight in the game and
+ * one row in the trainer order, however many teams it can bring. */
+function fightKey(f) {
+  return `${f.category}|${f.boss.title}`;
+}
+
 /** attach the trainer-order row (level cap, location, rewards, position) to
  * each fight of a person.
  *
  * The app does this with a fuzzy resolver over the whole order
  * (src/lib/bossTarget.ts) because it must map ALL 96 rows. Here the question
- * is narrower — the rows already share the person's name — so matching the
- * fight's own title-place against the row's location, and falling back to
- * game order, is enough. Fights with no row (postgame extras the order
- * doesn't track) simply carry none. */
+ * is narrower — the rows already share the person's name — so a real
+ * location match wins first, and only then does what's left fall back to
+ * game order.
+ *
+ * Both halves are load-bearing. Scored-first is what stops Lance's Team
+ * Rocket partner fight, which comes earlier, from claiming the row that says
+ * ELITE FOUR; order-second is what still finds Brock's gym row, whose title
+ * prefix is a role and scores nothing against "PEWTER CITY". Fights the
+ * order doesn't track at all — rematches, postgame — end up with no row,
+ * which is the truth about them. */
 export function withOrder(mode, group) {
+  if (!group) return [];
   const rows = bosses[mode].trainerOrder
     .map((entry, index) => ({ entry, index }))
     .filter((r) => norm(r.entry.name) === norm(group.person));
+
+  const keys = [...new Set(group.fights.map(fightKey))];
+  const assigned = new Map();
   const taken = new Set();
-  return group.fights.map((f, i) => {
-    const place = placeOf(f.boss.title);
-    let best = null;
-    let bestScore = 0;
+
+  // pass 1: real location matches, best score first, so a strong match is
+  // never beaten to its row by an earlier fight that doesn't match at all
+  const scored = [];
+  for (const key of keys) {
+    const fight = group.fights.find((f) => fightKey(f) === key);
     for (const r of rows) {
-      if (taken.has(r.index)) continue;
-      const s = placeScore(place, r.entry.location ?? "");
-      if (s > bestScore) {
-        best = r;
-        bestScore = s;
-      }
+      const score = placeScore(placeOf(fight.boss.title), r.entry.location ?? "");
+      if (score > 0) scored.push({ key, r, score });
     }
-    if (!best) best = rows.filter((r) => !taken.has(r.index))[0] ?? null;
-    // one fight, one row: a second Giovanni team must not re-claim the first
-    // fight's row just because both titles mention Rocket
-    if (best) taken.add(best.index);
-    return { ...f, order: best?.entry ?? null, orderIndex: best?.index ?? null, seq: i };
+  }
+  scored.sort((a, b) => b.score - a.score);
+  for (const { key, r } of scored) {
+    if (assigned.has(key) || taken.has(r.index)) continue;
+    assigned.set(key, r);
+    taken.add(r.index);
+  }
+
+  // pass 2: whatever is left, in game order
+  for (const key of keys) {
+    if (assigned.has(key)) continue;
+    const r = rows.find((x) => !taken.has(x.index));
+    if (!r) continue;
+    assigned.set(key, r);
+    taken.add(r.index);
+  }
+
+  return group.fights.map((f, i) => {
+    const r = assigned.get(fightKey(f));
+    return { ...f, order: r?.entry ?? null, orderIndex: r?.index ?? null, seq: i };
+  });
+}
+
+/** one entry per distinct fight (alternate teams collapsed) */
+export function distinctFights(fights) {
+  const seen = new Set();
+  return fights.filter((f) => {
+    const k = fightKey(f);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
   });
 }
 
@@ -236,3 +312,45 @@ export const METHOD_LABELS = {
   super_rod: "Super Rod",
   surfing: "Surfing",
 };
+
+/** copied from src/lib/routeGroups.ts — the same folding the tracker does,
+ * so a page covers the area a player thinks of as one place (Mt. Moon, not
+ * Mt. Moon 1F/B1F/B2F). Keep the two in step. */
+const SECTION_SUFFIX = / ((?:B?\d+[&-])?B?\d+F(?:-B?\d+F)?)$/;
+const EXPLICIT_SECTIONS = {
+  "FOREST EXPANSION": { base: "VIRIDIAN FOREST", label: "FOREST EXPANSION" },
+  "MT. EMBER EXTERIOR": { base: "MT. EMBER", label: "EXTERIOR" },
+  "SAFARI CENTER (ZONE 1)": { base: "SAFARI ZONE", label: "CENTER (ZONE 1)" },
+  "SAFARI EAST (ZONE 2)": { base: "SAFARI ZONE", label: "EAST (ZONE 2)" },
+  "SAFARI NORTH (ZONE 3)": { base: "SAFARI ZONE", label: "NORTH (ZONE 3)" },
+  "SAFARI WEST (ZONE 4)": { base: "SAFARI ZONE", label: "WEST (ZONE 4)" },
+  "SAFARI FAR-WEST (ZONE 5)": { base: "SAFARI ZONE", label: "FAR-WEST (ZONE 5)" },
+  "ROUTE 21A": { base: "ROUTE 21", label: "21A" },
+  "ROUTE 21B": { base: "ROUTE 21", label: "21B" },
+};
+
+function splitLocationName(name) {
+  const ex = EXPLICIT_SECTIONS[name];
+  if (ex) return ex;
+  const m = name.match(SECTION_SUFFIX);
+  if (m) return { base: name.slice(0, m.index), label: m[1] };
+  return { base: name, label: null };
+}
+
+/** doc locations folded into the areas a player names */
+export function locationGroups() {
+  const groups = [];
+  const byBase = new Map();
+  for (const loc of encounters.locations) {
+    const { base, label } = splitLocationName(loc.name);
+    let g = byBase.get(base);
+    if (!g) {
+      g = { id: loc.id, slug: slug(base), name: base, postgame: loc.postgame, sections: [] };
+      byBase.set(base, g);
+      groups.push(g);
+    }
+    g.postgame = g.postgame && loc.postgame;
+    g.sections.push({ label, loc });
+  }
+  return groups;
+}

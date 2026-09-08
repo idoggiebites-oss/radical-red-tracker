@@ -1978,3 +1978,4 @@ tr.pickable:hover td { background: var(--bg3); }
 .ref-links ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
 .ref-links li { font-size: 13px; color: var(--muted); }
 .ref-links a { color: var(--accent2); }
+.ref-more { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; font-size: 13px; }

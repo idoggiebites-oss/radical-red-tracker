@@ -1,17 +1,19 @@
 {
-  "_comment": "The static reference pages (scripts/seo/build.mjs) — ONE list, read by the generator, the sitemap, the service worker's navigation denylist in vite.config.ts, the app footer and the pages' own nav. `published: false` means the section is spoken for but has no page yet: it is still kept out of the SPA navigation fallback, so the day its page lands nobody's warm service worker answers it with the app shell, but nothing links to it and it stays out of the sitemap. Add a section here first.",
+  "_comment": "The static reference pages (scripts/seo/build.mjs) — ONE list, read by the generator, the sitemap, the service worker's navigation denylist in vite.config.ts, the app footer and the pages' own nav. `published: false` means the section is spoken for but has no page yet: it is still kept out of the SPA navigation fallback, so the day its page lands nobody's warm service worker answers it with the app shell, but nothing links to it and it stays out of the sitemap. Add a section here first. `primary` marks the handful that fit in a header nav; every published section is linked from the footer regardless.",
   "sections": [
     {
       "slug": "level-caps",
       "label": "Level caps",
       "blurb": "every Normal and Hardcore cap and the gym that raises it",
-      "published": true
+      "published": true,
+      "primary": true
     },
     {
       "slug": "bosses",
       "label": "Boss teams",
       "blurb": "every documented fight in battle order, with levels, moves, abilities and held items",
-      "published": true
+      "published": true,
+      "primary": true
     },
     {
       "slug": "elite-four",
@@ -23,7 +25,8 @@
       "slug": "routes",
       "label": "Pokémon locations",
       "blurb": "where every Pokémon can be caught, by route and method",
-      "published": true
+      "published": true,
+      "primary": true
     },
     {
       "slug": "items-tms",
@@ -35,7 +38,8 @@
       "slug": "damage-calculator",
       "label": "Damage calculator",
       "blurb": "Radical Red damage ranges with documented boss sets",
-      "published": true
+      "published": true,
+      "primary": true
     },
     {
       "slug": "battle-readiness",
@@ -47,6 +51,31 @@
       "slug": "save-import",
       "label": "Save import",
       "blurb": "load your .sav straight into the tracker",
+      "published": true,
+      "primary": true
+    },
+    {
+      "slug": "tms",
+      "label": "TM locations",
+      "blurb": "all 120 TMs, what they teach and where they are",
+      "published": true
+    },
+    {
+      "slug": "mega-stones",
+      "label": "Mega Stones",
+      "blurb": "every Mega Stone and how to get it",
+      "published": true
+    },
+    {
+      "slug": "raid-dens",
+      "label": "Raid dens",
+      "blurb": "every den, its Pokémon and what they drop",
+      "published": true
+    },
+    {
+      "slug": "evolutions",
+      "label": "Evolution methods",
+      "blurb": "how every Pokémon evolves in Radical Red",
       "published": true
     }
   ]

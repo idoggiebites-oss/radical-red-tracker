@@ -20,7 +20,10 @@ export function esc(s) {
  * shared section list, so a new page joins every page's nav by existing. */
 const NAV = [
   ["/", "Tracker"],
-  ...PUBLISHED.map((s) => [`/${s.slug}`, s.label]),
+  // the header holds the handful marked primary; thirteen links across the
+  // top of a phone is a wall, not navigation. The footer below carries the
+  // complete set, so every page still reaches every other page.
+  ...PUBLISHED.filter((s) => s.primary).map((s) => [`/${s.slug}`, s.label]),
 ];
 
 const CSS = `
@@ -84,6 +87,9 @@ padding:6px 14px;font-size:14px;cursor:pointer}
 .modes>input:focus-visible+label{outline:2px solid var(--accent2);outline-offset:2px}
 .m-default:checked~.panels>.p-hardcore,.m-hardcore:checked~.panels>.p-default{display:none}
 footer.site{border-top:1px solid var(--line);margin-top:40px;padding:16px 0;color:var(--muted);font-size:13px}
+.foot-nav{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 12px}
+.foot-nav a{color:var(--text);text-decoration:none}
+.foot-nav a:hover{color:var(--accent2)}
 `;
 
 export function typeChip(t) {
@@ -161,6 +167,9 @@ ${
 ${p.body}
 </div>
 <footer class="site"><div class="wrap">
+<nav class="foot-nav" aria-label="All reference pages">
+${PUBLISHED.map((s) => `<a href="/${s.slug}">${esc(s.label)}</a>`).join("\n")}
+</nav>
 Teams, levels and level caps come from the official Pokémon Radical Red 4.1
 documents (Default &amp; Hardcore Mode Bosses, Pokémon Locations &amp; Raid Dens) —
 the same data the <a href="/">tracker</a> runs on. Radical Red is a fan-made

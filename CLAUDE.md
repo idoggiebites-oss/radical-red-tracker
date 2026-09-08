@@ -295,6 +295,20 @@ passes with a warm worker.
 `BOSS_PAGES` in `build.mjs` is the list of per-boss pages actually
 published; the generator can emit one for any name in the data.
 
+**Pages that list, pages that hold.** `/elite-four` and `/items-tms` are
+hubs: they preview and link, because the full teams now live on
+`/bosses/<member>` and the 120-row TM table on `/tms`, and two URLs holding
+the same table only splits which one it belongs to. `BOSS_PAGES` and
+`ROUTE_PAGES` are the published subsets — a boss entry can carry a
+`category` (that is how `/bosses/champion` exists without dragging in the
+rival's other fifteen fights) and a `name` override. Boss page copy is
+**derived from the fights** (`pageCopy`), not hand-written per boss: how many
+fights, where, which caps, whether Hardcore differs. Sixteen hand-written
+ledes would be sixteen chances to assert something the data doesn't say.
+There is no `/evolution-changes` for exactly that reason — the tracker has
+Radical Red's evolution data and no base-game data to diff it against, so the
+page is `/evolutions` and says how a Pokémon evolves, not what changed.
+
 **Links back in** are `/?cat=<category>&boss=<title>&to=readiness|calc`,
 parsed once on boot by `src/lib/deepLink.ts` and then wiped from the address
 bar. A fight is addressed the way the app already addresses one (`BossTarget`

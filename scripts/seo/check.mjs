@@ -14,7 +14,7 @@
  * missed. */
 import { spawn } from "node:child_process";
 import { chromium } from "playwright-core";
-import { PUBLISHED } from "./data.mjs";
+import { readFileSync } from "node:fs";
 
 const BASE = "http://localhost:4178";
 const RUN = JSON.stringify({
@@ -69,9 +69,10 @@ try {
   check("service worker controls the page", controlled);
   if (!controlled) throw new Error("nothing below would mean anything");
 
-  // every published section, plus a generated boss page — driven off the
-  // same list the generator reads, so a new section is covered by existing
-  for (const path of [...PUBLISHED.map((s) => `/${s.slug}`), "/bosses/sabrina"]) {
+  // every page the build produced, read from what it wrote — a new page is
+  // covered here by existing, rather than by someone remembering this file
+  const pages = JSON.parse(readFileSync(new URL("../../dist/seo-pages.json", import.meta.url)));
+  for (const path of pages) {
     await page.goto(BASE + path);
     const seen = await page.evaluate(() => ({
       shell: !!document.querySelector("#root"),

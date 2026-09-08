@@ -13,6 +13,20 @@ entries only go on top. Renumbering would re-show old notes to everyone.
 A bullet under a `## date` heading is one note. Everything else here is
 ignored by the parser.
 
+## 2026-09-08
+
+- **Sixteen boss pages**, one per major fight: Brock through Clair, the whole
+  Elite Four, the Champion's three starter teams, Giovanni's three fights and
+  the Rocket admins. Each one has both modes' teams, the level cap, what the
+  fight's conditions are, and the team's weaknesses counted up.
+- **Eight location pages** — Viridian Forest, Mt. Moon, Route 3, Rock Tunnel,
+  Pokémon Tower, the Safari Zone, Seafoam Islands and Cerulean Cave — with
+  their encounters, the items and TMs found there, the raid dens and the
+  trainers waiting in them.
+- New reference pages for **TM locations**, **Mega Stones and Z-Crystals**,
+  **raid dens** (every den, its Pokémon and their drops) and **how every
+  Pokémon evolves** in Radical Red.
+
 ## 2026-09-07
 
 - The tracker now has **reference pages that stand on their own** — level
