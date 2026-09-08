@@ -354,3 +354,111 @@ export function locationGroups() {
   }
   return groups;
 }
+
+/** the boss pages that are published. The generator can produce one for any
+ * name in the data; a `category` narrows it to that name's fights in one
+ * category, which is what separates the champion from the fifteen other
+ * fights the rival turns up in.
+ *
+ * The rival himself has no page yet: fifteen fights, each with three
+ * starter-dependent teams, is a different kind of page and needs its own
+ * explanation of which team you get. */
+export const BOSS_PAGES = [
+  { slug: "brock" },
+  { slug: "misty" },
+  { slug: "lt-surge" },
+  { slug: "erika" },
+  { slug: "koga" },
+  { slug: "sabrina" },
+  { slug: "blaine" },
+  { slug: "clair" },
+  { slug: "giovanni" },
+  { slug: "archer" },
+  { slug: "ariana" },
+  { slug: "lorelei" },
+  { slug: "bruno" },
+  { slug: "agatha" },
+  { slug: "lance" },
+  { slug: "champion", person: "rival", category: "Indigo League", name: "The Champion" },
+  // the Johto leaders RR sprinkles in as extra fights — no badge, but a
+  // gym leader's name is what people search
+  { slug: "falkner" },
+  { slug: "bugsy" },
+  { slug: "whitney" },
+  { slug: "morty" },
+  { slug: "chuck" },
+  { slug: "pryce" },
+  { slug: "jasmine" },
+  // postgame fights worth a page on the name alone
+  { slug: "oak" },
+  { slug: "red" },
+  // fifteen fights, three teams each. The starter-dependent teams fold into
+  // <details> or the page is unreadable.
+  { slug: "rival", exclude: "Indigo League" },
+];
+const bossPageSlugs = BOSS_PAGES.map((p) => p.slug);
+
+
+/** the boss page covering a trainer named in the order, or null. Called with
+ * a name alone, so it takes the entry that isn't narrowed to one category —
+ * the rival's own page rather than the champion's. Route pages never show
+ * the champion's row (its "location" is CHAMPION, which is no area), so the
+ * ambiguity can't reach a reader. */
+export function bossPathFor(name) {
+  const key = slug(name);
+  const entry =
+    BOSS_PAGES.find((b) => (b.person ?? b.slug) === key && !b.category) ??
+    BOSS_PAGES.find((b) => (b.person ?? b.slug) === key);
+  return entry ? `/bosses/${entry.slug}` : null;
+}
+
+/** Every area gets a page. The docs' own spelling is the slug except where
+ * nobody types it that way — "PKMN TOWER", and "SEAFOAM" for what the game
+ * calls the Seafoam Islands. `name` is the heading; `area` is the grouped
+ * location it comes from when the two differ.
+ *
+ * These are not thin: each one carries its encounters by section and method,
+ * the items and TMs found there, its raid dens, and the trainers the docs
+ * put in it. An area with nothing but a grass table would be — none of the
+ * 54 are. */
+const AREA_OVERRIDES = {
+  "pkmn-tower": { slug: "pokemon-tower", name: "Pokémon Tower" },
+  seafoam: { slug: "seafoam-islands", name: "Seafoam Islands" },
+  "mt-moon": { name: "Mt. Moon" },
+  "s-s-anne": { name: "S.S. Anne" },
+  "gouging-s-room": { name: "Gouging's Room" },
+};
+
+export const ROUTE_PAGES = locationGroups().map((g) => {
+  const o = AREA_OVERRIDES[g.slug] ?? {};
+  return { slug: o.slug ?? g.slug, area: g.slug, name: o.name };
+});
+
+// the location sheet writes PKMN TOWER, the item sheet writes Pokemon Tower.
+// Stricter than `norm` above: no spaces at all, so "MT MOON" and "Mt. Moon"
+// are the same string.
+const normArea = (s) =>
+  String(s ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/^PKMN/, "POKEMON");
+
+/** the same area under two spellings — "MT MOON" and "Mt. Moon", "SEAFOAM"
+ * and "Seafoam Islands". Prefix matching, but never across a number
+ * boundary, or Route 1 would swallow Routes 10 through 19. */
+export function sameArea(a, b) {
+  const x = normArea(a);
+  const y = normArea(b);
+  if (!x || !y) return false;
+  if (x === y) return true;
+  const [short, long] = x.length <= y.length ? [x, y] : [y, x];
+  return long.startsWith(short) && !/\d/.test(long[short.length]);
+}
+
+
+/** the area page for a location as some other sheet spells it — the boss
+ * docs say "PEWTER CITY", the location sheet "PEWTER CITY", the item sheet
+ * "Pewter City", and Mt. Moon is "MT MOON" in one and "Mt. Moon" in another. */
+export function routePathFor(locationName) {
+  if (!locationName) return null;
+  const g = locationGroups().find((x) => sameArea(x.name, locationName));
+  const entry = g && ROUTE_PAGES.find((r) => r.area === g.slug);
+  return entry ? `/routes/${entry.slug}` : null;
+}

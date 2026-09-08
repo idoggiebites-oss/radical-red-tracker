@@ -85,6 +85,32 @@ try {
     );
   }
 
+  // the 404 document itself. Its real behaviour — GitHub Pages serving it
+  // for an unmatched path — can only be checked against the deployed site;
+  // `vite preview` answers unknown paths with the SPA shell and a 200, so
+  // asserting that here would be testing the preview server, not the site.
+  await page.goto(BASE + "/404.html");
+  const notFound = await page.evaluate(() => ({
+    h1: document.querySelector("h1")?.textContent ?? "",
+    noindex: document.querySelector('meta[name="robots"]')?.content ?? "",
+    links: document.querySelectorAll("a[href]").length,
+  }));
+  check(
+    "/404.html is our page, noindexed, and links back in",
+    notFound.h1.includes("doesn't exist") &&
+      notFound.noindex === "noindex" &&
+      notFound.links > 50,
+    JSON.stringify(notFound),
+  );
+
+  // the cross-links between the two big page families
+  await page.goto(BASE + "/bosses/brock");
+  const toArea = await page.locator('a[href="/routes/pewter-city"]').count();
+  check("a boss page links to the area it happens in", toArea > 0);
+  await page.goto(BASE + "/routes/pewter-city");
+  const toBoss = await page.locator('a[href="/bosses/brock"]').count();
+  check("an area page links to the bosses fought there", toBoss > 0);
+
   // the two the fallback would have swallowed, by name
   for (const [path, needle] of [
     ["/level-caps", "Radical Red 4.1 Level Caps"],

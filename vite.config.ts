@@ -83,6 +83,11 @@ export default defineConfig({
           new RegExp(
             `^/(${seoSections.sections.map((s) => s.slug).join('|')})(/|$)`,
           ),
+          // the generated 404 document. Pages serves it as the body of a 404
+          // for any unmatched path, which the denylist above already lets
+          // through for those sections — this is so the file itself is never
+          // answered with the app shell either.
+          /^\/404\.html$/,
         ],
         // default globPatterns only picks up js/css/html + the manifest's
         // own icons — add png so the nav icons precache at install time

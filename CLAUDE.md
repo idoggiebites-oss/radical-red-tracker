@@ -315,6 +315,21 @@ There is no `/evolution-changes` for exactly that reason — the tracker has
 Radical Red's evolution data and no base-game data to diff it against, so the
 page is `/evolutions` and says how a Pokémon evolves, not what changed.
 
+**Cross-links** run both ways: a fight's Location links to that area's page
+(`routePathFor`, which matches across the sheets' three spellings of the same
+place), and an area page's trainer list links to their boss pages
+(`bossPathFor`). Both live in `data.mjs` with the two published lists, so
+neither generator has to import the other.
+
+**`dist/404.html`** is generated too — GitHub Pages serves it for any
+unmatched path, including the trailing-slash form of a real page
+(`/bosses/sabrina/` is not a file). It bypasses `write()` (it is not a
+section), is `noindex` rather than canonicalised, and has its own entry in
+the navigation denylist so the worker can't answer it with the app shell.
+Its real behaviour can only be checked against the deployed site: `vite
+preview` answers unknown paths with the SPA shell and a 200, so `check.mjs`
+asserts the document, not the serving.
+
 **Links back in** are `/?cat=<category>&boss=<title>&to=readiness|calc`,
 parsed once on boot by `src/lib/deepLink.ts` and then wiped from the address
 bar. A fight is addressed the way the app already addresses one (`BossTarget`

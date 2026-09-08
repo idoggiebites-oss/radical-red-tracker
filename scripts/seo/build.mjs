@@ -6,10 +6,16 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {
+  BOSS_PAGES,
   MODES,
+  PUBLISHED,
+  ROUTE_PAGES,
+  routePathFor,
   SECTIONS,
   SITE,
   bosses,
+  bossPathFor,
+  distinctFights,
   expandMove,
   groupByPerson,
   personOf,
@@ -17,7 +23,6 @@ import {
   placeParts,
   slug,
   spriteSrc,
-  distinctFights,
   teamProfile,
   titleCase,
   titlePlace,
@@ -26,7 +31,6 @@ import {
 } from "./data.mjs";
 import { esc, modeToggle, shell, typeChip } from "./render.mjs";
 import {
-  ROUTE_PAGES,
   evolutionsPage,
   itemsPage,
   megaStonesPage,
@@ -38,49 +42,6 @@ import {
 import { calculatorPage, readinessPage, saveImportPage } from "./features.mjs";
 
 const dist = fileURLToPath(new URL("../../dist/", import.meta.url));
-
-/** the boss pages that are published. The generator can produce one for any
- * name in the data; a `category` narrows it to that name's fights in one
- * category, which is what separates the champion from the fifteen other
- * fights the rival turns up in.
- *
- * The rival himself has no page yet: fifteen fights, each with three
- * starter-dependent teams, is a different kind of page and needs its own
- * explanation of which team you get. */
-const BOSS_PAGES = [
-  { slug: "brock" },
-  { slug: "misty" },
-  { slug: "lt-surge" },
-  { slug: "erika" },
-  { slug: "koga" },
-  { slug: "sabrina" },
-  { slug: "blaine" },
-  { slug: "clair" },
-  { slug: "giovanni" },
-  { slug: "archer" },
-  { slug: "ariana" },
-  { slug: "lorelei" },
-  { slug: "bruno" },
-  { slug: "agatha" },
-  { slug: "lance" },
-  { slug: "champion", person: "rival", category: "Indigo League", name: "The Champion" },
-  // the Johto leaders RR sprinkles in as extra fights — no badge, but a
-  // gym leader's name is what people search
-  { slug: "falkner" },
-  { slug: "bugsy" },
-  { slug: "whitney" },
-  { slug: "morty" },
-  { slug: "chuck" },
-  { slug: "pryce" },
-  { slug: "jasmine" },
-  // postgame fights worth a page on the name alone
-  { slug: "oak" },
-  { slug: "red" },
-  // fifteen fights, three teams each. The starter-dependent teams fold into
-  // <details> or the page is unreadable.
-  { slug: "rival", exclude: "Indigo League" },
-];
-const bossPageSlugs = BOSS_PAGES.map((p) => p.slug);
 
 const written = [];
 
@@ -222,8 +183,11 @@ function fightSection(f, person, mode, level = 2) {
   // the markup is all still there, which is what a crawler reads.
   const starterVariant = /^IF RIVAL HAS/i.test(b.subtitle ?? "");
   const partners = placeParts(b.title).partners.map((x) => titleCase(x));
+  // the place is a page of its own: where the fight happens is also where
+  // the player is standing, and the area page has its encounters and items
+  const areaPath = routePathFor(f.order?.location ?? titlePlace(b.title));
   const meta = [
-    ["Location", place],
+    ["Location", place && areaPath ? { html: `<a href="${areaPath}">${esc(place)}</a>` } : place],
     [place ? "Part of" : "Fight", titleCase(f.category)],
     ["Alongside", partners.join(" and ")],
     ["Level cap", capOf(f.order)],
@@ -244,7 +208,7 @@ ${meta
     ([k, v]) =>
       `<tr><th>${esc(k)}</th><td${
         k === "Battle" && b.battleEffect ? ' class="effect"' : ""
-      }>${esc(v)}</td></tr>`,
+      }>${v.html ?? esc(v)}</td></tr>`,
   )
   .join("\n")}
 </tbody></table>
@@ -280,7 +244,7 @@ function levelCapsPage() {
       });
     const rows = leaders
       .map(({ name, row, title }) => {
-        const page = bossPageSlugs.includes(slug(name)) ? `/bosses/${slug(name)}` : null;
+        const page = bossPathFor(name);
         return `<tr>
 <td><strong>${page ? `<a href="${page}">${esc(titleCase(name))}</a>` : esc(titleCase(name))}</strong></td>
 <td>${esc(titleCase(row?.location ?? "—"))}</td>
@@ -650,6 +614,40 @@ ${modeToggle("e4", panels)}`,
   });
 }
 
+/** GitHub Pages serves this for anything it can't match — a mistyped URL, a
+ * link that rotted, or the trailing-slash form of a real page
+ * (/bosses/sabrina/ is not a file). Without it that is GitHub's own 404,
+ * which has no way back into the site. Not a section, so it bypasses
+ * write() and its list check, and it is noindexed rather than canonicalised.
+ */
+function notFoundPage() {
+  return shell({
+    path: "/404",
+    noindex: true,
+    title: "Page not found — Radical Red Tracker",
+    description: "That page doesn't exist. The Radical Red 4.1 reference pages are here.",
+    h1: "That page doesn't exist",
+    body: `<p class="lede">The link may be old, or have a stray slash on the end
+— <code>/bosses/sabrina</code> is a page, <code>/bosses/sabrina/</code> is
+not. Everything the site has is below.</p>
+<p><a class="cta" href="/">Open the tracker</a></p>
+<h2>Reference pages</h2>
+<ul>
+${PUBLISHED.map(
+  (x) => `<li><a href="/${x.slug}">${esc(x.label)}</a> — ${esc(x.blurb)}</li>`,
+).join("\n")}
+</ul>
+<h2>Boss pages</h2>
+<div class="tags">${BOSS_PAGES.map(
+      (b) => `<a class="tag" href="/bosses/${b.slug}">${esc(b.name ?? titleCase(b.person ?? b.slug))}</a>`,
+    ).join("")}</div>
+<h2>Areas</h2>
+<div class="tags">${ROUTE_PAGES.map(
+      (r) => `<a class="tag" href="/routes/${r.slug}">${esc(r.name ?? titleCase(r.slug.replace(/-/g, " ")))}</a>`,
+    ).join("")}</div>`,
+  });
+}
+
 function sitemap() {
   const urls = ["/", ...written];
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -682,6 +680,7 @@ write("/evolutions", evolutionsPage());
 write("/damage-calculator", calculatorPage());
 write("/battle-readiness", readinessPage());
 write("/save-import", saveImportPage());
+writeFileSync(dist + "404.html", notFoundPage());
 writeFileSync(dist + "sitemap.xml", sitemap());
 // what check.mjs walks: every page this run produced, so a new page is
 // covered by the regression check without anyone adding it there

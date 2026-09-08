@@ -3,8 +3,11 @@
  * makes you open the app to see the rest is worth neither visit. */
 import {
   METHOD_LABELS,
+  ROUTE_PAGES,
   SITE,
+  bossPathFor,
   bosses,
+  sameArea,
   encounters,
   items,
   locationGroups,
@@ -195,43 +198,6 @@ damage ranges move with it.</p>
 export { SITE };
 
 
-/** Every area gets a page. The docs' own spelling is the slug except where
- * nobody types it that way — "PKMN TOWER", and "SEAFOAM" for what the game
- * calls the Seafoam Islands. `name` is the heading; `area` is the grouped
- * location it comes from when the two differ.
- *
- * These are not thin: each one carries its encounters by section and method,
- * the items and TMs found there, its raid dens, and the trainers the docs
- * put in it. An area with nothing but a grass table would be — none of the
- * 54 are. */
-const AREA_OVERRIDES = {
-  "pkmn-tower": { slug: "pokemon-tower", name: "Pokémon Tower" },
-  seafoam: { slug: "seafoam-islands", name: "Seafoam Islands" },
-  "mt-moon": { name: "Mt. Moon" },
-  "s-s-anne": { name: "S.S. Anne" },
-  "gouging-s-room": { name: "Gouging's Room" },
-};
-
-export const ROUTE_PAGES = locationGroups().map((g) => {
-  const o = AREA_OVERRIDES[g.slug] ?? {};
-  return { slug: o.slug ?? g.slug, area: g.slug, name: o.name };
-});
-
-const norm = (s) =>
-  String(s ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/^PKMN/, "POKEMON");
-
-/** the same area under two spellings — "MT MOON" and "Mt. Moon", "SEAFOAM"
- * and "Seafoam Islands". Prefix matching, but never across a number
- * boundary, or Route 1 would swallow Routes 10 through 19. */
-function sameArea(a, b) {
-  const x = norm(a);
-  const y = norm(b);
-  if (!x || !y) return false;
-  if (x === y) return true;
-  const [short, long] = x.length <= y.length ? [x, y] : [y, x];
-  return long.startsWith(short) && !/\d/.test(long[short.length]);
-}
-
 export function routePage(entry) {
   const groups = locationGroups();
   const i = groups.findIndex((g) => g.slug === (entry.area ?? entry.slug));
@@ -319,13 +285,17 @@ export function routePage(entry) {
 <thead><tr><th>#</th><th>Trainer</th><th>Level cap</th><th></th></tr></thead>
 <tbody>${rows
         .map(
-          ({ t, idx }) => `<tr><td>${idx + 1}</td><td><strong>${esc(titleCase(t.name))}</strong>${
+          ({ t, idx }) => {
+            const path = bossPathFor(t.name);
+            const label = esc(titleCase(t.name));
+            return `<tr><td>${idx + 1}</td><td><strong>${
+              path ? `<a href="${path}">${label}</a>` : label
+            }</strong>${
             t.optional ? ' <span class="muted">optional</span>' : ""
           }</td><td>${esc(t.levelCap || "—")}</td><td>${
-            t.rewards?.length
-              ? esc(t.rewards.map((r) => r.label).join(", "))
-              : ""
-          }</td></tr>`,
+              t.rewards?.length ? esc(t.rewards.map((r) => r.label).join(", ")) : ""
+            }</td></tr>`;
+          },
         )
         .join("\n")}</tbody></table></div>`;
     })

@@ -128,7 +128,7 @@ export function shell(p) {
 <meta name="theme-color" content="#12151c">
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.description)}">
-<link rel="canonical" href="${esc(url)}">
+${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${esc(url)}">`}
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:site_name" content="Radical Red Tracker">
