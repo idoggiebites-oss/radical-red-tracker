@@ -55,6 +55,17 @@ button {
   font: inherit;
 }
 button:hover { border-color: var(--muted); }
+/* This sheet had no :active and no :focus-visible rule anywhere. On a
+   touch-first app that means a tap gives no acknowledgement until the state
+   changes, and a keyboard user gets no ring at all — inputs had one (border
+   colour, above), buttons had nothing. */
+button { transition: background-color 120ms ease, border-color 120ms ease; }
+button:active:not(:disabled) { transform: translateY(1px); }
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  button { transition: none; }
+  button:active:not(:disabled) { transform: none; }
+}
 button.primary { background: var(--accent); border-color: var(--accent); }
 button.danger { color: #ff8a8a; }
 button:disabled { opacity: 0.45; cursor: default; }
@@ -356,6 +367,16 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 
 /* ---- routes ---- */
 
+/* A route row holds a name, a sprite, a nickname and a badge — about 400px
+   of content. Stretched to the full 1100px container it left a third of the
+   screen empty between the badge and the chevron that opens it, so the eye
+   travelled the whole width to find the affordance. Capping the list keeps
+   the row reading as a row; the expanded encounter tables inside it are
+   three or four narrow columns and fit comfortably. */
+@media (min-width: 901px) {
+  .routes { max-width: 860px; }
+}
+
 .route-row {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -643,6 +664,14 @@ tr.pickable:hover td { background: var(--bg3); }
 .alt-speed { color: var(--accent2); }
 .mon-moves { margin: 0 0 8px; padding-left: 18px; }
 .mon-moves li { margin: 1px 0; }
+/* every number here is read against the one above it — levels, base stats,
+   catch rates, damage ranges. Proportional digits make those columns ragged. */
+.stat-table,
+.method-table,
+.ref-table,
+.cap-pill,
+.team-card,
+.readiness-grid { font-variant-numeric: tabular-nums; }
 .stat-table { border-collapse: collapse; width: 100%; font-size: 12px; }
 .stat-table th { color: var(--muted); font-weight: 600; padding: 2px 4px; text-align: right; }
 .stat-table td { padding: 2px 4px; text-align: right; }
@@ -671,6 +700,16 @@ tr.pickable:hover td { background: var(--bg3); }
 .team-loc { font-size: 12px; text-transform: capitalize; }
 .team-actions { display: flex; flex-direction: column; gap: 4px; }
 .team-actions button { font-size: 12.5px; padding: 3px 8px; }
+/* Four bordered buttons stacked beside six stats read as the loudest thing on
+   the card, so they recede until pointed at. Behind `hover: hover` on
+   purpose: a touch device never gets the hover back, and there a borderless
+   button is just a label. Same size and hit area either way. */
+@media (hover: hover) and (pointer: fine) {
+  .team-actions button { background: none; border-color: transparent; color: var(--muted); }
+  .team-actions button:hover { background: var(--bg3); border-color: var(--line); color: var(--text); }
+  .team-actions button.danger { color: #d97070; }
+  .team-actions button.danger:hover { color: #ff8a8a; }
+}
 
 /* ---- reference ---- */
 
