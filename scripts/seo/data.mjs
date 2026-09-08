@@ -396,8 +396,6 @@ export const BOSS_PAGES = [
   // <details> or the page is unreadable.
   { slug: "rival", exclude: "Indigo League" },
 ];
-const bossPageSlugs = BOSS_PAGES.map((p) => p.slug);
-
 
 /** the boss page covering a trainer named in the order, or null. Called with
  * a name alone, so it takes the entry that isn't narrowed to one category —
