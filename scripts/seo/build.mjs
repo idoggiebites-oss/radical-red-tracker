@@ -7,6 +7,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {
   MODES,
+  SECTIONS,
   SITE,
   bosses,
   expandMove,
@@ -32,6 +33,19 @@ const BOSS_PAGES = ["giovanni", "sabrina"];
 const written = [];
 
 function write(path, html) {
+  // a page whose section isn't on the shared list would be published, linked
+  // and sitemapped while the service worker still answered it with the app
+  // shell — so fail the build instead, here, where the fix is obvious
+  const section = path.split("/")[1];
+  const known = SECTIONS.find((s) => s.slug === section);
+  if (!known) {
+    throw new Error(
+      `seo: ${path} is not in src/lib/seoSections.json — add the section there first`,
+    );
+  }
+  if (!known.published) {
+    throw new Error(`seo: ${path} is generated but "${section}" is published: false`);
+  }
   // flat files: /bosses/sabrina.html serves at /bosses/sabrina, which is the
   // URL we publish and canonicalise. A directory + index.html would only be
   // reachable at the trailing-slash form.

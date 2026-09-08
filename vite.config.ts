@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import seoSections from './src/lib/seoSections.json' with { type: 'json' }
 
 // Cloudflare Web Analytics. Cloudflare can't inject this itself: that only
 // happens for proxied traffic, and our DNS records are deliberately
@@ -72,8 +73,16 @@ export default defineConfig({
         // them with the SPA shell, which is index.html. Every returning
         // visitor has a warm worker, so that is everyone but the crawler.
         // Let these paths go to the network instead.
+        //
+        // Built from the same list the generator reads, and deliberately
+        // including sections that have no page yet: the denylist has to be in
+        // the worker BEFORE the page it protects ships, or the first visitors
+        // to a new section are served the app shell by the worker they
+        // installed yesterday.
         navigateFallbackDenylist: [
-          /^\/(level-caps|bosses|elite-four|routes|items-tms|damage-calculator|save-import|battle-readiness)(\/|$)/,
+          new RegExp(
+            `^/(${seoSections.sections.map((s) => s.slug).join('|')})(/|$)`,
+          ),
         ],
         // default globPatterns only picks up js/css/html + the manifest's
         // own icons — add png so the nav icons precache at install time

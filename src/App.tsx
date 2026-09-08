@@ -22,6 +22,7 @@ import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/run
 import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import { nextLevelCap } from "./lib/levelCap";
 import { clearDeepLink, readDeepLink } from "./lib/deepLink";
+import seoSections from "./lib/seoSections.json";
 import { ViewErrorBoundary, lazyView } from "./lib/lazyView";
 import { TabBar } from "./components/TabBar";
 import { WhatsNew } from "./components/WhatsNew";
@@ -694,22 +695,20 @@ export default function App() {
 
       {/* real links, not tab switches: these are separate static pages
           (scripts/seo/build.mjs) generated from the same data the app reads,
-          and this block is how a crawler — and a reader — finds them */}
+          and this block is how a crawler — and a reader — finds them. Built
+          from seoSections.json, the same list the generator and the service
+          worker's navigation denylist read, so a new page appears here by
+          existing rather than by someone remembering this file. */}
       <nav className="ref-links" aria-label="Radical Red reference pages">
         <h2>Radical Red 4.1 reference</h2>
         <ul>
-          <li>
-            <a href="/level-caps">Level caps</a> — every Normal and Hardcore cap
-            and the gym that raises it
-          </li>
-          <li>
-            <a href="/bosses">Boss teams</a> — every documented fight in battle
-            order, with levels, moves, abilities and held items
-          </li>
-          <li>
-            <a href="/elite-four">Elite Four &amp; Champion</a> — all of the
-            alternate lineups they can bring
-          </li>
+          {seoSections.sections
+            .filter((s) => s.published)
+            .map((s) => (
+              <li key={s.slug}>
+                <a href={`/${s.slug}`}>{s.label}</a> — {s.blurb}
+              </li>
+            ))}
         </ul>
       </nav>
 

@@ -10,6 +10,13 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const read = (p) => JSON.parse(readFileSync(root + p, "utf8"));
 
+/** the one list of static sections — see src/lib/seoSections.json. The
+ * generator, the sitemap, the service worker denylist (vite.config.ts), the
+ * app footer and these pages' own nav all read it, so adding a section is
+ * one edit rather than five. */
+export const SECTIONS = read("src/lib/seoSections.json").sections;
+export const PUBLISHED = SECTIONS.filter((s) => s.published);
+
 export const bosses = read("src/data/bosses.json");
 export const types = read("src/data/types.json");
 const cleaned = new Set(read("src/data/cleanedSprites.json"));

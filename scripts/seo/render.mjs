@@ -5,7 +5,7 @@
  * reference documents built from the same JSON the app reads, and their job
  * is to be complete before any script runs; the app itself is one click away
  * on every one of them. */
-import { SITE, typeColor } from "./data.mjs";
+import { PUBLISHED, SITE, typeColor } from "./data.mjs";
 
 export function esc(s) {
   return String(s ?? "")
@@ -16,12 +16,11 @@ export function esc(s) {
 }
 
 /** the site-wide nav, repeated on every page: real <a href>s, so the whole
- * set is reachable by a crawler from any one of them */
+ * set is reachable by a crawler from any one of them. Straight off the
+ * shared section list, so a new page joins every page's nav by existing. */
 const NAV = [
   ["/", "Tracker"],
-  ["/level-caps", "Level caps"],
-  ["/bosses", "Boss teams"],
-  ["/elite-four", "Elite Four"],
+  ...PUBLISHED.map((s) => [`/${s.slug}`, s.label]),
 ];
 
 const CSS = `

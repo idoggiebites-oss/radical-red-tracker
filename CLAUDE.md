@@ -21,6 +21,8 @@ heavy imports (data JSONs, `rr-damage-calc`) out of `App.tsx`, which fetches
 - `npm run dev` — dev server (http://localhost:5173/)
 - `npm run build` — `tsc -b && vite build`; run this to typecheck
 - `npm run lint` — oxlint (vendor warnings are noise; `npx oxlint src` for signal)
+- `npm run check:seo` — drives real Chrome over the static reference pages
+  with a WARM service worker (see "Static reference pages"); needs `dist/`
 - `python3 scripts/import_data.py --refresh` — regenerate `src/data/*.json`
   from the official Google Sheets + RR dex data (needs network; cached CSVs
   in `scripts/cache/`, gitignored). Without `--refresh` it re-parses cache.
@@ -250,6 +252,17 @@ ends with `node scripts/seo/build.mjs`, which reads the same
 `dist/sitemap.xml`. `public/sitemap.xml` is gone — the sitemap is generated
 from the page list, so it can't drift from what exists.
 
+**`src/lib/seoSections.json` is the one list.** The generator, the pages'
+own nav, the sitemap, the app footer and workbox's
+`navigateFallbackDenylist` all read it, so adding a section is one edit
+instead of five — which is the point, because four of those five are places
+nobody would think to look. `published: false` means the slug is spoken for
+but has no page: it is **still in the denylist** (the worker has to know
+before the page ships, or the first visitors to a new section are served the
+app shell by the worker they installed yesterday) while nothing links to it
+and it stays out of the sitemap. `write()` in `build.mjs` refuses to emit a
+page whose section isn't on the list, or is on it as unpublished.
+
 **They are plain HTML, not server-rendered React.** The content has to be
 complete before any script runs, and the app can't be rendered in Node
 anyway (`HAD_STATE_AT_STARTUP` and friends read `localStorage` at module
@@ -262,12 +275,21 @@ are in the HTML, which is also what a crawler wants.
 would only work at the trailing-slash form, and the service worker's clean-URL
 precache matching wouldn't find it.
 
-**Adding a new top-level section means touching `navigateFallbackDenylist`
-in `vite.config.ts`.** These files are written after `vite build`, so they
-are never in the precache manifest — without the denylist the service worker
-answers a navigation to one of them with the SPA shell, and every returning
-visitor has a warm worker. The crawler is the only one who'd see the real
-page. `BOSS_PAGES` in `build.mjs` is the list of per-boss pages actually
+**The service worker is the trap, and `npm run check:seo` is the guard.**
+These files are written after `vite build`, so they are never in the
+precache manifest, and workbox's navigation fallback will answer any
+navigation it recognises with the SPA shell — on the *second* visit, which
+is every returning visitor and no crawler at all. `check.mjs` drives real
+Chrome through exactly that: install the worker, reload so the page is
+**controlled** (installed-but-not-controlling intercepts nothing and would
+pass on a build with no denylist), then navigate to each page and assert it
+is its own document and not `#root`. Deleting the denylist and re-running is
+how that check was confirmed to fail — it reports all four pages as "Radical
+Red 4.1 Nuzlocke Tracker". It needs a build in `dist/` and real Chrome, so
+it is a local command, not a CI step. A new page is not finished until it
+passes with a warm worker.
+
+`BOSS_PAGES` in `build.mjs` is the list of per-boss pages actually
 published; the generator can emit one for any name in the data.
 
 **Links back in** are `/?cat=<category>&boss=<title>&to=readiness|calc`,
