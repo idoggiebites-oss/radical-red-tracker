@@ -700,17 +700,6 @@ tr.pickable:hover td { background: var(--bg3); }
 .team-loc { font-size: 12px; text-transform: capitalize; }
 .team-actions { display: flex; flex-direction: column; gap: 4px; }
 .team-actions button { font-size: 12.5px; padding: 3px 8px; }
-/* Four bordered buttons stacked beside six stats read as the loudest thing on
-   the card, so they recede until pointed at. Behind `hover: hover` on
-   purpose: a touch device never gets the hover back, and there a borderless
-   button is just a label. Same size and hit area either way. */
-@media (hover: hover) and (pointer: fine) {
-  .team-actions button { background: none; border-color: transparent; color: var(--muted); }
-  .team-actions button:hover { background: var(--bg3); border-color: var(--line); color: var(--text); }
-  .team-actions button.danger { color: #d97070; }
-  .team-actions button.danger:hover { color: #ff8a8a; }
-}
-
 /* ---- reference ---- */
 
 .ref-table { border-collapse: collapse; width: 100%; }
@@ -1796,7 +1785,13 @@ tr.pickable:hover td { background: var(--bg3); }
      or it stretches to the widest row and you'd scroll sideways to reach
      its buttons. Size it to the viewport and pin it left so it stays put
      while the list rows scroll. */
-  .mini-row-card > td { position: sticky; left: 0; }
+  .mini-row-card > td { position: sticky; left: 0; white-space: normal; }
+  /* ...and it must wrap. The nowrap two rules up is for the LIST rows, whose
+     columns have to stay on one line; inheriting it into the open card ran
+     the build summary off the side, so a held item disappeared at exactly
+     the x where the action buttons start — it reads as text hidden behind
+     them. The non-mobile rule above already said this; the mobile block
+     re-broke it by matching every td in the table. */
   .mini-row-card .team-card-wrap { width: calc(100vw - 40px); max-width: 420px; }
   .statics-table { overflow-x: auto; }
   .statics-table .static-info { max-width: none; }

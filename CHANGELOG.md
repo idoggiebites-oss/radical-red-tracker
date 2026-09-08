@@ -15,6 +15,9 @@ ignored by the parser.
 
 ## 2026-09-08
 
+- Fixed: on a phone, opening a Pokémon inside a collapsed Party or Box list
+  cut off the end of its **held item** — the text ran under the buttons and
+  anything past them was unreadable. It wraps onto the next line now.
 - **A page for every area** — all 54 of them, from Pallet Town to Cerulean
   Cave: the encounters with rates and levels, day and night grass separately,
   the items and TMs lying there, the raid dens and the trainers waiting in
