@@ -183,10 +183,6 @@ emulator already wrote. It reads your party and box straight out of it.</p>
 read in your browser and parsed there. What comes out of it is stored in that
 browser's own storage, on that device, and nothing about your run is
 transmitted anywhere.</p>
-<p class="muted">In the interest of being exact: the site does load
-Cloudflare's privacy-focused analytics script, which counts page views. It
-sees the address of the page, the same as any web server would. It never sees
-your save file, your Pokémon or your run.</p>
 </div>
 
 <h2>How it works</h2>
