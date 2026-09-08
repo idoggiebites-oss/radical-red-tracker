@@ -15,6 +15,69 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Which kind of push is this? The static reference pages and the service
+  # worker's navigation denylist are wired together (src/lib/seoSections.json),
+  # so ordinary content pushes cannot break them and shouldn't wait on a
+  # browser test. These paths can.
+  #
+  # Answered from the compare API rather than a checkout: the build below
+  # deliberately clones shallow, and this needs no working tree at all.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      seo: ${{ steps.filter.outputs.seo }}
+    steps:
+      - id: filter
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # anything that isn't an ordinary push on a known parent — a manual
+          # run, a new branch, a force push whose parent is gone — runs the
+          # check. Failing safe here costs a minute; failing open ships the
+          # bug to every returning visitor.
+          if [ "${{ github.event_name }}" != "push" ] \
+            || [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "seo=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files=$(gh api "repos/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}" \
+            --jq '.files[].filename' 2>/dev/null) || {
+            echo "seo=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+          echo "changed files:"
+          echo "$files"
+          if echo "$files" | grep -qE '^(vite\.config\.ts|scripts/seo/|src/lib/seoSections\.json|package\.json|package-lock\.json|\.github/workflows/)'; then
+            echo "seo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "seo=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # The warm-service-worker regression check (scripts/seo/check.mjs). Builds
+  # its own dist rather than reusing the Pages artifact, which is a tar meant
+  # for the deploy action; a second build is simpler than unpacking it.
+  seo-check:
+    needs: changes
+    if: needs.changes.outputs.seo == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # playwright-core launches with channel: "chrome", which needs a real
+      # Google Chrome. The runner image ships one; if that ever stops being
+      # true, install it rather than weakening the test into something that
+      # passes without a browser.
+      - name: Ensure Chrome
+        run: |
+          google-chrome --version             || google-chrome-stable --version             || npx -y playwright install --with-deps chrome
+      - run: npm run build
+      - run: npm run check:seo
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +96,13 @@ jobs:
           path: dist
 
   deploy:
-    needs: build
+    needs: [build, seo-check]
+    # seo-check is SKIPPED on ordinary pushes, and a skipped dependency would
+    # normally skip this job too — which would mean nothing ever deploys. So
+    # this runs on its own condition instead: the build has to have passed,
+    # and the check has to have either passed or not run. A failing check
+    # blocks the deploy, which is the whole point of gating on it.
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.seo-check.result != 'failure' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
