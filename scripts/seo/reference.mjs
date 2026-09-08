@@ -16,66 +16,47 @@ import {
 } from "./data.mjs";
 import { esc, shell, typeChip } from "./render.mjs";
 
-/** a pointer to the area's own page, where it has one */
-function routeLink(loc) {
-  const grp = locationGroups().find((g) => g.sections.some((sec) => sec.loc === loc));
-  const entry = grp && ROUTE_PAGES.find((r) => (r.area ?? r.slug) === grp.slug);
-  return entry
-    ? `<p><a href="/routes/${entry.slug}">${esc(
-        entry.name ?? titleCase(grp.name),
-      )}: items, raid dens and trainers →</a></p>`
-    : "";
-}
-
-/** encounter tables carry ~1600 rows across 83 areas; sprites are left off
- * on purpose here (they are on the boss pages, where six Pokémon are the
- * subject rather than a list you scan) */
-function locationBlock(loc) {
-  const tables = Object.entries(loc.methods)
-    .map(([method, rows]) => {
-      const body = rows
-        .map(
-          (r) => `<tr><td>${esc(r.species)} ${typesOf(r.species)
-            .map(typeChip)
-            .join("")}</td><td>${esc(r.rarity ?? "")}</td><td>${esc(
-            r.levels ?? "",
-          )}</td></tr>`,
-        )
-        .join("\n");
-      return `<h4>${esc(METHOD_LABELS[method] ?? method)}</h4>
-<div class="scroll"><table>
-<thead><tr><th>Pokémon</th><th>Rate</th><th>Levels</th></tr></thead>
-<tbody>${body}</tbody></table></div>`;
-    })
-    .join("\n");
-  return `<h3 id="${loc.id}">${esc(titleCase(loc.name))}${
-    loc.postgame ? ' <span class="tag">postgame</span>' : ""
-  }</h3>
-${routeLink(loc)}
-${tables || '<p class="muted">No wild encounters documented here.</p>'}`;
-}
-
+/** The locations hub. Every area has its own page now, so this one is the
+ * index into them plus the things that belong to no single area — statics,
+ * gifts, trades, fossils, the egg vendor. Repeating all 54 encounter tables
+ * here would be 54 duplicates of pages that say more. */
 export function routesPage() {
-  const locs = encounters.locations;
-  const main = locs.filter((l) => !l.postgame);
-  const post = locs.filter((l) => l.postgame);
-  // an area with its own page is linked at it rather than at its section
-  // here — the page is the same table plus items, dens and trainers
-  const pageFor = (loc) => {
-    const grp = locationGroups().find((g) => g.sections.some((sec) => sec.loc === loc));
-    const entry = grp && ROUTE_PAGES.find((r) => (r.area ?? r.slug) === grp.slug);
+  const groups = locationGroups();
+  const pageFor = (g) => {
+    const entry = ROUTE_PAGES.find((r) => r.area === g.slug);
     return entry ? `/routes/${entry.slug}` : null;
   };
-  const index = (list) =>
-    `<div class="tags">${list
-      .map(
-        (l) =>
-          `<a class="tag" href="${pageFor(l) ?? `#${l.id}`}">${esc(titleCase(l.name))}</a>`,
-      )
-      .join("")}</div>`;
+
+  const card = (g) => {
+    const rows = g.sections.flatMap(({ loc }) => Object.values(loc.methods).flat());
+    const species = new Set(rows.map((r) => r.species));
+    const methods = new Set(
+      g.sections.flatMap(({ loc }) => Object.keys(loc.methods)),
+    );
+    const name =
+      ROUTE_PAGES.find((r) => r.area === g.slug)?.name ?? titleCase(g.name);
+    // "12-14" is a range: take both ends, or the column reports the highest
+    // level you can meet as the highest level any slot STARTS at
+    const levels = rows
+      .flatMap((r) => String(r.levels).split("-").map((n) => parseInt(n, 10)))
+      .filter((n) => !Number.isNaN(n));
+    return `<tr>
+<td><a href="${pageFor(g)}"><strong>${esc(name)}</strong></a>${
+      g.postgame ? ' <span class="muted">postgame</span>' : ""
+    }</td>
+<td>${species.size}</td>
+<td>${levels.length ? `${Math.min(...levels)}–${Math.max(...levels)}` : "—"}</td>
+<td class="muted">${[...methods]
+      .map((m) => esc(METHOD_LABELS[m] ?? m))
+      .join(" · ")}</td></tr>`;
+  };
+
+  const table = (list) => `<div class="scroll"><table>
+<thead><tr><th>Area</th><th>Pokémon</th><th>Levels</th><th>How you meet them</th></tr></thead>
+<tbody>${list.map(card).join("\n")}</tbody></table></div>`;
 
   const statics = encounters.statics
-    .map((s) => `<tr><td><strong>${esc(s.species)}</strong></td><td>${esc(s.info)}</td></tr>`)
+    .map((x) => `<tr><td><strong>${esc(x.species)}</strong></td><td>${esc(x.info)}</td></tr>`)
     .join("\n");
   const gifts = encounters.gifts
     .map(
@@ -96,10 +77,16 @@ export function routesPage() {
       .map(
         ([k, v]) =>
           `<tr><td><strong>${esc(titleCase(k))}</strong></td><td>${v
-            .map((s) => esc(s))
+            .map((x) => esc(x))
             .join(", ")}</td></tr>`,
       )
       .join("\n");
+
+  const totalSpecies = new Set(
+    encounters.locations.flatMap((l) =>
+      Object.values(l.methods).flat().map((r) => r.species),
+    ),
+  ).size;
 
   return shell({
     path: "/routes",
@@ -108,23 +95,18 @@ export function routesPage() {
       "Every Radical Red 4.1 Pokémon location: route and cave encounters with rates and levels, fishing, surfing, static encounters, gifts, trades and fossils.",
     h1: "Radical Red Pokémon Locations",
     crumbs: [["/routes", "Pokémon locations"]],
-    jsonLd: [],
-    body: `<p class="lede">Every documented encounter in Radical Red 4.1 — ${
-      locs.length
-    } areas, with the rate and level range for each slot, split by how you meet
-it: grass and caves by day and night, the three rods, and surfing. Below the
-areas are the static encounters, gift Pokémon, in-game trades and the fossil
-and egg shards.</p>
-<p class="lede">Day and night matter here: most areas have a different grass
-table after dark, and both are listed.</p>
+    body: `<p class="lede">Where to catch ${totalSpecies} different Pokémon across
+${groups.length} areas of Radical Red 4.1. Each area has its own page with the
+rate and level range for every slot — day and night grass separately, all three
+rods and surfing — plus the items and TMs lying in it, its raid dens and the
+trainers waiting there. Below the index are the Pokémon that belong to no
+route: statics, gifts, trades and the shard tables.</p>
 <p><a class="cta" href="/">Track your encounters as you catch them</a>
-<a class="cta ghost" href="/bosses">Boss teams</a></p>
+<a class="cta ghost" href="/raid-dens">Raid dens</a></p>
 <h2>Areas</h2>
-${index(main)}
-${main.map(locationBlock).join("\n")}
+${table(groups.filter((g) => !g.postgame))}
 <h2>Postgame areas</h2>
-${index(post)}
-${post.map(locationBlock).join("\n")}
+${table(groups.filter((g) => g.postgame))}
 <h2>Static encounters</h2>
 <p class="muted">${encounters.statics.length} one-off Pokémon that stand on the
 overworld rather than appearing in a table — legendaries, roamers and gift
@@ -150,9 +132,9 @@ sleepers included.</p>
 <tbody>${shardList(encounters.eggVendor)}</tbody></table></div>
 <div class="card">
 <h3>Running a Nuzlocke?</h3>
-<p>The tracker takes this same table and turns it into your run: one
-encounter per area, recorded as you catch it, with the ones you have already
-used greyed out and your caught Pokémon carried into the boss matchups.</p>
+<p>The tracker turns this into your run: one encounter per area, recorded as
+you catch it, with the ones you have already used greyed out and your caught
+Pokémon carried into the boss matchups.</p>
 <a class="cta" href="/">Open the tracker</a>
 </div>`,
   });
@@ -213,22 +195,28 @@ damage ranges move with it.</p>
 export { SITE };
 
 
-/** the eight areas with pages of their own. The rest are on /routes; these
- * are the ones people search for by name, and they grow from Search Console
- * rather than all 54 at once. `area` is the grouped location's own slug
- * where the docs' spelling isn't the one anyone types ("PKMN TOWER"). */
-export const ROUTE_PAGES = [
-  { slug: "viridian-forest" },
-  { slug: "mt-moon", name: "Mt. Moon" },
-  { slug: "route-3" },
-  { slug: "rock-tunnel" },
-  { slug: "pokemon-tower", area: "pkmn-tower", name: "Pokémon Tower" },
-  { slug: "safari-zone" },
-  { slug: "seafoam-islands", area: "seafoam", name: "Seafoam Islands" },
-  { slug: "cerulean-cave" },
-];
+/** Every area gets a page. The docs' own spelling is the slug except where
+ * nobody types it that way — "PKMN TOWER", and "SEAFOAM" for what the game
+ * calls the Seafoam Islands. `name` is the heading; `area` is the grouped
+ * location it comes from when the two differ.
+ *
+ * These are not thin: each one carries its encounters by section and method,
+ * the items and TMs found there, its raid dens, and the trainers the docs
+ * put in it. An area with nothing but a grass table would be — none of the
+ * 54 are. */
+const AREA_OVERRIDES = {
+  "pkmn-tower": { slug: "pokemon-tower", name: "Pokémon Tower" },
+  seafoam: { slug: "seafoam-islands", name: "Seafoam Islands" },
+  "mt-moon": { name: "Mt. Moon" },
+  "s-s-anne": { name: "S.S. Anne" },
+  "gouging-s-room": { name: "Gouging's Room" },
+};
 
-// the location sheet writes PKMN TOWER, the item sheet writes Pokemon Tower
+export const ROUTE_PAGES = locationGroups().map((g) => {
+  const o = AREA_OVERRIDES[g.slug] ?? {};
+  return { slug: o.slug ?? g.slug, area: g.slug, name: o.name };
+});
+
 const norm = (s) =>
   String(s ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/^PKMN/, "POKEMON");
 

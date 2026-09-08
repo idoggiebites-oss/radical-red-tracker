@@ -295,12 +295,18 @@ passes with a warm worker.
 `BOSS_PAGES` in `build.mjs` is the list of per-boss pages actually
 published; the generator can emit one for any name in the data.
 
-**Pages that list, pages that hold.** `/elite-four` and `/items-tms` are
-hubs: they preview and link, because the full teams now live on
-`/bosses/<member>` and the 120-row TM table on `/tms`, and two URLs holding
-the same table only splits which one it belongs to. `BOSS_PAGES` and
-`ROUTE_PAGES` are the published subsets — a boss entry can carry a
-`category` (that is how `/bosses/champion` exists without dragging in the
+**Pages that list, pages that hold.** `/elite-four`, `/items-tms` and
+`/routes` are hubs: they index and link, because the full teams live on
+`/bosses/<member>`, the 120-row TM table on `/tms` and every encounter table
+on `/routes/<area>`. Two URLs holding the same table only splits which one it
+belongs to — when a detail page is added, the hub loses that section.
+
+`ROUTE_PAGES` is derived from
+`locationGroups()` (every area has a page; `AREA_OVERRIDES` fixes the slugs
+nobody types, "PKMN TOWER"), while `BOSS_PAGES` is a hand-picked list — the
+mini bosses and most postgame trainers are first-name-only ("ANNE", "COLE")
+and 50 pages of them is the thin-page spam the whole plan exists to avoid.
+A boss entry can carry a `category` (that is how `/bosses/champion` exists without dragging in the
 rival's other fifteen fights) and a `name` override. Boss page copy is
 **derived from the fights** (`pageCopy`), not hand-written per boss: how many
 fights, where, which caps, whether Hardcore differs. Sixteen hand-written

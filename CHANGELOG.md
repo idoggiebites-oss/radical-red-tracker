@@ -15,14 +15,15 @@ ignored by the parser.
 
 ## 2026-09-08
 
-- **Sixteen boss pages**, one per major fight: Brock through Clair, the whole
-  Elite Four, the Champion's three starter teams, Giovanni's three fights and
-  the Rocket admins. Each one has both modes' teams, the level cap, what the
-  fight's conditions are, and the team's weaknesses counted up.
-- **Eight location pages** — Viridian Forest, Mt. Moon, Route 3, Rock Tunnel,
-  Pokémon Tower, the Safari Zone, Seafoam Islands and Cerulean Cave — with
-  their encounters, the items and TMs found there, the raid dens and the
-  trainers waiting in them.
+- **A page for every area** — all 54 of them, from Pallet Town to Cerulean
+  Cave: the encounters with rates and levels, day and night grass separately,
+  the items and TMs lying there, the raid dens and the trainers waiting in
+  it. The Pokémon locations page is now the index into them, and still holds
+  the statics, gifts, trades and shard tables.
+- **Boss pages for 26 fights**: the Kanto leaders, the Johto leaders RR drops
+  in along the way, the whole Elite Four, the Champion, Oak and Red, the
+  Rocket admins, and the rival's four fights with all three of his possible
+  teams folded up so you can open the one that matches your starter.
 - New reference pages for **TM locations**, **Mega Stones and Z-Crystals**,
   **raid dens** (every den, its Pokémon and their drops) and **how every
   Pokémon evolves** in Radical Red.

@@ -64,6 +64,21 @@ const BOSS_PAGES = [
   { slug: "agatha" },
   { slug: "lance" },
   { slug: "champion", person: "rival", category: "Indigo League", name: "The Champion" },
+  // the Johto leaders RR sprinkles in as extra fights — no badge, but a
+  // gym leader's name is what people search
+  { slug: "falkner" },
+  { slug: "bugsy" },
+  { slug: "whitney" },
+  { slug: "morty" },
+  { slug: "chuck" },
+  { slug: "pryce" },
+  { slug: "jasmine" },
+  // postgame fights worth a page on the name alone
+  { slug: "oak" },
+  { slug: "red" },
+  // fifteen fights, three teams each. The starter-dependent teams fold into
+  // <details> or the page is unreadable.
+  { slug: "rival", exclude: "Indigo League" },
 ];
 const bossPageSlugs = BOSS_PAGES.map((p) => p.slug);
 
@@ -102,6 +117,28 @@ function appLink(category, title, to) {
 const capOf = (order) => (order?.levelCap ? order.levelCap : "—");
 
 // ---------------------------------------------------------------- fragments
+
+/** where a fight happens, in prose.
+ *
+ * The trainer-order row spells the place out in full ("ROUTE 22") while the
+ * title carries the detail that tells two fights apart ("ROUTE 22 #1"), so
+ * the title wins whenever it is the same place with more on it. A title that
+ * names a role instead of a place ("GYM LEADER") is not a place at all. */
+function fightPlace(f) {
+  const fromOrder = titleCase(f.order?.location ?? "");
+  const fromTitle = titleCase(titlePlace(f.boss.title));
+  const norm = (x) => x.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (fromTitle && (!fromOrder || norm(fromTitle).startsWith(norm(fromOrder)))) return fromTitle;
+  return fromOrder;
+}
+
+/** "Sabrina — Saffron City". A place that only repeats the person or their
+ * role ("The Champion — Champion") gives way to the category. */
+function fightHeading(f, name) {
+  const place = fightPlace(f);
+  const dupe = place && (place === name || name.includes(place));
+  return `${name} — ${(dupe ? "" : place) || titleCase(f.category)}`;
+}
 
 function monCard(mon) {
   const src = spriteSrc(mon.species);
@@ -170,24 +207,20 @@ ${
  * already owns the h2 and their variant teams sit under it. */
 function fightSection(f, person, mode, level = 2) {
   const b = f.boss;
-  // the trainer-order row spells the place out in full; the title abbreviates
-  // it to fit the docs' own column ("CERULEA. CAVE"), and for a gym leader
-  // names a role rather than a place at all
-  const place = titleCase(f.order?.location ?? titlePlace(b.title));
+  const place = fightPlace(f);
   const name = titleCase(person);
-  // "The Champion — Champion" and "Lance — Elite Four" repeat themselves:
-  // the docs use a role as the location for those rows. Fall back to the
-  // category, which is the one thing that does distinguish the fight.
-  const dupe = place && (place === name || name.includes(place));
   const heading = [
-    level === 2 ? name : null,
-    (dupe ? "" : place) || titleCase(f.category),
+    level === 2 ? fightHeading(f, name) : fightHeading(f, name).split(" — ").slice(1).join(" — "),
     b.subtitle && `(${titleCase(b.subtitle)})`,
   ]
     .filter(Boolean)
-    .join(" — ")
-    .replace(" — (", " (");
+    .join(" ")
+    .trim();
   const h = `h${level}`;
+  // "IF RIVAL HAS BULBASAUR" — one of three teams, and only one of them is
+  // yours. Folded so a page of fifteen fights isn't forty-five teams deep;
+  // the markup is all still there, which is what a crawler reads.
+  const starterVariant = /^IF RIVAL HAS/i.test(b.subtitle ?? "");
   const partners = placeParts(b.title).partners.map((x) => titleCase(x));
   const meta = [
     ["Location", place],
@@ -197,9 +230,13 @@ function fightSection(f, person, mode, level = 2) {
     ["Battle", b.battleEffect ? titleCase(b.battleEffect) : "Single battle"],
     ["Notes", b.notes],
   ].filter(([, v]) => v);
-  return `<${h} id="${mode}-${slug(b.title + " " + (b.subtitle ?? ""))}">${esc(
-    heading,
-  )}</${h}>
+  const open = starterVariant
+    ? `<details><summary>${esc(titleCase(b.subtitle))}</summary>`
+    : "";
+  const close = starterVariant ? "</details>" : "";
+  return `${
+    starterVariant ? "" : `<${h} id="${mode}-${slug(b.title + " " + (b.subtitle ?? ""))}">${esc(heading)}</${h}>`
+  }${open}
 <div class="card">
 <table><tbody>
 ${meta
@@ -224,7 +261,7 @@ theirs you can take down — instead of one matchup at a time.</p>
   )}</a>
 <a class="cta ghost" href="${appLink(f.category, b.title, "calc")}">Open in the damage calculator</a>
 <a class="cta ghost" href="${appLink(f.category, b.title)}">View this team in the tracker</a>
-</div>`;
+</div>${close}`;
 }
 
 // -------------------------------------------------------------------- pages
@@ -380,8 +417,12 @@ function relatedBosses(mode, orderIndex) {
 function pageGroup(mode, entry) {
   const group = groupByPerson(mode).get(entry.person ?? entry.slug);
   if (!group) return null;
-  if (!entry.category) return group;
-  const fights = group.fights.filter((f) => f.category === entry.category);
+  if (!entry.category && !entry.exclude) return group;
+  const fights = group.fights.filter(
+    (f) =>
+      (!entry.category || f.category === entry.category) &&
+      (!entry.exclude || f.category !== entry.exclude),
+  );
   return fights.length ? { ...group, fights } : null;
 }
 
@@ -504,7 +545,21 @@ function bossPage(entry) {
       mode: id,
       label,
       html:
-        fights.map((f) => fightSection(f, copy.name, id)).join("\n") +
+        fights
+          .map((f, i) => {
+            // a fight whose teams are starter variants prints its heading
+            // once, with the three teams folded underneath it
+            const prev = fights[i - 1];
+            const head =
+              /^IF RIVAL HAS/i.test(f.boss.subtitle ?? "") &&
+              (!prev || prev.boss.title !== f.boss.title || prev.category !== f.category)
+                ? `<h2 id="${id}-${slug(f.boss.title)}">${esc(
+                    fightHeading(f, copy.name),
+                  )}</h2><p class="muted">Three teams, one per starter. Open the one your rival took.</p>`
+                : "";
+            return head + fightSection(f, copy.name, id);
+          })
+          .join("\n") +
         relatedBosses(id, fights[fights.length - 1]?.orderIndex),
     };
   });
