@@ -241,6 +241,52 @@ only case that exposes this; 1→1 swaps pass either way.
   can attach a save this way later; `saveInfo` is refreshed on apply, and a
   mismatched trainer name is flagged rather than blocked.
 
+## Static reference pages (`scripts/seo/`)
+
+The app is one client-rendered URL; these are the others. `npm run build`
+ends with `node scripts/seo/build.mjs`, which reads the same
+`src/data/*.json` the app reads and writes plain HTML into `dist/`
+(`/level-caps`, `/bosses`, `/bosses/<person>`, `/elite-four`) plus
+`dist/sitemap.xml`. `public/sitemap.xml` is gone — the sitemap is generated
+from the page list, so it can't drift from what exists.
+
+**They are plain HTML, not server-rendered React.** The content has to be
+complete before any script runs, and the app can't be rendered in Node
+anyway (`HAD_STATE_AT_STARTUP` and friends read `localStorage` at module
+load). So the pages share a shell (`render.mjs`) and the app is a link away
+on every one of them. Normal/Hardcore is a CSS-only radio toggle: both modes
+are in the HTML, which is also what a crawler wants.
+
+**Flat files, no trailing slash.** `dist/bosses/sabrina.html` serves at
+`/bosses/sabrina`, which is what we canonicalise. A directory + `index.html`
+would only work at the trailing-slash form, and the service worker's clean-URL
+precache matching wouldn't find it.
+
+**Adding a new top-level section means touching `navigateFallbackDenylist`
+in `vite.config.ts`.** These files are written after `vite build`, so they
+are never in the precache manifest — without the denylist the service worker
+answers a navigation to one of them with the SPA shell, and every returning
+visitor has a warm worker. The crawler is the only one who'd see the real
+page. `BOSS_PAGES` in `build.mjs` is the list of per-boss pages actually
+published; the generator can emit one for any name in the data.
+
+**Links back in** are `/?cat=<category>&boss=<title>&to=readiness|calc`,
+parsed once on boot by `src/lib/deepLink.ts` and then wiped from the address
+bar. A fight is addressed the way the app already addresses one (`BossTarget`
+= category + title), slugged on both sides — `slug()` exists in
+`deepLink.ts` and in `scripts/seo/data.mjs` and the two must agree.
+`to=readiness` threads a `readinessTarget` through `TeamView` to
+`ReadinessView`, whose effect is declared **after** the auto-follow effect on
+purpose: both run on mount and the link has to win.
+
+Node can't import the app's TS libs (vite-only JSON imports,
+`import.meta.env`), so `data.mjs` carries deliberate copies of three rules,
+each naming its source: `ABILITY_MODS`/`defensiveProfile`
+(`src/lib/effectiveness.ts`), the sprite mirror paths (`src/lib/sprites.ts`),
+and the truncated-move expansion the calculator does (`resolveMove` in
+`src/lib/damagecalc.ts`) — the docs write "High Horsep." and a page that
+publishes that ranks for nothing.
+
 ## Release notes ("What's new")
 
 `CHANGELOG.md` at the repo root is player-facing release notes, read by

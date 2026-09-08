@@ -66,6 +66,15 @@ export default defineConfig({
       workbox: {
         // the bosses.json chunk is ~600KB — raise the per-file precache cap
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        // The static reference pages (scripts/seo/build.mjs) are written
+        // AFTER vite build, so they are never in the precache manifest — and
+        // without this the service worker would answer a navigation to one of
+        // them with the SPA shell, which is index.html. Every returning
+        // visitor has a warm worker, so that is everyone but the crawler.
+        // Let these paths go to the network instead.
+        navigateFallbackDenylist: [
+          /^\/(level-caps|bosses|elite-four|routes|items-tms|damage-calculator|save-import|battle-readiness)(\/|$)/,
+        ],
         // default globPatterns only picks up js/css/html + the manifest's
         // own icons — add png so the nav icons precache at install time
         globPatterns: ['**/*.{js,css,html,ico,svg,png,webmanifest}'],

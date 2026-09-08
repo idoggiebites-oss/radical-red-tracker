@@ -1969,3 +1969,12 @@ tr.pickable:hover td { background: var(--bg3); }
     .tabs.floating .tab-pill { border-radius: 18px; background: rgba(255, 255, 255, 0.14); }
   }
 }
+
+/* the static reference pages, linked from the app so both a reader and a
+   crawler can reach them; they are real documents at their own URLs, not
+   another tab */
+.ref-links { margin: 32px 0 0; border-top: 1px solid var(--line); padding-top: 12px; }
+.ref-links h2 { font-size: 14px; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+.ref-links ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.ref-links li { font-size: 13px; color: var(--muted); }
+.ref-links a { color: var(--accent2); }

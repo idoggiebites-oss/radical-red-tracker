@@ -21,6 +21,7 @@ import { bossTeamFor, orderChainInfo, type BossTarget } from "./lib/bossTarget";
 import { RUN_FILE_EXT, parseRunFile, runFileName, serializeRun } from "./lib/runFile";
 import { nextRequiredIndex, ROUTE_CHOICES } from "./lib/routeChoice";
 import { nextLevelCap } from "./lib/levelCap";
+import { clearDeepLink, readDeepLink } from "./lib/deepLink";
 import { ViewErrorBoundary, lazyView } from "./lib/lazyView";
 import { TabBar } from "./components/TabBar";
 import { WhatsNew } from "./components/WhatsNew";
@@ -151,6 +152,11 @@ export default function App() {
   // opened with too, so revisiting the Calculator falls back to auto-
   // loading the run's next boss instead of re-applying the old target
   const clearCalcTarget = () => setCalcTarget(null);
+  // set from a ?cat=&boss=&to=readiness deep link on the static boss pages:
+  // the fight Battle Readiness should open on
+  const [readinessTarget, setReadinessTarget] = useState<
+    (BossTarget & { nonce: number }) | null
+  >(null);
   // bosses.json is the largest data file; fetched as its own chunk so the
   // main bundle stays small (only the cap pill and two tabs need it)
   const [bosses, setBosses] = useState<BossesData | null>(null);
@@ -173,6 +179,45 @@ export default function App() {
 
   const mode: GameMode = run?.mode ?? "default";
   const modeData = bosses?.[mode] ?? null;
+
+  // a link in from /bosses, /level-caps and the rest. Waits for bosses.json
+  // (the fight is named by category + title, which only that file can
+  // resolve) and runs once — the URL is wiped after, so a reload lands on
+  // the app proper instead of re-opening the same boss.
+  const deepLinkDone = useRef(false);
+  useEffect(() => {
+    if (!modeData || deepLinkDone.current) return;
+    deepLinkDone.current = true;
+    const link = readDeepLink(modeData);
+    if (!link) return;
+    clearDeepLink();
+    const target = { category: link.category, title: link.title, nonce: Date.now() };
+    if (link.to === "readiness") {
+      setTab("team");
+      setReadinessTarget(target);
+    } else if (link.to === "calc") {
+      const boss = modeData.categories
+        .find((c) => c.name === link.category)
+        ?.bosses.find((b) => b.title === link.title);
+      if (!boss?.pokemon.length) return;
+      openCalc({
+        mon: boss.pokemon[0],
+        battleEffect: boss.battleEffect,
+        // the same cap every boss card in the app is read against: the
+        // run's own next cap, not this fight's
+        levelCap: nextLevelCap(modeData, run),
+        team: boss.pokemon,
+        teamLabel: boss.title,
+      });
+    } else {
+      setTab("bosses");
+      setBossFocus(target);
+    }
+    // run/openCalc change on every render; the ref is what makes this run
+    // once, so they don't belong in the deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modeData]);
+
 
   const importInput = useRef<HTMLInputElement>(null);
 
@@ -635,6 +680,7 @@ export default function App() {
               updateRun={updateRun}
               modeData={modeData}
               calcTarget={calcTarget}
+              readinessTarget={readinessTarget}
               onCalc={openCalc}
               onClearCalcTarget={clearCalcTarget}
             />
@@ -645,6 +691,27 @@ export default function App() {
         </Suspense>
         </ViewErrorBoundary>
       </main>
+
+      {/* real links, not tab switches: these are separate static pages
+          (scripts/seo/build.mjs) generated from the same data the app reads,
+          and this block is how a crawler — and a reader — finds them */}
+      <nav className="ref-links" aria-label="Radical Red reference pages">
+        <h2>Radical Red 4.1 reference</h2>
+        <ul>
+          <li>
+            <a href="/level-caps">Level caps</a> — every Normal and Hardcore cap
+            and the gym that raises it
+          </li>
+          <li>
+            <a href="/bosses">Boss teams</a> — every documented fight in battle
+            order, with levels, moves, abilities and held items
+          </li>
+          <li>
+            <a href="/elite-four">Elite Four &amp; Champion</a> — all of the
+            alternate lineups they can bring
+          </li>
+        </ul>
+      </nav>
 
       <footer className="footer">
         Data from the official Radical Red 4.1 docs (Pokémon Locations &amp; Raid

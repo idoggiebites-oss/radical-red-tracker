@@ -10,7 +10,7 @@ import { isNoItem } from "../lib/itemSprites";
 import { abilitiesRandomized, learnsetsRandomized } from "../lib/saveFile";
 import { nextLevelCap } from "../lib/levelCap";
 import { bossMatchesStarter, rivalStarterFor } from "../lib/starters";
-import { bossTeamFor } from "../lib/bossTarget";
+import { bossTeamFor, type BossTarget } from "../lib/bossTarget";
 import { chosenBoss } from "../lib/bossVariants";
 import { nextRequiredIndex } from "../lib/routeChoice";
 import {
@@ -88,6 +88,7 @@ export function TeamView({
   updateRun,
   modeData,
   calcTarget,
+  readinessTarget,
   onCalc,
   onClearCalcTarget,
 }: {
@@ -97,6 +98,9 @@ export function TeamView({
   /** set when a boss Pokémon's Calc button is clicked elsewhere: jump to
    * the Calculator subtab and prefill the Opponent with it */
   calcTarget?: (CalcTarget & { nonce: number }) | null;
+  /** set by a `?to=readiness` deep link from a static boss page: open Battle
+   * readiness on that fight */
+  readinessTarget?: (BossTarget & { nonce: number }) | null;
   onCalc?: (target: CalcTarget) => void;
   /** the Calculator's Opponent "Clear" button calls this so a revisit falls
    * back to auto-loading the next boss instead of re-applying the old target */
@@ -109,6 +113,10 @@ export function TeamView({
     if (!calcTarget) return;
     setSubtab("calculator");
   }, [calcTarget]);
+  useEffect(() => {
+    if (!readinessTarget) return;
+    setSubtab("readiness");
+  }, [readinessTarget]);
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "BST" | "">("");
   const [filterType, setFilterType] = useState("");
   const [filterMove, setFilterMove] = useState("");
@@ -418,6 +426,7 @@ export function TeamView({
           modeData={modeData}
           party={partyAll}
           setBuild={setBuild}
+          target={readinessTarget}
           onCalc={onCalc}
         />
       )}
@@ -680,12 +689,15 @@ function ReadinessView({
   modeData,
   party,
   setBuild,
+  target,
   onCalc,
 }: {
   run: Run;
   modeData: BossMode;
   party: Entry[];
   setBuild: (locId: string, build: MonBuild | undefined) => void;
+  /** a fight named by a deep link, to open on instead of the run's next */
+  target?: (BossTarget & { nonce: number }) | null;
   onCalc?: (target: CalcTarget) => void;
 }) {
   // remember the last viewed boss per run
@@ -741,6 +753,26 @@ function ReadinessView({
     setSelected(currentBossValue);
     localStorage.setItem(storageKey, currentBossValue);
   }, [nextOrderIdx, currentBossValue, run.id, storageKey]);
+  // a `?to=readiness` deep link from a static boss page. Declared AFTER the
+  // auto-follow effect on purpose: both run on mount, and this one has to
+  // land last or the frontier would overwrite the fight the link asked for.
+  useEffect(() => {
+    if (!target) return;
+    const cat = modeData.categories.find((c) => c.name === target.category);
+    const hit = chosenBoss(
+      modeData,
+      run,
+      target.category,
+      target.title,
+      rivalStarter ?? null,
+    );
+    const i = hit ? cat?.bosses.indexOf(hit.boss) : undefined;
+    if (i === undefined || i < 0) return;
+    select(`${target.category}|${i}`);
+    // select() and rivalStarter are re-made every render; the nonce on the
+    // target is what re-runs this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, modeData, run]);
   const levelCap = nextLevelCap(modeData, run);
   const [catName, idxStr] = selected.split("|");
   // which category the boss dropdown lists. Follows the selection so the

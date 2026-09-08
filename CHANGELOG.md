@@ -13,6 +13,20 @@ entries only go on top. Renumbering would re-show old notes to everyone.
 A bullet under a `## date` heading is one note. Everything else here is
 ignored by the parser.
 
+## 2026-09-07
+
+- The tracker now has **reference pages that stand on their own** — a page
+  each for level caps, for every boss team in battle order, and for the Elite
+  Four with all the alternate lineups they can bring, plus full pages for
+  Giovanni and Sabrina with every move, ability, held item and the team's
+  weaknesses worked out. They open without the tracker, so you can send one
+  to whoever you are comparing notes with. The links are at the bottom of
+  this page.
+- Every fight on those pages has a button that drops it straight into
+  **Battle Readiness or the damage calculator** against your own run, so
+  reading a boss's team and checking your party against it is one click
+  apart.
+
 ## 2026-09-06
 
 - The Pokédex has a **"Can learn" search**: type a move and it narrows to the
