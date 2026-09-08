@@ -158,6 +158,11 @@ export default function App() {
   const [readinessTarget, setReadinessTarget] = useState<
     (BossTarget & { nonce: number }) | null
   >(null);
+  // set from a bare ?to=calc / ?to=readiness link (the feature pages, which
+  // sell the tool rather than a fight): open Team on that subtab
+  const [teamSubtab, setTeamSubtab] = useState<
+    { sub: "readiness" | "calculator"; nonce: number } | null
+  >(null);
   // bosses.json is the largest data file; fetched as its own chunk so the
   // main bundle stays small (only the cap pill and two tabs need it)
   const [bosses, setBosses] = useState<BossesData | null>(null);
@@ -192,14 +197,20 @@ export default function App() {
     const link = readDeepLink(modeData);
     if (!link) return;
     clearDeepLink();
-    const target = { category: link.category, title: link.title, nonce: Date.now() };
+    // no fight named: the feature pages link to the tool itself
+    if (!link.target) {
+      setTab("team");
+      setTeamSubtab({ sub: link.to === "calc" ? "calculator" : "readiness", nonce: Date.now() });
+      return;
+    }
+    const target = { ...link.target, nonce: Date.now() };
     if (link.to === "readiness") {
       setTab("team");
       setReadinessTarget(target);
     } else if (link.to === "calc") {
       const boss = modeData.categories
-        .find((c) => c.name === link.category)
-        ?.bosses.find((b) => b.title === link.title);
+        .find((c) => c.name === link.target!.category)
+        ?.bosses.find((b) => b.title === link.target!.title);
       if (!boss?.pokemon.length) return;
       openCalc({
         mon: boss.pokemon[0],
@@ -682,6 +693,7 @@ export default function App() {
               modeData={modeData}
               calcTarget={calcTarget}
               readinessTarget={readinessTarget}
+              openSubtab={teamSubtab}
               onCalc={openCalc}
               onClearCalcTarget={clearCalcTarget}
             />

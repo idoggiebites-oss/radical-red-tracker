@@ -22,6 +22,8 @@ import {
   withOrder,
 } from "./data.mjs";
 import { esc, modeToggle, shell, typeChip } from "./render.mjs";
+import { itemsPage, routesPage } from "./reference.mjs";
+import { calculatorPage, readinessPage, saveImportPage } from "./features.mjs";
 
 const dist = fileURLToPath(new URL("../../dist/", import.meta.url));
 
@@ -433,5 +435,10 @@ write("/level-caps", levelCapsPage());
 write("/bosses", bossesPage());
 for (const p of BOSS_PAGES) write(`/bosses/${p}`, bossPage(p));
 write("/elite-four", eliteFourPage());
+write("/routes", routesPage());
+write("/items-tms", itemsPage());
+write("/damage-calculator", calculatorPage());
+write("/battle-readiness", readinessPage());
+write("/save-import", saveImportPage());
 writeFileSync(dist + "sitemap.xml", sitemap());
 console.log(`seo: ${written.length} pages + sitemap.xml`);

@@ -15,13 +15,17 @@ ignored by the parser.
 
 ## 2026-09-07
 
-- The tracker now has **reference pages that stand on their own** — a page
-  each for level caps, for every boss team in battle order, and for the Elite
-  Four with all the alternate lineups they can bring, plus full pages for
-  Giovanni and Sabrina with every move, ability, held item and the team's
-  weaknesses worked out. They open without the tracker, so you can send one
-  to whoever you are comparing notes with. The links are at the bottom of
-  this page.
+- The tracker now has **reference pages that stand on their own** — level
+  caps, every boss team in battle order, the Elite Four with all their
+  alternate lineups, and full pages for Giovanni and Sabrina with every move,
+  ability, held item and the team's weaknesses worked out. They open without
+  the tracker, so you can send one to whoever you are comparing notes with.
+  The links are at the bottom of this page.
+- **Every documented encounter, on one page**: all 83 areas with the rate and
+  level range for each slot, day and night grass tables, the three rods and
+  surfing, plus the static encounters, gifts, trades, fossils and egg shards.
+  Same for items — all 120 TMs with what they teach, the Mega Stones,
+  Z-Crystals and the overworld items area by area.
 - Every fight on those pages has a button that drops it straight into
   **Battle Readiness or the damage calculator** against your own run, so
   reading a boss's team and checking your party against it is one click

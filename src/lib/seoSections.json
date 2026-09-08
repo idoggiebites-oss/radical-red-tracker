@@ -23,31 +23,31 @@
       "slug": "routes",
       "label": "Pokémon locations",
       "blurb": "where every Pokémon can be caught, by route and method",
-      "published": false
+      "published": true
     },
     {
       "slug": "items-tms",
       "label": "Items & TMs",
       "blurb": "TMs, held items, Mega Stones and where they are",
-      "published": false
+      "published": true
     },
     {
       "slug": "damage-calculator",
       "label": "Damage calculator",
       "blurb": "Radical Red damage ranges with documented boss sets",
-      "published": false
+      "published": true
     },
     {
       "slug": "battle-readiness",
       "label": "Battle readiness",
       "blurb": "your whole party against a whole boss team",
-      "published": false
+      "published": true
     },
     {
       "slug": "save-import",
       "label": "Save import",
       "blurb": "load your .sav straight into the tracker",
-      "published": false
+      "published": true
     }
   ]
 }

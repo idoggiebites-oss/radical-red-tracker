@@ -89,6 +89,7 @@ export function TeamView({
   modeData,
   calcTarget,
   readinessTarget,
+  openSubtab,
   onCalc,
   onClearCalcTarget,
 }: {
@@ -101,6 +102,8 @@ export function TeamView({
   /** set by a `?to=readiness` deep link from a static boss page: open Battle
    * readiness on that fight */
   readinessTarget?: (BossTarget & { nonce: number }) | null;
+  /** set by a bare `?to=` link: open this subtab, no fight attached */
+  openSubtab?: { sub: "readiness" | "calculator"; nonce: number } | null;
   onCalc?: (target: CalcTarget) => void;
   /** the Calculator's Opponent "Clear" button calls this so a revisit falls
    * back to auto-loading the next boss instead of re-applying the old target */
@@ -117,6 +120,10 @@ export function TeamView({
     if (!readinessTarget) return;
     setSubtab("readiness");
   }, [readinessTarget]);
+  useEffect(() => {
+    if (!openSubtab) return;
+    setSubtab(openSubtab.sub);
+  }, [openSubtab]);
   const [sortStat, setSortStat] = useState<StatKey | "KOS" | "BST" | "">("");
   const [filterType, setFilterType] = useState("");
   const [filterMove, setFilterMove] = useState("");

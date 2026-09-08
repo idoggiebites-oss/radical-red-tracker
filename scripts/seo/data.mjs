@@ -195,13 +195,20 @@ export function teamProfile(team) {
 export const typeColor = (t) => types.colors[t] ?? "#666";
 
 /** The docs write every name in caps. Headings and prose read better in
- * title case; "S.S." and other dotted initialisms keep their capitals. */
+ * title case — with three exceptions the docs' own spelling depends on:
+ * dotted initialisms ("S.S."), floor suffixes ("B1F", "3&5F", which
+ * title-casing alone turns into the unreadable "B1f"), and the abbreviation
+ * the location sheet uses for Pokémon Tower, which nobody searches for. */
 export function titleCase(s) {
   return String(s ?? "")
     .toLowerCase()
-    .replace(/[^\s]+/g, (w) =>
-      /^([a-z]\.){2,}$/.test(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1),
-    );
+    .replace(/[^\s]+/g, (w) => {
+      if (/^([a-z]\.){2,}$/.test(w)) return w.toUpperCase();
+      if (/^b?[\d&]+f$/.test(w) || /^b\d+f-b\d+f$/.test(w)) return w.toUpperCase();
+      if (w === "pkmn") return "Pokémon";
+      // capitalise the first LETTER, not the first character — "(zone 1)"
+      return w.replace(/[a-z]/, (c) => c.toUpperCase());
+    });
 }
 
 /** The docs truncate a handful of move names to fit their own column
@@ -215,3 +222,17 @@ export function expandMove(name) {
   const hits = MOVE_NAMES.filter((m) => m.startsWith(prefix));
   return hits.length === 1 ? hits[0] : name;
 }
+
+export const encounters = read("src/data/encounters.json");
+export const items = read("src/data/items.json");
+
+/** copied from METHOD_LABELS in src/lib/methods.ts — the tracker and these
+ * pages must not name the same encounter slot differently */
+export const METHOD_LABELS = {
+  grass_day: "Grass / Cave · Day",
+  grass_night: "Grass / Cave · Night",
+  old_rod: "Old Rod",
+  good_rod: "Good Rod",
+  super_rod: "Super Rod",
+  surfing: "Surfing",
+};

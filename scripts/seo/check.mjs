@@ -14,6 +14,7 @@
  * missed. */
 import { spawn } from "node:child_process";
 import { chromium } from "playwright-core";
+import { PUBLISHED } from "./data.mjs";
 
 const BASE = "http://localhost:4178";
 const RUN = JSON.stringify({
@@ -68,21 +69,30 @@ try {
   check("service worker controls the page", controlled);
   if (!controlled) throw new Error("nothing below would mean anything");
 
+  // every published section, plus a generated boss page — driven off the
+  // same list the generator reads, so a new section is covered by existing
+  for (const path of [...PUBLISHED.map((s) => `/${s.slug}`), "/bosses/sabrina"]) {
+    await page.goto(BASE + path);
+    const seen = await page.evaluate(() => ({
+      shell: !!document.querySelector("#root"),
+      h1: document.querySelector("h1")?.textContent ?? "",
+    }));
+    check(
+      `${path} serves its own document to a controlled page`,
+      !seen.shell && seen.h1.length > 0,
+      seen.shell ? "got the app shell" : "no h1",
+    );
+  }
+
+  // the two the fallback would have swallowed, by name
   for (const [path, needle] of [
     ["/level-caps", "Radical Red 4.1 Level Caps"],
-    ["/bosses", "Radical Red Boss Teams"],
     ["/bosses/sabrina", "Sabrina Boss Fight"],
-    ["/elite-four", "Radical Red Elite Four"],
   ]) {
     await page.goto(BASE + path);
     const h1 = (await page.locator("h1").first().textContent()) ?? "";
-    check(`${path} serves its own document to a controlled page`, h1.includes(needle), h1);
+    check(`${path} is the right document`, h1.includes(needle), h1);
   }
-
-  // and the SPA shell is what it must NOT be
-  await page.goto(BASE + "/level-caps");
-  const isShell = await page.evaluate(() => !!document.querySelector("#root"));
-  check("/level-caps is not the app shell", !isShell);
 
   // the CTAs land somewhere real. A missing link is a failed check, not a
   // crash — when the pages above are being hijacked there is nothing here to
@@ -127,6 +137,17 @@ try {
     seeded.some((v) => v === "Hatterene"),
     seeded.slice(0, 4).join(" / "),
   );
+  }
+  for (const [path, sub] of [
+    ["/?to=readiness", "Battle readiness"],
+    ["/?to=calc", "Calculator"],
+  ]) {
+    await page.goto(BASE + path);
+    await page.waitForTimeout(1200);
+    const active = await page
+      .locator("button.active")
+      .evaluateAll((els) => els.map((e) => e.textContent ?? ""));
+    check(`${path} opens ${sub}`, active.some((t) => t.includes(sub)), active.join(" / "));
   }
 } finally {
   await browser.close();

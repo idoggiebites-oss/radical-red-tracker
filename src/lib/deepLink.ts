@@ -21,26 +21,31 @@ export function slug(s: string): string {
 
 export type DeepLinkDest = "bosses" | "readiness" | "calc";
 
-export interface DeepLink extends BossTarget {
+export interface DeepLink {
+  /** the fight named by the link, if it named one. The feature pages
+   * (/damage-calculator, /battle-readiness) link to the tool with no boss
+   * attached — they are selling the tool, not a matchup. */
+  target: BossTarget | null;
   to: DeepLinkDest;
 }
 
-/** the fight this URL names, resolved against the boss data, or null. A link
+/** what this URL asks for, resolved against the boss data, or null. A link
  * naming a fight the data no longer has resolves to nothing rather than
  * dropping the visitor somewhere arbitrary. */
 export function readDeepLink(modeData: BossMode): DeepLink | null {
   const params = new URLSearchParams(window.location.search);
+  const raw = params.get("to");
+  const to: DeepLinkDest | null =
+    raw === "readiness" || raw === "calc" || raw === "bosses" ? raw : null;
   const cat = params.get("cat");
   const boss = params.get("boss");
-  if (!cat || !boss) return null;
+  if (!cat || !boss) return to && to !== "bosses" ? { target: null, to } : null;
   const category = modeData.categories.find((c) => slug(c.name) === cat);
   const hit = category?.bosses.find((b) => slug(b.title) === boss);
   if (!category || !hit) return null;
-  const to = params.get("to");
   return {
-    category: category.name,
-    title: hit.title,
-    to: to === "readiness" || to === "calc" ? to : "bosses",
+    target: { category: category.name, title: hit.title },
+    to: to ?? "bosses",
   };
 }
 

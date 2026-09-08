@@ -247,10 +247,13 @@ only case that exposes this; 1→1 swaps pass either way.
 
 The app is one client-rendered URL; these are the others. `npm run build`
 ends with `node scripts/seo/build.mjs`, which reads the same
-`src/data/*.json` the app reads and writes plain HTML into `dist/`
-(`/level-caps`, `/bosses`, `/bosses/<person>`, `/elite-four`) plus
-`dist/sitemap.xml`. `public/sitemap.xml` is gone — the sitemap is generated
-from the page list, so it can't drift from what exists.
+`src/data/*.json` the app reads and writes plain HTML into `dist/` plus
+`dist/sitemap.xml`. `build.mjs` holds the entry point and the boss pages,
+`reference.mjs` the two data dumps (`/routes`, `/items-tms`) and
+`features.mjs` the three pages about the app itself — those last ones make
+claims about what the tracker does, so check them against the code that
+implements it before editing. `public/sitemap.xml` is gone — the sitemap is
+generated from the page list, so it can't drift from what exists.
 
 **`src/lib/seoSections.json` is the one list.** The generator, the pages'
 own nav, the sitemap, the app footer and workbox's
